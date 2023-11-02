@@ -6,71 +6,37 @@ protocol Networking { }
 struct NetworkService: Networking { }
 struct MockNetworking: Networking { }
 
-// App Folder Target
-
-extension App {
+extension Application {
     // DI - Live
     static var networking: Networking {
         dependency(NetworkService())
     }
 
     // SwiftUI State / App State
-    static var isLoading: App.State<Bool> {
+    var isLoading: Application.State<Bool> {
         state(initial: false)
     }
 
     // SwiftUI State / App State
-    static var username: State<String> {
+    var username: State<String> {
         state(initial: "Leif")
     }
 
-    enum Colors {
-        // SwiftUI State / App State
-        static var tint: State<CGColor> {
-            state(initial: CGColor(red: 1, green: 0, blue: 1, alpha: 1))
-        }
+    // SwiftUI State / App State
+    var colors: State<[String: CGColor]> {
+        state(initial: ["primary": CGColor(red: 1, green: 0, blue: 1, alpha: 1)])
     }
 }
 
 final class AppStateTests: XCTestCase {
     func testExample() throws {
-        var appState: App.State = App.username
+        var appState: Application.State = Application.state(\.username)
 
         XCTAssertEqual(appState.value, "Leif")
 
         appState.value = "0xL"
 
         XCTAssertEqual(appState.value, "0xL")
-        XCTAssertEqual(App.username.value, "0xL")
-    }
-
-    func testARC() {
-        class Bar {
-            weak var object: AnyObject?
-
-            init(object: AnyObject) {
-                self.object = object
-            }
-
-            deinit {
-                print("DEINIT Bar")
-            }
-        }
-
-        class Manager {
-            lazy var bar: Bar = Bar(
-                object: self
-            )
-
-            deinit {
-                print("DEINIT Manager")
-            }
-        }
-
-        var manager: Manager? = Manager()
-
-        _ = manager?.bar
-
-        manager = nil
+        XCTAssertEqual(Application.state(\.username).value, "0xL")
     }
 }
