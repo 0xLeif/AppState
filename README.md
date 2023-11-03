@@ -31,7 +31,7 @@ To add `AppState` to your Swift project, use the Swift Package Manager. This inv
 
 ```swift
 dependencies: [
-    .package(url: "https://github.com/0xLeif/AppState.git", from: "0.1.0")
+    .package(url: "https://github.com/0xLeif/AppState.git", from: "0.2.0")
 ]
 ```
 
