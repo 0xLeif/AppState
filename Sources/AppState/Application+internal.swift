@@ -7,8 +7,4 @@ extension Application {
     ) -> String {
         "\(fileID)[\(function)@\(line)|\(column)]"
     }
-
-    func value<Value>(keyPath: KeyPath<Application, Value>) -> Value {
-        self[keyPath: keyPath]
-    }
 }
