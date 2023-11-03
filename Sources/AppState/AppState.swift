@@ -20,6 +20,13 @@ import SwiftUI
         }
     }
 
+    public var projectedValue: Binding<Value> {
+        Binding(
+            get: { wrappedValue },
+            set: { wrappedValue = $0 }
+        )
+    }
+
     public init(
         _ keyPath: KeyPath<Application, Application.State<Value>>
     ) {
@@ -38,7 +45,7 @@ import SwiftUI
             guard
                 let publisher = observed.objectWillChange as? ObservableObjectPublisher
             else { return }
-                
+
             publisher.send()
             observed[keyPath: storageKeyPath].wrappedValue = newValue
         }

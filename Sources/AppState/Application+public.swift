@@ -39,8 +39,8 @@ public extension Application {
         initial: @autoclosure () -> Value,
         _ fileID: StaticString = #fileID,
         _ function: StaticString = #function,
-        _ line: StaticBigInt = #line,
-        _ column: StaticBigInt = #column
+        _ line: Int = #line,
+        _ column: Int = #column
     ) -> State<Value> {
         state(
             initial: initial(),
@@ -74,8 +74,8 @@ public extension Application {
         _ object: @autoclosure () -> Value,
         _ fileID: StaticString = #fileID,
         _ function: StaticString = #function,
-        _ line: StaticBigInt = #line,
-        _ column: StaticBigInt = #column
+        _ line: Int = #line,
+        _ column: Int = #column
     ) -> Value {
         dependency(
             object(),

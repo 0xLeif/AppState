@@ -14,13 +14,10 @@ jobs:
     environment:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}
-    runs-on: macos-13
+    runs-on: macos-12
     steps:
       - name: git checkout
         uses: actions/checkout@v3
-      - uses: maxim-lobanov/setup-xcode@v1
-        with:
-          xcode-version: latest-stable
       - name: docbuild
         run: |
           xcodebuild docbuild -scheme AppState \
