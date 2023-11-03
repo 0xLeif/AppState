@@ -1,36 +1,38 @@
 name: docc
-on:
+'on':
   push:
-    branches: ["main"]
+    branches:
+      - main
 permissions:
   contents: read
   pages: write
   id-token: write
 concurrency:
-  group: "pages"
+  group: pages
   cancel-in-progress: true
 jobs:
   pages:
     environment:
       name: github-pages
-      url: ${{ steps.deployment.outputs.page_url }}
+      url: '${{ steps.deployment.outputs.page_url }}'
     runs-on: macos-12
     steps:
       - name: git checkout
         uses: actions/checkout@v3
       - name: docbuild
-        run: |
+        run: >
           xcodebuild docbuild -scheme AppState \
             -derivedDataPath /tmp/docbuild \
             -destination 'generic/platform=iOS';
           $(xcrun --find docc) process-archive \
             transform-for-static-hosting /tmp/docbuild/Build/Products/Debug-iphoneos/AppState.doccarchive \
             --output-path docs;
-          echo "<script>window.location.href += \"/documentation/appstate\"</script>" > docs/index.html;
+          echo "<script>window.location.href +=
+          \"/documentation/appstate\"</script>" > docs/index.html;
       - name: artifacts
         uses: actions/upload-pages-artifact@v1
         with:
-          path: 'docs'
+          path: docs
       - name: deploy
         id: deployment
         uses: actions/deploy-pages@v1
