@@ -15,11 +15,14 @@ import SwiftUI
             app.value(keyPath: keyPath).value
         }
         nonmutating set {
-            let key = app.value(keyPath: keyPath).scope.key
+            let scope = app.value(keyPath: keyPath).scope
 
             app.cache.set(
-                value: newValue,
-                forKey: key
+                value: Application.State(
+                    initial: newValue,
+                    scope: scope
+                ),
+                forKey: scope.key
             )
         }
     }

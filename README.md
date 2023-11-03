@@ -8,13 +8,18 @@ AppState is a Swift Package that simplifies the management of application state 
 
 - **State:** Dedicated struct type for encapsulating and broadcasting value changes within the app's scope.
 
+- **Dependency:** Dedicated struct type for encapsulating dependencies within the app's scope.
+
 - **Scope:** Representation of a specific context within an app, defined by a unique name and ID.
 
 - **AppState (property wrapper):** A property wrapper that elegantly bridges `Application.State` with `SwiftUI` for seamless integration.
 
+- **AppDependency (property wrapper):** A property wrapper that simplifies the handling of dependencies throughout your application.
+
 ### Requirements
 
 - Swift 5.7 or later
+
 - iOS 16.0 or later
 - watchOS 9.0 or later
 - macOS 13.0 or later
@@ -111,6 +116,111 @@ struct ContentView: View {
             }
         }
     }
+}
+```
+
+### Defining Dependencies
+
+`Dependency` is a feature provided by AppState, allowing you to define shared resources or services in your application.
+
+To define a dependency, you should extend the `Application` object. Here's an example of defining a `networkService` dependency:
+
+```swift
+extension Application {
+    var networkService: Dependency<NetworkServiceType> {
+        dependency(NetworkService())
+    }
+}
+```
+
+In this example, `Dependency<NetworkServiceType>` represents a type safe container for `NetworkService`.
+
+### Reading and Using Dependencies
+
+Once you've defined a dependency, you can access it anywhere in your app:
+
+```swift
+let networkService = Application.dependency(\.networkService)
+```
+
+This approach allows you to work with dependencies in a type-safe manner, avoiding the need to manually handle errors related to incorrect types.
+
+### AppDependency Property Wrapper
+
+AppState provides the `@AppDependency` property wrapper that simplifies access to dependencies. When you annotate a property with `@AppDependency`, it fetches the appropriate dependency from the `Application` object directly.
+
+```swift
+struct ContentView: View {
+    @AppDependency(\.networkService) var networkService
+
+    // Your view code
+}
+```
+
+In this case, ContentView has access to the networkService dependency and can use it within its code.
+
+### Using Dependency with ObservableObject
+
+When your dependency is an `ObservableObject`, any changes to it will automatically update your SwiftUI views. Make sure your service conforms to the `ObservableObject` protocol. To do this, you should not use the `@AppDependency` property wrapper, but instead use the `@ObservedObject` property wrapper. 
+
+Here's an example:
+
+```swift
+class DataService: ObservableObject {
+    @AppState(\.someData) var data: [String]
+}
+
+extension Application {
+    var dataService: Dependency<DataService> {
+        dependency(DataService())
+    }
+}
+
+struct ContentView: View {
+    @ObservedObject var dataService = Application.dependency(\.dataService)
+
+    var body: some View {
+        List(dataService.data, id: \.self) { item in
+            Text(item)
+        }
+        .onAppear {
+            dataService.fetchData()
+        }
+    }
+}
+```
+
+In this example, whenever data in `DataService` changes, SwiftUI automatically updates the `ContentView`.
+
+### Testing with Mock Dependencies
+
+One of the great advantages of using `Dependency` in AppState is the capability to replace dependencies with mock versions during testing. This is incredibly useful for isolating parts of your application for unit testing. 
+
+You can replace a dependency by calling the `override(_:_:)` function. This function returns a `DependencyOverrideToken`, you'll want to hold onto this token for as long as you want the mock dependency to be effective. When the token is deallocated, the dependency reverts back to its original condition.
+
+Here's an example:
+
+```swift
+// Real network service
+extension Application {
+    var networkService: Dependency<NetworkServiceType> {
+        dependency(initial: NetworkService())
+    }
+}
+
+// Mock network service
+class MockNetworkService: NetworkServiceType {
+    // Your mock implementation
+}
+
+func testNetworkService() {
+    // Keep hold of the `DependencyOverride` for the duration of your test.
+    let networkOverride = Application.override(\.networkService, with: MockNetworkService())
+
+    let mockNetworkService = Application.dependency(\.networkService)
+    
+    // Once done, you can allow the `tokDependencyOverrideen` to be deallocated 
+    // or call `override.cancel()` to revert back to the original service.
 }
 ```
 
