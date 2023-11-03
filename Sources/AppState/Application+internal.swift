@@ -2,8 +2,8 @@ extension Application {
     static func codeID(
         fileID: StaticString,
         function: StaticString,
-        line: StaticBigInt,
-        column: StaticBigInt
+        line: Int,
+        column: Int
     ) -> String {
         "\(fileID)[\(function)@\(line)|\(column)]"
     }
