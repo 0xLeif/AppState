@@ -1,6 +1,6 @@
 extension Application {
     /// `State` encapsulates the value within the application's scope and allows any changes to be propagated throughout the scoped area.
-    public struct State<Value> {
+    public struct State<Value>: CustomStringConvertible {
         /// A private backing storage for the value.
         private var _value: Value
 
@@ -8,18 +8,21 @@ extension Application {
         public var value: Value {
             get {
                 guard
-                    let value = shared.cache.get(
+                    let state = shared.cache.get(
                         scope.key,
-                        as: Value.self
+                        as: State<Value>.self
                     )
                 else { return _value }
 
-                return value
+                return state._value
             }
             set {
                 _value = newValue
                 shared.cache.set(
-                    value: newValue,
+                    value: Application.State(
+                        initial: newValue,
+                        scope: scope
+                    ),
                     forKey: scope.key
                 )
             }
@@ -41,6 +44,10 @@ extension Application {
         ) {
             self._value = value
             self.scope = scope
+        }
+
+        public var description: String {
+            "State<\(Value.self)>(\(value)) (\(scope.key))"
         }
     }
 }

@@ -2,18 +2,63 @@ public extension Application {
     /// Provides a description of the current application state
     static var description: String {
         let state = shared.cache.allValues
-            .sorted { lhsKeyValue, rhsKeyValue in
-                lhsKeyValue.key < rhsKeyValue.key
-            }
             .map { key, value in
-                "- \(value) (\(key))"
+                "\t- \(value)"
             }
+            .sorted(by: <)
             .joined(separator: "\n")
 
         return """
-                App:
+                {
                 \(state)
+                }
                 """
+    }
+
+    /**
+     Retrieves a state from Application instance using the provided keypath.
+
+     - Parameter keyPath: KeyPath of the state value to be fetched
+     - Returns: The requested state of type `Value`.
+     */
+    static func dependency<Value>(_ keyPath: KeyPath<Application, Dependency<Value>>) -> Value {
+        shared.value(keyPath: keyPath).value
+    }
+
+    /**
+     Overrides the specified `Dependency` with the given value. This is particularly useful for SwiftUI Previews and Unit Tests.
+     - Parameters:
+         - keyPath: Key path of the dependency to be overridden.
+         - value: The new value to override the current dependency.
+
+     - Returns: A `DependencyOverride` object. You should retain this token for as long as you want your override to be effective. Once the token is deallocated or the `cancel()` method is called on it, the original dependency is restored.
+
+     Note: If the `DependencyOverride` object gets deallocated without calling `cancel()`, it will automatically cancel the override, restoring the original dependency.
+     */
+    static func `override`<Value>(
+        _ keyPath: KeyPath<Application, Dependency<Value>>,
+        with value: Value
+    ) -> DependencyOverride {
+        let dependency = shared.value(keyPath: keyPath)
+
+        shared.cache.set(
+            value: Dependency(value, scope: dependency.scope),
+            forKey: dependency.scope.key
+        )
+
+        return DependencyOverride {
+            shared.cache.set(value: dependency, forKey: dependency.scope.key)
+        }
+    }
+
+    /**
+     Retrieves a state from Application instance using the provided keypath.
+
+     - Parameter keyPath: KeyPath of the state value to be fetched
+     - Returns: The requested state of type `Value`.
+     */
+    static func state<Value>(_ keyPath: KeyPath<Application, State<Value>>) -> State<Value> {
+        shared.value(keyPath: keyPath)
     }
 
     /**
@@ -23,52 +68,49 @@ public extension Application {
          - object: The closure returning the dependency.
          - feature: The name of the feature to which the dependency belongs, default is "App".
          - id: The specific identifier for this dependency.
-     - Returns: The requested dependency of type `Value`.
+     - Returns: The requested dependency of type `Dependency<Value>`.
      */
-    static func dependency<Value>(
+    func dependency<Value>(
         _ object: @autoclosure () -> Value,
         feature: String = "App",
         id: String
-    ) -> Value {
+    ) -> Dependency<Value> {
         let scope = Scope(name: feature, id: id)
         let key = scope.key
 
-        guard let value = shared.cache.get(key, as: Value.self) else {
+        guard let dependency = cache.get(key, as: Dependency<Value>.self) else {
             let value = object()
-            shared.cache.set(value: value, forKey: key)
-            return value
+            let dependency = Dependency(
+                value,
+                scope: scope
+            )
+
+            cache.set(value: dependency, forKey: key)
+
+            return dependency
         }
 
-        return value
+        return dependency
     }
 
+
     // Overloaded version of `dependency(_:feature:id:)` function where id is generated from the code context.
-    static func dependency<Value>(
+    func dependency<Value>(
         _ object: @autoclosure () -> Value,
         _ fileID: StaticString = #fileID,
         _ function: StaticString = #function,
         _ line: Int = #line,
         _ column: Int = #column
-    ) -> Value {
+    ) -> Dependency<Value> {
         dependency(
             object(),
-            id: codeID(
+            id: Application.codeID(
                 fileID: fileID,
                 function: function,
                 line: line,
                 column: column
             )
         )
-    }
-
-    /**
-     Retrieves a state from Application instance using the provided keypath.
-
-     - Parameter keyPath: KeyPath of the state value to be fetched
-     - Returns: The requested state of type `Value`.
-     */
-    static func state<Value>(_ keyPath: KeyPath<Application, Value>) -> Value {
-        shared.value(keyPath: keyPath)
     }
 
     /**
@@ -114,5 +156,4 @@ public extension Application {
             )
         )
     }
-
 }
