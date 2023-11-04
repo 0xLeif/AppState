@@ -27,8 +27,6 @@ jobs:
           $(xcrun --find docc) process-archive \
             transform-for-static-hosting /tmp/docbuild/Build/Products/Debug-iphoneos/AppState.doccarchive \
             --output-path docs;
-          echo "<script>window.location.href +=
-          \"/documentation/appstate\"</script>" > docs/index.html;
       - name: artifacts
         uses: actions/upload-pages-artifact@v1
         with:
