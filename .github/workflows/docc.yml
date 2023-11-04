@@ -28,6 +28,8 @@ jobs:
             transform-for-static-hosting /tmp/docbuild/Build/Products/Debug-iphoneos/AppState.doccarchive \
             --output-path docs \
             --hosting-base-path 'AppState';
+          echo "<script>window.location.href +=
+          \"/documentation/appstate\"</script>" > docs/index.html;
       - name: artifacts
         uses: actions/upload-pages-artifact@v1
         with:
