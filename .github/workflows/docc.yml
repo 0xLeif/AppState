@@ -27,7 +27,7 @@ jobs:
           $(xcrun --find docc) process-archive \
             transform-for-static-hosting /tmp/docbuild/Build/Products/Debug-iphoneos/AppState.doccarchive \
             --output-path docs \
-            --hosting-base-path '';
+            --hosting-base-path 'AppState';
       - name: artifacts
         uses: actions/upload-pages-artifact@v1
         with:
