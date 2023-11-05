@@ -168,6 +168,8 @@ Here's an example:
 ```swift
 class DataService: ObservableObject {
     @AppState(\.someData) var data: [String]
+
+    func fetchData() { ... }
 }
 
 extension Application {
@@ -196,7 +198,7 @@ In this example, whenever data in `DataService` changes, SwiftUI automatically u
 
 One of the great advantages of using `Dependency` in AppState is the capability to replace dependencies with mock versions during testing. This is incredibly useful for isolating parts of your application for unit testing. 
 
-You can replace a dependency by calling the `override(_:_:)` function. This function returns a `DependencyOverrideToken`, you'll want to hold onto this token for as long as you want the mock dependency to be effective. When the token is deallocated, the dependency reverts back to its original condition.
+You can replace a dependency by calling the `Application.override` function. This function returns a `DependencyOverride`, you'll want to hold onto this token for as long as you want the mock dependency to be effective. When the token is deallocated, the dependency reverts back to its original condition.
 
 Here's an example:
 
