@@ -8,6 +8,8 @@ AppState is a Swift Package that simplifies the management of application state 
 
 - **State:** Dedicated struct type for encapsulating and broadcasting value changes within the app's scope.
 
+- **StoredState:** Dedicated struct type for encapsulating and broadcasting stored value changes within the app's scope. Values are stored using `UserDefaults`.
+
 - **Dependency:** Dedicated struct type for encapsulating dependencies within the app's scope.
 
 - **Scope:** Representation of a specific context within an app, defined by a unique name and ID.
