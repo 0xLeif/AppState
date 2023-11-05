@@ -35,8 +35,8 @@ extension Application {
         state(initial: ["primary": CGColor(red: 1, green: 0, blue: 1, alpha: 1)])
     }
 
-    var storedValue: StoredState<Int> {
-        storedState(initial: -1, id: "storedValue")
+    var storedValue: StoredState<Int?> {
+        storedState(initial: nil, id: "storedValue")
     }
 }
 
@@ -141,27 +141,27 @@ final class AppStateTests: XCTestCase {
     }
 
     func testStoredState() {
-        XCTAssertEqual(Application.storedState(\.storedValue).value, -1)
+        XCTAssertNil(Application.storedState(\.storedValue).value)
 
         let storedValue = ExampleStoredValue()
 
-        XCTAssertEqual(storedValue.count, -1)
+        XCTAssertEqual(storedValue.count, nil)
 
-        storedValue.count = 2
+        storedValue.count = 1
 
-        XCTAssertEqual(storedValue.count, 2)
+        XCTAssertEqual(storedValue.count, 1)
 
-        Application.remove(storedState: \.storedValue)
+        storedValue.count = nil
 
-        XCTAssertEqual(Application.storedState(\.storedValue).value, -1)
+        XCTAssertNil(Application.storedState(\.storedValue).value)
     }
 
     func testStoringViewModel() {
-        XCTAssertEqual(Application.storedState(\.storedValue).value, -1)
+        XCTAssertNil(Application.storedState(\.storedValue).value)
 
         let viewModel = ExampleStoringViewModel()
 
-        XCTAssertEqual(viewModel.count, -1)
+        XCTAssertEqual(viewModel.count, nil)
 
         viewModel.count = 2
 
@@ -169,6 +169,6 @@ final class AppStateTests: XCTestCase {
 
         Application.remove(storedState: \.storedValue)
 
-        XCTAssertEqual(viewModel.count, -1)
+        XCTAssertNil(viewModel.count)
     }
 }

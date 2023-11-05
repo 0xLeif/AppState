@@ -33,15 +33,22 @@ extension Application {
             }
             set {
                 let userDefaults = Application.dependency(\.userDefaults)
+                let mirror = Mirror(reflecting: newValue)
 
-                shared.cache.set(
-                    value: Application.State(
-                        initial: newValue,
-                        scope: scope
-                    ),
-                    forKey: scope.key
-                )
-                userDefaults.set(newValue, forKey: scope.key)
+                if mirror.displayStyle == .optional,
+                   mirror.children.isEmpty {
+                    shared.cache.remove(scope.key)
+                    userDefaults.removeObject(forKey: scope.key)
+                } else {
+                    shared.cache.set(
+                        value: Application.State(
+                            initial: newValue,
+                            scope: scope
+                        ),
+                        forKey: scope.key
+                    )
+                    userDefaults.set(newValue, forKey: scope.key)
+                }
             }
         }
 
