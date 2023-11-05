@@ -16,6 +16,8 @@ AppState is a Swift Package that simplifies the management of application state 
 
 - **AppState (property wrapper):** A property wrapper that elegantly bridges `Application.State` with `SwiftUI` for seamless integration.
 
+- **StoredState (property wrapper):** A property wrapper that stores its values to `UserDefaults`. Works the same as `AppState` otherwise.
+
 - **AppDependency (property wrapper):** A property wrapper that simplifies the handling of dependencies throughout your application.
 
 ### Requirements
