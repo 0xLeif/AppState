@@ -1,15 +1,16 @@
+import Foundation
 import Combine
 import SwiftUI
 
-/// `AppState` is a property wrapper allowing SwiftUI views to subscribe to Application's state changes in a reactive way. Works similar to `State` and `Published`.
-@propertyWrapper public struct AppState<Value>: DynamicProperty {
+/// `StoredState` is a property wrapper allowing SwiftUI views to subscribe to Application's state changes in a reactive way. State is stored using `UserDefaults`. Works similar to `State` and `Published`.
+@propertyWrapper public struct StoredState<Value>: DynamicProperty {
     /// Holds the singleton instance of `Application`.
     @ObservedObject private var app: Application = Application.shared
 
-    /// Path for accessing `State` from Application.
-    private let keyPath: KeyPath<Application, Application.State<Value>>
+    /// Path for accessing `StoredState` from Application.
+    private let keyPath: KeyPath<Application, Application.StoredState<Value>>
 
-    /// Represents the current value of the `State`.
+    /// Represents the current value of the `StoredState`.
     public var wrappedValue: Value {
         get {
             app.value(keyPath: keyPath).value
@@ -29,12 +30,12 @@ import SwiftUI
     }
 
     /**
-     Initializes the AppState with a `keyPath` for accessing `State` in Application.
+     Initializes the AppState with a `keyPath` for accessing `StoredState` in Application.
 
-     - Parameter keyPath: The `KeyPath` for accessing `State` in Application.
+     - Parameter keyPath: The `KeyPath` for accessing `StoredState` in Application.
      */
     public init(
-        _ keyPath: KeyPath<Application, Application.State<Value>>
+        _ keyPath: KeyPath<Application, Application.StoredState<Value>>
     ) {
         self.keyPath = keyPath
     }

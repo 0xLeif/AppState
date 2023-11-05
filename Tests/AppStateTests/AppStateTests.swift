@@ -34,6 +34,10 @@ extension Application {
     var colors: State<[String: CGColor]> {
         state(initial: ["primary": CGColor(red: 1, green: 0, blue: 1, alpha: 1)])
     }
+
+    var storedValue: StoredState<Int> {
+        storedState(initial: -1, id: "storedValue")
+    }
 }
 
 class ExampleViewModel: ObservableObject {
@@ -42,6 +46,23 @@ class ExampleViewModel: ObservableObject {
     func testPropertyWrapper() {
         username = "Hello, ExampleView"
     }
+}
+
+class ExampleStoringViewModel: ObservableObject {
+    @StoredState(\.storedValue) var count
+
+    func testPropertyWrapper() {
+        count = 27
+        _ = TextField(
+            value: $count,
+            format: .number,
+            label: { Text("Count") }
+        )
+    }
+}
+
+struct ExampleStoredValue {
+    @StoredState(\.storedValue) var count
 }
 
 struct ExampleView: View {
@@ -117,5 +138,37 @@ final class AppStateTests: XCTestCase {
         viewModel.username = "Hello, ViewModel"
 
         XCTAssertEqual(viewModel.username, "Hello, ViewModel")
+    }
+
+    func testStoredState() {
+        XCTAssertEqual(Application.storedState(\.storedValue).value, -1)
+
+        let storedValue = ExampleStoredValue()
+
+        XCTAssertEqual(storedValue.count, -1)
+
+        storedValue.count = 2
+
+        XCTAssertEqual(storedValue.count, 2)
+
+        Application.remove(storedState: \.storedValue)
+
+        XCTAssertEqual(Application.storedState(\.storedValue).value, -1)
+    }
+
+    func testStoringViewModel() {
+        XCTAssertEqual(Application.storedState(\.storedValue).value, -1)
+
+        let viewModel = ExampleStoringViewModel()
+
+        XCTAssertEqual(viewModel.count, -1)
+
+        viewModel.count = 2
+
+        XCTAssertEqual(viewModel.count, 2)
+
+        Application.remove(storedState: \.storedValue)
+
+        XCTAssertEqual(viewModel.count, -1)
     }
 }

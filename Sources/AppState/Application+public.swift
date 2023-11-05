@@ -21,7 +21,9 @@ public extension Application {
      - Parameter keyPath: KeyPath of the state value to be fetched
      - Returns: The requested state of type `Value`.
      */
-    static func dependency<Value>(_ keyPath: KeyPath<Application, Dependency<Value>>) -> Value {
+    static func dependency<Value>(
+        _ keyPath: KeyPath<Application, Dependency<Value>>
+    ) -> Value {
         shared.value(keyPath: keyPath).value
     }
 
@@ -47,8 +49,18 @@ public extension Application {
         )
 
         return DependencyOverride {
-            shared.cache.set(value: dependency, forKey: dependency.scope.key)
+            shared.cache.set(
+                value: dependency,
+                forKey: dependency.scope.key
+            )
         }
+    }
+
+    static func remove<Value>(
+        storedState keyPath: KeyPath<Application, StoredState<Value>>
+    ) {
+        var storedState = shared.value(keyPath: keyPath)
+        storedState.remove()
     }
 
     /**
@@ -57,7 +69,21 @@ public extension Application {
      - Parameter keyPath: KeyPath of the state value to be fetched
      - Returns: The requested state of type `Value`.
      */
-    static func state<Value>(_ keyPath: KeyPath<Application, State<Value>>) -> State<Value> {
+    static func state<Value>(
+        _ keyPath: KeyPath<Application, State<Value>>
+    ) -> State<Value> {
+        shared.value(keyPath: keyPath)
+    }
+
+    /**
+     Retrieves a stored state from Application instance using the provided keypath.
+
+     - Parameter keyPath: KeyPath of the state value to be fetched
+     - Returns: The requested state of type `Value`.
+     */
+    static func storedState<Value>(
+        _ keyPath: KeyPath<Application, StoredState<Value>>
+    ) -> StoredState<Value> {
         shared.value(keyPath: keyPath)
     }
 
@@ -154,6 +180,26 @@ public extension Application {
                 line: line,
                 column: column
             )
+        )
+    }
+
+    /**
+     Retrieves a `UserDefaults` backed state for the provided `id`. If the state is not present, it initializes a new state with the `initial` value.
+
+     - Parameters:
+         - initial: The closure that returns initial state value.
+         - feature: The name of the feature to which the state belongs, default is "App".
+         - id: The specific identifier for this state.
+     - Returns: The state of type `Value`.
+     */
+    func storedState<Value>(
+        initial: @escaping @autoclosure () -> Value,
+        feature: String = "App",
+        id: String
+    ) -> StoredState<Value> {
+        StoredState(
+            initial: initial(),
+            scope: Scope(name: feature, id: id)
         )
     }
 }
