@@ -42,6 +42,8 @@ public class Application: ObservableObject {
         bag = Set()
         cache = Cache()
 
+        loadDefaultDependencies()
+
         consume(object: cache)
     }
 
@@ -52,6 +54,22 @@ public class Application: ObservableObject {
         lock.lock(); defer { lock.unlock() }
 
         return self[keyPath: keyPath]
+    }
+
+    /**
+     Use this function to make sure Dependencies are intialized. If a Dependency is not loaded, it will be initialized whenever it is used next.
+
+     - Parameter dependency: KeyPath of the Dependency to be loaded
+     */
+    func load<Value>(
+        dependency keyPath: KeyPath<Application, Dependency<Value>>
+    ) {
+        _ = dependency(keyPath)
+    }
+
+    /// Loads the default dependencies for use in Application.
+    private func loadDefaultDependencies() {
+        load(dependency: \.userDefaults)
     }
 
     /// Consumes changes in the provided ObservableObject and sends updates before the object will change.

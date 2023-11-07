@@ -16,9 +16,24 @@ public extension Application {
     }
 
     /**
+     Use this function to make sure Dependencies are intialized. If a Dependency is not loaded, it will be initialized whenever it is used next.
+
+     - Parameter dependency: KeyPath of the Dependency to be loaded
+     - Returns: `Application.self` to allow chaining.
+     */
+    @discardableResult
+    static func load<Value>(
+        dependency keyPath: KeyPath<Application, Dependency<Value>>
+    ) -> Application.Type {
+        _ = dependency(keyPath)
+
+        return Application.self
+    }
+
+    /**
      Retrieves a state from Application instance using the provided keypath.
 
-     - Parameter keyPath: KeyPath of the state value to be fetched
+     - Parameter keyPath: KeyPath of the Dependency to be fetched
      - Returns: The requested state of type `Value`.
      */
     static func dependency<Value>(
