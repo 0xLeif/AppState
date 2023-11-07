@@ -1,4 +1,6 @@
 public extension Application {
+    // MARK: - Type Methods
+
     /// Provides a description of the current application state
     static var description: String {
         let state = shared.cache.allValues
@@ -101,6 +103,8 @@ public extension Application {
     ) -> StoredState<Value> {
         shared.value(keyPath: keyPath)
     }
+
+    // MARK: - Instance Methods
 
     /**
      Retrieves a dependency for the provided `id`. If dependency is not present, it is created once using the provided closure.

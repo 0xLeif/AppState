@@ -64,7 +64,7 @@ public class Application: ObservableObject {
     func load<Value>(
         dependency keyPath: KeyPath<Application, Dependency<Value>>
     ) {
-        _ = dependency(keyPath)
+        _ = value(keyPath: keyPath)
     }
 
     /// Loads the default dependencies for use in Application.
