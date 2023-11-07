@@ -25,7 +25,7 @@ public extension Application {
     static func load<Value>(
         dependency keyPath: KeyPath<Application, Dependency<Value>>
     ) -> Application.Type {
-        _ = dependency(keyPath)
+        shared.load(dependency: keyPath)
 
         return Application.self
     }
