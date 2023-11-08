@@ -53,9 +53,9 @@ final class StoredStateTests: XCTestCase {
 
         XCTAssertEqual(viewModel.count, nil)
 
-        viewModel.count = 2
+        viewModel.testPropertyWrapper()
 
-        XCTAssertEqual(viewModel.count, 2)
+        XCTAssertEqual(viewModel.count, 27)
 
         Application.remove(storedState: \.storedValue)
 
