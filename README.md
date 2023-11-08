@@ -225,8 +225,8 @@ func testNetworkService() {
 
     let mockNetworkService = Application.dependency(\.networkService)
     
-    // Once done, you can allow the `tokDependencyOverrideen` to be deallocated 
-    // or call `override.cancel()` to revert back to the original service.
+    // Once done, you can allow the `DependencyOverrideen` to be deallocated 
+    // or call `networkOverride.cancel()` to revert back to the original service.
 }
 ```
 
