@@ -8,13 +8,14 @@ extension Application {
 
     /// `StoredState` encapsulates the value within the application's scope and allows any changes to be propagated throughout the scoped area.  State is stored using `UserDefaults`.
     public struct StoredState<Value>: CustomStringConvertible {
-        /// A private backing storage for the value.
+        @AppDependency(\.userDefaults) private var userDefaults: UserDefaults
+
+        /// The initial value of the state.
         private var initial: () -> Value
 
         /// The current state value.
         public var value: Value {
             get {
-                let userDefaults = Application.dependency(\.userDefaults)
                 let cachedValue = shared.cache.get(
                     scope.key,
                     as: State<Value>.self
@@ -32,7 +33,6 @@ extension Application {
                 return storedValue
             }
             set {
-                let userDefaults = Application.dependency(\.userDefaults)
                 let mirror = Mirror(reflecting: newValue)
 
                 if mirror.displayStyle == .optional,
@@ -77,7 +77,7 @@ extension Application {
         /// Removes the value from `UserDefaults`.
         public mutating func remove() {
             value = initial()
-            Application.dependency(\.userDefaults).removeObject(forKey: scope.key)
+            userDefaults.removeObject(forKey: scope.key)
         }
     }
 }
