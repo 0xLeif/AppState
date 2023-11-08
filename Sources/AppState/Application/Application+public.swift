@@ -9,14 +9,14 @@ public extension Application {
             }
             .sorted(by: <)
             .joined(separator: "\n")
-
+        
         return """
-                {
-                \(state)
-                }
-                """
+               {
+               \(state)
+               }
+               """
     }
-
+    
     /**
      Use this function to make sure Dependencies are intialized. If a Dependency is not loaded, it will be initialized whenever it is used next.
 
