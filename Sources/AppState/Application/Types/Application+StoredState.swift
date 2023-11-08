@@ -74,7 +74,7 @@ extension Application {
             "StoredState<\(Value.self)>(\(value)) (\(scope.key))"
         }
 
-        /// Removes the value from `UserDefaults`.
+        /// Removes the value from `UserDefaults` and resets the value to the inital value.
         public mutating func remove() {
             value = initial()
             userDefaults.removeObject(forKey: scope.key)

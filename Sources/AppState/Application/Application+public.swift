@@ -73,6 +73,7 @@ public extension Application {
         }
     }
 
+    /// Removes the value from `UserDefaults` and resets the value to the inital value.
     static func remove<Value>(
         storedState keyPath: KeyPath<Application, StoredState<Value>>
     ) {
@@ -139,7 +140,7 @@ public extension Application {
     }
 
 
-    // Overloaded version of `dependency(_:feature:id:)` function where id is generated from the code context.
+    /// Overloaded version of `dependency(_:feature:id:)` function where id is generated from the code context.
     func dependency<Value>(
         _ object: @autoclosure () -> Value,
         _ fileID: StaticString = #fileID,
@@ -183,7 +184,7 @@ public extension Application {
         return State(initial: value, scope: scope)
     }
 
-    // Overloaded version of `state(initial:feature:id:)` function where id is generated from the code context.
+    /// Overloaded version of `state(initial:feature:id:)` function where id is generated from the code context.
     func state<Value>(
         initial: @autoclosure () -> Value,
         _ fileID: StaticString = #fileID,
