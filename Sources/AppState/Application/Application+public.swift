@@ -85,7 +85,7 @@ public extension Application {
         let dependency = shared.value(keyPath: keyPath)
 
         log(
-            debug: "🟢 Overriding Dependency \(String(describing: keyPath))",
+            debug: "🟢 Starting Dependency Override \(String(describing: keyPath))",
             fileID: fileID,
             function: function,
             line: line,
@@ -99,7 +99,7 @@ public extension Application {
 
         return DependencyOverride {
             log(
-                debug: "🟢 Cancelling Override Dependency \(String(describing: keyPath))",
+                debug: "🟢 Cancelling Dependency Override \(String(describing: keyPath))",
                 fileID: fileID,
                 function: function,
                 line: line,
