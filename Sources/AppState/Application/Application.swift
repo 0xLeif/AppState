@@ -26,8 +26,32 @@ public class Application: ObservableObject {
         "\(fileID)[\(function)@\(line)|\(column)]"
     }
 
+    /// Internal log function.
+    static func log(
+        debug message: String,
+        fileID: StaticString,
+        function: StaticString,
+        line: Int,
+        column: Int
+    ) {
+        let excludedFileIDs: [String] = [
+            "AppState/Application+StoredState.swift"
+        ]
+        let isFileIDValue: Bool = excludedFileIDs.contains(fileID.description) == false
+
+        guard 
+            isLoggingEnabled,
+            isFileIDValue
+        else { return }
+
+        let codeID = codeID(fileID: fileID, function: function, line: line, column: column)
+
+        logger.debug("\(message) (\(codeID))")
+    }
+
     /// Logger specifically for AppState
     public static let logger: Logger = Logger(subsystem: "AppState", category: "Application")
+    static var isLoggingEnabled: Bool = false
 
     private let lock: NSLock
     private var bag: Set<AnyCancellable>

@@ -32,6 +32,10 @@ fileprivate struct ExampleDependencyWrapper {
 }
 
 final class AppDependencyTests: XCTestCase {
+    override class func setUp() {
+        Application.logging(isEnabled: true)
+    }
+
     override class func tearDown() {
         Application.logger.debug("AppDependencyTests \(Application.description)")
     }
