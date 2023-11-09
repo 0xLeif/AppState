@@ -39,6 +39,10 @@ fileprivate struct ExampleView: View {
 }
 
 final class AppStateTests: XCTestCase {
+    override class func setUp() {
+        Application.logging(isEnabled: true)
+    }
+    
     override class func tearDown() {
         Application.logger.debug("AppStateTests \(Application.description)")
     }

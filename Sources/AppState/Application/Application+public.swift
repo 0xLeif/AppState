@@ -11,10 +11,10 @@ public extension Application {
             .joined(separator: "\n")
 
         return """
-                {
-                \(state)
-                }
-                """
+               {
+               \(state)
+               }
+               """
     }
 
     /**
@@ -32,6 +32,14 @@ public extension Application {
         return Application.self
     }
 
+    /// Enables or disabled the default logging inside of Application.
+    @discardableResult
+    static func logging(isEnabled: Bool) -> Application.Type {
+        Application.isLoggingEnabled = isEnabled
+
+        return Application.self
+    }
+
     /**
      Retrieves a state from Application instance using the provided keypath.
 
@@ -39,9 +47,21 @@ public extension Application {
      - Returns: The requested state of type `Value`.
      */
     static func dependency<Value>(
-        _ keyPath: KeyPath<Application, Dependency<Value>>
+        _ keyPath: KeyPath<Application, Dependency<Value>>,
+        _ fileID: StaticString = #fileID,
+        _ function: StaticString = #function,
+        _ line: Int = #line,
+        _ column: Int = #column
     ) -> Value {
-        shared.value(keyPath: keyPath).value
+        log(
+            debug: "🟢 Getting Dependency \(String(describing: keyPath))",
+            fileID: fileID,
+            function: function,
+            line: line,
+            column: column
+        )
+
+        return shared.value(keyPath: keyPath).value
     }
 
     /**
@@ -56,9 +76,21 @@ public extension Application {
      */
     static func `override`<Value>(
         _ keyPath: KeyPath<Application, Dependency<Value>>,
-        with value: Value
+        with value: Value,
+        _ fileID: StaticString = #fileID,
+        _ function: StaticString = #function,
+        _ line: Int = #line,
+        _ column: Int = #column
     ) -> DependencyOverride {
         let dependency = shared.value(keyPath: keyPath)
+
+        log(
+            debug: "🟢 Starting Dependency Override \(String(describing: keyPath))",
+            fileID: fileID,
+            function: function,
+            line: line,
+            column: column
+        )
 
         shared.cache.set(
             value: Dependency(value, scope: dependency.scope),
@@ -66,6 +98,14 @@ public extension Application {
         )
 
         return DependencyOverride {
+            log(
+                debug: "🟢 Cancelling Dependency Override \(String(describing: keyPath))",
+                fileID: fileID,
+                function: function,
+                line: line,
+                column: column
+            )
+
             shared.cache.set(
                 value: dependency,
                 forKey: dependency.scope.key
@@ -73,9 +113,22 @@ public extension Application {
         }
     }
 
+    /// Removes the value from `UserDefaults` and resets the value to the inital value.
     static func remove<Value>(
-        storedState keyPath: KeyPath<Application, StoredState<Value>>
+        storedState keyPath: KeyPath<Application, StoredState<Value>>,
+        _ fileID: StaticString = #fileID,
+        _ function: StaticString = #function,
+        _ line: Int = #line,
+        _ column: Int = #column
     ) {
+        log(
+            debug: "🟣 Removing StoredState \(String(describing: keyPath))",
+            fileID: fileID,
+            function: function,
+            line: line,
+            column: column
+        )
+
         var storedState = shared.value(keyPath: keyPath)
         storedState.remove()
     }
@@ -87,9 +140,21 @@ public extension Application {
      - Returns: The requested state of type `Value`.
      */
     static func state<Value>(
-        _ keyPath: KeyPath<Application, State<Value>>
+        _ keyPath: KeyPath<Application, State<Value>>,
+        _ fileID: StaticString = #fileID,
+        _ function: StaticString = #function,
+        _ line: Int = #line,
+        _ column: Int = #column
     ) -> State<Value> {
-        shared.value(keyPath: keyPath)
+        log(
+            debug: "🔵 Getting State \(String(describing: keyPath))",
+            fileID: fileID,
+            function: function,
+            line: line,
+            column: column
+        )
+
+        return shared.value(keyPath: keyPath)
     }
 
     /**
@@ -99,9 +164,21 @@ public extension Application {
      - Returns: The requested state of type `Value`.
      */
     static func storedState<Value>(
-        _ keyPath: KeyPath<Application, StoredState<Value>>
+        _ keyPath: KeyPath<Application, StoredState<Value>>,
+        _ fileID: StaticString = #fileID,
+        _ function: StaticString = #function,
+        _ line: Int = #line,
+        _ column: Int = #column
     ) -> StoredState<Value> {
-        shared.value(keyPath: keyPath)
+        log(
+            debug: "🟣 Getting StoredState \(String(describing: keyPath))",
+            fileID: fileID,
+            function: function,
+            line: line,
+            column: column
+        )
+
+        return shared.value(keyPath: keyPath)
     }
 
     // MARK: - Instance Methods
@@ -139,7 +216,7 @@ public extension Application {
     }
 
 
-    // Overloaded version of `dependency(_:feature:id:)` function where id is generated from the code context.
+    /// Overloaded version of `dependency(_:feature:id:)` function where id is generated from the code context.
     func dependency<Value>(
         _ object: @autoclosure () -> Value,
         _ fileID: StaticString = #fileID,
@@ -183,7 +260,7 @@ public extension Application {
         return State(initial: value, scope: scope)
     }
 
-    // Overloaded version of `state(initial:feature:id:)` function where id is generated from the code context.
+    /// Overloaded version of `state(initial:feature:id:)` function where id is generated from the code context.
     func state<Value>(
         initial: @autoclosure () -> Value,
         _ fileID: StaticString = #fileID,

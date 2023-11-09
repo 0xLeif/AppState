@@ -26,6 +26,10 @@ fileprivate class ExampleStoringViewModel: ObservableObject {
 }
 
 final class StoredStateTests: XCTestCase {
+    override class func setUp() {
+        Application.logging(isEnabled: true)
+    }
+
     override class func tearDown() {
         Application.logger.debug("StoredStateTests \(Application.description)")
     }

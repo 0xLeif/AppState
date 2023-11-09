@@ -10,10 +10,21 @@ import SwiftUI
     /// Path for accessing `StoredState` from Application.
     private let keyPath: KeyPath<Application, Application.StoredState<Value>>
 
+    private let fileID: StaticString
+    private let function: StaticString
+    private let line: Int
+    private let column: Int
+
     /// Represents the current value of the `StoredState`.
     public var wrappedValue: Value {
         get {
-            app.value(keyPath: keyPath).value
+            Application.storedState(
+                keyPath,
+                fileID,
+                function,
+                line,
+                column
+            ).value
         }
         nonmutating set {
             var state = app.value(keyPath: keyPath)
@@ -35,9 +46,17 @@ import SwiftUI
      - Parameter keyPath: The `KeyPath` for accessing `StoredState` in Application.
      */
     public init(
-        _ keyPath: KeyPath<Application, Application.StoredState<Value>>
+        _ keyPath: KeyPath<Application, Application.StoredState<Value>>,
+        _ fileID: StaticString = #fileID,
+        _ function: StaticString = #function,
+        _ line: Int = #line,
+        _ column: Int = #column
     ) {
         self.keyPath = keyPath
+        self.fileID = fileID
+        self.function = function
+        self.line = line
+        self.column = column
     }
 
     /// A property wrapper's synthetic storage property. This is just for SwiftUI to mutate the `wrappedValue` and send event through `objectWillChange` publisher when the `wrappedValue` changes
