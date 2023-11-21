@@ -85,7 +85,7 @@ public extension Application {
         let dependency = shared.value(keyPath: keyPath)
 
         log(
-            debug: "🟢 Starting Dependency Override \(String(describing: keyPath))",
+            debug: "🟢 Starting Dependency Override \(String(describing: keyPath)) with \(value)",
             fileID: fileID,
             function: function,
             line: line,
@@ -99,7 +99,7 @@ public extension Application {
 
         return DependencyOverride {
             log(
-                debug: "🟢 Cancelling Dependency Override \(String(describing: keyPath))",
+                debug: "🟢 Cancelling Dependency Override \(String(describing: keyPath)) ",
                 fileID: fileID,
                 function: function,
                 line: line,
@@ -146,15 +146,17 @@ public extension Application {
         _ line: Int = #line,
         _ column: Int = #column
     ) -> State<Value> {
+        let appState = shared.value(keyPath: keyPath)
+
         log(
-            debug: "🔵 Getting State \(String(describing: keyPath))",
+            debug: "🔵 Getting State \(String(describing: keyPath)) -> \(appState.value)",
             fileID: fileID,
             function: function,
             line: line,
             column: column
         )
 
-        return shared.value(keyPath: keyPath)
+        return appState
     }
 
     /**
@@ -170,15 +172,17 @@ public extension Application {
         _ line: Int = #line,
         _ column: Int = #column
     ) -> StoredState<Value> {
+        let storedState = shared.value(keyPath: keyPath)
+
         log(
-            debug: "🟣 Getting StoredState \(String(describing: keyPath))",
+            debug: "🟣 Getting StoredState \(String(describing: keyPath)) -> \(storedState.value)",
             fileID: fileID,
             function: function,
             line: line,
             column: column
         )
 
-        return shared.value(keyPath: keyPath)
+        return storedState
     }
 
     // MARK: - Instance Methods
