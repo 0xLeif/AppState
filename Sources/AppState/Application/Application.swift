@@ -34,15 +34,14 @@ public class Application: ObservableObject {
         line: Int,
         column: Int
     ) {
+        guard isLoggingEnabled else { return }
+
         let excludedFileIDs: [String] = [
             "AppState/Application+StoredState.swift"
         ]
         let isFileIDValue: Bool = excludedFileIDs.contains(fileID.description) == false
 
-        guard 
-            isLoggingEnabled,
-            isFileIDValue
-        else { return }
+        guard isFileIDValue else { return }
 
         let codeID = codeID(fileID: fileID, function: function, line: line, column: column)
 
