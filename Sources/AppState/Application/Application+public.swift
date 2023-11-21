@@ -302,4 +302,23 @@ public extension Application {
             scope: Scope(name: feature, id: id)
         )
     }
+
+    /**
+     Retrieves a `UserDefaults` backed state for the provided `id` with a default value of `nil`.
+
+     - Parameters:
+         - feature: The name of the feature to which the state belongs, default is "App".
+         - id: The specific identifier for this state.
+     - Returns: The state of type `Value`.
+     */
+    func storedState<Value>(
+        feature: String = "App",
+        id: String
+    ) -> StoredState<Value?> {
+        storedState(
+            initial: nil,
+            feature: feature,
+            id: id
+        )
+    }
 }
