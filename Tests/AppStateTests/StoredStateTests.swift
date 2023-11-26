@@ -4,7 +4,7 @@ import XCTest
 
 fileprivate extension Application {
     var storedValue: StoredState<Int?> {
-        storedState(initial: nil, id: "storedValue")
+        storedState(id: "storedValue")
     }
 }
 

@@ -85,7 +85,7 @@ public extension Application {
         let dependency = shared.value(keyPath: keyPath)
 
         log(
-            debug: "🟢 Starting Dependency Override \(String(describing: keyPath))",
+            debug: "🟢 Starting Dependency Override \(String(describing: keyPath)) with \(value)",
             fileID: fileID,
             function: function,
             line: line,
@@ -99,7 +99,7 @@ public extension Application {
 
         return DependencyOverride {
             log(
-                debug: "🟢 Cancelling Dependency Override \(String(describing: keyPath))",
+                debug: "🟢 Cancelling Dependency Override \(String(describing: keyPath)) ",
                 fileID: fileID,
                 function: function,
                 line: line,
@@ -146,15 +146,17 @@ public extension Application {
         _ line: Int = #line,
         _ column: Int = #column
     ) -> State<Value> {
+        let appState = shared.value(keyPath: keyPath)
+
         log(
-            debug: "🔵 Getting State \(String(describing: keyPath))",
+            debug: "🔵 Getting State \(String(describing: keyPath)) -> \(appState.value)",
             fileID: fileID,
             function: function,
             line: line,
             column: column
         )
 
-        return shared.value(keyPath: keyPath)
+        return appState
     }
 
     /**
@@ -170,15 +172,17 @@ public extension Application {
         _ line: Int = #line,
         _ column: Int = #column
     ) -> StoredState<Value> {
+        let storedState = shared.value(keyPath: keyPath)
+
         log(
-            debug: "🟣 Getting StoredState \(String(describing: keyPath))",
+            debug: "🟣 Getting StoredState \(String(describing: keyPath)) -> \(storedState.value)",
             fileID: fileID,
             function: function,
             line: line,
             column: column
         )
 
-        return shared.value(keyPath: keyPath)
+        return storedState
     }
 
     // MARK: - Instance Methods
@@ -296,6 +300,25 @@ public extension Application {
         StoredState(
             initial: initial(),
             scope: Scope(name: feature, id: id)
+        )
+    }
+
+    /**
+     Retrieves a `UserDefaults` backed state for the provided `id` with a default value of `nil`.
+
+     - Parameters:
+         - feature: The name of the feature to which the state belongs, default is "App".
+         - id: The specific identifier for this state.
+     - Returns: The state of type `Value`.
+     */
+    func storedState<Value>(
+        feature: String = "App",
+        id: String
+    ) -> StoredState<Value?> {
+        storedState(
+            initial: nil,
+            feature: feature,
+            id: id
         )
     }
 }
