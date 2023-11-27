@@ -3,7 +3,7 @@ import Combine
 import OSLog
 
 /// `Application` is a class that can be observed for changes, keeping track of the states within the application.
-public class Application: ObservableObject {
+public class Application: NSObject, ObservableObject {
     /// Singleton shared instance of `Application`
     static let shared: Application = Application()
 
@@ -60,10 +60,12 @@ public class Application: ObservableObject {
 
     deinit { bag.removeAll() }
 
-    private init() {
+    private override init() {
         lock = NSLock()
         bag = Set()
         cache = Cache()
+        
+        super.init()
 
         loadDefaultDependencies()
 
