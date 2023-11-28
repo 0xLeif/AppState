@@ -18,6 +18,43 @@ public extension Application {
     }
 
     /**
+     This static function promotes the shared singleton instance of the Application class to a custom Application type.
+
+     - Parameters:
+        - customApplication: An instance of a custom Application subclass to be promoted to.
+
+     - Returns: The type of the custom Application subclass.
+
+     This function is particularly useful when your Application subclass needs to conform to a delegate protocol such as `UIApplicationDelegate`. It allows you to extend the functionalities of the Application class and use your custom Application type throughout your application.
+
+     Example:
+     ```swift
+     class CustomApplication: Application, UIApplicationDelegate {
+        func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
+            // ... your custom setup code here ...
+            return true
+        }
+     }
+     ```
+
+     To use the `promote` function to promote the shared singleton to `CustomApplication`:
+
+     ```swift
+     Application.promote(to: CustomApplication())
+     ```
+
+     In this way, your custom Application subclass becomes the shared singleton instance, which you can then use throughout your application.
+     */
+    @discardableResult
+    static func promote<CustomApplication: Application>(
+        to customApplication: CustomApplication.Type
+    ) -> CustomApplication.Type {
+        shared = customApplication.shared
+
+        return CustomApplication.self
+    }
+
+    /**
      Use this function to make sure Dependencies are intialized. If a Dependency is not loaded, it will be initialized whenever it is used next.
 
      - Parameter dependency: KeyPath of the Dependency to be loaded
@@ -67,8 +104,8 @@ public extension Application {
     /**
      Overrides the specified `Dependency` with the given value. This is particularly useful for SwiftUI Previews and Unit Tests.
      - Parameters:
-         - keyPath: Key path of the dependency to be overridden.
-         - value: The new value to override the current dependency.
+     - keyPath: Key path of the dependency to be overridden.
+     - value: The new value to override the current dependency.
 
      - Returns: A `DependencyOverride` object. You should retain this token for as long as you want your override to be effective. Once the token is deallocated or the `cancel()` method is called on it, the original dependency is restored.
 
@@ -191,9 +228,9 @@ public extension Application {
      Retrieves a dependency for the provided `id`. If dependency is not present, it is created once using the provided closure.
 
      - Parameters:
-         - object: The closure returning the dependency.
-         - feature: The name of the feature to which the dependency belongs, default is "App".
-         - id: The specific identifier for this dependency.
+     - object: The closure returning the dependency.
+     - feature: The name of the feature to which the dependency belongs, default is "App".
+     - id: The specific identifier for this dependency.
      - Returns: The requested dependency of type `Dependency<Value>`.
      */
     func dependency<Value>(
@@ -243,9 +280,9 @@ public extension Application {
      Retrieves a state for the provided `id`. If the state is not present, it initializes a new state with the `initial` value.
 
      - Parameters:
-         - initial: The closure that returns initial state value.
-         - feature: The name of the feature to which the state belongs, default is "App".
-         - id: The specific identifier for this state.
+     - initial: The closure that returns initial state value.
+     - feature: The name of the feature to which the state belongs, default is "App".
+     - id: The specific identifier for this state.
      - Returns: The state of type `Value`.
      */
     func state<Value>(
@@ -287,9 +324,9 @@ public extension Application {
      Retrieves a `UserDefaults` backed state for the provided `id`. If the state is not present, it initializes a new state with the `initial` value.
 
      - Parameters:
-         - initial: The closure that returns initial state value.
-         - feature: The name of the feature to which the state belongs, default is "App".
-         - id: The specific identifier for this state.
+     - initial: The closure that returns initial state value.
+     - feature: The name of the feature to which the state belongs, default is "App".
+     - id: The specific identifier for this state.
      - Returns: The state of type `Value`.
      */
     func storedState<Value>(
@@ -307,8 +344,8 @@ public extension Application {
      Retrieves a `UserDefaults` backed state for the provided `id` with a default value of `nil`.
 
      - Parameters:
-         - feature: The name of the feature to which the state belongs, default is "App".
-         - id: The specific identifier for this state.
+     - feature: The name of the feature to which the state belongs, default is "App".
+     - id: The specific identifier for this state.
      - Returns: The state of type `Value`.
      */
     func storedState<Value>(
