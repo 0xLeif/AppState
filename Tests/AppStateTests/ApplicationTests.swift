@@ -2,7 +2,7 @@ import SwiftUI
 import XCTest
 @testable import AppState
 
-fileprivate class SomeApplication: Application, NSApplicationDelegate {
+fileprivate class SomeApplication: Application {
     static func someFunction() {
         // ...
     }
