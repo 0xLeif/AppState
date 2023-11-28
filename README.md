@@ -35,7 +35,7 @@ To add `AppState` to your Swift project, use the Swift Package Manager. This inv
 
 ```swift
 dependencies: [
-    .package(url: "https://github.com/0xLeif/AppState.git", from: "0.5.0")
+    .package(url: "https://github.com/0xLeif/AppState.git", from: "0.6.0")
 ]
 ```
 
@@ -238,7 +238,10 @@ Here's an example of how to use the `promote` function:
 
 ```swift
 class CustomApplication: Application, UIApplicationDelegate {
-    func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
+    func application(
+        _ application: UIApplication,
+        didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?
+    ) -> Bool {
         // ... your custom setup code here ...
         return true
     }
