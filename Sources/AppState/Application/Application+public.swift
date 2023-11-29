@@ -57,7 +57,7 @@ public extension Application {
 
         NotificationCenter.default.addObserver(
             shared,
-            selector: #selector(didChangeExternally),
+            selector: #selector(shared.didChangeExternally),
             name: NSUbiquitousKeyValueStore.didChangeExternallyNotification,
             object: NSUbiquitousKeyValueStore.default
         )
