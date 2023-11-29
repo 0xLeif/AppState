@@ -12,7 +12,7 @@ final class ApplicationTests: XCTestCase {
     func testCustomFunction() throws {
         let applicationType = Application.logging(isEnabled: true)
             .load(dependency: \.userDefaults)
-            .promote(to: SomeApplication.self)
+            .promote(to: SomeApplication())
 
         applicationType.someFunction()
     }

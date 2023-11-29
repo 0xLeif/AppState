@@ -49,18 +49,11 @@ public extension Application {
      */
     @discardableResult
     static func promote<CustomApplication: Application>(
-        to customApplication: CustomApplication.Type
+        to customApplication: CustomApplication
     ) -> CustomApplication.Type {
         NotificationCenter.default.removeObserver(shared)
 
-        shared = customApplication.shared
-
-        NotificationCenter.default.addObserver(
-            shared,
-            selector: #selector(shared.didChangeExternally),
-            name: NSUbiquitousKeyValueStore.didChangeExternallyNotification,
-            object: NSUbiquitousKeyValueStore.default
-        )
+        shared = customApplication
 
         return CustomApplication.self
     }
