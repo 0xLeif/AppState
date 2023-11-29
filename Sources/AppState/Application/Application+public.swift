@@ -1,3 +1,5 @@
+import Foundation
+
 public extension Application {
     // MARK: - Type Methods
 
@@ -50,6 +52,14 @@ public extension Application {
         to customApplication: CustomApplication.Type
     ) -> CustomApplication.Type {
         shared = customApplication.shared
+
+        NotificationCenter.default.removeObserver(shared)
+        NotificationCenter.default.addObserver(
+            shared,
+            selector: #selector(didChangeExternally),
+            name: NSUbiquitousKeyValueStore.didChangeExternallyNotification,
+            object: NSUbiquitousKeyValueStore.default
+        )
 
         return CustomApplication.self
     }

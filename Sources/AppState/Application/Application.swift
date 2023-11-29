@@ -95,7 +95,7 @@ open class Application: NSObject, ObservableObject {
         consume(object: cache)
 
         NotificationCenter.default.addObserver(
-            Application.shared,
+            self,
             selector: #selector(didChangeExternally),
             name: NSUbiquitousKeyValueStore.didChangeExternallyNotification,
             object: NSUbiquitousKeyValueStore.default
