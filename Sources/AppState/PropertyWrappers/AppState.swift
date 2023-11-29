@@ -27,7 +27,7 @@ import SwiftUI
         }
         nonmutating set {
             Application.log(
-                debug: "🔵 Setting State \(String(describing: keyPath)) = \(newValue)",
+                debug: "🔄 Setting State \(String(describing: keyPath)) = \(newValue)",
                 fileID: fileID,
                 function: function,
                 line: line,

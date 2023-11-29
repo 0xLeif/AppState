@@ -91,7 +91,7 @@ public extension Application {
         _ column: Int = #column
     ) -> Value {
         log(
-            debug: "🟢 Getting Dependency \(String(describing: keyPath))",
+            debug: "🔗 Getting Dependency \(String(describing: keyPath))",
             fileID: fileID,
             function: function,
             line: line,
@@ -122,7 +122,7 @@ public extension Application {
         let dependency = shared.value(keyPath: keyPath)
 
         log(
-            debug: "🟢 Starting Dependency Override \(String(describing: keyPath)) with \(value)",
+            debug: "🔗 Starting Dependency Override \(String(describing: keyPath)) with \(value)",
             fileID: fileID,
             function: function,
             line: line,
@@ -136,7 +136,7 @@ public extension Application {
 
         return DependencyOverride {
             log(
-                debug: "🟢 Cancelling Dependency Override \(String(describing: keyPath)) ",
+                debug: "🔗 Cancelling Dependency Override \(String(describing: keyPath)) ",
                 fileID: fileID,
                 function: function,
                 line: line,
@@ -159,7 +159,7 @@ public extension Application {
         _ column: Int = #column
     ) {
         log(
-            debug: "🟣 Removing StoredState \(String(describing: keyPath))",
+            debug: "💾 Removing StoredState \(String(describing: keyPath))",
             fileID: fileID,
             function: function,
             line: line,
@@ -168,6 +168,26 @@ public extension Application {
 
         var storedState = shared.value(keyPath: keyPath)
         storedState.remove()
+    }
+
+    /// Removes the value from `iCloud` and resets the value to the inital value.
+    static func remove<Value>(
+        syncState keyPath: KeyPath<Application, SyncState<Value>>,
+        _ fileID: StaticString = #fileID,
+        _ function: StaticString = #function,
+        _ line: Int = #line,
+        _ column: Int = #column
+    ) {
+        log(
+            debug: "☁️ Removing SyncState \(String(describing: keyPath))",
+            fileID: fileID,
+            function: function,
+            line: line,
+            column: column
+        )
+
+        var syncState = shared.value(keyPath: keyPath)
+        syncState.remove()
     }
 
     /**
@@ -186,7 +206,7 @@ public extension Application {
         let appState = shared.value(keyPath: keyPath)
 
         log(
-            debug: "🔵 Getting State \(String(describing: keyPath)) -> \(appState.value)",
+            debug: "🔄 Getting State \(String(describing: keyPath)) -> \(appState.value)",
             fileID: fileID,
             function: function,
             line: line,
@@ -212,7 +232,33 @@ public extension Application {
         let storedState = shared.value(keyPath: keyPath)
 
         log(
-            debug: "🟣 Getting StoredState \(String(describing: keyPath)) -> \(storedState.value)",
+            debug: "💾 Getting StoredState \(String(describing: keyPath)) -> \(storedState.value)",
+            fileID: fileID,
+            function: function,
+            line: line,
+            column: column
+        )
+
+        return storedState
+    }
+
+    /**
+     Retrieves a state backed by iCloud from Application instance using the provided keypath.
+
+     - Parameter keyPath: KeyPath of the state value to be fetched
+     - Returns: The requested state of type `Value`.
+     */
+    static func syncState<Value: Codable>(
+        _ keyPath: KeyPath<Application, SyncState<Value>>,
+        _ fileID: StaticString = #fileID,
+        _ function: StaticString = #function,
+        _ line: Int = #line,
+        _ column: Int = #column
+    ) -> SyncState<Value> {
+        let storedState = shared.value(keyPath: keyPath)
+
+        log(
+            debug: "☁️ Getting SyncState \(String(describing: keyPath)) -> \(storedState.value)",
             fileID: fileID,
             function: function,
             line: line,
@@ -353,6 +399,45 @@ public extension Application {
         id: String
     ) -> StoredState<Value?> {
         storedState(
+            initial: nil,
+            feature: feature,
+            id: id
+        )
+    }
+
+    /**
+     Retrieves an `iCloud` backed state for the provided `id`. If the state is not present, it initializes a new state with the `initial` value.
+
+     - Parameters:
+     - initial: The closure that returns initial state value.
+     - feature: The name of the feature to which the state belongs, default is "App".
+     - id: The specific identifier for this state.
+     - Returns: The state of type `Value`.
+     */
+    func syncState<Value: Codable>(
+        initial: @escaping @autoclosure () -> Value,
+        feature: String = "App",
+        id: String
+    ) -> SyncState<Value> {
+        SyncState(
+            initial: initial(),
+            scope: Scope(name: feature, id: id)
+        )
+    }
+
+    /**
+     Retrieves an `iCloud` backed state for the provided `id` with a default value of `nil`.
+
+     - Parameters:
+     - feature: The name of the feature to which the state belongs, default is "App".
+     - id: The specific identifier for this state.
+     - Returns: The state of type `Value`.
+     */
+    func syncState<Value: Codable>(
+        feature: String = "App",
+        id: String
+    ) -> SyncState<Value?> {
+        syncState(
             initial: nil,
             feature: feature,
             id: id

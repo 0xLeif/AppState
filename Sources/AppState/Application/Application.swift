@@ -48,6 +48,28 @@ open class Application: NSObject, ObservableObject {
         logger.debug("\(message) (\(codeID))")
     }
 
+    /// Internal log function.
+    static func log(
+        error: Error,
+        message: String,
+        fileID: StaticString,
+        function: StaticString,
+        line: Int,
+        column: Int
+    ) {
+        guard isLoggingEnabled else { return }
+
+        let codeID = codeID(fileID: fileID, function: function, line: line, column: column)
+
+        logger.error(
+            """
+            \(message) Error: {
+                ❌ \(error)
+            } (\(codeID))
+            """
+        )
+    }
+
     /// Logger specifically for AppState
     public static let logger: Logger = Logger(subsystem: "AppState", category: "Application")
     static var isLoggingEnabled: Bool = false
@@ -70,6 +92,28 @@ open class Application: NSObject, ObservableObject {
         loadDefaultDependencies()
 
         consume(object: cache)
+
+        NotificationCenter.default.addObserver(
+            self,
+            selector: #selector(didChangeExternally),
+            name: NSUbiquitousKeyValueStore.didChangeExternallyNotification,
+            object: nil
+        )
+    }
+
+    @objc
+    func didChangeExternally(notification: Notification) {
+        Application.log(
+            debug: """
+                    ☁️ SyncState was changed externally {
+                        \(dump(notification))
+                    }
+                    """,
+            fileID: #fileID,
+            function: #function,
+            line: #line,
+            column: #column
+        )
     }
 
     /// Returns value for the provided keyPath. This method is thread safe
