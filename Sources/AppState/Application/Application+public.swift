@@ -51,9 +51,10 @@ public extension Application {
     static func promote<CustomApplication: Application>(
         to customApplication: CustomApplication.Type
     ) -> CustomApplication.Type {
+        NotificationCenter.default.removeObserver(shared)
+
         shared = customApplication.shared
 
-        NotificationCenter.default.removeObserver(shared)
         NotificationCenter.default.addObserver(
             shared,
             selector: #selector(didChangeExternally),
