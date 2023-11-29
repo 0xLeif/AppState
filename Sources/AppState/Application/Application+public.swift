@@ -53,7 +53,13 @@ public extension Application {
     ) -> CustomApplication.Type {
         NotificationCenter.default.removeObserver(shared)
 
+        let cache = shared.cache
         shared = customApplication
+
+        for (key, value) in cache.allValues {
+            shared.cache.set(value: value, forKey: key)
+            cache.remove(key)
+        }
 
         return CustomApplication.self
     }
