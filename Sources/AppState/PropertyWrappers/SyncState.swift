@@ -2,7 +2,11 @@ import Foundation
 import Combine
 import SwiftUI
 
-/// `SyncState` is a property wrapper that allows SwiftUI views to subscribe to Application's state changes in a reactive way. The state is synchronized using `NSUbiquitousKeyValueStore`, and it works similarly to `State` and `Published`.
+/**
+`SyncState` is a property wrapper that allows SwiftUI views to subscribe to Application's state changes in a reactive way. The state is synchronized using `NSUbiquitousKeyValueStore`, and it works similarly to `State` and `Published`.
+
+ - Note: The key-value store is intended for storing data that changes infrequently. As you test your devices, if the app on a device makes frequent changes to the key-value store, the system may defer the synchronization of some changes in order to minimize the number of round trips to the server. The more frequently the app make changes, the more likely the changes will be deferred and will not immediately show up on the other devices.
+ */
 @propertyWrapper public struct SyncState<Value: Codable>: DynamicProperty {
     /// Holds the singleton instance of `Application`.
     @ObservedObject private var app: Application = Application.shared

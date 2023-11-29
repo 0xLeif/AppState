@@ -6,8 +6,12 @@ extension Application {
         dependency(NSUbiquitousKeyValueStore.default)
     }
 
-    /// The `SyncState` struct is a data structure designed to handle the state synchronization of an application that supports the `Codable` type.
-    /// It utilizes Apple's iCloud Key-Value Store to propagate state changes across multiple devices.
+    /**
+     The `SyncState` struct is a data structure designed to handle the state synchronization of an application that supports the `Codable` type.
+     It utilizes Apple's iCloud Key-Value Store to propagate state changes across multiple devices.
+
+     - Note: The key-value store is intended for storing data that changes infrequently. As you test your devices, if the app on a device makes frequent changes to the key-value store, the system may defer the synchronization of some changes in order to minimize the number of round trips to the server. The more frequently the app make changes, the more likely the changes will be deferred and will not immediately show up on the other devices.
+     */
     public struct SyncState<Value: Codable>: CustomStringConvertible {
         @AppDependency(\.icloudStore) private var icloudStore: NSUbiquitousKeyValueStore
 

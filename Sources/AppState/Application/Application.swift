@@ -97,7 +97,7 @@ open class Application: NSObject, ObservableObject {
             self,
             selector: #selector(didChangeExternally),
             name: NSUbiquitousKeyValueStore.didChangeExternallyNotification,
-            object: nil
+            object: NSUbiquitousKeyValueStore.default
         )
     }
 
