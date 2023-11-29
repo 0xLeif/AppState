@@ -45,6 +45,8 @@ final class StoredStateTests: XCTestCase {
 
         XCTAssertEqual(storedValue.count, 1)
 
+        Application.logger.debug("StoredStateTests \(Application.description)")
+
         storedValue.count = nil
 
         XCTAssertNil(Application.storedState(\.storedValue).value)
@@ -61,7 +63,7 @@ final class StoredStateTests: XCTestCase {
 
         XCTAssertEqual(viewModel.count, 27)
 
-        Application.remove(storedState: \.storedValue)
+        Application.reset(storedState: \.storedValue)
 
         XCTAssertNil(viewModel.count)
     }

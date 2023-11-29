@@ -37,7 +37,8 @@ open class Application: NSObject, ObservableObject {
         guard isLoggingEnabled else { return }
 
         let excludedFileIDs: [String] = [
-            "AppState/Application+StoredState.swift"
+            "AppState/Application+StoredState.swift",
+            "AppState/Application+SyncState.swift",
         ]
         let isFileIDValue: Bool = excludedFileIDs.contains(fileID.description) == false
 
@@ -46,6 +47,28 @@ open class Application: NSObject, ObservableObject {
         let codeID = codeID(fileID: fileID, function: function, line: line, column: column)
 
         logger.debug("\(message) (\(codeID))")
+    }
+
+    /// Internal log function.
+    static func log(
+        error: Error,
+        message: String,
+        fileID: StaticString,
+        function: StaticString,
+        line: Int,
+        column: Int
+    ) {
+        guard isLoggingEnabled else { return }
+
+        let codeID = codeID(fileID: fileID, function: function, line: line, column: column)
+
+        logger.error(
+            """
+            \(message) Error: {
+                ❌ \(error)
+            } (\(codeID))
+            """
+        )
     }
 
     /// Logger specifically for AppState
@@ -60,7 +83,7 @@ open class Application: NSObject, ObservableObject {
 
     deinit { bag.removeAll() }
 
-    public override init() {
+    public override required init() {
         lock = NSLock()
         bag = Set()
         cache = Cache()
@@ -70,6 +93,30 @@ open class Application: NSObject, ObservableObject {
         loadDefaultDependencies()
 
         consume(object: cache)
+
+        NotificationCenter.default.addObserver(
+            self,
+            selector: #selector(didChangeExternally),
+            name: NSUbiquitousKeyValueStore.didChangeExternallyNotification,
+            object: NSUbiquitousKeyValueStore.default
+        )
+    }
+
+    @objc
+    open func didChangeExternally(notification: Notification) {
+        Application.log(
+            debug: """
+                    ☁️ SyncState was changed externally {
+                        \(dump(notification))
+                    }
+                    """,
+            fileID: #fileID,
+            function: #function,
+            line: #line,
+            column: #column
+        )
+
+        Application.dependency(\.icloudStore).synchronize()
     }
 
     /// Returns value for the provided keyPath. This method is thread safe

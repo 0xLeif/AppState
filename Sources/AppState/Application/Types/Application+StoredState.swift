@@ -7,7 +7,7 @@ extension Application {
     }
 
     /// `StoredState` encapsulates the value within the application's scope and allows any changes to be propagated throughout the scoped area.  State is stored using `UserDefaults`.
-    public struct StoredState<Value>: CustomStringConvertible {
+    public struct StoredState<Value> {
         @AppDependency(\.userDefaults) private var userDefaults: UserDefaults
 
         /// The initial value of the state.
@@ -42,6 +42,7 @@ extension Application {
                 } else {
                     shared.cache.set(
                         value: Application.State(
+                            type: .stored,
                             initial: newValue,
                             scope: scope
                         ),
@@ -70,14 +71,15 @@ extension Application {
             self.scope = scope
         }
 
-        public var description: String {
-            "StoredState<\(Value.self)>(\(value)) (\(scope.key))"
+        /// Resets the value to the inital value. If the inital value was `nil`, then the value will be removed from `UserDefaults`
+        public mutating func reset() {
+            value = initial()
         }
 
-        /// Removes the value from `UserDefaults` and resets the value to the inital value.
+        /// Resets the value to the inital value. If the inital value was `nil`, then the value will be removed from `UserDefaults`
+        @available(*, deprecated, renamed: "reset")
         public mutating func remove() {
-            value = initial()
-            userDefaults.removeObject(forKey: scope.key)
+            reset()
         }
     }
 }
