@@ -104,11 +104,15 @@ extension Application {
             self.scope = scope
         }
 
-        /// Removes the value from `iCloud` and resets the value to the inital value.
-        public mutating func remove() {
+        /// Resets the value to the inital value. If the inital value was `nil`, then the value will be removed from `iCloud`
+        public mutating func reset() {
             value = initial()
-            icloudStore.removeObject(forKey: scope.key)
-            icloudStore.synchronize()
+        }
+
+        /// Resets the value to the inital value. If the inital value was `nil`, then the value will be removed from `iCloud`
+        @available(*, deprecated, renamed: "reset")
+        public mutating func remove() {
+            reset()
         }
     }
 }

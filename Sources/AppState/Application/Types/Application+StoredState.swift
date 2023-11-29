@@ -71,10 +71,15 @@ extension Application {
             self.scope = scope
         }
 
-        /// Removes the value from `UserDefaults` and resets the value to the inital value.
-        public mutating func remove() {
+        /// Resets the value to the inital value. If the inital value was `nil`, then the value will be removed from `UserDefaults`
+        public mutating func reset() {
             value = initial()
-            userDefaults.removeObject(forKey: scope.key)
+        }
+
+        /// Resets the value to the inital value. If the inital value was `nil`, then the value will be removed from `UserDefaults`
+        @available(*, deprecated, renamed: "reset")
+        public mutating func remove() {
+            reset()
         }
     }
 }

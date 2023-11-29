@@ -63,7 +63,7 @@ final class StoredStateTests: XCTestCase {
 
         XCTAssertEqual(viewModel.count, 27)
 
-        Application.remove(storedState: \.storedValue)
+        Application.reset(storedState: \.storedValue)
 
         XCTAssertNil(viewModel.count)
     }

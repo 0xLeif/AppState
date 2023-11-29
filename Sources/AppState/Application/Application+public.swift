@@ -160,8 +160,8 @@ public extension Application {
         }
     }
 
-    /// Removes the value from `UserDefaults` and resets the value to the inital value.
-    static func remove<Value>(
+    /// Resets the value to the inital value. If the inital value was `nil`, then the value will be removed from `UserDefaults`
+    static func reset<Value>(
         storedState keyPath: KeyPath<Application, StoredState<Value>>,
         _ fileID: StaticString = #fileID,
         _ function: StaticString = #function,
@@ -169,7 +169,7 @@ public extension Application {
         _ column: Int = #column
     ) {
         log(
-            debug: "💾 Removing StoredState \(String(describing: keyPath))",
+            debug: "💾 Resetting StoredState \(String(describing: keyPath))",
             fileID: fileID,
             function: function,
             line: line,
@@ -177,11 +177,29 @@ public extension Application {
         )
 
         var storedState = shared.value(keyPath: keyPath)
-        storedState.remove()
+        storedState.reset()
     }
 
-    /// Removes the value from `iCloud` and resets the value to the inital value.
+    /// Removes the value from `UserDefaults` and resets the value to the inital value.
+    @available(*, deprecated, renamed: "reset")
     static func remove<Value>(
+        storedState keyPath: KeyPath<Application, StoredState<Value>>,
+        _ fileID: StaticString = #fileID,
+        _ function: StaticString = #function,
+        _ line: Int = #line,
+        _ column: Int = #column
+    ) {
+        reset(
+            storedState: keyPath,
+            fileID,
+            function,
+            line,
+            column
+        )
+    }
+
+    /// Resets the value to the inital value. If the inital value was `nil`, then the value will be removed from `iClouds`
+    static func reset<Value>(
         syncState keyPath: KeyPath<Application, SyncState<Value>>,
         _ fileID: StaticString = #fileID,
         _ function: StaticString = #function,
@@ -189,7 +207,7 @@ public extension Application {
         _ column: Int = #column
     ) {
         log(
-            debug: "☁️ Removing SyncState \(String(describing: keyPath))",
+            debug: "☁️ Resetting SyncState \(String(describing: keyPath))",
             fileID: fileID,
             function: function,
             line: line,
@@ -197,7 +215,25 @@ public extension Application {
         )
 
         var syncState = shared.value(keyPath: keyPath)
-        syncState.remove()
+        syncState.reset()
+    }
+
+    /// Removes the value from `iCloud` and resets the value to the inital value.
+    @available(*, deprecated, renamed: "reset")
+    static func remove<Value>(
+        syncState keyPath: KeyPath<Application, SyncState<Value>>,
+        _ fileID: StaticString = #fileID,
+        _ function: StaticString = #function,
+        _ line: Int = #line,
+        _ column: Int = #column
+    ) {
+        reset(
+            syncState: keyPath,
+            fileID,
+            function,
+            line,
+            column
+        )
     }
 
     /**

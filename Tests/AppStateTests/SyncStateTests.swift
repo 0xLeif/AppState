@@ -83,7 +83,7 @@ final class SyncStateTests: XCTestCase {
 
         XCTAssertEqual(viewModel.count, 27)
 
-        Application.remove(syncState: \.syncValue)
+        Application.reset(syncState: \.syncValue)
 
         XCTAssertNil(viewModel.count)
     }
