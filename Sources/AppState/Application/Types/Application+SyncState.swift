@@ -12,7 +12,7 @@ extension Application {
 
      - Note: The key-value store is intended for storing data that changes infrequently. As you test your devices, if the app on a device makes frequent changes to the key-value store, the system may defer the synchronization of some changes in order to minimize the number of round trips to the server. The more frequently the app make changes, the more likely the changes will be deferred and will not immediately show up on the other devices.
      */
-    public struct SyncState<Value: Codable>: CustomStringConvertible {
+    public struct SyncState<Value: Codable> {
         @AppDependency(\.icloudStore) private var icloudStore: NSUbiquitousKeyValueStore
 
         /// The initial value of the state.
@@ -24,21 +24,21 @@ extension Application {
         /// When setting a new value, the value is saved to the iCloud Key-Value Store and the local cache.
         public var value: Value {
             get {
-                let cachedValue = shared.cache.get(
-                    scope.key,
-                    as: State<Value>.self
-                )
-
-                if let cachedValue = cachedValue {
-                    return cachedValue.value
-                }
+                if
+                    let data = icloudStore.data(forKey: scope.key),
+                    let storedValue = try? JSONDecoder().decode(Value.self, from: data)
+                { 
+                    return storedValue
+                } 
 
                 guard
-                    let data = icloudStore.data(forKey: scope.key),
-                    let value = try? JSONDecoder().decode(Value.self, from: data)
+                    let cachedValue = shared.cache.get(
+                        scope.key,
+                        as: State<Value>.self
+                    )
                 else { return initial() }
 
-                return value
+                return cachedValue.value
             }
             set {
                 let mirror = Mirror(reflecting: newValue)
@@ -51,6 +51,7 @@ extension Application {
                 } else {
                     shared.cache.set(
                         value: Application.State(
+                            type: .sync,
                             initial: newValue,
                             scope: scope
                         ),
@@ -91,10 +92,6 @@ extension Application {
         ) {
             self.initial = initial
             self.scope = scope
-        }
-
-        public var description: String {
-            "SyncState<\(Value.self)>(\(value)) (\(scope.key))"
         }
 
         /// Removes the value from `iCloud` and resets the value to the inital value.

@@ -341,10 +341,10 @@ public extension Application {
 
         guard let value = cache.get(key, as: Value.self) else {
             let value = initial()
-            return State(initial: value, scope: scope)
+            return State(type: .state, initial: value, scope: scope)
         }
 
-        return State(initial: value, scope: scope)
+        return State(type: .state, initial: value, scope: scope)
     }
 
     /// Overloaded version of `state(initial:feature:id:)` function where id is generated from the code context.

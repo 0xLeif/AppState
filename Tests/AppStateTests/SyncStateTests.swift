@@ -52,6 +52,8 @@ final class SyncStateTests: XCTestCase {
         syncValue.count = 1
 
         XCTAssertEqual(syncValue.count, 1)
+        
+        Application.logger.debug("SyncStateTests \(Application.description)")
 
         syncValue.count = nil
 
