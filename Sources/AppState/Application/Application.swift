@@ -103,7 +103,7 @@ open class Application: NSObject, ObservableObject {
     }
 
     @objc
-    func didChangeExternally(notification: Notification) {
+    open func didChangeExternally(notification: Notification) {
         Application.log(
             debug: """
                     ☁️ SyncState was changed externally {
