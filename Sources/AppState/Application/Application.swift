@@ -83,7 +83,7 @@ open class Application: NSObject, ObservableObject {
 
     deinit { bag.removeAll() }
 
-    public override init() {
+    public override required init() {
         lock = NSLock()
         bag = Set()
         cache = Cache()

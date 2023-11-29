@@ -23,7 +23,7 @@ public extension Application {
      This static function promotes the shared singleton instance of the Application class to a custom Application type.
 
      - Parameters:
-        - customApplication: An instance of a custom Application subclass to be promoted to.
+        - customApplication: A custom Application subclass to be promoted to.
 
      - Returns: The type of the custom Application subclass.
 
@@ -42,19 +42,19 @@ public extension Application {
      To use the `promote` function to promote the shared singleton to `CustomApplication`:
 
      ```swift
-     Application.promote(to: CustomApplication())
+     Application.promote(to: CustomApplication.self)
      ```
 
      In this way, your custom Application subclass becomes the shared singleton instance, which you can then use throughout your application.
      */
     @discardableResult
     static func promote<CustomApplication: Application>(
-        to customApplication: CustomApplication
+        to customApplication: CustomApplication.Type
     ) -> CustomApplication.Type {
         NotificationCenter.default.removeObserver(shared)
 
         let cache = shared.cache
-        shared = customApplication
+        shared = customApplication.init()
 
         for (key, value) in cache.allValues {
             shared.cache.set(value: value, forKey: key)
