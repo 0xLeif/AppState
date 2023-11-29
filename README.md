@@ -35,7 +35,7 @@ To add `AppState` to your Swift project, use the Swift Package Manager. This inv
 
 ```swift
 dependencies: [
-    .package(url: "https://github.com/0xLeif/AppState.git", from: "0.6.0")
+    .package(url: "https://github.com/0xLeif/AppState.git", from: "1.0.0")
 ]
 ```
 
@@ -261,7 +261,3 @@ AppState is released under the MIT License. See [LICENSE](https://github.com/0xL
 - If you found a bug, open an issue.
 - If you have a feature request, open an issue.
 - If you want to contribute, submit a pull request.
-
-***
-
-This README is a work in progress. If you found any inaccuracies or areas that require clarification, please don't hesitate to create a pull request with improvements!
