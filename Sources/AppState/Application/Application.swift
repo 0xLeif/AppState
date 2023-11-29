@@ -37,7 +37,8 @@ open class Application: NSObject, ObservableObject {
         guard isLoggingEnabled else { return }
 
         let excludedFileIDs: [String] = [
-            "AppState/Application+StoredState.swift"
+            "AppState/Application+StoredState.swift",
+            "AppState/Application+SyncState.swift",
         ]
         let isFileIDValue: Bool = excludedFileIDs.contains(fileID.description) == false
 
