@@ -1,5 +1,5 @@
 name: docc
-'on':
+on:
   release:
     types: [released]
 permissions:
