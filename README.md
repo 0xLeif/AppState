@@ -251,7 +251,7 @@ class CustomApplication: Application, UIApplicationDelegate {
     }
 }
 
-Application.promote(to: CustomApplication())
+Application.promote(to: CustomApplication.self)
 ```
 
 ## SyncState: Real-Time State Synchronization
