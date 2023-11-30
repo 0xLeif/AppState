@@ -1,7 +1,7 @@
 name: docc
-'on':
-  release:
-    types: [released]
+on:
+  push:
+    branches: ["**"]
 permissions:
   contents: read
   pages: write

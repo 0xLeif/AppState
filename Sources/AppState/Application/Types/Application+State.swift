@@ -59,9 +59,9 @@ extension Application {
 
         public var description: String {
             switch type {
-            case .state:    "State<\(Value.self)>(\(value)) (\(scope.key))"
-            case .stored:   "StoredState<\(Value.self)>(\(value)) (\(scope.key))"
-            case .sync:     "SyncState<\(Value.self)>(\(value)) (\(scope.key))"
+            case .state:    return "State<\(Value.self)>(\(value)) (\(scope.key))"
+            case .stored:   return "StoredState<\(Value.self)>(\(value)) (\(scope.key))"
+            case .sync:     return "SyncState<\(Value.self)>(\(value)) (\(scope.key))"
             }
         }
     }
