@@ -250,6 +250,14 @@ class CustomApplication: Application, UIApplicationDelegate {
 Application.promote(to: CustomApplication())
 ```
 
+## SyncState: Real-Time State Synchronization
+
+SyncState offers real-time synchronization of application state across multiple devices using Apple's [NSUbiquitousKeyValueStore](https://developer.apple.com/documentation/foundation/nsubiquitouskeyvaluestore). This allows for a consistent application state across various devices in your ecosystem. If your application operates on multiple platforms, SyncState ensures that all instances share the same state in real-time.
+
+NSUbiquitousKeyValueStore provides a lightweight, quick setup solution to store small amounts of data that are available ubiquitously across a user's multiple devices. The data is stored in iCloud and automatically syncs to all devices signed in to the same iCloud account, making it an ideal solution for synchronizing application state.
+
+For more information on synchronizing app preferences with iCloud, you can refer to [Apple's official documentation](https://developer.apple.com/documentation/foundation/icloud/synchronizing_app_preferences_with_icloud).
+
 By doing this, your custom Application subclass becomes the shared singleton instance that you can use throughout your application. This allows you to extend the functionalities of the Application class and utilize these extensions wherever you need in your application.
 
 ## License
