@@ -236,19 +236,13 @@ func testNetworkService() {
 
 ## Promoting the Application
 
-In AppState, you have the ability to promote your custom Application subclass to a shared singleton instance. This can be particularly useful when your Application subclass needs to conform to a delegate protocol such as `UIApplicationDelegate`.
+In AppState, you have the ability to promote your custom Application subclass to a shared singleton instance. This can be particularly useful when your Application subclass needs to conform to a protocol.
 
 Here's an example of how to use the `promote` function:
 
 ```swift
-class CustomApplication: Application, UIApplicationDelegate {
-    func application(
-        _ application: UIApplication,
-        didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?
-    ) -> Bool {
-        // ... your custom setup code here ...
-        return true
-    }
+class CustomApplication: Application {
+    func customFunction() { ... }
 }
 
 Application.promote(to: CustomApplication.self)
