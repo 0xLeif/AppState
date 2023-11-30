@@ -10,6 +10,8 @@ AppState is a Swift Package that simplifies the management of application state 
 
 - **StoredState:** Dedicated struct type for encapsulating and broadcasting stored value changes within the app's scope. Values are stored using `UserDefaults`.
 
+- **SyncState:** Dedicated struct type for encapsulating and broadcasting stored value changes within the app's scope. Values are stored using `iCloud`.
+
 - **Dependency:** Dedicated struct type for encapsulating dependencies within the app's scope.
 
 - **Scope:** Representation of a specific context within an app, defined by a unique name and ID.
@@ -17,6 +19,8 @@ AppState is a Swift Package that simplifies the management of application state 
 - **AppState (property wrapper):** A property wrapper that elegantly bridges `Application.State` with `SwiftUI` for seamless integration.
 
 - **StoredState (property wrapper):** A property wrapper that stores its values to `UserDefaults`. Works the same as `AppState` otherwise.
+
+- **SyncState (property wrapper):** A property wrapper that stores its values to `iCloud`. Works the same as `AppState` otherwise.
 
 - **AppDependency (property wrapper):** A property wrapper that simplifies the handling of dependencies throughout your application.
 
