@@ -248,9 +248,9 @@ class CustomApplication: Application {
 Application.promote(to: CustomApplication.self)
 ```
 
-## SyncState: Real-Time State Synchronization
+## SyncState: Near Real-Time State Synchronization
 
-SyncState offers real-time synchronization of application state across multiple devices using Apple's [NSUbiquitousKeyValueStore](https://developer.apple.com/documentation/foundation/nsubiquitouskeyvaluestore). This allows for a consistent application state across various devices in your ecosystem. If your application operates on multiple platforms, SyncState ensures that all instances share the same state in real-time.
+SyncState offers near real-time synchronization of application state across multiple devices using Apple's [NSUbiquitousKeyValueStore](https://developer.apple.com/documentation/foundation/nsubiquitouskeyvaluestore). This allows for a consistent application state across various devices in your ecosystem. If your application operates on multiple platforms, SyncState ensures that all instances share the same state in near real-time.
 
 NSUbiquitousKeyValueStore provides a lightweight, quick setup solution to store small amounts of data that are available ubiquitously across a user's multiple devices. The data is stored in iCloud and automatically syncs to all devices signed in to the same iCloud account, making it an ideal solution for synchronizing application state.
 
