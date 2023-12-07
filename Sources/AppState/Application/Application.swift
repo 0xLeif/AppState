@@ -93,15 +93,6 @@ open class Application: NSObject, ObservableObject {
         loadDefaultDependencies()
 
         consume(object: cache)
-
-        if #available(iOS 15.0, watchOS 9.0, macOS 11.0, tvOS 15.0, *) {
-            NotificationCenter.default.addObserver(
-                self,
-                selector: #selector(didChangeExternally),
-                name: NSUbiquitousKeyValueStore.didChangeExternallyNotification,
-                object: NSUbiquitousKeyValueStore.default
-            )
-        }
     }
 
     @objc @available(iOS 15.0, watchOS 9.0, macOS 11.0, tvOS 15.0, *)

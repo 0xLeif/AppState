@@ -4,7 +4,16 @@ import Foundation
 extension Application {
     /// The default `NSUbiquitousKeyValueStore` instance.
     public var icloudStore: Dependency<NSUbiquitousKeyValueStore> {
-        dependency(NSUbiquitousKeyValueStore.default)
+        dependency {
+            NotificationCenter.default.addObserver(
+                self,
+                selector: #selector(didChangeExternally),
+                name: NSUbiquitousKeyValueStore.didChangeExternallyNotification,
+                object: NSUbiquitousKeyValueStore.default
+            )
+
+            return NSUbiquitousKeyValueStore.default
+        }
     }
 
     /**
