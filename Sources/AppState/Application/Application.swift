@@ -94,15 +94,17 @@ open class Application: NSObject, ObservableObject {
 
         consume(object: cache)
 
-        NotificationCenter.default.addObserver(
-            self,
-            selector: #selector(didChangeExternally),
-            name: NSUbiquitousKeyValueStore.didChangeExternallyNotification,
-            object: NSUbiquitousKeyValueStore.default
-        )
+        if #available(iOS 15.0, watchOS 9.0, macOS 11.0, tvOS 15.0, *) {
+            NotificationCenter.default.addObserver(
+                self,
+                selector: #selector(didChangeExternally),
+                name: NSUbiquitousKeyValueStore.didChangeExternallyNotification,
+                object: NSUbiquitousKeyValueStore.default
+            )
+        }
     }
 
-    @objc
+    @objc @available(iOS 15.0, watchOS 9.0, macOS 11.0, tvOS 15.0, *)
     open func didChangeExternally(notification: Notification) {
         Application.log(
             debug: """

@@ -17,6 +17,7 @@ import SwiftUI
 
  - Warning: Avoid using this class for data that is essential to your app’s behavior when offline; instead, store such data directly into the local user defaults database.
  */
+@available(iOS 15.0, watchOS 9.0, macOS 11.0, tvOS 15.0, *)
 @propertyWrapper public struct SyncState<Value: Codable>: DynamicProperty {
     /// Holds the singleton instance of `Application`.
     @ObservedObject private var app: Application = Application.shared
