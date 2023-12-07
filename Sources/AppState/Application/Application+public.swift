@@ -27,15 +27,22 @@ public extension Application {
 
      - Returns: The type of the custom Application subclass.
 
-     This function is particularly useful when your Application subclass needs to conform to a delegate protocol such as `UIApplicationDelegate`. It allows you to extend the functionalities of the Application class and use your custom Application type throughout your application.
+     This function is particularly useful when your Application subclass needs to override the `didChangeExternally(notification:)` function. It allows you to extend the functionalities of the Application class and use your custom Application type throughout your application.
 
      Example:
      ```swift
-     class CustomApplication: Application, UIApplicationDelegate {
-        func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
-            // ... your custom setup code here ...
-            return true
-        }
+     class CustomApplication: Application {
+         override func didChangeExternally(notification: Notification) {
+             super.didChangeExternally(notification: notification)
+
+             // Update UI
+             // ...
+
+             // Example updating an ObservableObject that has SyncState inside of it.
+             DispatchQueue.main.async {
+                 Application.dependency(\.userSettings).objectWillChange.send()
+             }
+         }
      }
      ```
 
