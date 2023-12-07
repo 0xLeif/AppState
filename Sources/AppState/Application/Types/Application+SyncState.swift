@@ -1,5 +1,6 @@
 import Foundation
 
+@available(iOS 15.0, watchOS 9.0, macOS 11.0, tvOS 15.0, *)
 extension Application {
     /// The default `NSUbiquitousKeyValueStore` instance.
     public var icloudStore: Dependency<NSUbiquitousKeyValueStore> {

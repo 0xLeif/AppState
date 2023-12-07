@@ -1,8 +1,8 @@
 import Foundation
 
-public extension Application {
-    // MARK: - Type Methods
+// MARK: - Application Functions
 
+public extension Application {
     /// Provides a description of the current application state
     static var description: String {
         let state = shared.cache.allValues
@@ -71,6 +71,18 @@ public extension Application {
         return CustomApplication.self
     }
 
+    /// Enables or disabled the default logging inside of Application.
+    @discardableResult
+    static func logging(isEnabled: Bool) -> Application.Type {
+        Application.isLoggingEnabled = isEnabled
+
+        return Application.self
+    }
+}
+
+// MARK: Dependency Functions
+
+public extension Application {
     /**
      Use this function to make sure Dependencies are intialized. If a Dependency is not loaded, it will be initialized whenever it is used next.
 
@@ -82,14 +94,6 @@ public extension Application {
         dependency keyPath: KeyPath<Application, Dependency<Value>>
     ) -> Application.Type {
         shared.load(dependency: keyPath)
-
-        return Application.self
-    }
-
-    /// Enables or disabled the default logging inside of Application.
-    @discardableResult
-    static func logging(isEnabled: Bool) -> Application.Type {
-        Application.isLoggingEnabled = isEnabled
 
         return Application.self
     }
@@ -167,162 +171,6 @@ public extension Application {
         }
     }
 
-    /// Resets the value to the inital value. If the inital value was `nil`, then the value will be removed from `UserDefaults`
-    static func reset<Value>(
-        storedState keyPath: KeyPath<Application, StoredState<Value>>,
-        _ fileID: StaticString = #fileID,
-        _ function: StaticString = #function,
-        _ line: Int = #line,
-        _ column: Int = #column
-    ) {
-        log(
-            debug: "💾 Resetting StoredState \(String(describing: keyPath))",
-            fileID: fileID,
-            function: function,
-            line: line,
-            column: column
-        )
-
-        var storedState = shared.value(keyPath: keyPath)
-        storedState.reset()
-    }
-
-    /// Removes the value from `UserDefaults` and resets the value to the inital value.
-    @available(*, deprecated, renamed: "reset")
-    static func remove<Value>(
-        storedState keyPath: KeyPath<Application, StoredState<Value>>,
-        _ fileID: StaticString = #fileID,
-        _ function: StaticString = #function,
-        _ line: Int = #line,
-        _ column: Int = #column
-    ) {
-        reset(
-            storedState: keyPath,
-            fileID,
-            function,
-            line,
-            column
-        )
-    }
-
-    /// Resets the value to the inital value. If the inital value was `nil`, then the value will be removed from `iClouds`
-    static func reset<Value>(
-        syncState keyPath: KeyPath<Application, SyncState<Value>>,
-        _ fileID: StaticString = #fileID,
-        _ function: StaticString = #function,
-        _ line: Int = #line,
-        _ column: Int = #column
-    ) {
-        log(
-            debug: "☁️ Resetting SyncState \(String(describing: keyPath))",
-            fileID: fileID,
-            function: function,
-            line: line,
-            column: column
-        )
-
-        var syncState = shared.value(keyPath: keyPath)
-        syncState.reset()
-    }
-
-    /// Removes the value from `iCloud` and resets the value to the inital value.
-    @available(*, deprecated, renamed: "reset")
-    static func remove<Value>(
-        syncState keyPath: KeyPath<Application, SyncState<Value>>,
-        _ fileID: StaticString = #fileID,
-        _ function: StaticString = #function,
-        _ line: Int = #line,
-        _ column: Int = #column
-    ) {
-        reset(
-            syncState: keyPath,
-            fileID,
-            function,
-            line,
-            column
-        )
-    }
-
-    /**
-     Retrieves a state from Application instance using the provided keypath.
-
-     - Parameter keyPath: KeyPath of the state value to be fetched
-     - Returns: The requested state of type `Value`.
-     */
-    static func state<Value>(
-        _ keyPath: KeyPath<Application, State<Value>>,
-        _ fileID: StaticString = #fileID,
-        _ function: StaticString = #function,
-        _ line: Int = #line,
-        _ column: Int = #column
-    ) -> State<Value> {
-        let appState = shared.value(keyPath: keyPath)
-
-        log(
-            debug: "🔄 Getting State \(String(describing: keyPath)) -> \(appState.value)",
-            fileID: fileID,
-            function: function,
-            line: line,
-            column: column
-        )
-
-        return appState
-    }
-
-    /**
-     Retrieves a stored state from Application instance using the provided keypath.
-
-     - Parameter keyPath: KeyPath of the state value to be fetched
-     - Returns: The requested state of type `Value`.
-     */
-    static func storedState<Value>(
-        _ keyPath: KeyPath<Application, StoredState<Value>>,
-        _ fileID: StaticString = #fileID,
-        _ function: StaticString = #function,
-        _ line: Int = #line,
-        _ column: Int = #column
-    ) -> StoredState<Value> {
-        let storedState = shared.value(keyPath: keyPath)
-
-        log(
-            debug: "💾 Getting StoredState \(String(describing: keyPath)) -> \(storedState.value)",
-            fileID: fileID,
-            function: function,
-            line: line,
-            column: column
-        )
-
-        return storedState
-    }
-
-    /**
-     Retrieves a state backed by iCloud from Application instance using the provided keypath.
-
-     - Parameter keyPath: KeyPath of the state value to be fetched
-     - Returns: The requested state of type `Value`.
-     */
-    static func syncState<Value: Codable>(
-        _ keyPath: KeyPath<Application, SyncState<Value>>,
-        _ fileID: StaticString = #fileID,
-        _ function: StaticString = #function,
-        _ line: Int = #line,
-        _ column: Int = #column
-    ) -> SyncState<Value> {
-        let storedState = shared.value(keyPath: keyPath)
-
-        log(
-            debug: "☁️ Getting SyncState \(String(describing: keyPath)) -> \(storedState.value)",
-            fileID: fileID,
-            function: function,
-            line: line,
-            column: column
-        )
-
-        return storedState
-    }
-
-    // MARK: - Instance Methods
-
     /**
      Retrieves a dependency for the provided `id`. If dependency is not present, it is created once using the provided closure.
 
@@ -374,6 +222,36 @@ public extension Application {
             )
         )
     }
+}
+
+// MARK: State Functions
+
+public extension Application {
+    /**
+     Retrieves a state from Application instance using the provided keypath.
+
+     - Parameter keyPath: KeyPath of the state value to be fetched
+     - Returns: The requested state of type `Value`.
+     */
+    static func state<Value>(
+        _ keyPath: KeyPath<Application, State<Value>>,
+        _ fileID: StaticString = #fileID,
+        _ function: StaticString = #function,
+        _ line: Int = #line,
+        _ column: Int = #column
+    ) -> State<Value> {
+        let appState = shared.value(keyPath: keyPath)
+
+        log(
+            debug: "🔄 Getting State \(String(describing: keyPath)) -> \(appState.value)",
+            fileID: fileID,
+            function: function,
+            line: line,
+            column: column
+        )
+
+        return appState
+    }
 
     /**
      Retrieves a state for the provided `id`. If the state is not present, it initializes a new state with the `initial` value.
@@ -418,6 +296,74 @@ public extension Application {
             )
         )
     }
+}
+
+// MARK: StoredState Functions
+
+public extension Application {
+    /// Resets the value to the inital value. If the inital value was `nil`, then the value will be removed from `UserDefaults`
+    static func reset<Value>(
+        storedState keyPath: KeyPath<Application, StoredState<Value>>,
+        _ fileID: StaticString = #fileID,
+        _ function: StaticString = #function,
+        _ line: Int = #line,
+        _ column: Int = #column
+    ) {
+        log(
+            debug: "💾 Resetting StoredState \(String(describing: keyPath))",
+            fileID: fileID,
+            function: function,
+            line: line,
+            column: column
+        )
+
+        var storedState = shared.value(keyPath: keyPath)
+        storedState.reset()
+    }
+
+    /// Removes the value from `UserDefaults` and resets the value to the inital value.
+    @available(*, deprecated, renamed: "reset")
+    static func remove<Value>(
+        storedState keyPath: KeyPath<Application, StoredState<Value>>,
+        _ fileID: StaticString = #fileID,
+        _ function: StaticString = #function,
+        _ line: Int = #line,
+        _ column: Int = #column
+    ) {
+        reset(
+            storedState: keyPath,
+            fileID,
+            function,
+            line,
+            column
+        )
+    }
+
+    /**
+     Retrieves a stored state from Application instance using the provided keypath.
+
+     - Parameter keyPath: KeyPath of the state value to be fetched
+     - Returns: The requested state of type `Value`.
+     */
+    static func storedState<Value>(
+        _ keyPath: KeyPath<Application, StoredState<Value>>,
+        _ fileID: StaticString = #fileID,
+        _ function: StaticString = #function,
+        _ line: Int = #line,
+        _ column: Int = #column
+    ) -> StoredState<Value> {
+        let storedState = shared.value(keyPath: keyPath)
+
+        log(
+            debug: "💾 Getting StoredState \(String(describing: keyPath)) -> \(storedState.value)",
+            fileID: fileID,
+            function: function,
+            line: line,
+            column: column
+        )
+
+        return storedState
+    }
 
     /**
      Retrieves a `UserDefaults` backed state for the provided `id`. If the state is not present, it initializes a new state with the `initial` value.
@@ -456,6 +402,75 @@ public extension Application {
             feature: feature,
             id: id
         )
+    }
+}
+
+// MARK: SyncState Functions
+
+@available(iOS 15.0, watchOS 9.0, macOS 11.0, tvOS 15.0, *)
+public extension Application {
+    /// Resets the value to the inital value. If the inital value was `nil`, then the value will be removed from `iClouds`
+    static func reset<Value>(
+        syncState keyPath: KeyPath<Application, SyncState<Value>>,
+        _ fileID: StaticString = #fileID,
+        _ function: StaticString = #function,
+        _ line: Int = #line,
+        _ column: Int = #column
+    ) {
+        log(
+            debug: "☁️ Resetting SyncState \(String(describing: keyPath))",
+            fileID: fileID,
+            function: function,
+            line: line,
+            column: column
+        )
+
+        var syncState = shared.value(keyPath: keyPath)
+        syncState.reset()
+    }
+
+    /// Removes the value from `iCloud` and resets the value to the inital value.
+    @available(*, deprecated, renamed: "reset")
+    static func remove<Value>(
+        syncState keyPath: KeyPath<Application, SyncState<Value>>,
+        _ fileID: StaticString = #fileID,
+        _ function: StaticString = #function,
+        _ line: Int = #line,
+        _ column: Int = #column
+    ) {
+        reset(
+            syncState: keyPath,
+            fileID,
+            function,
+            line,
+            column
+        )
+    }
+
+    /**
+     Retrieves a state backed by iCloud from Application instance using the provided keypath.
+
+     - Parameter keyPath: KeyPath of the state value to be fetched
+     - Returns: The requested state of type `Value`.
+     */
+    static func syncState<Value: Codable>(
+        _ keyPath: KeyPath<Application, SyncState<Value>>,
+        _ fileID: StaticString = #fileID,
+        _ function: StaticString = #function,
+        _ line: Int = #line,
+        _ column: Int = #column
+    ) -> SyncState<Value> {
+        let storedState = shared.value(keyPath: keyPath)
+
+        log(
+            debug: "☁️ Getting SyncState \(String(describing: keyPath)) -> \(storedState.value)",
+            fileID: fileID,
+            function: function,
+            line: line,
+            column: column
+        )
+
+        return storedState
     }
 
     /**
