@@ -181,7 +181,7 @@ public extension Application {
      - Returns: The requested dependency of type `Dependency<Value>`.
      */
     func dependency<Value>(
-        _ object: @autoclosure () -> Value,
+        _ object: () -> Value,
         feature: String = "App",
         id: String
     ) -> Dependency<Value> {
@@ -201,6 +201,42 @@ public extension Application {
         }
 
         return dependency
+    }
+
+    /// Overloaded version of `dependency(_:feature:id:)` function where id is generated from the code context.
+    func dependency<Value>(
+        setup: () -> Value,
+        _ fileID: StaticString = #fileID,
+        _ function: StaticString = #function,
+        _ line: Int = #line,
+        _ column: Int = #column
+    ) -> Dependency<Value> {
+        dependency(
+            setup,
+            id: Application.codeID(
+                fileID: fileID,
+                function: function,
+                line: line,
+                column: column
+            )
+        )
+    }
+
+    /**
+     Retrieves a dependency for the provided `id`. If dependency is not present, it is created once using the provided closure.
+
+     - Parameters:
+     - object: The closure returning the dependency.
+     - feature: The name of the feature to which the dependency belongs, default is "App".
+     - id: The specific identifier for this dependency.
+     - Returns: The requested dependency of type `Dependency<Value>`.
+     */
+    func dependency<Value>(
+        _ object: @autoclosure () -> Value,
+        feature: String = "App",
+        id: String
+    ) -> Dependency<Value> {
+        dependency(object, feature: feature, id: id)
     }
 
 
