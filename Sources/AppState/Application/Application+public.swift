@@ -62,6 +62,7 @@ public extension Application {
 
         let cache = shared.cache
         shared = customApplication.init()
+        customApplication.shared = shared
 
         for (key, value) in cache.allValues {
             shared.cache.set(value: value, forKey: key)
