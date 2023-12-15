@@ -44,6 +44,11 @@ public extension Application {
              DispatchQueue.main.async {
                  Application.dependency(\.userSettings).objectWillChange.send()
              }
+
+             // Example updating all SyncState in SwiftUI Views.
+             DispatchQueue.main.async {
+                 self.objectWillChange.send()
+             }
          }
      }
      ```
