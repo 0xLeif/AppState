@@ -109,8 +109,6 @@ open class Application: NSObject, ObservableObject {
             line: #line,
             column: #column
         )
-
-        Application.dependency(\.icloudStore).synchronize()
     }
 
     /// Returns value for the provided keyPath. This method is thread safe
