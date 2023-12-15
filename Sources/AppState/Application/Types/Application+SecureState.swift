@@ -7,7 +7,7 @@ extension Application {
         dependency(Keychain())
     }
 
-    /// The SecureState structure provides secure and persistent key-value string storage that can be used across the application.
+    /// The SecureState structure provides secure and persistent key-value string storage backed by the Keychain that can be used across the application.
     public struct SecureState {
         @AppDependency(\.keychain) private var keychain: Keychain
 
