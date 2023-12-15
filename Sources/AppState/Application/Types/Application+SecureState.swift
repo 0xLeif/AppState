@@ -2,10 +2,12 @@ import Security
 import Foundation
 
 extension Application {
+    /// The default `Keychain` instance.
     public var keychain: Dependency<Keychain> {
         dependency(Keychain())
     }
 
+    /// The SecureState structure provides secure and persistent key-value string storage that can be used across the application.
     public struct SecureState {
         @AppDependency(\.keychain) private var keychain: Keychain
 
@@ -13,6 +15,8 @@ extension Application {
         private var initial: () -> String?
 
         /// The current state value.
+        /// Reading this value will return the stored string value in the keychain if it exists, otherwise, it will return the initial value.
+        /// Writing a new string value to the state, it will be stored securely in the keychain. Writing `nil` will remove the corresponding key-value pair from the keychain store.
         public var value: String? {
             get {
                 guard
@@ -48,6 +52,7 @@ extension Application {
             self.scope = scope
         }
 
+        /// Resets the state value to the initial value and store it in the keychain.
         public mutating func reset() {
             value = initial()
         }

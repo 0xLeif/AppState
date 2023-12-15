@@ -2,6 +2,12 @@ import Foundation
 import Combine
 import SwiftUI
 
+/**
+ A property wrapper struct that represents secure and persistent storage for a wrapped value.
+
+ The value is kept in the `Application`'s secure state and managed by SwiftUI's property wrapper mechanism.
+ As a `DynamicProperty`, SwiftUI will update the owning view whenever the value changes.
+ */
 @propertyWrapper public struct SecureState: DynamicProperty {
     /// Holds the singleton instance of `Application`.
     @ObservedObject private var app: Application = Application.shared
@@ -13,8 +19,13 @@ import SwiftUI
     private let function: StaticString
     private let line: Int
     private let column: Int
-
-    /// Represents the current value of the `SecureState`.
+    
+    /**
+     The current value of the secure state.
+     
+     Reading this property returns the current value.
+     Writing to the property will update the underlying value in the secure state and log the operation.
+     */
     public var wrappedValue: String? {
         get {
             Application.secureState(
