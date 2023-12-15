@@ -3,20 +3,22 @@ import Foundation
 // MARK: - Application Functions
 
 public extension Application {
-    /// Provides a description of the current application state
-    static var description: String {
-        let state = shared.cache.allValues
+    private static var cacheDescription: String {
+        shared.cache.allValues
             .map { key, value in
                 "\t- \(value)"
             }
             .sorted(by: <)
             .joined(separator: "\n")
+    }
 
-        return """
-               {
-               \(state)
-               }
-               """
+    /// Provides a description of the current application state
+    static var description: String {
+       """
+       {
+       \(cacheDescription)
+       }
+       """
     }
 
     /**
