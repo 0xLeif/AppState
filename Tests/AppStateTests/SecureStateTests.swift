@@ -8,11 +8,11 @@ fileprivate extension Application {
     }
 }
 
-fileprivate struct ExampleStoredValue {
+fileprivate struct ExampleSecureValue {
     @SecureState(\.secureValue) var token: String?
 }
 
-fileprivate class ExampleStoringViewModel: ObservableObject {
+fileprivate class ExampleSecureViewModel: ObservableObject {
     @SecureState(\.secureValue) var token: String?
 
     func testPropertyWrapper() {
@@ -23,17 +23,19 @@ fileprivate class ExampleStoringViewModel: ObservableObject {
 
 final class SecureStateTests: XCTestCase {
     override class func setUp() {
-        Application.logging(isEnabled: true)
+        Application
+            .logging(isEnabled: true)
+            .load(dependency: \.keychain)
     }
 
     override class func tearDown() {
-        Application.logger.debug("StoredStateTests \(Application.description)")
+        Application.logger.debug("SecureStateTests \(Application.description)")
     }
 
-    func testStoredState() {
+    func testSecureState() {
         XCTAssertNil(Application.secureState(\.secureValue).value)
 
-        let secureValue = ExampleStoredValue()
+        let secureValue = ExampleSecureValue()
 
         XCTAssertEqual(secureValue.token, nil)
         
@@ -45,7 +47,7 @@ final class SecureStateTests: XCTestCase {
 
         XCTAssertNotEqual(secureValue.token, "QWERTY")
 
-        Application.logger.debug("StoredStateTests \(Application.description)")
+        Application.logger.debug("SecureStateTests \(Application.description)")
 
         secureValue.token = nil
 
@@ -55,7 +57,7 @@ final class SecureStateTests: XCTestCase {
     func testStoringViewModel() {
         XCTAssertNil(Application.secureState(\.secureValue).value)
 
-        let viewModel = ExampleStoringViewModel()
+        let viewModel = ExampleSecureViewModel()
 
         XCTAssertEqual(viewModel.token, nil)
 

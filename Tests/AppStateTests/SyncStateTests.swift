@@ -43,7 +43,9 @@ fileprivate class ExampleStoringViewModel: ObservableObject {
 @available(iOS 15.0, watchOS 9.0, macOS 11.0, tvOS 15.0, *)
 final class SyncStateTests: XCTestCase {
     override class func setUp() {
-        Application.logging(isEnabled: true)
+        Application
+            .logging(isEnabled: true)
+            .load(dependency: \.icloudStore)
     }
 
     override class func tearDown() {
