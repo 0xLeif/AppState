@@ -549,3 +549,75 @@ public extension Application {
         )
     }
 }
+
+// MARK: SecureState Functions
+
+public extension Application {
+    static func reset(
+        secureState keyPath: KeyPath<Application, SecureState>,
+        _ fileID: StaticString = #fileID,
+        _ function: StaticString = #function,
+        _ line: Int = #line,
+        _ column: Int = #column
+    ) {
+        log(
+            debug: "🔑 Resetting SecureState \(String(describing: keyPath))",
+            fileID: fileID,
+            function: function,
+            line: line,
+            column: column
+        )
+
+        var secureState = shared.value(keyPath: keyPath)
+        secureState.reset()
+    }
+
+    static func secureState(
+        _ keyPath: KeyPath<Application, SecureState>,
+        _ fileID: StaticString = #fileID,
+        _ function: StaticString = #function,
+        _ line: Int = #line,
+        _ column: Int = #column
+    ) -> SecureState {
+        let secureState = shared.value(keyPath: keyPath)
+        let debugMessage: String
+
+        #if DEBUG
+        debugMessage = "🔑 Getting SecureState \(String(describing: keyPath)) -> \(String(describing: secureState.value))"
+        #else
+        debugMessage = "🔑 Getting SecureState \(String(describing: keyPath))"
+        #endif
+
+        log(
+            debug: debugMessage,
+            fileID: fileID,
+            function: function,
+            line: line,
+            column: column
+        )
+
+        return secureState
+    }
+
+    func secureState(
+        initial: @escaping @autoclosure () -> String?,
+        feature: String = "App",
+        id: String
+    ) -> SecureState {
+        SecureState(
+            initial: initial(),
+            scope: Scope(name: feature, id: id)
+        )
+    }
+
+    func secureState(
+        feature: String = "App",
+        id: String
+    ) -> SecureState {
+        secureState(
+            initial: nil,
+            feature: feature,
+            id: id
+        )
+    }
+}
