@@ -92,12 +92,24 @@ public class Keychain: Cacheable {
         let query: [NSString: Any] = [
             kSecClass: kSecClassGenericPassword,
             kSecAttrAccount: key,
+        ]
+        
+        let updateAttributes: [NSString: Any] = [
             kSecValueData: data
         ]
         
         lock.lock()
-        SecItemAdd(query as CFDictionary, nil)
+        
+        let updateStatus = SecItemUpdate(query as CFDictionary, updateAttributes as CFDictionary)
+        
+        if updateStatus == errSecItemNotFound {
+            var addQuery = query
+            addQuery[kSecValueData] = data
+            SecItemAdd(addQuery as CFDictionary, nil)
+        }
+        
         keys.insert(key)
+        
         lock.unlock()
     }
     

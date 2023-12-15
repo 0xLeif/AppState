@@ -36,10 +36,14 @@ final class SecureStateTests: XCTestCase {
         let secureValue = ExampleStoredValue()
 
         XCTAssertEqual(secureValue.token, nil)
-
+        
         secureValue.token = "QWERTY"
 
         XCTAssertEqual(secureValue.token, "QWERTY")
+        
+        secureValue.token = UUID().uuidString
+
+        XCTAssertNotEqual(secureValue.token, "QWERTY")
 
         Application.logger.debug("StoredStateTests \(Application.description)")
 
