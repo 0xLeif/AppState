@@ -40,7 +40,7 @@ import SwiftUI
             let debugMessage: String
 
             #if DEBUG
-            debugMessage = "🔑 Setting SecureState \(String(describing: keyPath)) = \(String(describing: newValue))"
+            debugMessage = "🔑 Setting SecureState \(String(describing: keyPath)) = \(newValue ?? "nil")"
             #else
             debugMessage = "🔑 Setting SecureState \(String(describing: keyPath))"
             #endif

@@ -583,7 +583,7 @@ public extension Application {
         let debugMessage: String
 
         #if DEBUG
-        debugMessage = "🔑 Getting SecureState \(String(describing: keyPath)) -> \(String(describing: secureState.value))"
+        debugMessage = "🔑 Getting SecureState \(String(describing: keyPath)) -> \(secureState.value ?? "nil")"
         #else
         debugMessage = "🔑 Getting SecureState \(String(describing: keyPath))"
         #endif
