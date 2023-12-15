@@ -15,9 +15,9 @@ import Foundation
  ```swift
  let keychain = Keychain()
  
- keychain.set(value: "password", forKey: "user_password")
- 
- let password = try keychain.resolve("user_password")
+ keychain.set(value: "<TOKEN>", forKey: "token")
+
+ let token = try keychain.resolve("token")
  ```
  */
 public class Keychain: Cacheable {
