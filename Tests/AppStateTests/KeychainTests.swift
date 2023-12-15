@@ -42,6 +42,8 @@ final class KeychainTests: XCTestCase {
         )
 
         XCTAssertNoThrow(try keychain.require("key"))
+
+        keychain.remove("key")
     }
 
     func testKeychainRequiresFailure() throws {
