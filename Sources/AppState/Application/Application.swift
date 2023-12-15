@@ -39,6 +39,7 @@ open class Application: NSObject, ObservableObject {
         let excludedFileIDs: [String] = [
             "AppState/Application+StoredState.swift",
             "AppState/Application+SyncState.swift",
+            "AppState/Application+SecureState.swift"
         ]
         let isFileIDValue: Bool = excludedFileIDs.contains(fileID.description) == false
 
