@@ -3,15 +3,6 @@ import Foundation
 // MARK: - Application Functions
 
 public extension Application {
-    private static var cacheDescription: String {
-        shared.cache.allValues
-            .map { key, value in
-                "\t- \(value)"
-            }
-            .sorted(by: <)
-            .joined(separator: "\n")
-    }
-
     /// Provides a description of the current application state
     static var description: String {
        """

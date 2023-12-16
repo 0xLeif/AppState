@@ -72,6 +72,15 @@ open class Application: NSObject, ObservableObject {
         )
     }
 
+    static var cacheDescription: String {
+        shared.cache.allValues
+            .map { key, value in
+                "\t- \(value)"
+            }
+            .sorted(by: <)
+            .joined(separator: "\n")
+    }
+
     /// Logger specifically for AppState
     public static let logger: Logger = Logger(subsystem: "AppState", category: "Application")
     static var isLoggingEnabled: Bool = false
