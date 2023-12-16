@@ -3,15 +3,6 @@ import Foundation
 // MARK: - Application Functions
 
 public extension Application {
-    private static var cacheDescription: String {
-        shared.cache.allValues
-            .map { key, value in
-                "\t- \(value)"
-            }
-            .sorted(by: <)
-            .joined(separator: "\n")
-    }
-
     /// Provides a description of the current application state
     static var description: String {
        """
@@ -311,15 +302,11 @@ public extension Application {
         feature: String = "App",
         id: String
     ) -> State<Value> {
-        let scope = Scope(name: feature, id: id)
-        let key = scope.key
-
-        guard let value = cache.get(key, as: Value.self) else {
-            let value = initial()
-            return State(type: .state, initial: value, scope: scope)
-        }
-
-        return State(type: .state, initial: value, scope: scope)
+        State(
+            type: .state,
+            initial: initial(),
+            scope: Scope(name: feature, id: id)
+        )
     }
 
     /// Overloaded version of `state(initial:feature:id:)` function where id is generated from the code context.
