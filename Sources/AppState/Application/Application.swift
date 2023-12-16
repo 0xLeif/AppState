@@ -39,6 +39,7 @@ open class Application: NSObject, ObservableObject {
         let excludedFileIDs: [String] = [
             "AppState/Application+StoredState.swift",
             "AppState/Application+SyncState.swift",
+            "AppState/Application+SecureState.swift"
         ]
         let isFileIDValue: Bool = excludedFileIDs.contains(fileID.description) == false
 
@@ -95,6 +96,21 @@ open class Application: NSObject, ObservableObject {
         consume(object: cache)
     }
 
+    /**
+     Called when the value of one or more keys in the local key-value store changed due to incoming data pushed from iCloud.
+
+     This notification is sent only upon a change received from iCloud; it is not sent when your app sets a value.
+
+     The user info dictionary can contain the reason for the notification as well as a list of which values changed, as follows:
+        - The value of the ``NSUbiquitousKeyValueStoreChangeReasonKey`` key, when present, indicates why the key-value store changed. Its value is one of the constants in Change Reason Values.
+        - The value of the ``NSUbiquitousKeyValueStoreChangedKeysKey``, when present, is an array of strings, each the name of a key whose value changed.
+
+     The notification object is the ``NSUbiquitousKeyValueStore`` object whose contents changed.
+
+     Changes you make to the key-value store are saved to memory. The system then synchronizes the in-memory keys and values with the local on-disk cache, automatically and at appropriate times. For example, it synchronizes the keys when your app is put into the background, when changes are received from iCloud, and when your app makes changes to a key but does not call the synchronize() method for several seconds.
+
+     - Note: Calling `Application.dependency(\.icloudStore).synchronize()` does not force new keys and values to be written to iCloud. Rather, it lets iCloud know that new keys and values are available to be uploaded. Do not rely on your keys and values being available on other devices immediately. The system controls when those keys and values are uploaded. The frequency of upload requests for key-value storage is limited to several per minute.
+     */
     @objc @available(iOS 15.0, watchOS 9.0, macOS 11.0, tvOS 15.0, *)
     open func didChangeExternally(notification: Notification) {
         Application.log(
@@ -108,8 +124,6 @@ open class Application: NSObject, ObservableObject {
             line: #line,
             column: #column
         )
-
-        Application.dependency(\.icloudStore).synchronize()
     }
 
     /// Returns value for the provided keyPath. This method is thread safe

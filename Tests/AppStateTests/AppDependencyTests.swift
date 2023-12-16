@@ -5,13 +5,13 @@ fileprivate protocol Networking {
     func fetch()
 }
 
-fileprivate struct NetworkService: Networking {
+fileprivate class NetworkService: Networking {
     func fetch() {
         fatalError()
     }
 }
 
-fileprivate struct MockNetworking: Networking {
+fileprivate class MockNetworking: Networking {
     func fetch() {
 
     }

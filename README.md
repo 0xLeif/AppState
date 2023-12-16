@@ -12,6 +12,8 @@ AppState is a Swift Package that simplifies the management of application state 
 
 - **SyncState:** Dedicated struct type for encapsulating and broadcasting stored value changes within the app's scope. Values are stored using `iCloud`. Requires iOS 15.0, watchOS 9.0, macOS 11.0, or tvOS 15.0.
 
+- **SecureState:** Dedicated struct type for securely encapsulating and broadcasting stored value changes within the app's scope. Values are securely stored using the device's Keychain. SecureState values are never stored in the cache and are always retrieved directly from the Keychain.
+
 - **Dependency:** Dedicated struct type for encapsulating dependencies within the app's scope.
 
 - **Scope:** Representation of a specific context within an app, defined by a unique name and ID.
@@ -21,6 +23,8 @@ AppState is a Swift Package that simplifies the management of application state 
 - **StoredState (property wrapper):** A property wrapper that stores its values to `UserDefaults`. Works the same as `AppState` otherwise.
 
 - **SyncState (property wrapper):** A property wrapper that stores its values to `iCloud`. Works the same as `AppState` otherwise. Requires iOS 15.0, watchOS 9.0, macOS 11.0, or tvOS 15.0.
+
+- **SecureState (property wrapper):** A property wrapper that securely stores its string values using the Keychain. Provides the same integration benefits as AppState.
 
 - **AppDependency (property wrapper):** A property wrapper that simplifies the handling of dependencies throughout your application.
 

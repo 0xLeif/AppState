@@ -3,20 +3,22 @@ import Foundation
 // MARK: - Application Functions
 
 public extension Application {
-    /// Provides a description of the current application state
-    static var description: String {
-        let state = shared.cache.allValues
+    private static var cacheDescription: String {
+        shared.cache.allValues
             .map { key, value in
                 "\t- \(value)"
             }
             .sorted(by: <)
             .joined(separator: "\n")
+    }
 
-        return """
-               {
-               \(state)
-               }
-               """
+    /// Provides a description of the current application state
+    static var description: String {
+       """
+       {
+       \(cacheDescription)
+       }
+       """
     }
 
     /**
@@ -41,6 +43,11 @@ public extension Application {
              // Example updating an ObservableObject that has SyncState inside of it.
              DispatchQueue.main.async {
                  Application.dependency(\.userSettings).objectWillChange.send()
+             }
+
+             // Example updating all SyncState in SwiftUI Views.
+             DispatchQueue.main.async {
+                 self.objectWillChange.send()
              }
          }
      }
@@ -126,8 +133,8 @@ public extension Application {
     /**
      Overrides the specified `Dependency` with the given value. This is particularly useful for SwiftUI Previews and Unit Tests.
      - Parameters:
-     - keyPath: Key path of the dependency to be overridden.
-     - value: The new value to override the current dependency.
+        - keyPath: Key path of the dependency to be overridden.
+        - value: The new value to override the current dependency.
 
      - Returns: A `DependencyOverride` object. You should retain this token for as long as you want your override to be effective. Once the token is deallocated or the `cancel()` method is called on it, the original dependency is restored.
 
@@ -176,9 +183,9 @@ public extension Application {
      Retrieves a dependency for the provided `id`. If dependency is not present, it is created once using the provided closure.
 
      - Parameters:
-     - object: The closure returning the dependency.
-     - feature: The name of the feature to which the dependency belongs, default is "App".
-     - id: The specific identifier for this dependency.
+        - object: The closure returning the dependency.
+        - feature: The name of the feature to which the dependency belongs, default is "App".
+        - id: The specific identifier for this dependency.
      - Returns: The requested dependency of type `Dependency<Value>`.
      */
     func dependency<Value>(
@@ -227,9 +234,9 @@ public extension Application {
      Retrieves a dependency for the provided `id`. If dependency is not present, it is created once using the provided closure.
 
      - Parameters:
-     - object: The closure returning the dependency.
-     - feature: The name of the feature to which the dependency belongs, default is "App".
-     - id: The specific identifier for this dependency.
+        - object: The closure returning the dependency.
+        - feature: The name of the feature to which the dependency belongs, default is "App".
+        - id: The specific identifier for this dependency.
      - Returns: The requested dependency of type `Dependency<Value>`.
      */
     func dependency<Value>(
@@ -294,9 +301,9 @@ public extension Application {
      Retrieves a state for the provided `id`. If the state is not present, it initializes a new state with the `initial` value.
 
      - Parameters:
-     - initial: The closure that returns initial state value.
-     - feature: The name of the feature to which the state belongs, default is "App".
-     - id: The specific identifier for this state.
+        - initial: The closure that returns initial state value.
+        - feature: The name of the feature to which the state belongs, default is "App".
+        - id: The specific identifier for this state.
      - Returns: The state of type `Value`.
      */
     func state<Value>(
@@ -406,9 +413,9 @@ public extension Application {
      Retrieves a `UserDefaults` backed state for the provided `id`. If the state is not present, it initializes a new state with the `initial` value.
 
      - Parameters:
-     - initial: The closure that returns initial state value.
-     - feature: The name of the feature to which the state belongs, default is "App".
-     - id: The specific identifier for this state.
+        - initial: The closure that returns initial state value.
+        - feature: The name of the feature to which the state belongs, default is "App".
+        - id: The specific identifier for this state.
      - Returns: The state of type `Value`.
      */
     func storedState<Value>(
@@ -426,8 +433,8 @@ public extension Application {
      Retrieves a `UserDefaults` backed state for the provided `id` with a default value of `nil`.
 
      - Parameters:
-     - feature: The name of the feature to which the state belongs, default is "App".
-     - id: The specific identifier for this state.
+        - feature: The name of the feature to which the state belongs, default is "App".
+        - id: The specific identifier for this state.
      - Returns: The state of type `Value`.
      */
     func storedState<Value>(
@@ -514,9 +521,9 @@ public extension Application {
      Retrieves an `iCloud` backed state for the provided `id`. If the state is not present, it initializes a new state with the `initial` value.
 
      - Parameters:
-     - initial: The closure that returns initial state value.
-     - feature: The name of the feature to which the state belongs, default is "App".
-     - id: The specific identifier for this state.
+        - initial: The closure that returns initial state value.
+        - feature: The name of the feature to which the state belongs, default is "App".
+        - id: The specific identifier for this state.
      - Returns: The state of type `Value`.
      */
     func syncState<Value: Codable>(
@@ -534,8 +541,8 @@ public extension Application {
      Retrieves an `iCloud` backed state for the provided `id` with a default value of `nil`.
 
      - Parameters:
-     - feature: The name of the feature to which the state belongs, default is "App".
-     - id: The specific identifier for this state.
+        - feature: The name of the feature to which the state belongs, default is "App".
+        - id: The specific identifier for this state.
      - Returns: The state of type `Value`.
      */
     func syncState<Value: Codable>(
@@ -543,6 +550,111 @@ public extension Application {
         id: String
     ) -> SyncState<Value?> {
         syncState(
+            initial: nil,
+            feature: feature,
+            id: id
+        )
+    }
+}
+
+// MARK: SecureState Functions
+
+public extension Application {
+    /**
+     Resets a specific SecureState of the application.
+
+     - Parameters:
+        - keyPath: A key path of the SecureState to be reset.
+     */
+    static func reset(
+        secureState keyPath: KeyPath<Application, SecureState>,
+        _ fileID: StaticString = #fileID,
+        _ function: StaticString = #function,
+        _ line: Int = #line,
+        _ column: Int = #column
+    ) {
+        log(
+            debug: "🔑 Resetting SecureState \(String(describing: keyPath))",
+            fileID: fileID,
+            function: function,
+            line: line,
+            column: column
+        )
+
+        var secureState = shared.value(keyPath: keyPath)
+        secureState.reset()
+    }
+
+    /**
+     Fetches a specific SecureState of the application.
+
+     - Parameters:
+        - keyPath: A key path of the SecureState to be fetched.
+
+     - Returns: The SecureState at provided keyPath.
+     */
+    static func secureState(
+        _ keyPath: KeyPath<Application, SecureState>,
+        _ fileID: StaticString = #fileID,
+        _ function: StaticString = #function,
+        _ line: Int = #line,
+        _ column: Int = #column
+    ) -> SecureState {
+        let secureState = shared.value(keyPath: keyPath)
+        let debugMessage: String
+
+        #if DEBUG
+        debugMessage = "🔑 Getting SecureState \(String(describing: keyPath)) -> \(secureState.value ?? "nil")"
+        #else
+        debugMessage = "🔑 Getting SecureState \(String(describing: keyPath))"
+        #endif
+
+        log(
+            debug: debugMessage,
+            fileID: fileID,
+            function: function,
+            line: line,
+            column: column
+        )
+
+        return secureState
+    }
+
+    /**
+     Creates a SecureState with an initial value.
+
+     - Parameters:
+        - initial: The initial value for the SecureState (delivered lazily and autoclosed).
+        - feature: The name of the feature for scoping. Default is "App".
+        - id: The unique identifier for the SecureState.
+
+     - Returns: Initialized SecureState.
+    */
+    func secureState(
+        initial: @escaping @autoclosure () -> String?,
+        feature: String = "App",
+        id: String
+    ) -> SecureState {
+        SecureState(
+            initial: initial(),
+            scope: Scope(name: feature, id: id)
+        )
+    }
+
+    /**
+     Creates a SecureState without an initial value.
+
+     - Parameters:
+        - feature: The name of the feature for scoping. Default is "App".
+        - id: The unique identifier for the SecureState.
+
+     - Returns: Initialized SecureState with nil as initial value.
+     */
+    func secureState(
+        feature: String = "App",
+        id: String
+    ) -> SecureState {
+        secureState(
             initial: nil,
             feature: feature,
             id: id
