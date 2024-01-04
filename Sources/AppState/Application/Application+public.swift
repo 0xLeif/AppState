@@ -673,7 +673,6 @@ extension Application {
         _ line: Int = #line,
         _ column: Int = #column
     ) -> Slice<SlicedState, Value, SliceValue, KeyPath<Value, SliceValue>> where SlicedState.Value == Value {
-
         let slice = Slice(
             stateKeyPath,
             value: valueKeyPath
@@ -719,7 +718,6 @@ extension Application {
         _ line: Int = #line,
         _ column: Int = #column
     ) -> Slice<SlicedState, Value, SliceValue, WritableKeyPath<Value, SliceValue>> where SlicedState.Value == Value {
-
         let slice = Slice(
             stateKeyPath,
             value: valueKeyPath

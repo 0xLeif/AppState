@@ -51,7 +51,23 @@ final class SliceTests: XCTestCase {
     override class func tearDown() {
         Application.logger.debug("AppStateTests \(Application.description)")
     }
-    
+
+    func testApplicationSliceFunction() {
+        var exampleSlice = Application.slice(\.exampleValue, \.username)
+
+        exampleSlice.value = "New Value!"
+
+        XCTAssertEqual(exampleSlice.value, "New Value!")
+        XCTAssertEqual(Application.slice(\.exampleValue, \.username).value, "New Value!")
+        XCTAssertEqual(Application.state(\.exampleValue).value.username, "New Value!")
+
+        exampleSlice.value = "Leif"
+
+        XCTAssertEqual(exampleSlice.value, "Leif")
+        XCTAssertEqual(Application.slice(\.exampleValue, \.username).value, "Leif")
+        XCTAssertEqual(Application.state(\.exampleValue).value.username, "Leif")
+    }
+
     func testPropertyWrappers() {
         let exampleView = ExampleView()
         
