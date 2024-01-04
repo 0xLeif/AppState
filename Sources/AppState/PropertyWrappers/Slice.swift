@@ -1,6 +1,7 @@
 import Combine
 import SwiftUI
 
+/// A property wrapper that provides access to a specific part of the AppState's state.
 @propertyWrapper public struct Slice<SlicedState: MutableCachedApplicationValue, Value, SliceValue>: DynamicProperty where SlicedState.Value == Value {
     /// Holds the singleton instance of `Application`.
     @ObservedObject private var app: Application = Application.shared
@@ -51,6 +52,13 @@ import SwiftUI
         )
     }
 
+    /**
+     Initializes a Slice with the provided parameters. This constructor is used to create a Slice that provides access and modification to a specific part of an AppState's state. It provides granular control over the AppState.
+
+     - Parameters:
+         - stateKeyPath: A KeyPath that points to the state in AppState that should be sliced.
+         - valueKeyPath: A WritableKeyPath that points to the specific part of the state that should be accessed.
+     */
     public init(
         _ stateKeyPath: KeyPath<Application, SlicedState>,
         _ valueKeyPath: WritableKeyPath<Value, SliceValue>,

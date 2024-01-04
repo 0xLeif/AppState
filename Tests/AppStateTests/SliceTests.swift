@@ -5,6 +5,7 @@ import XCTest
 struct ExampleValue {
     var username: String
     var isLoading: Bool
+    let value: String
 }
 
 fileprivate extension Application {
@@ -12,7 +13,8 @@ fileprivate extension Application {
         state(
             initial: ExampleValue(
                 username: "Leif",
-                isLoading: false
+                isLoading: false,
+                value: "value"
             )
         )
     }
@@ -20,7 +22,8 @@ fileprivate extension Application {
 
 fileprivate class ExampleViewModel: ObservableObject {
     @Slice(\.exampleValue, \.username) var username
-    
+    @Constant(\.exampleValue, \.value) var value
+
     func testPropertyWrapper() {
         username = "Hello, ExampleView"
     }
@@ -65,5 +68,7 @@ final class SliceTests: XCTestCase {
         viewModel.username = "Hello, ViewModel"
         
         XCTAssertEqual(viewModel.username, "Hello, ViewModel")
+
+        XCTAssertEqual(viewModel.value, "value")
     }
 }
