@@ -648,3 +648,41 @@ public extension Application {
         )
     }
 }
+
+// MARK: Slice Functions
+
+extension Application {
+    /// TODO: ...
+    public static func slice<SlicedState: MutableCachedApplicationValue, Value, SliceValue>(
+        _ stateKeyPath: KeyPath<Application, SlicedState>,
+        _ valueKeyPath: WritableKeyPath<Value, SliceValue>,
+        _ fileID: StaticString = #fileID,
+        _ function: StaticString = #function,
+        _ line: Int = #line,
+        _ column: Int = #column
+    ) -> Slice<SlicedState, Value, SliceValue> where SlicedState.Value == Value {
+
+        let slice = Slice(
+            stateKeyPath,
+            value: valueKeyPath
+        )
+
+        log(
+            debug: {
+                let stateKeyPathString = String(describing: stateKeyPath)
+                let valueTypeCharacterCount = String(describing: Value.self).count
+                var valueKeyPathString = String(describing: valueKeyPath)
+
+                valueKeyPathString.removeFirst(valueTypeCharacterCount + 1)
+
+                return "🍕 Getting Slice \(stateKeyPathString)\(valueKeyPathString) -> \(slice.value)"
+            },
+            fileID: fileID,
+            function: function,
+            line: line,
+            column: column
+        )
+
+        return slice
+    }
+}

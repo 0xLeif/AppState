@@ -1,6 +1,6 @@
 extension Application {
     /// `State` encapsulates the value within the application's scope and allows any changes to be propagated throughout the scoped area.
-    public struct State<Value>: CustomStringConvertible {
+    public struct State<Value>: MutableCachedApplicationValue, CustomStringConvertible {
         enum StateType {
             case state
             case stored
