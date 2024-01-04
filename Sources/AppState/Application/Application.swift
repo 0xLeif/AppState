@@ -34,20 +34,39 @@ open class Application: NSObject, ObservableObject {
         line: Int,
         column: Int
     ) {
+        log(
+            debug: { message },
+            fileID: fileID,
+            function: function,
+            line: line,
+            column: column
+        )
+    }
+
+    /// Internal log function.
+    static func log(
+        debug message: () -> String,
+        fileID: StaticString,
+        function: StaticString,
+        line: Int,
+        column: Int
+    ) {
         guard isLoggingEnabled else { return }
 
         let excludedFileIDs: [String] = [
             "AppState/Application+StoredState.swift",
             "AppState/Application+SyncState.swift",
-            "AppState/Application+SecureState.swift"
+            "AppState/Application+SecureState.swift",
+            "AppState/Application+Slice.swift"
         ]
         let isFileIDValue: Bool = excludedFileIDs.contains(fileID.description) == false
 
         guard isFileIDValue else { return }
 
+        let debugMessage = message()
         let codeID = codeID(fileID: fileID, function: function, line: line, column: column)
 
-        logger.debug("\(message) (\(codeID))")
+        logger.debug("\(debugMessage) (\(codeID))")
     }
 
     /// Internal log function.

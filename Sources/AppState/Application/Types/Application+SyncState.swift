@@ -32,7 +32,7 @@ extension Application {
 
      - Warning: Avoid using this class for data that is essential to your app’s behavior when offline; instead, store such data directly into the local user defaults database.
      */
-    public struct SyncState<Value: Codable> {
+    public struct SyncState<Value: Codable>: MutableApplicationState {
         @AppDependency(\.icloudStore) private var icloudStore: NSUbiquitousKeyValueStore
 
         /// The initial value of the state.
