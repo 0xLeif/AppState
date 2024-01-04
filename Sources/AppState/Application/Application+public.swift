@@ -665,7 +665,7 @@ extension Application {
 
      - Returns: A Slice that allows access to a specific part of an AppState's state.
      */
-    public static func slice<SlicedState: MutableCachedApplicationValue, Value, SliceValue>(
+    public static func slice<SlicedState: MutableApplicationState, Value, SliceValue>(
         _ stateKeyPath: KeyPath<Application, SlicedState>,
         _ valueKeyPath: KeyPath<Value, SliceValue>,
         _ fileID: StaticString = #fileID,
@@ -710,7 +710,7 @@ extension Application {
 
      - Returns: A Slice that allows access and modification to a specific part of an AppState's state.
      */
-    public static func slice<SlicedState: MutableCachedApplicationValue, Value, SliceValue>(
+    public static func slice<SlicedState: MutableApplicationState, Value, SliceValue>(
         _ stateKeyPath: KeyPath<Application, SlicedState>,
         _ valueKeyPath: WritableKeyPath<Value, SliceValue>,
         _ fileID: StaticString = #fileID,
