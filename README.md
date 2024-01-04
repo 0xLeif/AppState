@@ -28,6 +28,8 @@ AppState is a Swift Package that simplifies the management of application state 
 
 - **Slice (property wrapper):** A property wrapper that allows users to access and modify a specific part of an AppState's state. This provides a more fine-grained control over the AppState and makes it easier to manage complex states.
 
+- **Constant (property wrapper):** A property wrapper that allows users to access a specific part of an AppState's state. This provides a more fine-grained control over the AppState and makes it easier to manage complex states.
+
 - **SecureState (property wrapper):** A property wrapper that securely stores its string values using the Keychain. Provides the same integration benefits as AppState.
 
 - **AppDependency (property wrapper):** A property wrapper that simplifies the handling of dependencies throughout your application.
