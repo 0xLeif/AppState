@@ -12,9 +12,7 @@ fileprivate class NetworkService: Networking {
 }
 
 fileprivate class MockNetworking: Networking {
-    func fetch() {
-
-    }
+    func fetch() { /* no-op */ }
 }
 
 fileprivate class ComposableService {

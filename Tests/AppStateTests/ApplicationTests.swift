@@ -3,9 +3,7 @@ import XCTest
 @testable import AppState
 
 fileprivate class SomeApplication: Application {
-    static func someFunction() {
-        // ...
-    }
+    static func someFunction() { /* no-op */ }
 }
 
 final class ApplicationTests: XCTestCase {
