@@ -17,9 +17,21 @@ fileprivate class MockNetworking: Networking {
     }
 }
 
+fileprivate class ComposableService {
+    let networking: Networking
+
+    init(networking: Networking) {
+        self.networking = networking
+    }
+}
+
 fileprivate extension Application {
     var networking: Dependency<Networking> {
         dependency(NetworkService())
+    }
+
+    var composableService: Dependency<ComposableService> {
+        dependency(ComposableService(networking: Application.dependency(\.networking)))
     }
 }
 
@@ -38,6 +50,16 @@ final class AppDependencyTests: XCTestCase {
 
     override class func tearDown() {
         Application.logger.debug("AppDependencyTests \(Application.description)")
+    }
+
+    func testComposableDependencies() {
+        let networkingOverride = Application.override(\.networking, with: MockNetworking())
+
+        let composableService = Application.dependency(\.composableService)
+
+        composableService.networking.fetch()
+
+        networkingOverride.cancel()
     }
 
     func testDependency() {
