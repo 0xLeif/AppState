@@ -112,6 +112,7 @@ open class Application: NSObject, ObservableObject {
 
     deinit { bag.removeAll() }
 
+    /// Default init used as the default Application, but also any custom implementation of Application. You should never call this function, but instead should use `Application.promote(to: CustomApplication.self)`
     public override required init() {
         lock = NSRecursiveLock()
         bag = Set()
