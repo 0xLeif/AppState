@@ -104,7 +104,7 @@ open class Application: NSObject, ObservableObject {
     public static let logger: Logger = Logger(subsystem: "AppState", category: "Application")
     static var isLoggingEnabled: Bool = false
 
-    private let lock: NSLock
+    private let lock: NSRecursiveLock
     private var bag: Set<AnyCancellable>
 
     /// Cache to store values
@@ -113,7 +113,7 @@ open class Application: NSObject, ObservableObject {
     deinit { bag.removeAll() }
 
     public override required init() {
-        lock = NSLock()
+        lock = NSRecursiveLock()
         bag = Set()
         cache = Cache()
         
