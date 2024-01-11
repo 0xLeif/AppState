@@ -841,7 +841,7 @@ extension Application {
     }
 
     /**
-     This function creates a `OptionalSlice` of AppState that allows access and modification to a specific part of the AppState's state. It provides granular control over the AppState.
+     This function creates a `OptionalSliceOptionalValue` of AppState that allows access and modification to a specific part of the AppState's state. It provides granular control over the AppState.
 
      - Parameters:
          - stateKeyPath: A KeyPath pointing to the state in AppState that should be sliced.
