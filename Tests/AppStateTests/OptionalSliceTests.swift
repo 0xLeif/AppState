@@ -23,6 +23,7 @@ fileprivate extension Application {
 fileprivate class ExampleViewModel: ObservableObject {
     @OptionalSlice(\.exampleValue, \.username) var username
     @OptionalConstant(\.exampleValue, \.value) var value
+    @OptionalSlice(\.exampleValue, \.isLoading) var isLoading
 
     func testPropertyWrapper() {
         username = "Hello, ExampleView"
@@ -64,10 +65,14 @@ final class OptionalSliceTests: XCTestCase {
         XCTAssertEqual(exampleSlice.value, "Leif")
         XCTAssertEqual(Application.slice(\.exampleValue, \.username).value, "Leif")
         XCTAssertEqual(Application.state(\.exampleValue).value?.username, "Leif")
+
+        exampleSlice.value = nil
     }
 
     func testPropertyWrappers() {
         let exampleView = ExampleView()
+
+        exampleView.username = "Leif"
 
         XCTAssertEqual(exampleView.username, "Leif")
 
@@ -83,6 +88,23 @@ final class OptionalSliceTests: XCTestCase {
 
         XCTAssertEqual(viewModel.username, "Hello, ViewModel")
 
+        viewModel.username = nil
+
+        viewModel.isLoading = nil
+
+        XCTAssertNil(viewModel.username)
+        XCTAssertNotNil(viewModel.isLoading)
+
         XCTAssertEqual(viewModel.value, "value")
+    }
+
+    func testNil() {
+        let viewModel = ExampleViewModel()
+        viewModel.username = nil
+        XCTAssertNil(viewModel.username)
+        viewModel.username = "Leif"
+        XCTAssertNotNil(viewModel.username)
+        viewModel.username = nil
+        XCTAssertNil(viewModel.username)
     }
 }
