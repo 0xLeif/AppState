@@ -42,12 +42,13 @@ AppState is a Swift Package that simplifies the management of application state 
 
 ### Requirements
 
-- Swift 5.7 or later
+- Swift 5.9 or later
 
 - iOS 15.0 or later
 - watchOS 8.0 or later
 - macOS 11.0 or later
 - tvOS 15.0 or later
+- visionOS 1.0 or later
 
 ## Getting Started
 
