@@ -10,7 +10,10 @@ import SwiftUI
     private let stateKeyPath: KeyPath<Application, SlicedState>
 
     /// Path for accessing `SliceValue` from `Value`.
-    private let valueKeyPath: WritableKeyPath<Value, SliceValue>
+    private let valueKeyPath: WritableKeyPath<Value, SliceValue>?
+
+    /// Path for accessing `SliceValue?` from `Value`.
+    private let optionalValueKeyPath: WritableKeyPath<Value, SliceValue?>?
 
     private let fileID: StaticString
     private let function: StaticString
@@ -21,14 +24,32 @@ import SwiftUI
     /// Represents the current value of the `State`.
     public var wrappedValue: SliceValue? {
         get {
-            Application.slice(
-                stateKeyPath,
-                valueKeyPath,
-                fileID,
-                function,
-                line,
-                column
-            ).value
+            if let valueKeyPath {
+                return Application.slice(
+                    stateKeyPath,
+                    valueKeyPath,
+                    fileID,
+                    function,
+                    line,
+                    column
+                ).value
+            }
+
+            guard 
+                let optionalValueKeyPath,
+                let slicedValue = Application.slice(
+                    stateKeyPath,
+                    optionalValueKeyPath,
+                    fileID,
+                    function,
+                    line,
+                    column
+                ).value
+            else {
+                return nil
+            }
+
+            return slicedValue
         }
         nonmutating set {
             Application.log(
@@ -47,9 +68,18 @@ import SwiftUI
 
             var state = app.value(keyPath: stateKeyPath)
 
-            if let newValue {
-                state.value?[keyPath: valueKeyPath] = newValue
+            guard 
+                let valueKeyPath,
+                let newValue
+            else {
+                if let optionalValueKeyPath {
+                    state.value?[keyPath: optionalValueKeyPath] = newValue
+                }
+
+                return
             }
+
+            state.value?[keyPath: valueKeyPath] = newValue
         }
     }
 
@@ -78,6 +108,7 @@ import SwiftUI
     ) {
         self.stateKeyPath = stateKeyPath
         self.valueKeyPath = valueKeyPath
+        self.optionalValueKeyPath = nil
         self.fileID = fileID
         self.function = function
         self.line = line
@@ -86,6 +117,38 @@ import SwiftUI
         let stateKeyPathString = String(describing: stateKeyPath)
         let valueTypeCharacterCount = String(describing: Value.self).count
         var valueKeyPathString = String(describing: valueKeyPath)
+
+        valueKeyPathString.removeFirst(valueTypeCharacterCount + 1)
+
+        self.sliceKeyPath = "\(stateKeyPathString)\(valueKeyPathString)"
+    }
+
+    /**
+     Initializes a Slice with the provided parameters. This constructor is used to create a Slice that provides access and modification to a specific part of an AppState's state. It provides granular control over the AppState.
+
+     - Parameters:
+         - stateKeyPath: A KeyPath that points to the state in AppState that should be sliced.
+         - valueKeyPath: A WritableKeyPath that points to the specific part of the state that should be accessed. Must be Optional.
+     */
+    public init(
+        _ stateKeyPath: KeyPath<Application, SlicedState>,
+        _ optionalValueKeyPath: WritableKeyPath<Value, SliceValue?>,
+        _ fileID: StaticString = #fileID,
+        _ function: StaticString = #function,
+        _ line: Int = #line,
+        _ column: Int = #column
+    ) {
+        self.stateKeyPath = stateKeyPath
+        self.valueKeyPath = nil
+        self.optionalValueKeyPath = optionalValueKeyPath
+        self.fileID = fileID
+        self.function = function
+        self.line = line
+        self.column = column
+
+        let stateKeyPathString = String(describing: stateKeyPath)
+        let valueTypeCharacterCount = String(describing: Value.self).count
+        var valueKeyPathString = String(describing: valueKeyPath ?? optionalValueKeyPath)
 
         valueKeyPathString.removeFirst(valueTypeCharacterCount + 1)
 
