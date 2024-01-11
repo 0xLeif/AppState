@@ -3,7 +3,7 @@ import XCTest
 @testable import AppState
 
 fileprivate struct ExampleValue {
-    var username: String
+    var username: String?
     var isLoading: Bool
     let value: String
 }
