@@ -1,4 +1,4 @@
-// swift-tools-version: 5.7
+// swift-tools-version: 5.9
 
 import PackageDescription
 
@@ -8,7 +8,8 @@ let package = Package(
         .iOS(.v15),
         .watchOS(.v8),
         .macOS(.v11),
-        .tvOS(.v15)
+        .tvOS(.v15),
+        .visionOS(.v1)
     ],
     products: [
         .library(

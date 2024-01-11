@@ -140,7 +140,7 @@ open class Application: NSObject, ObservableObject {
 
      - Note: Calling `Application.dependency(\.icloudStore).synchronize()` does not force new keys and values to be written to iCloud. Rather, it lets iCloud know that new keys and values are available to be uploaded. Do not rely on your keys and values being available on other devices immediately. The system controls when those keys and values are uploaded. The frequency of upload requests for key-value storage is limited to several per minute.
      */
-    @objc @available(iOS 15.0, watchOS 9.0, macOS 11.0, tvOS 15.0, *)
+    @objc @available(iOS 15.0, watchOS 9.0, macOS 11.0, tvOS 15.0, visionOS 1.0, *)
     open func didChangeExternally(notification: Notification) {
         Application.log(
             debug: """
