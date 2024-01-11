@@ -1,7 +1,8 @@
 name: docc
-on:
-  release:
-    types: [released]
+'on':
+  push:
+    branches:
+      - main
 permissions:
   contents: read
   pages: write
@@ -14,7 +15,7 @@ jobs:
     environment:
       name: github-pages
       url: '${{ steps.deployment.outputs.page_url }}'
-    runs-on: macos-12
+    runs-on: macos-latest
     steps:
       - name: git checkout
         uses: actions/checkout@v3
