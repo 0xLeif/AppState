@@ -189,35 +189,3 @@ public extension Keychain {
         values(ofType: String.self)
     }
 }
-
-
-
-import SwiftUI
-
-struct User {
-    let id: String
-    var username: String
-}
-
-extension Application {
-    var user: State<User> {
-        state(
-            initial: User(
-                id: UUID().uuidString,
-                username: "John"
-            )
-        )
-    }
-}
-
-struct ContentView: View {
-    @Constant(\.user, \.id) var id
-    @Slice(\.user, \.username) var username
-
-    var body: some View {
-        TextField("Username", text: $username)
-            .onAppear {
-                print("onAppear \(id)")
-            }
-    }
-}
