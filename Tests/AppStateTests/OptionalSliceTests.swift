@@ -3,16 +3,16 @@ import XCTest
 @testable import AppState
 
 fileprivate struct ExampleValue {
-    var username: String
+    var username: String?
     var isLoading: Bool
     let value: String
 }
 
 fileprivate extension Application {
-    var exampleValue: State<ExampleValue> {
+    var exampleValue: State<ExampleValue?> {
         state(
             initial: ExampleValue(
-                username: "Leif",
+                username: nil,
                 isLoading: false,
                 value: "value"
             )
@@ -21,8 +21,8 @@ fileprivate extension Application {
 }
 
 fileprivate class ExampleViewModel: ObservableObject {
-    @Slice(\.exampleValue, \.username) var username
-    @Constant(\.exampleValue, \.value) var value
+    @OptionalSlice(\.exampleValue, \.username) var username
+    @OptionalConstant(\.exampleValue, \.value) var value
 
     func testPropertyWrapper() {
         username = "Hello, ExampleView"
@@ -30,24 +30,22 @@ fileprivate class ExampleViewModel: ObservableObject {
 }
 
 fileprivate struct ExampleView: View {
-    @Slice(\.exampleValue, \.username) var username
-    @Slice(\.exampleValue, \.isLoading) var isLoading
-    
+    @OptionalSlice(\.exampleValue, \.username) var username
+    @OptionalSlice(\.exampleValue, \.isLoading) var isLoading
+
     var body: some View { fatalError() }
-    
+
     func testPropertyWrappers() {
         username = "Hello, ExampleView"
-        _ = Toggle(isOn: $isLoading) {
-            Text("Is Loading")
-        }
+        _ = Picker("Picker", selection: $isLoading, content: EmptyView.init)
     }
 }
 
-final class SliceTests: XCTestCase {
+final class OptionalSliceTests: XCTestCase {
     override class func setUp() {
         Application.logging(isEnabled: true)
     }
-    
+
     override class func tearDown() {
         Application.logger.debug("AppStateTests \(Application.description)")
     }
@@ -59,30 +57,30 @@ final class SliceTests: XCTestCase {
 
         XCTAssertEqual(exampleSlice.value, "New Value!")
         XCTAssertEqual(Application.slice(\.exampleValue, \.username).value, "New Value!")
-        XCTAssertEqual(Application.state(\.exampleValue).value.username, "New Value!")
+        XCTAssertEqual(Application.state(\.exampleValue).value?.username, "New Value!")
 
         exampleSlice.value = "Leif"
 
         XCTAssertEqual(exampleSlice.value, "Leif")
         XCTAssertEqual(Application.slice(\.exampleValue, \.username).value, "Leif")
-        XCTAssertEqual(Application.state(\.exampleValue).value.username, "Leif")
+        XCTAssertEqual(Application.state(\.exampleValue).value?.username, "Leif")
     }
 
     func testPropertyWrappers() {
         let exampleView = ExampleView()
-        
+
         XCTAssertEqual(exampleView.username, "Leif")
-        
+
         exampleView.testPropertyWrappers()
-        
+
         XCTAssertEqual(exampleView.username, "Hello, ExampleView")
-        
+
         let viewModel = ExampleViewModel()
-        
+
         XCTAssertEqual(viewModel.username, "Hello, ExampleView")
-        
+
         viewModel.username = "Hello, ViewModel"
-        
+
         XCTAssertEqual(viewModel.username, "Hello, ViewModel")
 
         XCTAssertEqual(viewModel.value, "value")
