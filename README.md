@@ -52,7 +52,9 @@ AppState is a Swift Package that simplifies the management of application state 
 
 ## Getting Started
 
-To add `AppState` to your Swift project, use the Swift Package Manager. This involves adding a package dependency to your `Package.swift` file.
+To integrate AppState into your Swift project, you'll need to use the Swift Package Manager (SPM). SPM makes it easy to manage Swift package dependencies. Here's what you need to do:
+
+1. Add a package dependency to your `Package.swift` file:
 
 ```swift
 dependencies: [
@@ -60,7 +62,15 @@ dependencies: [
 ]
 ```
 
-For App projects, open your project in Xcode and navigate to File > Swift Packages > Add Package Dependency... and enter `https://github.com/0xLeif/AppState.git`.
+If you're working with an App project, open your project in Xcode. Navigate to `File > Swift Packages > Add Package Dependency...` and enter `https://github.com/0xLeif/AppState.git`.
+
+2. Next, don't forget to add AppState as a target to your project. This step is necessary for both Xcode and SPM Package.swift.
+
+After successfully adding AppState as a dependency, you need to import AppState into your Swift file where you want to use it. Here's a code example:
+
+```swift
+import AppState
+```
 
 ## Usage
 
