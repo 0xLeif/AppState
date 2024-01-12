@@ -62,8 +62,9 @@ dependencies: [
 ]
 ```
 
-1. If you're working with an App project, open your project in Xcode. Navigate to `File > Swift Packages > Add Package Dependency...` and enter `https://github.com/0xLeif/AppState.git`.
-2. Lastly, don't forget to add AppState as a target to your project. This step is necessary for both Xcode and SPM Package.swift.
+If you're working with an App project, open your project in Xcode. Navigate to `File > Swift Packages > Add Package Dependency...` and enter `https://github.com/0xLeif/AppState.git`.
+
+2. Next, don't forget to add AppState as a target to your project. This step is necessary for both Xcode and SPM Package.swift.
 
 After successfully adding AppState as a dependency, you need to import AppState into your Swift file where you want to use it. Here's a code example:
 
