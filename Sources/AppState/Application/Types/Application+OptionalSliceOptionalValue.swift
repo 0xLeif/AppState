@@ -1,5 +1,5 @@
 extension Application {
-    /// `OptionalSlice` allows access and modification to a specific part of an AppState's state. Supports `State`, `SyncState`, and `StorageState`.
+    /// `OptionalSliceOptionalValue` allows access and modification to a specific part of an AppState's state. Supports `State`, `SyncState`, and `StorageState`.
     public struct OptionalSliceOptionalValue<
         SlicedState: MutableApplicationState,
         Value,
