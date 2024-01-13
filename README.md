@@ -10,7 +10,7 @@ AppState is a Swift Package that simplifies the management of application state 
 
 - **StoredState:** Dedicated struct type for encapsulating and broadcasting stored value changes within the app's scope. Values are stored using `UserDefaults`.
 
-- **SyncState:** Dedicated struct type for encapsulating and broadcasting stored value changes within the app's scope. Values are stored using `iCloud`. Requires iOS 15.0, watchOS 9.0, macOS 11.0, or tvOS 15.0.
+- **SyncState:** Dedicated struct type for encapsulating and broadcasting stored value changes within the app's scope. Values are stored using `iCloud`. Requires iOS 15.0, watchOS 9.0, macOS 11.0, tvOS 15.0, or visionOS 1.0.
 
 - **Slice:** Dedicated struct has the ability to access and modify a specific part of an AppState's state, providing a more fine-grained control over the AppState.
 
@@ -26,7 +26,7 @@ AppState is a Swift Package that simplifies the management of application state 
 
 - **StoredState (property wrapper):** A property wrapper that stores its values to `UserDefaults`. Works the same as `AppState` otherwise.
 
-- **SyncState (property wrapper):** A property wrapper that stores its values to `iCloud`. Works the same as `AppState` otherwise. Requires iOS 15.0, watchOS 9.0, macOS 11.0, or tvOS 15.0.
+- **SyncState (property wrapper):** A property wrapper that stores its values to `iCloud`. Works the same as `AppState` otherwise. Requires iOS 15.0, watchOS 9.0, macOS 11.0, tvOS 15.0, or visionOS 1.0.
 
 - **Slice (property wrapper):** A property wrapper that allows users to access and modify a specific part of an AppState's state. This provides a more fine-grained control over the AppState and makes it easier to manage complex states.
 
