@@ -4,41 +4,35 @@ AppState is a Swift Package that simplifies the management of application state 
 
 ## Key Features
 
-- **Application:** Centralized class housing all application-wide data, equipped with built-in observability for reactive changes.
+### State Management
 
-- **State:** Dedicated struct type for encapsulating and broadcasting value changes within the app's scope.
+- **Application:** Centralized class for all application-wide data with built-in observability for reactive changes.
+- **State:** Struct for encapsulating and broadcasting value changes.
+- **StoredState:** Struct for encapsulating and broadcasting stored value changes, using `UserDefaults`.
+- **SyncState:** Struct for encapsulating and broadcasting stored value changes, using `iCloud`.
+- **SecureState:** Struct for securely encapsulating and broadcasting stored value changes, using the device's Keychain.
 
-- **StoredState:** Dedicated struct type for encapsulating and broadcasting stored value changes within the app's scope. Values are stored using `UserDefaults`.
+### Fine-Grained Control
 
-- **SyncState:** Dedicated struct type for encapsulating and broadcasting stored value changes within the app's scope. Values are stored using `iCloud`. Requires iOS 15.0, watchOS 9.0, macOS 11.0, tvOS 15.0, or visionOS 1.0.
+- **Slice:** Struct that provides access to and modification of specific AppState's state parts.
+- **OptionalSlice:** Struct that provides access to and modification of specific AppState's state parts. Useful if the state value is optional.
 
-- **Slice:** Dedicated struct has the ability to access and modify a specific part of an AppState's state, providing a more fine-grained control over the AppState.
+### Dependency Management
 
-- **OptionalSlice:** Dedicated struct has the ability to access and modify a specific part of an AppState's state, providing a more fine-grained control over the AppState. This is useful if the state value is optional.
+- **Dependency:** Struct for encapsulating dependencies within the app's scope.
+- **Scope:** Represents a specific context within an app, defined by a unique name and ID.
 
-- **SecureState:** Dedicated struct type for securely encapsulating and broadcasting stored value changes within the app's scope. Values are securely stored using the device's Keychain. SecureState values are never stored in the cache and are always retrieved directly from the Keychain.
+### Property Wrappers
 
-- **Dependency:** Dedicated struct type for encapsulating dependencies within the app's scope.
-
-- **Scope:** Representation of a specific context within an app, defined by a unique name and ID.
-
-- **AppState (property wrapper):** A property wrapper that elegantly bridges `Application.State` with `SwiftUI` for seamless integration.
-
-- **StoredState (property wrapper):** A property wrapper that stores its values to `UserDefaults`. Works the same as `AppState` otherwise.
-
-- **SyncState (property wrapper):** A property wrapper that stores its values to `iCloud`. Works the same as `AppState` otherwise. Requires iOS 15.0, watchOS 9.0, macOS 11.0, tvOS 15.0, or visionOS 1.0.
-
-- **Slice (property wrapper):** A property wrapper that allows users to access and modify a specific part of an AppState's state. This provides a more fine-grained control over the AppState and makes it easier to manage complex states.
-
-- **OptionalSlice:** A property wrapper that allows users to access and modify a specific part of an AppState's state. This provides a more fine-grained control over the AppState and makes it easier to manage complex states. This is useful if the state value is optional.
-
-- **Constant (property wrapper):** A property wrapper that allows users to access a specific part of an AppState's state. This provides a more fine-grained control over the AppState and makes it easier to manage complex states.
-
-- **OptionalConstant:** A property wrapper that allows users to access a specific part of an AppState's state. This provides a more fine-grained control over the AppState and makes it easier to manage complex states. This is useful if the state value is optional.
-
-- **SecureState (property wrapper):** A property wrapper that securely stores its string values using the Keychain. Provides the same integration benefits as AppState.
-
-- **AppDependency (property wrapper):** A property wrapper that simplifies the handling of dependencies throughout your application.
+- **AppState:** Bridges `Application.State` with `SwiftUI`.
+- **StoredState:** Stores its values to `UserDefaults`.
+- **SyncState:** Stores its values to `iCloud`.
+- **Slice:** Allows users to access and modify specific AppState's state parts.
+- **OptionalSlice:** Allows users to access and modify specific AppState's state parts. Useful if the state value is optional.
+- **Constant:** Allows users to access a specific part of AppState's state.
+- **OptionalConstant:** Allows users to access a specific part of AppState's state. Useful if the state value is optional.
+- **SecureState:** Securely stores its string values using the Keychain.
+- **AppDependency:** Simplifies the handling of dependencies throughout your application.
 
 ### Requirements
 
