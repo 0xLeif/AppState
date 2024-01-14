@@ -2,6 +2,8 @@
 
 AppState is a Swift Package that simplifies the management of application state in a thread-safe, type-safe, and SwiftUI-friendly way. Featuring dedicated struct types for managing state, AppState provides easy and coordinated access to this state across your application. Added to this, the package incorporates built-in logging mechanisms to aid debugging and error tracking. The AppState package also boasts a cache-based system to persistently store and retrieve any application-wide data at any given time.
 
+**Requirements:** iOS 15.0+ / watchOS 8.0+ / macOS 11.0+ / tvOS 15.0+ / visionOS 1.0+ | Swift 5.9+ / Xcode 15+
+
 ## Key Features
 
 ### State Management
@@ -34,16 +36,6 @@ AppState is a Swift Package that simplifies the management of application state 
 - **SecureState:** Securely stores its string values using the Keychain.
 - **AppDependency:** Simplifies the handling of dependencies throughout your application.
 
-### Requirements
-
-- Swift 5.9 or later
-
-- iOS 15.0 or later
-- watchOS 8.0 or later
-- macOS 11.0 or later
-- tvOS 15.0 or later
-- visionOS 1.0 or later
-
 ## Getting Started
 
 To integrate AppState into your Swift project, you'll need to use the Swift Package Manager (SPM). SPM makes it easy to manage Swift package dependencies. Here's what you need to do:
@@ -67,6 +59,120 @@ import AppState
 ```
 
 ## Usage
+
+<details close>
+  <summary>Dependency Injection</summary>
+
+```swift
+import AppState
+
+extension Application {
+    var networkService: Dependency<NetworkServiceType> {
+        dependency(NetworkService())
+    }
+}
+
+struct ContentView: View {
+    @AppDependency(\.networkService) var networkService
+
+    // Your view code
+}
+```
+
+</details>
+
+<details close>
+  <summary>Keychain Storage</summary>
+
+```swift
+import AppState
+
+extension Application {
+    var userToken: SecureState {
+        secureState(id: "userToken")
+    }
+}
+
+@SecureState(\.userToken) var userToken: String?
+```
+
+</details>
+
+<details close>
+  <summary>iCloud Synced State</summary>
+
+```swift
+import AppState
+
+extension Application {
+    var isDarkModeEnabled: SyncState<Bool> {
+        syceState(inital: false, id: "isDarkModeEnabled")
+    }
+}
+
+@SyncState(\.isDarkModeEnabled) var isDarkModeEnabled: Bool
+```
+
+</details>
+
+
+<details close>
+  <summary>Slicing</summary>
+
+```swift
+import AppState
+
+struct Preferences: Codable {
+    var isDarkModeEnabled: Bool
+}
+
+struct User {
+    let id: UUID
+    var username: String
+    var metadata: [String: Any]
+}
+
+extension Application {
+    // We can use iCloud to sync the preferences across the user's devices
+    var preferences: SyncState<Preferences> {
+        syncState(
+            initial: Preferences(
+                isDarkModeEnabled: false
+            ),
+            id: "preferences"
+        )
+    }
+
+    // We can have an optional user state to signify if the user is logged in or not.
+    var user: State<User?> {
+        state(initial: nil)
+    }
+
+    var dictionary: State<[String: String]> {
+        state(initial: [:])
+    }
+}
+
+class ViewModel: ObservableObject {
+    // State that isn't optional can use `Slice` and `Constant`. `Slice` values are mutable.
+    @Slice(\.preferences, \.isDarkModeEnabled) var isDarkModeEnabled: Bool
+
+    // If the state is optional though, you must use the `OptionalSlice` or `OptionalConstant`.
+    // These values might be optional because of the root state, or the value might be optional too.
+    // If the root state is `nil` you can't update the values.
+    @OptionalConstant(\.user, \.id) var id: UUID?
+    @OptionalSlice(\.user, \.username) var username: String?
+
+    // You can slice into a Dictionary for a specific entry.
+    @OptionalSlice(\.user, \.metadata["lastLogin"]) var lastLogin: Any?
+    @Slice(\.dictionary, \.["error"]) var error: String?
+}
+```
+
+</details>
+
+
+## Documentation
 
 AppState is designed to uphold application state management ease and intuitiveness. Here's how to use it:
 
