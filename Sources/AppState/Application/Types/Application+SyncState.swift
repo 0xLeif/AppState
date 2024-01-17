@@ -54,11 +54,11 @@ extension Application {
                 guard
                     let cachedValue = shared.cache.get(
                         scope.key,
-                        as: State<Value>.self
+                        as: Value.self
                     )
                 else { return initial() }
 
-                return cachedValue.value
+                return cachedValue
             }
             set {
                 let mirror = Mirror(reflecting: newValue)
@@ -70,11 +70,7 @@ extension Application {
                     icloudStore.synchronize()
                 } else {
                     shared.cache.set(
-                        value: Application.State(
-                            type: .sync,
-                            initial: newValue,
-                            scope: scope
-                        ),
+                        value: newValue,
                         forKey: scope.key
                     )
 
