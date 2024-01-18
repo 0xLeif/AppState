@@ -6,6 +6,7 @@ fileprivate struct ExampleValue {
     var username: String?
     var isLoading: Bool
     let value: String
+    var mutableValue: String
 }
 
 fileprivate extension Application {
@@ -14,7 +15,8 @@ fileprivate extension Application {
             initial: ExampleValue(
                 username: "Leif",
                 isLoading: false,
-                value: "value"
+                value: "value",
+                mutableValue: ""
             )
         )
     }
@@ -32,13 +34,14 @@ fileprivate class ExampleViewModel: ObservableObject {
 fileprivate struct ExampleView: View {
     @Slice(\.exampleValue, \.username) var username
     @Slice(\.exampleValue, \.isLoading) var isLoading
-    
+    @Constant(\.exampleValue, \.mutableValue) var constantMutableValue
+
     var body: some View { fatalError() }
     
     func testPropertyWrappers() {
         username = "Hello, ExampleView"
         _ = Toggle(isOn: $isLoading) {
-            Text("Is Loading")
+            Text(constantMutableValue)
         }
     }
 }
