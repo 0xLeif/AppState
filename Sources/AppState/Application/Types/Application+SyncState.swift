@@ -67,7 +67,6 @@ extension Application {
                    mirror.children.isEmpty {
                     shared.cache.remove(scope.key)
                     icloudStore.removeObject(forKey: scope.key)
-                    icloudStore.synchronize()
                 } else {
                     shared.cache.set(
                         value: Application.State(
@@ -81,7 +80,6 @@ extension Application {
                     do {
                         let data = try JSONEncoder().encode(newValue)
                         icloudStore.set(data, forKey: scope.key)
-                        icloudStore.synchronize()
                     } catch {
                         Application.log(
                             error: error,
