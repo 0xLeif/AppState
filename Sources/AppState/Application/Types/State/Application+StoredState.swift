@@ -18,11 +18,11 @@ extension Application {
             get {
                 let cachedValue = shared.cache.get(
                     scope.key,
-                    as: Value.self
+                    as: State<Value>.self
                 )
 
                 if let cachedValue = cachedValue {
-                    return cachedValue
+                    return cachedValue.value
                 }
 
                 guard
@@ -41,7 +41,11 @@ extension Application {
                     userDefaults.removeObject(forKey: scope.key)
                 } else {
                     shared.cache.set(
-                        value: newValue,
+                        value: Application.State(
+                            type: .stored,
+                            initial: newValue,
+                            scope: scope
+                        ),
                         forKey: scope.key
                     )
                     userDefaults.set(newValue, forKey: scope.key)

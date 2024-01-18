@@ -4,15 +4,15 @@ extension Application {
 
      For example, it could be used to scope a state to a particular screen or user interaction flow.
     */
-    struct Scope {
+    public struct Scope {
         /// The name of the scope context
-        let name: String
+        public let name: String
 
         /// The specific id for this scope context
-        let id: String
+        public let id: String
 
         /// Key computed property which builds a unique key for a given scope by combining `name` and `id` separated by "/"
-        var key: String {
+        public var key: String {
             "\(name)/\(id)"
         }
     }

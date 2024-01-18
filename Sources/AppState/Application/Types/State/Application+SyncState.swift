@@ -54,11 +54,11 @@ extension Application {
                 guard
                     let cachedValue = shared.cache.get(
                         scope.key,
-                        as: Value.self
+                        as: State<Value>.self
                     )
                 else { return initial() }
 
-                return cachedValue
+                return cachedValue.value
             }
             set {
                 let mirror = Mirror(reflecting: newValue)
@@ -67,17 +67,19 @@ extension Application {
                    mirror.children.isEmpty {
                     shared.cache.remove(scope.key)
                     icloudStore.removeObject(forKey: scope.key)
-                    icloudStore.synchronize()
                 } else {
                     shared.cache.set(
-                        value: newValue,
+                        value: Application.State(
+                            type: .sync,
+                            initial: newValue,
+                            scope: scope
+                        ),
                         forKey: scope.key
                     )
 
                     do {
                         let data = try JSONEncoder().encode(newValue)
                         icloudStore.set(data, forKey: scope.key)
-                        icloudStore.synchronize()
                     } catch {
                         Application.log(
                             error: error,
