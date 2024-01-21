@@ -302,7 +302,7 @@ Here's an example:
 
 ```swift
 class DataService: ObservableObject {
-    @AppState(\.someData) var data: [String]
+    @Published var data: [String]
 
     func fetchData() { ... }
 }
