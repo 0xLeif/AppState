@@ -341,7 +341,7 @@ Here's an example:
 // Real network service
 extension Application {
     var networkService: Dependency<NetworkServiceType> {
-        dependency(initial: NetworkService())
+        dependency(NetworkService())
     }
 }
 
