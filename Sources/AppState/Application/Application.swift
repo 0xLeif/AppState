@@ -1,8 +1,62 @@
 import Cache
 #if !os(Linux) && !os(Windows)
 import Combine
-#endif
 import OSLog
+#endif
+
+#if os(Linux) || os(Windows) || os(macOS)
+open class ApplicationLogger {
+    open func log(
+        debug message: String,
+        fileID: StaticString,
+        function: StaticString,
+        line: Int,
+        column: Int
+    ) {
+        log(
+            debug: { message },
+            fileID: fileID,
+            function: function,
+            line: line,
+            column: column
+        )
+    }
+
+    open func log(
+        debug message: () -> String,
+        fileID: StaticString,
+        function: StaticString,
+        line: Int,
+        column: Int
+    ) {
+        Application.log(
+            debug: message,
+            fileID: fileID,
+            function: function,
+            line: line,
+            column: column
+        )
+    }
+
+    open func log(
+        error: Error,
+        message: String,
+        fileID: StaticString,
+        function: StaticString,
+        line: Int,
+        column: Int
+    ) {
+        Application.log(
+            error: error,
+            message: message,
+            fileID: fileID,
+            function: function,
+            line: line,
+            column: column
+        )
+    }
+}
+#endif
 
 /// `Application` is a class that can be observed for changes, keeping track of the states within the application.
 open class Application: NSObject {
@@ -68,7 +122,12 @@ open class Application: NSObject {
         let debugMessage = message()
         let codeID = codeID(fileID: fileID, function: function, line: line, column: column)
 
+
+        #if !os(Linux) && !os(Windows)
         logger.debug("\(debugMessage) (\(codeID))")
+        #else
+        print("\(debugMessage) (\(codeID))")
+        #endif
     }
 
     /// Internal log function.
@@ -84,6 +143,7 @@ open class Application: NSObject {
 
         let codeID = codeID(fileID: fileID, function: function, line: line, column: column)
 
+        #if !os(Linux) && !os(Windows)
         logger.error(
             """
             \(message) Error: {
@@ -91,6 +151,15 @@ open class Application: NSObject {
             } (\(codeID))
             """
         )
+        #else
+        print(
+            """
+            \(message) Error: {
+                ❌ \(error)
+            } (\(codeID))
+            """
+        )
+        #endif
     }
 
     static var cacheDescription: String {
@@ -102,8 +171,13 @@ open class Application: NSObject {
             .joined(separator: "\n")
     }
 
+    #if !os(Linux) && !os(Windows)
     /// Logger specifically for AppState
     public static let logger: Logger = Logger(subsystem: "AppState", category: "Application")
+    #else
+    /// Logger specifically for AppState
+    public static let logger: ApplicationLogger = ApplicationLogger()
+    #endif
     static var isLoggingEnabled: Bool = false
 
     private let lock: NSRecursiveLock
