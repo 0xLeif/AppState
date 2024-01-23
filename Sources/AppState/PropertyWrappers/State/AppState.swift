@@ -33,8 +33,14 @@ import SwiftUI
             ).value
         }
         nonmutating set {
+            #if !os(Linux) && !os(Windows)
+            let debugEmoji = "🔄"
+            #else
+            let debugEmoji = "📦"
+            #endif
+
             Application.log(
-                debug: "🔄 Setting State \(String(describing: keyPath)) = \(newValue)",
+                debug: "\(debugEmoji) Setting State \(String(describing: keyPath)) = \(newValue)",
                 fileID: fileID,
                 function: function,
                 line: line,

@@ -276,9 +276,15 @@ public extension Application {
         _ column: Int = #column
     ) -> State<Value> {
         let appState = shared.value(keyPath: keyPath)
+        #if !os(Linux) && !os(Windows)
+        let debugEmoji = "🔄"
+        #else
+        let debugEmoji = "📦"
+        #endif
+
 
         log(
-            debug: "🔄 Getting State \(String(describing: keyPath)) -> \(appState.value)",
+            debug: "\(debugEmoji) Getting State \(String(describing: keyPath)) -> \(appState.value)",
             fileID: fileID,
             function: function,
             line: line,
