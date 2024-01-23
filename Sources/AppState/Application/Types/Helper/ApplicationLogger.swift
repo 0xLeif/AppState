@@ -2,26 +2,26 @@
 open class ApplicationLogger {
     open func debug(
         _ message: String,
-        fileID: StaticString,
-        function: StaticString,
-        line: Int,
-        column: Int
+        _ fileID: StaticString = #fileID,
+        _ function: StaticString = #function,
+        _ line: Int = #line,
+        _ column: Int = #column
     ) {
         debug(
             { message },
-            fileID: fileID,
-            function: function,
-            line: line,
-            column: column
+            fileID,
+            function,
+            line,
+            column
         )
     }
 
     open func debug(
         _ message: () -> String,
-        fileID: StaticString,
-        function: StaticString,
-        line: Int,
-        column: Int
+        _ fileID: StaticString = #fileID,
+        _ function: StaticString = #function,
+        _ line: Int = #line,
+        _ column: Int = #column
     ) {
         Application.log(
             debug: message,
@@ -35,10 +35,10 @@ open class ApplicationLogger {
     open func error(
         _ error: Error,
         message: String,
-        fileID: StaticString,
-        function: StaticString,
-        line: Int,
-        column: Int
+        _ fileID: StaticString = #fileID,
+        _ function: StaticString = #function,
+        _ line: Int = #line,
+        _ column: Int = #column
     ) {
         Application.log(
             error: error,
