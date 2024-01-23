@@ -8,13 +8,15 @@ AppState is a Swift Package that simplifies the management of application state 
 
 ## Key Features
 
+(🍎 Apple OS only)
+
 ### State Management
 
 - **Application:** Centralized class for all application-wide data with built-in observability for reactive changes.
 - **State:** Struct for encapsulating and broadcasting value changes.
 - **StoredState:** Struct for encapsulating and broadcasting stored value changes, using `UserDefaults`.
-- **SyncState:** Struct for encapsulating and broadcasting stored value changes, using `iCloud`.
-- **SecureState:** Struct for securely encapsulating and broadcasting stored value changes, using the device's Keychain.
+- 🍎 **SyncState:** Struct for encapsulating and broadcasting stored value changes, using `iCloud`.
+- 🍎 **SecureState:** Struct for securely encapsulating and broadcasting stored value changes, using the device's Keychain.
 
 ### Fine-Grained Control
 
@@ -30,12 +32,12 @@ AppState is a Swift Package that simplifies the management of application state 
 
 - **AppState:** Bridges `Application.State` with `SwiftUI`.
 - **StoredState:** Stores its values to `UserDefaults`.
-- **SyncState:** Stores its values to `iCloud`.
+- 🍎 **SyncState:** Stores its values to `iCloud`.
 - **Slice:** Allows users to access and modify specific AppState's state parts.
 - **OptionalSlice:** Allows users to access and modify specific AppState's state parts. Useful if the state value is optional.
 - **Constant:** Allows users to access a specific part of AppState's state.
 - **OptionalConstant:** Allows users to access a specific part of AppState's state. Useful if the state value is optional.
-- **SecureState:** Securely stores its string values using the Keychain.
+- 🍎 **SecureState:** Securely stores its string values using the Keychain.
 - **AppDependency:** Simplifies the handling of dependencies throughout your application.
 
 ## Getting Started
