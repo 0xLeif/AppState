@@ -1,7 +1,7 @@
 #if os(Linux) || os(Windows)
 open class ApplicationLogger {
     open func debug(_ message: String) {
-        debug({ debug })
+        debug { message }
     }
 
     open func debug(_ message: () -> String) {
