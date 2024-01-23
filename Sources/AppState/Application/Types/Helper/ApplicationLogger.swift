@@ -7,8 +7,8 @@ open class ApplicationLogger {
         line: Int,
         column: Int
     ) {
-        log(
-            debug: { message },
+        debug(
+            { message },
             fileID: fileID,
             function: function,
             line: line,
