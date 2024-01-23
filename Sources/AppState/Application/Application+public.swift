@@ -544,7 +544,6 @@ public extension Application {
         )
     }
 }
-#endif
 
 // MARK: SecureState Functions
 
@@ -650,6 +649,7 @@ public extension Application {
         )
     }
 }
+#endif
 
 // MARK: Slice Functions
 

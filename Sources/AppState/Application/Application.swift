@@ -2,6 +2,8 @@ import Cache
 #if !os(Linux) && !os(Windows)
 import Combine
 import OSLog
+#else
+import Foundation
 #endif
 
 /// `Application` is a class that can be observed for changes, keeping track of the states within the application.
