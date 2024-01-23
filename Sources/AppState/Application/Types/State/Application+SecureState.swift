@@ -1,3 +1,4 @@
+#if !os(Linux) && !os(Windows)
 import Security
 import Foundation
 
@@ -62,3 +63,4 @@ extension Application {
         }
     }
 }
+#endif

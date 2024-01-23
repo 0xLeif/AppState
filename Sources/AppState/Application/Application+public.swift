@@ -439,7 +439,7 @@ public extension Application {
 #if !os(Linux) && !os(Windows)
 // MARK: SyncState Functions
 
-@available(iOS 15.0, watchOS 9.0, macOS 11.0, tvOS 15.0, visionOS 1.0, *)
+@available(watchOS 9.0, *)
 public extension Application {
     /// Resets the value to the inital value. If the inital value was `nil`, then the value will be removed from `iClouds`
     static func reset<Value>(
