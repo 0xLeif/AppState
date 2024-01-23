@@ -1,7 +1,5 @@
-import Foundation
 #if !os(Linux) && !os(Windows)
 import SwiftUI
-#endif
 import XCTest
 @testable import AppState
 
@@ -20,9 +18,7 @@ fileprivate class ExampleSecureViewModel: ObservableObject {
 
     func testPropertyWrapper() {
         token = "QWERTY"
-        #if !os(Linux) && !os(Windows)
         _ = Picker("Picker", selection: $token, content: EmptyView.init)
-        #endif
     }
 }
 
@@ -75,3 +71,4 @@ final class SecureStateTests: XCTestCase {
         XCTAssertNil(viewModel.token)
     }
 }
+#endif

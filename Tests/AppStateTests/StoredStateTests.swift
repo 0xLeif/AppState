@@ -15,7 +15,7 @@ fileprivate struct ExampleStoredValue {
     @StoredState(\.storedValue) var count
 }
 
-fileprivate class ExampleStoringViewModel: ObservableObject {
+fileprivate class ExampleStoringViewModel {
     @StoredState(\.storedValue) var count
 
     func testPropertyWrapper() {
@@ -29,6 +29,10 @@ fileprivate class ExampleStoringViewModel: ObservableObject {
         #endif
     }
 }
+
+#if !os(Linux) && !os(Windows)
+extension ExampleStoringViewModel: ObservableObject { }
+#endif
 
 final class StoredStateTests: XCTestCase {
     override class func setUp() {

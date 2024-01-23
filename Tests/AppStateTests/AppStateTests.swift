@@ -19,13 +19,17 @@ fileprivate extension Application {
     }
 }
 
-fileprivate class ExampleViewModel: ObservableObject {
+fileprivate class ExampleViewModel {
     @AppState(\.username) var username
 
     func testPropertyWrapper() {
         username = "Hello, ExampleView"
     }
 }
+
+#if !os(Linux) && !os(Windows)
+extension ExampleViewModel: ObservableObject { }
+#endif
 
 fileprivate struct ExampleView {
     @AppState(\.username) var username

@@ -1,7 +1,7 @@
 #if os(Linux) || os(Windows)
 open class ApplicationLogger {
-    open func log(
-        debug message: String,
+    open func debug(
+        _ message: String,
         fileID: StaticString,
         function: StaticString,
         line: Int,
@@ -16,8 +16,8 @@ open class ApplicationLogger {
         )
     }
 
-    open func log(
-        debug message: () -> String,
+    open func debug(
+        _ message: () -> String,
         fileID: StaticString,
         function: StaticString,
         line: Int,
@@ -32,8 +32,8 @@ open class ApplicationLogger {
         )
     }
 
-    open func log(
-        error: Error,
+    open func error(
+        _ error: Error,
         message: String,
         fileID: StaticString,
         function: StaticString,

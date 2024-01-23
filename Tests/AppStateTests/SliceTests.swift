@@ -25,7 +25,7 @@ fileprivate extension Application {
     }
 }
 
-fileprivate class ExampleViewModel: ObservableObject {
+fileprivate class ExampleViewModel {
     @Slice(\.exampleValue, \.username) var username
     @Constant(\.exampleValue, \.value) var value
 
@@ -33,6 +33,10 @@ fileprivate class ExampleViewModel: ObservableObject {
         username = "Hello, ExampleView"
     }
 }
+
+#if !os(Linux) && !os(Windows)
+extension ExampleViewModel: ObservableObject { }
+#endif
 
 fileprivate struct ExampleView {
     @Slice(\.exampleValue, \.username) var username
