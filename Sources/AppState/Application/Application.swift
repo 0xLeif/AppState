@@ -1,9 +1,11 @@
 import Cache
+#if !os(Linux) && !os(Windows)
 import Combine
+#endif
 import OSLog
 
 /// `Application` is a class that can be observed for changes, keeping track of the states within the application.
-open class Application: NSObject, ObservableObject {
+open class Application: NSObject {
     /// Singleton shared instance of `Application`
     static var shared: Application = Application()
 
@@ -105,17 +107,21 @@ open class Application: NSObject, ObservableObject {
     static var isLoggingEnabled: Bool = false
 
     private let lock: NSRecursiveLock
-    private var bag: Set<AnyCancellable>
+
+    #if !os(Linux) && !os(Windows)
+    private var bag: Set<AnyCancellable> = Set()
+    #endif
 
     /// Cache to store values
     let cache: Cache<String, Any>
 
+    #if !os(Linux) && !os(Windows)
     deinit { bag.removeAll() }
+    #endif
 
     /// Default init used as the default Application, but also any custom implementation of Application. You should never call this function, but instead should use `Application.promote(to: CustomApplication.self)`
     public override required init() {
         lock = NSRecursiveLock()
-        bag = Set()
         cache = Cache()
         
         super.init()
@@ -125,6 +131,7 @@ open class Application: NSObject, ObservableObject {
         consume(object: cache)
     }
 
+    #if !os(Linux) && !os(Windows)
     /**
      Called when the value of one or more keys in the local key-value store changed due to incoming data pushed from iCloud.
 
@@ -154,6 +161,7 @@ open class Application: NSObject, ObservableObject {
             column: #column
         )
     }
+    #endif
 
     /// Returns value for the provided keyPath. This method is thread safe
     ///
@@ -180,6 +188,7 @@ open class Application: NSObject, ObservableObject {
         load(dependency: \.userDefaults)
     }
 
+    #if !os(Linux) && !os(Windows)
     /// Consumes changes in the provided ObservableObject and sends updates before the object will change.
     ///
     /// - Parameter object: The ObservableObject to observe
@@ -195,4 +204,9 @@ open class Application: NSObject, ObservableObject {
             )
         )
     }
+    #endif
 }
+
+#if !os(Linux) && !os(Windows)
+extension Application: ObservableObject { }
+#endif
