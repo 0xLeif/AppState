@@ -1,4 +1,7 @@
+import Foundation
+#if !os(Linux) && !os(Windows)
 import SwiftUI
+#endif
 import XCTest
 @testable import AppState
 
@@ -17,11 +20,13 @@ fileprivate class ExampleStoringViewModel: ObservableObject {
 
     func testPropertyWrapper() {
         count = 27
+        #if !os(Linux) && !os(Windows)
         _ = TextField(
             value: $count,
             format: .number,
             label: { Text("Count") }
         )
+        #endif
     }
 }
 

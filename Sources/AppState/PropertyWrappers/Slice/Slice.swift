@@ -1,10 +1,17 @@
+#if !os(Linux) && !os(Windows)
 import Combine
 import SwiftUI
+#endif
 
 /// A property wrapper that provides access to a specific part of the AppState's state.
-@propertyWrapper public struct Slice<SlicedState: MutableApplicationState, Value, SliceValue>: DynamicProperty where SlicedState.Value == Value {
+@propertyWrapper public struct Slice<SlicedState: MutableApplicationState, Value, SliceValue> where SlicedState.Value == Value {
+    #if !os(Linux) && !os(Windows)
     /// Holds the singleton instance of `Application`.
     @ObservedObject private var app: Application = Application.shared
+    #else
+    /// Holds the singleton instance of `Application`.
+    private var app: Application = Application.shared
+    #endif
 
     /// Path for accessing `State` from Application.
     private let stateKeyPath: KeyPath<Application, SlicedState>
@@ -44,6 +51,7 @@ import SwiftUI
         }
     }
 
+    #if !os(Linux) && !os(Windows)
     /// A binding to the `State`'s value, which can be used with SwiftUI views.
     public var projectedValue: Binding<SliceValue> {
         Binding(
@@ -51,6 +59,7 @@ import SwiftUI
             set: { wrappedValue = $0 }
         )
     }
+    #endif
 
     /**
      Initializes a Slice with the provided parameters. This constructor is used to create a Slice that provides access and modification to a specific part of an AppState's state. It provides granular control over the AppState.
@@ -83,6 +92,7 @@ import SwiftUI
         self.sliceKeyPath = "\(stateKeyPathString)\(valueKeyPathString)"
     }
 
+    #if !os(Linux) && !os(Windows)
     /// A property wrapper's synthetic storage property. This is just for SwiftUI to mutate the `wrappedValue` and send event through `objectWillChange` publisher when the `wrappedValue` changes
     public static subscript<OuterSelf: ObservableObject>(
         _enclosingInstance observed: OuterSelf,
@@ -101,4 +111,9 @@ import SwiftUI
             observed[keyPath: storageKeyPath].wrappedValue = newValue
         }
     }
+    #endif
 }
+
+#if !os(Linux) && !os(Windows)
+extension Slice: DynamicProperty { }
+#endif

@@ -1,3 +1,4 @@
+#if !os(Linux) && !os(Windows)
 import Foundation
 import Combine
 import SwiftUI
@@ -101,3 +102,4 @@ import SwiftUI
         }
     }
 }
+#endif

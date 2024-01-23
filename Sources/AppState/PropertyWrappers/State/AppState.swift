@@ -1,10 +1,17 @@
+#if !os(Linux) && !os(Windows)
 import Combine
 import SwiftUI
+#endif
 
 /// `AppState` is a property wrapper allowing SwiftUI views to subscribe to Application's state changes in a reactive way. Works similar to `State` and `Published`.
-@propertyWrapper public struct AppState<Value>: DynamicProperty {
+@propertyWrapper public struct AppState<Value> {
+    #if !os(Linux) && !os(Windows)
     /// Holds the singleton instance of `Application`.
     @ObservedObject private var app: Application = Application.shared
+    #else
+    /// Holds the singleton instance of `Application`.
+    private var app: Application = Application.shared
+    #endif
 
     /// Path for accessing `State` from Application.
     private let keyPath: KeyPath<Application, Application.State<Value>>
@@ -39,6 +46,7 @@ import SwiftUI
         }
     }
 
+    #if !os(Linux) && !os(Windows)
     /// A binding to the `State`'s value, which can be used with SwiftUI views.
     public var projectedValue: Binding<Value> {
         Binding(
@@ -46,6 +54,7 @@ import SwiftUI
             set: { wrappedValue = $0 }
         )
     }
+    #endif
 
     /**
      Initializes the AppState with a `keyPath` for accessing `State` in Application.
@@ -66,6 +75,7 @@ import SwiftUI
         self.column = column
     }
 
+    #if !os(Linux) && !os(Windows)
     /// A property wrapper's synthetic storage property. This is just for SwiftUI to mutate the `wrappedValue` and send event through `objectWillChange` publisher when the `wrappedValue` changes
     public static subscript<OuterSelf: ObservableObject>(
         _enclosingInstance observed: OuterSelf,
@@ -84,4 +94,9 @@ import SwiftUI
             observed[keyPath: storageKeyPath].wrappedValue = newValue
         }
     }
+    #endif
 }
+
+#if !os(Linux) && !os(Windows)
+extension AppState: DynamicProperty { }
+#endif

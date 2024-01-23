@@ -1,4 +1,3 @@
-import SwiftUI
 import XCTest
 @testable import AppState
 

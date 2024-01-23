@@ -1,3 +1,4 @@
+#if !os(Linux) && !os(Windows)
 import SwiftUI
 import XCTest
 @testable import AppState
@@ -98,3 +99,4 @@ final class SyncStateTests: XCTestCase {
         XCTAssertNil(viewModel.count)
     }
 }
+#endif

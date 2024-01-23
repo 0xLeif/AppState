@@ -1,6 +1,8 @@
 import Foundation
+#if !os(Linux) && !os(Windows)
 import Combine
 import SwiftUI
+#endif
 
 /**
  A property wrapper struct that represents secure and persistent storage for a wrapped value.
@@ -8,9 +10,14 @@ import SwiftUI
  The value is kept in the `Application`'s secure state and managed by SwiftUI's property wrapper mechanism.
  As a `DynamicProperty`, SwiftUI will update the owning view whenever the value changes.
  */
-@propertyWrapper public struct SecureState: DynamicProperty {
+@propertyWrapper public struct SecureState {
+    #if !os(Linux) && !os(Windows)
     /// Holds the singleton instance of `Application`.
     @ObservedObject private var app: Application = Application.shared
+    #else
+    /// Holds the singleton instance of `Application`.
+    private var app: Application = Application.shared
+    #endif
 
     /// Path for accessing `SecureState` from Application.
     private let keyPath: KeyPath<Application, Application.SecureState>
@@ -58,6 +65,7 @@ import SwiftUI
         }
     }
 
+    #if !os(Linux) && !os(Windows)
     /// A binding to the `State`'s value, which can be used with SwiftUI views.
     public var projectedValue: Binding<String?> {
         Binding(
@@ -65,6 +73,7 @@ import SwiftUI
             set: { wrappedValue = $0 }
         )
     }
+    #endif
 
     /**
      Initializes the AppState with a `keyPath` for accessing `SecureState` in Application.
@@ -85,6 +94,7 @@ import SwiftUI
         self.column = column
     }
 
+    #if !os(Linux) && !os(Windows)
     /// A property wrapper's synthetic storage property. This is just for SwiftUI to mutate the `wrappedValue` and send event through `objectWillChange` publisher when the `wrappedValue` changes
     public static subscript<OuterSelf: ObservableObject>(
         _enclosingInstance observed: OuterSelf,
@@ -103,4 +113,7 @@ import SwiftUI
             observed[keyPath: storageKeyPath].wrappedValue = newValue
         }
     }
+    #endif
 }
+
+extension SecureState: DynamicProperty { }

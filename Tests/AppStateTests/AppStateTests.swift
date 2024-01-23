@@ -1,4 +1,7 @@
+import Foundation
+#if !os(Linux) && !os(Windows)
 import SwiftUI
+#endif
 import XCTest
 @testable import AppState
 
@@ -24,17 +27,17 @@ fileprivate class ExampleViewModel: ObservableObject {
     }
 }
 
-fileprivate struct ExampleView: View {
+fileprivate struct ExampleView {
     @AppState(\.username) var username
     @AppState(\.isLoading) var isLoading
 
-    var body: some View { fatalError() }
-
     func testPropertyWrappers() {
         username = "Hello, ExampleView"
+        #if !os(Linux) && !os(Windows)
         _ = Toggle(isOn: $isLoading) {
             Text("Is Loading")
         }
+        #endif
     }
 }
 
