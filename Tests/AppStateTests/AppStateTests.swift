@@ -14,8 +14,8 @@ fileprivate extension Application {
         state(initial: "Leif")
     }
 
-    var colors: State<[String: CGColor]> {
-        state(initial: ["primary": CGColor(red: 1, green: 0, blue: 1, alpha: 1)])
+    var colors: State<[String: String]> {
+        state(initial: ["primary": "#A020F0"])
     }
 }
 
