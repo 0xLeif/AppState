@@ -8,12 +8,16 @@ open class ApplicationLogger {
         print(message())
     }
 
-    open func error(_ error: Error, message: String?) {
+    open func error(_ error: Error, message: String? = nil) {
         guard let message else {
             return print("Error: \(error.localizedDescription)")
         }
 
         print("\(message) (Error: \(error.localizedDescription))")
+    }
+
+    open func error(_ message: String) {
+        print("Error: \(message)")
     }
 }
 #endif
