@@ -70,12 +70,7 @@ open class Application: NSObject {
         let debugMessage = message()
         let codeID = codeID(fileID: fileID, function: function, line: line, column: column)
 
-
-        #if !os(Linux) && !os(Windows)
         logger.debug("\(debugMessage) (\(codeID))")
-        #else
-        print("\(debugMessage) (\(codeID))")
-        #endif
     }
 
     /// Internal log function.
@@ -91,7 +86,6 @@ open class Application: NSObject {
 
         let codeID = codeID(fileID: fileID, function: function, line: line, column: column)
 
-        #if !os(Linux) && !os(Windows)
         logger.error(
             """
             \(message) Error: {
@@ -99,15 +93,6 @@ open class Application: NSObject {
             } (\(codeID))
             """
         )
-        #else
-        print(
-            """
-            \(message) Error: {
-                ❌ \(error)
-            } (\(codeID))
-            """
-        )
-        #endif
     }
 
     static var cacheDescription: String {
