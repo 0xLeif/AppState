@@ -150,7 +150,9 @@ open class Application: NSObject {
 
         loadDefaultDependencies()
 
+        #if !os(Linux) && !os(Windows)
         consume(object: cache)
+        #endif
     }
 
     #if !os(Linux) && !os(Windows)
