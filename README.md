@@ -205,13 +205,13 @@ extension Application {
 Once you define the state, it is straightforward to read and write it within your application:
 
 ```swift
-var appState: Application.State = Application.state(\.username)
+var usernameState: Application.State = Application.state(\.username)
 
 // Read the value
-print(appState.value) // Output: "Leif"
+print(usernameState.value) // Output: "Leif"
 
 // Modify the value
-appState.value = "0xL"
+usernameState.value = "0xL"
 
 print(Application.state(\.username).value) // Output: "0xL"
 ```
