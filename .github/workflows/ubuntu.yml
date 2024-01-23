@@ -4,17 +4,17 @@
 name: Ubuntu
 
 on:
-	push:
-		branches: ["**"]
+  push:
+    branches: ["**"]
 
 jobs:
-	build:
-		runs-on: ubuntu-latest
-
-		steps:
-			- uses: swift-actions/setup-swift@v1
-			- uses: actions/checkout@v3
-			- name: Build for release
-				run: swift build -v -c release
-			- name: Test
-				run: swift test -v
+  build:
+    runs-on: ubuntu-latest
+  
+  steps:
+    - uses: swift-actions/setup-swift@v1
+    - uses: actions/checkout@v3
+    - name: Build for release
+      run: swift build -v -c release
+    - name: Test
+		  run: swift test -v
