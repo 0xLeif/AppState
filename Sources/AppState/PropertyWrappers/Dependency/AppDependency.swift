@@ -1,5 +1,3 @@
-import Combine
-
 /// The `@AppDependency` property wrapper is a feature provided by AppState, intended to simplify dependency handling throughout your application. It makes it easy to access, share, and manage dependencies in a neat and Swift idiomatic way.
 @propertyWrapper public struct AppDependency<Value> {
     /// Path for accessing `Dependency` from Application.

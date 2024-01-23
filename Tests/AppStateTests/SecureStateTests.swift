@@ -1,3 +1,4 @@
+#if !os(Linux) && !os(Windows)
 import SwiftUI
 import XCTest
 @testable import AppState
@@ -70,3 +71,4 @@ final class SecureStateTests: XCTestCase {
         XCTAssertNil(viewModel.token)
     }
 }
+#endif

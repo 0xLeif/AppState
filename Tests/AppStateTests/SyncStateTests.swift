@@ -1,8 +1,9 @@
+#if !os(Linux) && !os(Windows)
 import SwiftUI
 import XCTest
 @testable import AppState
 
-@available(iOS 15.0, watchOS 9.0, macOS 11.0, tvOS 15.0, visionOS 1.0, *)
+@available(watchOS 9.0, *)
 fileprivate extension Application {
     var syncValue: SyncState<Int?> {
         syncState(id: "syncValue")
@@ -13,19 +14,19 @@ fileprivate extension Application {
     }
 }
 
-@available(iOS 15.0, watchOS 9.0, macOS 11.0, tvOS 15.0, visionOS 1.0, *)
+@available(watchOS 9.0, *)
 fileprivate struct ExampleSyncValue {
     @SyncState(\.syncValue) var count
 }
 
 
-@available(iOS 15.0, watchOS 9.0, macOS 11.0, tvOS 15.0, visionOS 1.0, *)
+@available(watchOS 9.0, *)
 fileprivate struct ExampleFailureSyncValue {
     @SyncState(\.syncFailureValue) var count
 }
 
 
-@available(iOS 15.0, watchOS 9.0, macOS 11.0, tvOS 15.0, visionOS 1.0, *)
+@available(watchOS 9.0, *)
 fileprivate class ExampleStoringViewModel: ObservableObject {
     @SyncState(\.syncValue) var count
 
@@ -40,7 +41,7 @@ fileprivate class ExampleStoringViewModel: ObservableObject {
 }
 
 
-@available(iOS 15.0, watchOS 9.0, macOS 11.0, tvOS 15.0, visionOS 1.0, *)
+@available(watchOS 9.0, *)
 final class SyncStateTests: XCTestCase {
     override class func setUp() {
         Application
@@ -98,3 +99,4 @@ final class SyncStateTests: XCTestCase {
         XCTAssertNil(viewModel.count)
     }
 }
+#endif

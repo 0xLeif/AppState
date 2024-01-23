@@ -1,6 +1,7 @@
+#if !os(Linux) && !os(Windows)
 import Foundation
 
-@available(iOS 15.0, watchOS 9.0, macOS 11.0, tvOS 15.0, visionOS 1.0, *)
+@available(watchOS 9.0, *)
 extension Application {
     /// The default `NSUbiquitousKeyValueStore` instance.
     public var icloudStore: Dependency<NSUbiquitousKeyValueStore> {
@@ -124,3 +125,4 @@ extension Application {
         }
     }
 }
+#endif

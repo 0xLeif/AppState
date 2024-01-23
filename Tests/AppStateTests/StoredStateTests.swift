@@ -1,4 +1,7 @@
+import Foundation
+#if !os(Linux) && !os(Windows)
 import SwiftUI
+#endif
 import XCTest
 @testable import AppState
 
@@ -12,18 +15,24 @@ fileprivate struct ExampleStoredValue {
     @StoredState(\.storedValue) var count
 }
 
-fileprivate class ExampleStoringViewModel: ObservableObject {
+fileprivate class ExampleStoringViewModel {
     @StoredState(\.storedValue) var count
 
     func testPropertyWrapper() {
         count = 27
+        #if !os(Linux) && !os(Windows)
         _ = TextField(
             value: $count,
             format: .number,
             label: { Text("Count") }
         )
+        #endif
     }
 }
+
+#if !os(Linux) && !os(Windows)
+extension ExampleStoringViewModel: ObservableObject { }
+#endif
 
 final class StoredStateTests: XCTestCase {
     override class func setUp() {

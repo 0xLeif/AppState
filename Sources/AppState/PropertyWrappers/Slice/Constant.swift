@@ -1,11 +1,5 @@
-import Combine
-import SwiftUI
-
 /// A property wrapper that provides access to a specific part of the AppState's state.
 @propertyWrapper public struct Constant<SlicedState: MutableApplicationState, Value, SliceValue, SliceKeyPath: KeyPath<Value, SliceValue>> where SlicedState.Value == Value {
-    /// Holds the singleton instance of `Application`.
-    @ObservedObject private var app: Application = Application.shared
-
     /// Path for accessing `State` from Application.
     private let stateKeyPath: KeyPath<Application, SlicedState>
 

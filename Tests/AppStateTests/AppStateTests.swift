@@ -1,4 +1,7 @@
+import Foundation
+#if !os(Linux) && !os(Windows)
 import SwiftUI
+#endif
 import XCTest
 @testable import AppState
 
@@ -11,12 +14,12 @@ fileprivate extension Application {
         state(initial: "Leif")
     }
 
-    var colors: State<[String: CGColor]> {
-        state(initial: ["primary": CGColor(red: 1, green: 0, blue: 1, alpha: 1)])
+    var colors: State<[String: String]> {
+        state(initial: ["primary": "#A020F0"])
     }
 }
 
-fileprivate class ExampleViewModel: ObservableObject {
+fileprivate class ExampleViewModel {
     @AppState(\.username) var username
 
     func testPropertyWrapper() {
@@ -24,17 +27,21 @@ fileprivate class ExampleViewModel: ObservableObject {
     }
 }
 
-fileprivate struct ExampleView: View {
+#if !os(Linux) && !os(Windows)
+extension ExampleViewModel: ObservableObject { }
+#endif
+
+fileprivate struct ExampleView {
     @AppState(\.username) var username
     @AppState(\.isLoading) var isLoading
 
-    var body: some View { fatalError() }
-
     func testPropertyWrappers() {
         username = "Hello, ExampleView"
+        #if !os(Linux) && !os(Windows)
         _ = Toggle(isOn: $isLoading) {
             Text("Is Loading")
         }
+        #endif
     }
 }
 

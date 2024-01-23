@@ -1,3 +1,4 @@
+#if !os(Linux) && !os(Windows)
 import Cache
 import Foundation
 
@@ -189,3 +190,4 @@ public extension Keychain {
         values(ofType: String.self)
     }
 }
+#endif

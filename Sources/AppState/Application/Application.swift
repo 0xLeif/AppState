@@ -1,9 +1,13 @@
 import Cache
+#if !os(Linux) && !os(Windows)
 import Combine
 import OSLog
+#else
+import Foundation
+#endif
 
 /// `Application` is a class that can be observed for changes, keeping track of the states within the application.
-open class Application: NSObject, ObservableObject {
+open class Application: NSObject {
     /// Singleton shared instance of `Application`
     static var shared: Application = Application()
 
@@ -66,7 +70,12 @@ open class Application: NSObject, ObservableObject {
         let debugMessage = message()
         let codeID = codeID(fileID: fileID, function: function, line: line, column: column)
 
+
+        #if !os(Linux) && !os(Windows)
         logger.debug("\(debugMessage) (\(codeID))")
+        #else
+        print("\(debugMessage) (\(codeID))")
+        #endif
     }
 
     /// Internal log function.
@@ -82,6 +91,7 @@ open class Application: NSObject, ObservableObject {
 
         let codeID = codeID(fileID: fileID, function: function, line: line, column: column)
 
+        #if !os(Linux) && !os(Windows)
         logger.error(
             """
             \(message) Error: {
@@ -89,6 +99,15 @@ open class Application: NSObject, ObservableObject {
             } (\(codeID))
             """
         )
+        #else
+        print(
+            """
+            \(message) Error: {
+                ❌ \(error)
+            } (\(codeID))
+            """
+        )
+        #endif
     }
 
     static var cacheDescription: String {
@@ -100,31 +119,43 @@ open class Application: NSObject, ObservableObject {
             .joined(separator: "\n")
     }
 
+    #if !os(Linux) && !os(Windows)
     /// Logger specifically for AppState
     public static let logger: Logger = Logger(subsystem: "AppState", category: "Application")
+    #else
+    /// Logger specifically for AppState
+    public static let logger: ApplicationLogger = ApplicationLogger()
+    #endif
     static var isLoggingEnabled: Bool = false
 
     private let lock: NSRecursiveLock
-    private var bag: Set<AnyCancellable>
+
+    #if !os(Linux) && !os(Windows)
+    private var bag: Set<AnyCancellable> = Set()
+    #endif
 
     /// Cache to store values
     let cache: Cache<String, Any>
 
+    #if !os(Linux) && !os(Windows)
     deinit { bag.removeAll() }
+    #endif
 
     /// Default init used as the default Application, but also any custom implementation of Application. You should never call this function, but instead should use `Application.promote(to: CustomApplication.self)`
     public override required init() {
         lock = NSRecursiveLock()
-        bag = Set()
         cache = Cache()
         
         super.init()
 
         loadDefaultDependencies()
 
+        #if !os(Linux) && !os(Windows)
         consume(object: cache)
+        #endif
     }
 
+    #if !os(Linux) && !os(Windows)
     /**
      Called when the value of one or more keys in the local key-value store changed due to incoming data pushed from iCloud.
 
@@ -140,7 +171,7 @@ open class Application: NSObject, ObservableObject {
 
      - Note: Calling `Application.dependency(\.icloudStore).synchronize()` does not force new keys and values to be written to iCloud. Rather, it lets iCloud know that new keys and values are available to be uploaded. Do not rely on your keys and values being available on other devices immediately. The system controls when those keys and values are uploaded. The frequency of upload requests for key-value storage is limited to several per minute.
      */
-    @objc @available(iOS 15.0, watchOS 9.0, macOS 11.0, tvOS 15.0, visionOS 1.0, *)
+    @objc @available(watchOS 9.0, *)
     open func didChangeExternally(notification: Notification) {
         Application.log(
             debug: """
@@ -154,6 +185,7 @@ open class Application: NSObject, ObservableObject {
             column: #column
         )
     }
+    #endif
 
     /// Returns value for the provided keyPath. This method is thread safe
     ///
@@ -180,6 +212,7 @@ open class Application: NSObject, ObservableObject {
         load(dependency: \.userDefaults)
     }
 
+    #if !os(Linux) && !os(Windows)
     /// Consumes changes in the provided ObservableObject and sends updates before the object will change.
     ///
     /// - Parameter object: The ObservableObject to observe
@@ -195,4 +228,9 @@ open class Application: NSObject, ObservableObject {
             )
         )
     }
+    #endif
 }
+
+#if !os(Linux) && !os(Windows)
+extension Application: ObservableObject { }
+#endif

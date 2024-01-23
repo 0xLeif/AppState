@@ -1,3 +1,4 @@
+#if !os(Linux) && !os(Windows)
 import XCTest
 @testable import AppState
 
@@ -72,3 +73,4 @@ final class KeychainTests: XCTestCase {
         XCTAssertNil(keychain.get("key"))
     }
 }
+#endif

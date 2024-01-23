@@ -1,4 +1,7 @@
+import Foundation
+#if !os(Linux) && !os(Windows)
 import SwiftUI
+#endif
 import XCTest
 @testable import AppState
 
@@ -20,7 +23,7 @@ fileprivate extension Application {
     }
 }
 
-fileprivate class ExampleViewModel: ObservableObject {
+fileprivate class ExampleViewModel {
     @OptionalSlice(\.exampleValue, \.username) var username
     @OptionalConstant(\.exampleValue, \.value) var value
     @OptionalSlice(\.exampleValue, \.isLoading) var isLoading
@@ -30,15 +33,19 @@ fileprivate class ExampleViewModel: ObservableObject {
     }
 }
 
-fileprivate struct ExampleView: View {
+#if !os(Linux) && !os(Windows)
+extension ExampleViewModel: ObservableObject { }
+#endif
+
+fileprivate struct ExampleView {
     @OptionalSlice(\.exampleValue, \.username) var username
     @OptionalSlice(\.exampleValue, \.isLoading) var isLoading
 
-    var body: some View { fatalError() }
-
     func testPropertyWrappers() {
         username = "Hello, ExampleView"
+        #if !os(Linux) && !os(Windows)
         _ = Picker("Picker", selection: $isLoading, content: EmptyView.init)
+        #endif
     }
 }
 
