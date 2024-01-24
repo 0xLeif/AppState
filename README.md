@@ -26,7 +26,6 @@ AppState is a Swift Package that simplifies the management of application state 
 ### Dependency Management
 
 - **Dependency:** Struct for encapsulating dependencies within the app's scope.
-- 🍎 **ObservedDependency:** Struct for encapsulating dependencies within the app's scope. Backed by an `@ObservedObject` to publish changes to SwiftUI views.
 - **Scope:** Represents a specific context within an app, defined by a unique name and ID.
 
 ### Property Wrappers
@@ -40,6 +39,7 @@ AppState is a Swift Package that simplifies the management of application state 
 - **OptionalConstant:** Allows users to access a specific part of AppState's state. Useful if the state value is optional.
 - 🍎 **SecureState:** Securely stores its string values using the Keychain.
 - **AppDependency:** Simplifies the handling of dependencies throughout your application.
+- 🍎 **ObservedDependency:** Simplifies the handling of dependencies throughout your application. Dependencies must conform to ObservableObject. Backed by an `@ObservedObject` to publish changes to SwiftUI views.
 
 ## Getting Started
 
