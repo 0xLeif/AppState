@@ -20,7 +20,7 @@ import SwiftUI
     public var projectedValue: ObservedObject<Value>.Wrapper { $observedObject }
 
     /**
-     Initializes the AppDependency with a `keyPath` for accessing `Dependency` in Application.
+     Initializes the ObservedDependency.
 
      - Parameter keyPath: The `KeyPath` for accessing `Dependency` in Application.
      */
