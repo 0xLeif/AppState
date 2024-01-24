@@ -26,6 +26,7 @@ AppState is a Swift Package that simplifies the management of application state 
 ### Dependency Management
 
 - **Dependency:** Struct for encapsulating dependencies within the app's scope.
+- 🍎 **ObservedDependency:** Struct for encapsulating dependencies within the app's scope. Backed by an `@ObservedObject` to publish changes to SwiftUI views.
 - **Scope:** Represents a specific context within an app, defined by a unique name and ID.
 
 ### Property Wrappers
@@ -300,7 +301,7 @@ In this case, ContentView has access to the networkService dependency and can us
 
 ### Using Dependency with ObservableObject
 
-When your dependency is an `ObservableObject`, any changes to it will automatically update your SwiftUI views. Make sure your service conforms to the `ObservableObject` protocol. To do this, you should not use the `@AppDependency` property wrapper, but instead use the `@ObservedObject` property wrapper. 
+When your dependency is an `ObservableObject`, any changes to it will automatically update your SwiftUI views. Make sure your service conforms to the `ObservableObject` protocol. To do this, you should not use the `@AppDependency` property wrapper, but instead use the `@ObservedDependency` property wrapper. 
 
 Here's an example:
 
@@ -318,7 +319,7 @@ extension Application {
 }
 
 struct ContentView: View {
-    @ObservedObject var dataService = Application.dependency(\.dataService)
+    @ObservedDependency(\.dataService) private var dataService
 
     var body: some View {
         List(dataService.data, id: \.self) { item in
