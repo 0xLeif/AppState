@@ -14,10 +14,30 @@ import SwiftUI
     private let column: Int
 
     /// Represents the current value of the `ObservedDependency`.
-    public var wrappedValue: Value { observedObject }
+    public var wrappedValue: Value {
+        Application.log(
+            debug: "🔗 Getting ObservedDependency \(String(describing: keyPath))",
+            fileID: fileID,
+            function: function,
+            line: line,
+            column: column
+        )
+
+        return observedObject
+    }
 
     /// A binding to the `ObservedDependency`'s value, which can be used with SwiftUI views.
-    public var projectedValue: ObservedObject<Value>.Wrapper { $observedObject }
+    public var projectedValue: ObservedObject<Value>.Wrapper {
+        Application.log(
+            debug: "🔗 Getting ObservedDependency \(String(describing: keyPath))",
+            fileID: fileID,
+            function: function,
+            line: line,
+            column: column
+        )
+
+        return $observedObject
+    }
 
     /**
      Initializes the ObservedDependency.
