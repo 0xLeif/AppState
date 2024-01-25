@@ -22,6 +22,7 @@ AppState is a Swift Package that simplifies the management of application state 
 
 - **Slice:** Struct that provides access to and modification of specific AppState's state parts.
 - **OptionalSlice:** Struct that provides access to and modification of specific AppState's state parts. Useful if the state value is optional.
+- **DependencySlice:** Struct that provides access to and modification of specific AppState's dependency parts.
 
 ### Dependency Management
 

@@ -897,3 +897,196 @@ extension Application {
         return slice
     }
 }
+
+// MARK: DependencySlice Functions
+
+extension Application {
+    /**
+     This function creates a `DependencySlice` of AppState that allows access to a specific part of the AppState's dependencies. It provides granular control over the AppState.
+
+     - Parameters:
+         - dependencyKeyPath: A KeyPath pointing to the dependency in AppState that should be sliced.
+         - valueKeyPath: A KeyPath pointing to the specific part of the state that should be accessed.
+         - fileID: The identifier of the file.
+         - function: The name of the declaration.
+         - line: The line number on which it appears.
+         - column: The column number in which it begins.
+
+     - Returns: A Slice that allows access to a specific part of an AppState's state.
+     */
+    public static func dependencySlice<Value, SliceValue>(
+        _ dependencyKeyPath: KeyPath<Application, Dependency<Value>>,
+        _ valueKeyPath: KeyPath<Value, SliceValue>,
+        _ fileID: StaticString = #fileID,
+        _ function: StaticString = #function,
+        _ line: Int = #line,
+        _ column: Int = #column
+    ) -> DependencySlice<Value, SliceValue, KeyPath<Value, SliceValue>> {
+        let slice = DependencySlice(
+            dependencyKeyPath,
+            value: valueKeyPath
+        )
+
+        log(
+            debug: {
+                let dependencyKeyPathString = String(describing: dependencyKeyPath)
+                let valueTypeCharacterCount = String(describing: Value.self).count
+                var valueKeyPathString = String(describing: valueKeyPath)
+
+                valueKeyPathString.removeFirst(valueTypeCharacterCount + 1)
+
+                return "🔗 Getting DependencySlice \(dependencyKeyPathString)\(valueKeyPathString) -> \(slice.value)"
+            },
+            fileID: fileID,
+            function: function,
+            line: line,
+            column: column
+        )
+
+        return slice
+    }
+
+    /**
+     This function creates a `DependencySlice` of AppState that allows access to a specific part of the AppState's dependencies. It provides granular control over the AppState.
+
+     - Parameters:
+         - dependencyKeyPath: A KeyPath pointing to the dependency in AppState that should be sliced.
+         - valueKeyPath: A KeyPath pointing to the specific part of the state that should be accessed.
+         - fileID: The identifier of the file.
+         - function: The name of the declaration.
+         - line: The line number on which it appears.
+         - column: The column number in which it begins.
+
+     - Returns: A Slice that allows access to a specific part of an AppState's state.
+     */
+    public static func dependencySlice<Value, SliceValue>(
+        _ dependencyKeyPath: KeyPath<Application, Dependency<Value>>,
+        _ valueKeyPath: WritableKeyPath<Value, SliceValue>,
+        _ fileID: StaticString = #fileID,
+        _ function: StaticString = #function,
+        _ line: Int = #line,
+        _ column: Int = #column
+    ) -> DependencySlice<Value, SliceValue, WritableKeyPath<Value, SliceValue>> {
+        let slice = DependencySlice(
+            dependencyKeyPath,
+            value: valueKeyPath
+        )
+
+        log(
+            debug: {
+                let dependencyKeyPathString = String(describing: dependencyKeyPath)
+                let valueTypeCharacterCount = String(describing: Value.self).count
+                var valueKeyPathString = String(describing: valueKeyPath)
+
+                valueKeyPathString.removeFirst(valueTypeCharacterCount + 1)
+
+                return "🔗 Getting DependencySlice \(dependencyKeyPathString)\(valueKeyPathString) -> \(slice.value)"
+            },
+            fileID: fileID,
+            function: function,
+            line: line,
+            column: column
+        )
+
+        return slice
+    }
+
+    /**
+     This function creates a `OptionalSlice` of AppState that allows access to a specific part of the AppState's state. It provides granular control over the AppState.
+
+     - Parameters:
+         - stateKeyPath: A KeyPath pointing to the state in AppState that should be sliced.
+         - valueKeyPath: A KeyPath pointing to the specific part of the state that should be accessed.
+         - fileID: The identifier of the file.
+         - function: The name of the declaration.
+         - line: The line number on which it appears.
+         - column: The column number in which it begins.
+
+     - Returns: A Slice that allows access to a specific part of an AppState's state.
+     */
+    public static func dependencySlice<SlicedState: MutableApplicationState, Value, SliceValue>(
+        _ stateKeyPath: KeyPath<Application, SlicedState>,
+        _ valueKeyPath: KeyPath<Value, SliceValue>,
+        _ fileID: StaticString = #fileID,
+        _ function: StaticString = #function,
+        _ line: Int = #line,
+        _ column: Int = #column
+    ) -> OptionalSlice<SlicedState, Value, SliceValue, KeyPath<Value, SliceValue>> where SlicedState.Value == Value? {
+        let slice = OptionalSlice(
+            stateKeyPath,
+            value: valueKeyPath
+        )
+
+        log(
+            debug: {
+                let stateKeyPathString = String(describing: stateKeyPath)
+                let valueTypeCharacterCount = String(describing: Value.self).count
+                var valueKeyPathString = String(describing: valueKeyPath)
+
+                valueKeyPathString.removeFirst(valueTypeCharacterCount + 1)
+
+                if let value = slice.value {
+                    return "🍕 Getting Slice \(stateKeyPathString)\(valueKeyPathString) -> \(value)"
+                } else {
+                    return "🍕 Getting Slice \(stateKeyPathString)\(valueKeyPathString) -> nil"
+                }
+            },
+            fileID: fileID,
+            function: function,
+            line: line,
+            column: column
+        )
+
+        return slice
+    }
+
+    /**
+     This function creates a `OptionalSlice` of AppState that allows access and modification to a specific part of the AppState's state. It provides granular control over the AppState.
+
+     - Parameters:
+         - stateKeyPath: A KeyPath pointing to the state in AppState that should be sliced.
+         - valueKeyPath: A WritableKeyPath pointing to the specific part of the state that should be accessed.
+         - fileID: The identifier of the file.
+         - function: The name of the declaration.
+         - line: The line number on which it appears.
+         - column: The column number in which it begins.
+
+     - Returns: A Slice that allows access and modification to a specific part of an AppState's state.
+     */
+    public static func dependencySlice<SlicedState: MutableApplicationState, Value, SliceValue>(
+        _ stateKeyPath: KeyPath<Application, SlicedState>,
+        _ valueKeyPath: WritableKeyPath<Value, SliceValue>,
+        _ fileID: StaticString = #fileID,
+        _ function: StaticString = #function,
+        _ line: Int = #line,
+        _ column: Int = #column
+    ) -> OptionalSlice<SlicedState, Value, SliceValue, WritableKeyPath<Value, SliceValue>> where SlicedState.Value == Value? {
+        let slice = OptionalSlice(
+            stateKeyPath,
+            value: valueKeyPath
+        )
+
+        log(
+            debug: {
+                let stateKeyPathString = String(describing: stateKeyPath)
+                let valueTypeCharacterCount = String(describing: Value.self).count
+                var valueKeyPathString = String(describing: valueKeyPath)
+
+                valueKeyPathString.removeFirst(valueTypeCharacterCount + 1)
+
+                if let value = slice.value {
+                    return "🍕 Getting Slice \(stateKeyPathString)\(valueKeyPathString) -> \(value)"
+                } else {
+                    return "🍕 Getting Slice \(stateKeyPathString)\(valueKeyPathString) -> nil"
+                }
+            },
+            fileID: fileID,
+            function: function,
+            line: line,
+            column: column
+        )
+
+        return slice
+    }
+}
+
