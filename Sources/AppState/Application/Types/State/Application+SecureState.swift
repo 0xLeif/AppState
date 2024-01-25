@@ -27,10 +27,8 @@ extension Application {
                 return storedValue
             }
             set {
-                defer {
-                    shared.objectWillChange.send()
-                }
-                
+                shared.objectWillChange.send()
+
                 guard let newValue else {
                     return keychain.remove(scope.key)
                 }
