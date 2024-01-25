@@ -2,7 +2,7 @@ extension Application {
     /// `Dependency` struct encapsulates dependencies used throughout the app.
     public struct Dependency<Value>: CustomStringConvertible {
         /// The dependency value.
-        let value: Value
+        var value: Value
 
         /// The scope in which this state exists.
         let scope: Scope
