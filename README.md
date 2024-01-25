@@ -18,16 +18,16 @@ AppState is a Swift Package that simplifies the management of application state 
 - 🍎 **SyncState:** Struct for encapsulating and broadcasting stored value changes, using `iCloud`.
 - 🍎 **SecureState:** Struct for securely encapsulating and broadcasting stored value changes, using the device's Keychain.
 
+### Dependency Management
+
+- **Dependency:** Struct for encapsulating dependencies within the app's scope.
+- **Scope:** Represents a specific context within an app, defined by a unique name and ID.
+
 ### Fine-Grained Control
 
 - **Slice:** Struct that provides access to and modification of specific AppState's state parts.
 - **OptionalSlice:** Struct that provides access to and modification of specific AppState's state parts. Useful if the state value is optional.
 - **DependencySlice:** Struct that provides access to and modification of specific AppState's dependency parts.
-
-### Dependency Management
-
-- **Dependency:** Struct for encapsulating dependencies within the app's scope.
-- **Scope:** Represents a specific context within an app, defined by a unique name and ID.
 
 ### Property Wrappers
 
@@ -41,6 +41,8 @@ AppState is a Swift Package that simplifies the management of application state 
 - 🍎 **SecureState:** Securely stores its string values using the Keychain.
 - **AppDependency:** Simplifies the handling of dependencies throughout your application.
 - 🍎 **ObservedDependency:** Simplifies the handling of dependencies throughout your application. Dependencies must conform to ObservableObject. Backed by an `@ObservedObject` to publish changes to SwiftUI views.
+- **DependencySlice:** Allows users to access and modify specific AppState's dependency parts.
+- **DependencyConstant:** Allows users to access a specific part of AppState's state.
 
 ## Getting Started
 
