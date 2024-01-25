@@ -30,6 +30,9 @@ extension Application.DependencySlice where SliceKeyPath == WritableKeyPath<Valu
     /// The current dependency value.
     public var value: SliceValue {
         get { dependency.value[keyPath: keyPath] }
-        set { dependency.value[keyPath: keyPath] = newValue }
+        set {
+            Application.shared.objectWillChange.send()
+            dependency.value[keyPath: keyPath] = newValue
+        }
     }
 }

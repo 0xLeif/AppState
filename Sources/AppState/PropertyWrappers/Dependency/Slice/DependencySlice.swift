@@ -47,6 +47,7 @@ import SwiftUI
             )
 
             var dependency = app.value(keyPath: dependencyKeyPath)
+            Application.shared.objectWillChange.send()
             dependency.value[keyPath: valueKeyPath] = newValue
         }
     }
