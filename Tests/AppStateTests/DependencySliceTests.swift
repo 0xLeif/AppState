@@ -7,7 +7,7 @@ import XCTest
 
 fileprivate class ExampleViewModel {
     var username: String? = nil
-    @Published var isLoading: Bool = false
+    var isLoading: Bool = false
     let value: String = "Hello, World!"
     var mutableValue: String = "..."
 }
