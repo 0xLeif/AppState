@@ -1,6 +1,6 @@
 import Foundation
 
-// MARK: - Application Functions
+// MARK: Application Functions
 
 public extension Application {
     /// Provides a description of the current application state
@@ -79,7 +79,7 @@ public extension Application {
     }
 }
 
-// MARK: Dependency Functions
+// MARK: - Dependency Functions
 
 public extension Application {
     /**
@@ -259,7 +259,7 @@ public extension Application {
     }
 }
 
-// MARK: State Functions
+// MARK: - State Functions
 
 public extension Application {
     /**
@@ -335,7 +335,7 @@ public extension Application {
     }
 }
 
-// MARK: StoredState Functions
+// MARK: - StoredState Functions
 
 public extension Application {
     /// Resets the value to the inital value. If the inital value was `nil`, then the value will be removed from `UserDefaults`
@@ -443,7 +443,7 @@ public extension Application {
 }
 
 #if !os(Linux) && !os(Windows)
-// MARK: SyncState Functions
+// MARK: - SyncState Functions
 
 @available(watchOS 9.0, *)
 public extension Application {
@@ -551,7 +551,7 @@ public extension Application {
     }
 }
 
-// MARK: SecureState Functions
+// MARK: - SecureState Functions
 
 public extension Application {
     /**
@@ -657,7 +657,7 @@ public extension Application {
 }
 #endif
 
-// MARK: Slice Functions
+// MARK: - Slice Functions
 
 extension Application {
     /**
@@ -898,7 +898,7 @@ extension Application {
     }
 }
 
-// MARK: DependencySlice Functions
+// MARK: - DependencySlice Functions
 
 extension Application {
     /**
