@@ -47,7 +47,9 @@ import SwiftUI
             )
 
             var dependency = app.value(keyPath: dependencyKeyPath)
+            #if !os(Linux) && !os(Windows)
             Application.shared.objectWillChange.send()
+            #endif
             dependency.value[keyPath: valueKeyPath] = newValue
         }
     }
