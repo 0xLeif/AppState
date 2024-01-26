@@ -56,7 +56,7 @@
     }
 
     /**
-     Initializes a Slice with the provided parameters. This constructor is used to create a Slice that provides access and modification to a specific part of an AppState's state. It provides granular control over the AppState.
+     Initializes a Constant with the provided parameters. This constructor is used to create a Constant that provides access to a specific part of an AppState's state. It provides granular control over the AppState.
 
      - Parameters:
          - stateKeyPath: A KeyPath that points to the state in AppState that should be sliced.

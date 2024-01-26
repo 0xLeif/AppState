@@ -102,7 +102,7 @@
 
         let stateKeyPathString = String(describing: stateKeyPath)
         let valueTypeCharacterCount = String(describing: Value.self).count
-        var valueKeyPathString = String(describing: valueKeyPath)
+        var valueKeyPathString = String(describing: optionalValueKeyPath)
 
         valueKeyPathString.removeFirst(valueTypeCharacterCount + 1)
 

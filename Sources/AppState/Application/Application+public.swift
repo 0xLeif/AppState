@@ -1,6 +1,6 @@
 import Foundation
 
-// MARK: - Application Functions
+// MARK: Application Functions
 
 public extension Application {
     /// Provides a description of the current application state
@@ -79,7 +79,7 @@ public extension Application {
     }
 }
 
-// MARK: Dependency Functions
+// MARK: - Dependency Functions
 
 public extension Application {
     /**
@@ -259,7 +259,7 @@ public extension Application {
     }
 }
 
-// MARK: State Functions
+// MARK: - State Functions
 
 public extension Application {
     /**
@@ -335,7 +335,7 @@ public extension Application {
     }
 }
 
-// MARK: StoredState Functions
+// MARK: - StoredState Functions
 
 public extension Application {
     /// Resets the value to the inital value. If the inital value was `nil`, then the value will be removed from `UserDefaults`
@@ -443,7 +443,7 @@ public extension Application {
 }
 
 #if !os(Linux) && !os(Windows)
-// MARK: SyncState Functions
+// MARK: - SyncState Functions
 
 @available(watchOS 9.0, *)
 public extension Application {
@@ -551,7 +551,7 @@ public extension Application {
     }
 }
 
-// MARK: SecureState Functions
+// MARK: - SecureState Functions
 
 public extension Application {
     /**
@@ -657,7 +657,7 @@ public extension Application {
 }
 #endif
 
-// MARK: Slice Functions
+// MARK: - Slice Functions
 
 extension Application {
     /**
@@ -897,3 +897,98 @@ extension Application {
         return slice
     }
 }
+
+// MARK: - DependencySlice Functions
+
+extension Application {
+    /**
+     This function creates a `DependencySlice` of AppState that allows access to a specific part of the AppState's dependencies. It provides granular control over the AppState.
+
+     - Parameters:
+         - dependencyKeyPath: A KeyPath pointing to the dependency in AppState that should be sliced.
+         - valueKeyPath: A KeyPath pointing to the specific part of the state that should be accessed.
+         - fileID: The identifier of the file.
+         - function: The name of the declaration.
+         - line: The line number on which it appears.
+         - column: The column number in which it begins.
+
+     - Returns: A Slice that allows access to a specific part of an AppState's state.
+     */
+    public static func dependencySlice<Value, SliceValue>(
+        _ dependencyKeyPath: KeyPath<Application, Dependency<Value>>,
+        _ valueKeyPath: KeyPath<Value, SliceValue>,
+        _ fileID: StaticString = #fileID,
+        _ function: StaticString = #function,
+        _ line: Int = #line,
+        _ column: Int = #column
+    ) -> DependencySlice<Value, SliceValue, KeyPath<Value, SliceValue>> {
+        let slice = DependencySlice(
+            dependencyKeyPath,
+            value: valueKeyPath
+        )
+
+        log(
+            debug: {
+                let dependencyKeyPathString = String(describing: dependencyKeyPath)
+                let valueTypeCharacterCount = String(describing: Value.self).count
+                var valueKeyPathString = String(describing: valueKeyPath)
+
+                valueKeyPathString.removeFirst(valueTypeCharacterCount + 1)
+
+                return "🔗 Getting DependencySlice \(dependencyKeyPathString)\(valueKeyPathString) -> \(slice.value)"
+            },
+            fileID: fileID,
+            function: function,
+            line: line,
+            column: column
+        )
+
+        return slice
+    }
+
+    /**
+     This function creates a `DependencySlice` of AppState that allows access to a specific part of the AppState's dependencies. It provides granular control over the AppState.
+
+     - Parameters:
+         - dependencyKeyPath: A KeyPath pointing to the dependency in AppState that should be sliced.
+         - valueKeyPath: A KeyPath pointing to the specific part of the state that should be accessed.
+         - fileID: The identifier of the file.
+         - function: The name of the declaration.
+         - line: The line number on which it appears.
+         - column: The column number in which it begins.
+
+     - Returns: A Slice that allows access to a specific part of an AppState's state.
+     */
+    public static func dependencySlice<Value, SliceValue>(
+        _ dependencyKeyPath: KeyPath<Application, Dependency<Value>>,
+        _ valueKeyPath: WritableKeyPath<Value, SliceValue>,
+        _ fileID: StaticString = #fileID,
+        _ function: StaticString = #function,
+        _ line: Int = #line,
+        _ column: Int = #column
+    ) -> DependencySlice<Value, SliceValue, WritableKeyPath<Value, SliceValue>> {
+        let slice = DependencySlice(
+            dependencyKeyPath,
+            value: valueKeyPath
+        )
+
+        log(
+            debug: {
+                let dependencyKeyPathString = String(describing: dependencyKeyPath)
+                let valueTypeCharacterCount = String(describing: Value.self).count
+                var valueKeyPathString = String(describing: valueKeyPath)
+
+                valueKeyPathString.removeFirst(valueTypeCharacterCount + 1)
+
+                return "🔗 Getting DependencySlice \(dependencyKeyPathString)\(valueKeyPathString) -> \(slice.value)"
+            },
+            fileID: fileID,
+            function: function,
+            line: line,
+            column: column
+        )
+
+        return slice
+    }
+}
+

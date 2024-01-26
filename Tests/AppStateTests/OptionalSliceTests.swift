@@ -27,6 +27,7 @@ fileprivate class ExampleViewModel {
     @OptionalSlice(\.exampleValue, \.username) var username
     @OptionalConstant(\.exampleValue, \.value) var value
     @OptionalSlice(\.exampleValue, \.isLoading) var isLoading
+    @OptionalConstant(\.exampleValue, \.username) var constantUsername
 
     func testPropertyWrapper() {
         username = "Hello, ExampleView"
@@ -94,6 +95,7 @@ final class OptionalSliceTests: XCTestCase {
         viewModel.username = "Hello, ViewModel"
 
         XCTAssertEqual(viewModel.username, "Hello, ViewModel")
+        XCTAssertEqual(viewModel.constantUsername, "Hello, ViewModel")
 
         viewModel.username = nil
 

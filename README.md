@@ -18,15 +18,16 @@ AppState is a Swift Package that simplifies the management of application state 
 - 🍎 **SyncState:** Struct for encapsulating and broadcasting stored value changes, using `iCloud`.
 - 🍎 **SecureState:** Struct for securely encapsulating and broadcasting stored value changes, using the device's Keychain.
 
-### Fine-Grained Control
-
-- **Slice:** Struct that provides access to and modification of specific AppState's state parts.
-- **OptionalSlice:** Struct that provides access to and modification of specific AppState's state parts. Useful if the state value is optional.
-
 ### Dependency Management
 
 - **Dependency:** Struct for encapsulating dependencies within the app's scope.
 - **Scope:** Represents a specific context within an app, defined by a unique name and ID.
+
+### Fine-Grained Control
+
+- **Slice:** Struct that provides access to and modification of specific AppState's state parts.
+- **OptionalSlice:** Struct that provides access to and modification of specific AppState's state parts. Useful if the state value is optional.
+- **DependencySlice:** Struct that provides access to and modification of specific AppState's dependency parts.
 
 ### Property Wrappers
 
@@ -39,6 +40,9 @@ AppState is a Swift Package that simplifies the management of application state 
 - **OptionalConstant:** Allows users to access a specific part of AppState's state. Useful if the state value is optional.
 - 🍎 **SecureState:** Securely stores its string values using the Keychain.
 - **AppDependency:** Simplifies the handling of dependencies throughout your application.
+- 🍎 **ObservedDependency:** Simplifies the handling of dependencies throughout your application. Dependencies must conform to ObservableObject. Backed by an `@ObservedObject` to publish changes to SwiftUI views.
+- **DependencySlice:** Allows users to access and modify a specific part of AppState's dependency.
+- **DependencyConstant:** Allows users to access a specific part of AppState's dependency.
 
 ## Getting Started
 
@@ -300,7 +304,7 @@ In this case, ContentView has access to the networkService dependency and can us
 
 ### Using Dependency with ObservableObject
 
-When your dependency is an `ObservableObject`, any changes to it will automatically update your SwiftUI views. Make sure your service conforms to the `ObservableObject` protocol. To do this, you should not use the `@AppDependency` property wrapper, but instead use the `@ObservedObject` property wrapper. 
+When your dependency is an `ObservableObject`, any changes to it will automatically update your SwiftUI views. Make sure your service conforms to the `ObservableObject` protocol. To do this, you should not use the `@AppDependency` property wrapper, but instead use the `@ObservedDependency` property wrapper. 
 
 Here's an example:
 
@@ -318,7 +322,7 @@ extension Application {
 }
 
 struct ContentView: View {
-    @ObservedObject var dataService = Application.dependency(\.dataService)
+    @ObservedDependency(\.dataService) private var dataService
 
     var body: some View {
         List(dataService.data, id: \.self) { item in
