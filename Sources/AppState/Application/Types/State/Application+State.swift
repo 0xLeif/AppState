@@ -20,8 +20,31 @@ extension Application {
                         scope.key,
                         as: State<Value>.self
                     )
-                else { return _value }
+                else {
+                    defer {
+                        let setValue = {
+                            shared.cache.set(
+                                value: Application.State(
+                                    type: .state,
+                                    initial: _value,
+                                    scope: scope
+                                ),
+                                forKey: scope.key
+                            )
+                        }
 
+                        #if !os(Linux) && !os(Windows)
+                        Task {
+                            await MainActor.run {
+                                setValue()
+                            }
+                        }
+                        #else
+                        setValue()
+                        #endif
+                    }
+                    return _value
+                }
                 return state._value
             }
             set {
