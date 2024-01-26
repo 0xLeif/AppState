@@ -72,12 +72,21 @@ final class AppStateTests: XCTestCase {
         XCTAssertEqual(Application.state(\.username).value, "0xL")
     }
     
-    func testStateClosureCachesValueOnGet() {
-        var dateState: Application.State = Application.state(\.date)
-        var copyOfDateState: Application.State =
+    func testStateClosureCachesValueOnGet() async {
+        let dateState: Application.State = Application.state(\.date)
+        #if !os(Linux) && !os(Windows)
+        await MainActor.run {
+            let copyOfDateState: Application.State =
+            Application.state(\.date)
+            
+            XCTAssertEqual(copyOfDateState.value, dateState.value)
+        }
+        #else
+        let copyOfDateState: Application.State =
         Application.state(\.date)
         
         XCTAssertEqual(copyOfDateState.value, dateState.value)
+        #endif
     }
 
     func testPropertyWrappers() {
