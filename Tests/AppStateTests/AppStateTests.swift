@@ -13,9 +13,11 @@ fileprivate extension Application {
     var username: State<String> {
         state(initial: "Leif")
     }
+    
     var date: State<Date> {
         state(initial: Date())
     }
+    
     var colors: State<[String: String]> {
         state(initial: ["primary": "#A020F0"])
     }

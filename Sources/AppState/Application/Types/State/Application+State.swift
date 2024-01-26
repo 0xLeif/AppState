@@ -22,30 +22,25 @@ extension Application {
                     )
                 else {
                     defer {
+                        let setValue = {
+                            shared.cache.set(
+                                value: Application.State(
+                                    type: .state,
+                                    initial: _value,
+                                    scope: scope
+                                ),
+                                forKey: scope.key
+                            )
+                        }
+
                         #if !os(Linux) && !os(Windows)
                         Task {
                             await MainActor.run {
-                                shared.cache.set(
-                                    value: Application.State(
-                                        type: .state,
-                                        initial: _value,
-                                        scope: scope
-                                    ),
-                                    forKey: scope.key
-                                )
+                                setValue()
                             }
                         }
-     
                         #else
-                        shared.cache.set(
-                            value: Application.State(
-                                type: .state,
-                                initial: _value,
-                                scope: scope
-                            ),
-                            forKey: scope.key
-                        )
-
+                        setValue()
                         #endif
                     }
                     return _value
