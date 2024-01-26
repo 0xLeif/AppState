@@ -7,7 +7,7 @@ extension Application {
     }
 
     /// `StoredState` encapsulates the value within the application's scope and allows any changes to be propagated throughout the scoped area.  State is stored using `UserDefaults`.
-    public struct StoredState<Value>: MutableApplicationState {
+    public struct StoredState<Value: Codable>: MutableApplicationState {
         @AppDependency(\.userDefaults) private var userDefaults: UserDefaults
 
         /// The initial value of the state.
@@ -26,7 +26,17 @@ extension Application {
                 }
 
                 guard
-                    let object = userDefaults.object(forKey: scope.key),
+                    let object = userDefaults.object(forKey: scope.key)
+                else { return initial() }
+
+                if 
+                    let data = object as? Data,
+                    let decodedValue = try? JSONDecoder().decode(Value.self, from: data)
+                {
+                    return decodedValue
+                }
+
+                guard
                     let storedValue = object as? Value
                 else { return initial() }
 
@@ -48,7 +58,12 @@ extension Application {
                         ),
                         forKey: scope.key
                     )
-                    userDefaults.set(newValue, forKey: scope.key)
+
+                    if let encodedValue = try? JSONEncoder().encode(newValue) {
+                        userDefaults.set(encodedValue, forKey: scope.key)
+                    } else {
+                        userDefaults.set(newValue, forKey: scope.key)
+                    }
                 }
             }
         }
