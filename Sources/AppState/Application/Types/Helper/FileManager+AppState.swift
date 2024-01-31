@@ -51,31 +51,6 @@ extension FileManager {
         return try JSONDecoder().decode(Value.self, from: data)
     }
 
-    /// Read a file's data as the type `String`
-    ///
-    /// - Parameters:
-    ///   - path: The path to the directory containing the file. The default is `.`, which means the current working directory.
-    ///   - filename: The name of the file to read.
-    ///   - encoding: The String.Encoding to use to get the string.
-    /// - Returns: The file's data decoded as an instance of `String`.
-    /// - Throws: If there's an error reading the file or decoding its data.
-    func string(
-        path: String = ".",
-        filename: String,
-        encoding: String.Encoding = .utf8
-    ) throws -> String {
-        let data = try data(
-            path: path,
-            filename: filename
-        )
-
-        guard let string = String(data: data, encoding: encoding) else {
-            throw FileError.invalidStringFromData
-        }
-
-        return string
-    }
-
     /// Read a file's data
     ///
     /// - Parameters:
@@ -115,34 +90,6 @@ extension FileManager {
         base64Encoded: Bool = true
     ) throws {
         let data = try JSONEncoder().encode(value)
-
-        try out(
-            data: data,
-            path: path,
-            filename: filename,
-            base64Encoded: base64Encoded
-        )
-    }
-
-    /// Write a string to a file
-    ///
-    /// - Parameters:
-    ///   - string: The string to write to the file.
-    ///   - path: The path to the directory where the file should be written. The default is `.`, which means the current working directory.
-    ///   - filename: The name of the file to write.
-    ///   - using: The String.Encoding to encode the string with. The default is `.utf8`.
-    ///   - base64Encoded: A Boolean value indicating whether the data should be Base64-encoded before writing to the file. The default is `true`.
-    /// - Throws: If there's an error writing the data to the file.
-    func out(
-        string: String,
-        path: String = ".",
-        filename: String,
-        using stringEncoding: String.Encoding = .utf8,
-        base64Encoded: Bool = true
-    ) throws {
-        guard let data = string.data(using: stringEncoding) else {
-            throw FileError.invalidStringFromData
-        }
 
         try out(
             data: data,
