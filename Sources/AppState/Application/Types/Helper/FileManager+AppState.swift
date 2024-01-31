@@ -160,10 +160,14 @@ extension FileManager {
     }
 
     func url(filePath: String) -> URL {
+        #if !os(Linux) && !os(Windows)
         if #available(macOS 13.0, iOS 16.0, watchOS 9.0, tvOS 16.0, *) {
             return URL(filePath: filePath)
         } else {
             return URL(fileURLWithPath: filePath)
         }
+        #else
+        return URL(fileURLWithPath: filePath)
+        #endif
     }
 }
