@@ -1066,16 +1066,19 @@ public extension Application {
         - initial: The closure that returns initial state value.
         - path: The path to the directory containing the file. The default is `FileManager.defaultFileStatePath`.
         - filename: The name of the file to read.
+        - isBase64Encoded: Boolean to determine if the value should be encoded as Base64. The default is `true`.        
      - Returns: The state of type `Value`.
      */
     func fileState<Value>(
         initial: @escaping @autoclosure () -> Value,
         path: String = FileManager.defaultFileStatePath,
-        filename: String
+        filename: String,
+        isBase64Encoded: Bool = true
     ) -> FileState<Value> {
         FileState(
             initial: initial(),
-            scope: Scope(name: path, id: filename)
+            scope: Scope(name: path, id: filename),
+            isBase64Encoded: isBase64Encoded
         )
     }
 
@@ -1085,16 +1088,19 @@ public extension Application {
      - Parameters:
         - path: The path to the directory containing the file. The default is `FileManager.defaultFileStatePath`.
         - filename: The name of the file to read.
+        - isBase64Encoded: Boolean to determine if the value should be encoded as Base64. The default is `true`.
      - Returns: The state of type `Value`.
      */
     func fileState<Value>(
         path: String = FileManager.defaultFileStatePath,
-        filename: String
+        filename: String,
+        isBase64Encoded: Bool = true
     ) -> FileState<Value?> {
         fileState(
             initial: nil,
             path: path,
-            filename: filename
+            filename: filename,
+            isBase64Encoded: isBase64Encoded
         )
     }
 }

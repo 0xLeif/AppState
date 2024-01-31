@@ -69,7 +69,12 @@ extension Application {
                     )
 
                     do {
-                        try fileManager.out(newValue, path: path, filename: filename)
+                        try fileManager.out(
+                            newValue,
+                            path: path,
+                            filename: filename,
+                            base64Encoded: isBase64Encoded
+                        )
                     } catch {
                         log(
                             error: error,
@@ -87,6 +92,8 @@ extension Application {
         /// The scope in which this state exists.
         let scope: Scope
 
+        let isBase64Encoded: Bool
+
         var path: String { scope.name }
         var filename: String { scope.id }
 
@@ -99,10 +106,12 @@ extension Application {
          */
         init(
             initial: @escaping @autoclosure () -> Value,
-            scope: Scope
+            scope: Scope,
+            isBase64Encoded: Bool
         ) {
             self.initial = initial
             self.scope = scope
+            self.isBase64Encoded = isBase64Encoded
         }
 
         /// Resets the value to the inital value. If the inital value was `nil`, then the value will be removed from `FileManager`

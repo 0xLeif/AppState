@@ -11,7 +11,7 @@ fileprivate extension Application {
     }
 
     var storedString: FileState<String?> {
-        fileState(filename: "storedstring")
+        fileState(path: "./AppStateTests", filename: "storedString", isBase64Encoded: false)
     }
 }
 
