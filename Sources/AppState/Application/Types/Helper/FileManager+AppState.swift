@@ -51,6 +51,31 @@ extension FileManager {
         return try JSONDecoder().decode(Value.self, from: data)
     }
 
+    /// Read a file's data as the type `String`
+    ///
+    /// - Parameters:
+    ///   - path: The path to the directory containing the file. The default is `.`, which means the current working directory.
+    ///   - filename: The name of the file to read.
+    ///   - encoding: The String.Encoding to use to get the string.
+    /// - Returns: The file's data decoded as an instance of `String`.
+    /// - Throws: If there's an error reading the file or decoding its data.
+    func string(
+        path: String = ".",
+        filename: String,
+        encoding: String.Encoding = .utf8
+    ) throws -> String {
+        let data = try data(
+            path: path,
+            filename: filename
+        )
+
+        guard let string = String(data: data, encoding: encoding) else {
+            throw FileError.invalidStringFromData
+        }
+
+        return string
+    }
+
     /// Read a file's data
     ///
     /// - Parameters:

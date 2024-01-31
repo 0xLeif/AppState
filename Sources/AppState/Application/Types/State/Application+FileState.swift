@@ -26,7 +26,14 @@ extension Application {
                 }
 
                 do {
-                    return try fileManager.in(path: path, filename: filename)
+                    if 
+                        Value.self == String.self,
+                        let stringValue = try? fileManager.string(path: path, filename: filename) as? Value
+                    {
+                        return stringValue
+                    } else {
+                        return try fileManager.in(path: path, filename: filename)
+                    }
                 } catch {
                     log(
                         error: error,
