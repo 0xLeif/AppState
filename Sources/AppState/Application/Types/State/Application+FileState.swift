@@ -26,14 +26,7 @@ extension Application {
                 }
 
                 do {
-                    if 
-                        Value.self == String.self,
-                        let stringValue = try? fileManager.string(path: path, filename: filename) as? Value
-                    {
-                        return stringValue
-                    } else {
-                        return try fileManager.in(path: path, filename: filename)
-                    }
+                    return try fileManager.in(path: path, filename: filename)
                 } catch {
                     log(
                         error: error,
@@ -76,11 +69,7 @@ extension Application {
                     )
 
                     do {
-                        if let stringValue = newValue as? String {
-                            try fileManager.out(string: stringValue, path: path, filename: filename)
-                        } else  {
-                            try fileManager.out(newValue, path: path, filename: filename)
-                        }
+                        try fileManager.out(newValue, path: path, filename: filename)
                     } catch {
                         log(
                             error: error,
