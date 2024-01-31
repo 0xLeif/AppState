@@ -1070,7 +1070,7 @@ public extension Application {
      */
     func fileState<Value>(
         initial: @escaping @autoclosure () -> Value,
-        path: String = "~/App",
+        path: String = FileManager.defaultFileStatePath,
         filename: String
     ) -> FileState<Value> {
         FileState(
@@ -1088,7 +1088,7 @@ public extension Application {
      - Returns: The state of type `Value`.
      */
     func fileState<Value>(
-        path: String = "~/App",
+        path: String = FileManager.defaultFileStatePath,
         filename: String
     ) -> FileState<Value?> {
         fileState(

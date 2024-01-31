@@ -11,7 +11,7 @@ fileprivate extension Application {
     }
 
     var storedString: FileState<String?> {
-        fileState(path: "./AppStateTests", filename: "storedstring")
+        fileState(filename: "storedstring")
     }
 }
 

@@ -7,6 +7,22 @@ extension FileManager {
         var errorDescription: String? { rawValue }
     }
 
+    public static var defaultFileStatePath: String {
+        guard let path = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first else {
+            return "~/App"
+        }
+
+        #if !os(Linux) && !os(Windows)
+        if #available(macOS 13.0, iOS 16.0, watchOS 9.0, tvOS 16.0, *) {
+            return "\(path.path())/App"
+        } else {
+            return "\(path.path)/App"
+        }
+        #else
+        return "\(path.path)/App"
+        #endif
+    }
+
     /// Creates a directory at the specified path.
     ///
     /// - Parameters:
