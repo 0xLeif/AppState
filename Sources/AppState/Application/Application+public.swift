@@ -1064,7 +1064,7 @@ public extension Application {
 
      - Parameters:
         - initial: The closure that returns initial state value.
-        - path: The path to the directory containing the file. The default is `~/App`.
+        - path: The path to the directory containing the file. The default is `FileManager.defaultFileStatePath`.
         - filename: The name of the file to read.
      - Returns: The state of type `Value`.
      */
@@ -1083,7 +1083,7 @@ public extension Application {
      Retrieves a `FileManager` backed state for the provided `path` and `filename` with a default value of `nil`.
 
      - Parameters:
-        - path: The path to the directory containing the file. The default is `~/App`.
+        - path: The path to the directory containing the file. The default is `FileManager.defaultFileStatePath`.
         - filename: The name of the file to read.
      - Returns: The state of type `Value`.
      */

@@ -7,8 +7,10 @@ extension FileManager {
         var errorDescription: String? { rawValue }
     }
 
+    /// Gets the documentDirectory from FileManager and appends "/App". Otherwise if it can not get the documents directory is will return "~/App".
     public static var defaultFileStatePath: String {
-        guard let path = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first else {
+        let fileManager: FileManager = Application.dependency(\.fileManager)
+        guard let path = fileManager.urls(for: .documentDirectory, in: .userDomainMask).first else {
             return "~/App"
         }
 
