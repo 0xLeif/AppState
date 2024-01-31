@@ -61,7 +61,7 @@ extension Application {
                 } else {
                     shared.cache.set(
                         value: Application.State(
-                            type: .stored,
+                            type: .file,
                             initial: newValue,
                             scope: scope
                         ),
