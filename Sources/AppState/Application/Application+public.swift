@@ -1015,24 +1015,6 @@ public extension Application {
         fileState.reset()
     }
 
-    /// Removes the value from `FileManager` and resets the value to the inital value.
-    @available(*, deprecated, renamed: "reset")
-    static func remove<Value>(
-        fileState keyPath: KeyPath<Application, FileState<Value>>,
-        _ fileID: StaticString = #fileID,
-        _ function: StaticString = #function,
-        _ line: Int = #line,
-        _ column: Int = #column
-    ) {
-        reset(
-            fileState: keyPath,
-            fileID,
-            function,
-            line,
-            column
-        )
-    }
-
     /**
      Retrieves a stored state from Application instance using the provided keypath.
 
@@ -1066,7 +1048,7 @@ public extension Application {
         - initial: The closure that returns initial state value.
         - path: The path to the directory containing the file. The default is `FileManager.defaultFileStatePath`.
         - filename: The name of the file to read.
-        - isBase64Encoded: Boolean to determine if the value should be encoded as Base64. The default is `true`.        
+        - isBase64Encoded: Boolean to determine if the value should be encoded as Base64. The default is `true`.
      - Returns: The state of type `Value`.
      */
     func fileState<Value>(
