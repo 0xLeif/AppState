@@ -15,6 +15,7 @@ AppState is a Swift Package that simplifies the management of application state 
 - **Application:** Centralized class for all application-wide data with built-in observability for reactive changes.
 - **State:** Struct for encapsulating and broadcasting value changes.
 - **StoredState:** Struct for encapsulating and broadcasting stored value changes, using `UserDefaults`.
+- **FileState:** Struct for encapsulating and broadcasting stored value changes, using `FileManager`.
 - 🍎 **SyncState:** Struct for encapsulating and broadcasting stored value changes, using `iCloud`.
 - 🍎 **SecureState:** Struct for securely encapsulating and broadcasting stored value changes, using the device's Keychain.
 
@@ -33,6 +34,7 @@ AppState is a Swift Package that simplifies the management of application state 
 
 - **AppState:** Bridges `Application.State` with `SwiftUI`.
 - **StoredState:** Stores its values to `UserDefaults`.
+- **FileState:** Stores its values using `FileManager`.
 - 🍎 **SyncState:** Stores its values to `iCloud`.
 - **Slice:** Allows users to access and modify specific AppState's state parts.
 - **OptionalSlice:** Allows users to access and modify specific AppState's state parts. Useful if the state value is optional.
