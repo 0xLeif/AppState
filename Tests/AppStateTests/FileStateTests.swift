@@ -48,6 +48,7 @@ final class FileStateTests: XCTestCase {
 
     override class func tearDown() {
         Application.logger.debug("FileStateTests \(Application.description)")
+        try? Application.dependency(\.fileManager).removeItem(atPath: "./AppStateTests")
     }
 
     func testFileState() {
