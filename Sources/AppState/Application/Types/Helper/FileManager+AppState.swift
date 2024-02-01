@@ -1,12 +1,6 @@
 import Foundation
 
 extension FileManager {
-    enum FileError: String, LocalizedError {
-        case invalidStringFromData = "String could not be converted into Data."
-
-        var errorDescription: String? { rawValue }
-    }
-
     /// Gets the documentDirectory from FileManager and appends "/App". Otherwise if it can not get the documents directory is will return "~/App".
     public static var defaultFileStatePath: String {
         let fileManager: FileManager = Application.dependency(\.fileManager)
