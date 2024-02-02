@@ -7,11 +7,11 @@ import XCTest
 
 fileprivate extension Application {
     var storedValue: FileState<Int?> {
-        fileState(path: "./AppStateTests", filename: "storedValue")
+        fileState(filename: "storedValue")
     }
 
     var storedString: FileState<String?> {
-        fileState(path: "./AppStateTests", filename: "storedString", isBase64Encoded: false)
+        fileState(filename: "storedString", isBase64Encoded: false)
     }
 }
 
@@ -44,6 +44,8 @@ extension ExampleStoringViewModel: ObservableObject { }
 final class FileStateTests: XCTestCase {
     override class func setUp() {
         Application.logging(isEnabled: true)
+
+        FileManager.defaultFileStatePath = "./AppStateTests"
     }
 
     override class func tearDown() {
@@ -52,6 +54,7 @@ final class FileStateTests: XCTestCase {
     }
 
     func testFileState() {
+        XCTAssertEqual(FileManager.defaultFileStatePath, "./AppStateTests")
         XCTAssertNil(Application.fileState(\.storedValue).value)
         XCTAssertNil(Application.fileState(\.storedString).value)
 
@@ -76,6 +79,7 @@ final class FileStateTests: XCTestCase {
     }
 
     func testStoringViewModel() {
+        XCTAssertEqual(FileManager.defaultFileStatePath, "./AppStateTests")
         XCTAssertNil(Application.fileState(\.storedValue).value)
         XCTAssertNil(Application.fileState(\.storedString).value)
 
