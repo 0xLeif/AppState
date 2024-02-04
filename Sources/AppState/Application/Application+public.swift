@@ -992,3 +992,97 @@ extension Application {
     }
 }
 
+// MARK: - FileState Functions
+
+public extension Application {
+    /// Resets the value to the inital value. If the inital value was `nil`, then the value will be removed from `FileManager`
+    static func reset<Value>(
+        fileState keyPath: KeyPath<Application, FileState<Value>>,
+        _ fileID: StaticString = #fileID,
+        _ function: StaticString = #function,
+        _ line: Int = #line,
+        _ column: Int = #column
+    ) {
+        log(
+            debug: "🗄️ Resetting FileState \(String(describing: keyPath))",
+            fileID: fileID,
+            function: function,
+            line: line,
+            column: column
+        )
+
+        var fileState = shared.value(keyPath: keyPath)
+        fileState.reset()
+    }
+
+    /**
+     Retrieves a stored state from Application instance using the provided keypath.
+
+     - Parameter keyPath: KeyPath of the state value to be fetched
+     - Returns: The requested state of type `Value`.
+     */
+    static func fileState<Value>(
+        _ keyPath: KeyPath<Application, FileState<Value>>,
+        _ fileID: StaticString = #fileID,
+        _ function: StaticString = #function,
+        _ line: Int = #line,
+        _ column: Int = #column
+    ) -> FileState<Value> {
+        let fileState = shared.value(keyPath: keyPath)
+
+        log(
+            debug: "🗄️ Getting FileState \(String(describing: keyPath)) -> \(fileState.value)",
+            fileID: fileID,
+            function: function,
+            line: line,
+            column: column
+        )
+
+        return fileState
+    }
+
+    /**
+     Retrieves a `FileManager` backed state for the provided `path` and `filename`. If the state is not present, it initializes a new state with the `initial` value.
+
+     - Parameters:
+        - initial: The closure that returns initial state value.
+        - path: The path to the directory containing the file. The default is `FileManager.defaultFileStatePath`.
+        - filename: The name of the file to read.
+        - isBase64Encoded: Boolean to determine if the value should be encoded as Base64. The default is `true`.
+     - Returns: The state of type `Value`.
+     */
+    func fileState<Value>(
+        initial: @escaping @autoclosure () -> Value,
+        path: String = FileManager.defaultFileStatePath,
+        filename: String,
+        isBase64Encoded: Bool = true
+    ) -> FileState<Value> {
+        FileState(
+            initial: initial(),
+            scope: Scope(name: path, id: filename),
+            isBase64Encoded: isBase64Encoded
+        )
+    }
+
+    /**
+     Retrieves a `FileManager` backed state for the provided `path` and `filename` with a default value of `nil`.
+
+     - Parameters:
+        - path: The path to the directory containing the file. The default is `FileManager.defaultFileStatePath`.
+        - filename: The name of the file to read.
+        - isBase64Encoded: Boolean to determine if the value should be encoded as Base64. The default is `true`.
+     - Returns: The state of type `Value`.
+     */
+    func fileState<Value>(
+        path: String = FileManager.defaultFileStatePath,
+        filename: String,
+        isBase64Encoded: Bool = true
+    ) -> FileState<Value?> {
+        fileState(
+            initial: nil,
+            path: path,
+            filename: filename,
+            isBase64Encoded: isBase64Encoded
+        )
+    }
+}

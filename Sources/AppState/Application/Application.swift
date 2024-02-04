@@ -81,6 +81,7 @@ open class Application: NSObject {
     /// Loads the default dependencies for use in Application.
     private func loadDefaultDependencies() {
         load(dependency: \.userDefaults)
+        load(dependency: \.fileManager)
     }
 
     #if !os(Linux) && !os(Windows)
