@@ -171,6 +171,40 @@ public extension Application {
     }
 
     /**
+     Promotes the specified `Dependency` with the given value.
+     - Parameters:
+        - keyPath: Key path of the dependency to be promoted.
+        - value: The new value to promote the current dependency.
+
+     - Returns: `Application.self` to allow chaining.
+
+     Note: There is no way to undo the promotion other than re-promoting a dependency. It is advised you use `override` if you ever need to undo the change.
+     */
+    @discardableResult
+    static func promote<CustomDependency>(
+        _ keyPath: KeyPath<Application, Dependency<CustomDependency>>,
+        with value: CustomDependency,
+        _ fileID: StaticString = #fileID,
+        _ function: StaticString = #function,
+        _ line: Int = #line,
+        _ column: Int = #column
+    ) -> Application.Type {
+        let promotionOverride = override(
+            keyPath,
+            with: value,
+            fileID,
+            function,
+            line,
+            column
+        )
+
+        var promotions = Application.state(\.dependencyPromotions)
+        promotions.value.append(promotionOverride)
+
+        return Application.self
+    }
+
+    /**
      Retrieves a dependency for the provided `id`. If dependency is not present, it is created once using the provided closure.
 
      - Parameters:

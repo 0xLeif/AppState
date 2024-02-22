@@ -1,4 +1,8 @@
 extension Application {
+    var dependencyPromotions: State<[DependencyOverride]> {
+        state(initial: [])
+    }
+
     /// `Dependency` struct encapsulates dependencies used throughout the app.
     public struct Dependency<Value>: CustomStringConvertible {
         /// The dependency value.
