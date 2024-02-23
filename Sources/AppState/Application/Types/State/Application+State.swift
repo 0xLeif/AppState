@@ -37,8 +37,7 @@ extension Application {
                         }
 
                         #if (!os(Linux) && !os(Windows))
-                        if ProcessInfo().environment["XCTestBundlePath"] == nil {
-                            print("HERE: GitHub Action?")
+                        if ProcessInfo().environment["XCTestConfigurationFilePath"] == nil {
                             Task {
                                 await MainActor.run {
                                     setValue()
