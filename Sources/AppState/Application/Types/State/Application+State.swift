@@ -1,3 +1,5 @@
+import Foundation
+
 extension Application {
     /// `State` encapsulates the value within the application's scope and allows any changes to be propagated throughout the scoped area.
     public struct State<Value>: MutableApplicationState, CustomStringConvertible {
@@ -34,11 +36,15 @@ extension Application {
                             )
                         }
 
-                        #if !os(Linux) && !os(Windows)
-                        Task {
-                            await MainActor.run {
-                                setValue()
+                        #if (!os(Linux) && !os(Windows))
+                        if ProcessInfo().environment["XCTestBundlePath"] == nil {
+                            Task {
+                                await MainActor.run {
+                                    setValue()
+                                }
                             }
+                        } else {
+                            setValue()
                         }
                         #else
                         setValue()

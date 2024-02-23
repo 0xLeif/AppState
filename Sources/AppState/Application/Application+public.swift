@@ -316,7 +316,6 @@ public extension Application {
         let debugEmoji = "📦"
         #endif
 
-
         log(
             debug: "\(debugEmoji) Getting State \(String(describing: keyPath)) -> \(appState.value)",
             fileID: fileID,
