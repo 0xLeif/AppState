@@ -14,4 +14,3 @@ final class ApplicationTests: XCTestCase {
         applicationType.someFunction()
     }
 }
-
