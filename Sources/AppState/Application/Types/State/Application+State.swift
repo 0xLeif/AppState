@@ -37,7 +37,7 @@ extension Application {
                         }
 
                         #if (!os(Linux) && !os(Windows))
-                        if ProcessInfo().environment["XCTestConfigurationFilePath"] == nil {
+                        if NSClassFromString("XCTest") == nil {
                             Task {
                                 await MainActor.run {
                                     setValue()
