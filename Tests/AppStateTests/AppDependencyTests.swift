@@ -1,4 +1,3 @@
-import Waiter
 import XCTest
 @testable import AppState
 
@@ -75,12 +74,6 @@ final class AppDependencyTests: XCTestCase {
         example.fetch()
 
         networkingOverride.cancel()
-
-        try await Waiter.wait(
-            on: Application.shared,
-            for: \.networking,
-            expecting: { $0.value is NetworkService }
-        )
 
         let networkingService = Application.dependency(\.networking)
 
