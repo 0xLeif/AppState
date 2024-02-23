@@ -163,10 +163,20 @@ public extension Application {
                 column: column
             )
 
-            shared.cache.set(
-                value: dependency,
-                forKey: dependency.scope.key
-            )
+            let setValue = {
+                shared.cache.set(
+                    value: dependency,
+                    forKey: dependency.scope.key
+                )
+            }
+
+            #if (!os(Linux) && !os(Windows))
+            Task {
+                setValue()
+            }
+            #else
+            setValue()
+            #endif
         }
     }
 
@@ -199,7 +209,7 @@ public extension Application {
         )
 
         var promotions = Application.state(\.dependencyPromotions)
-        promotions.value.append(promotionOverride)
+        promotions.value[String(describing: keyPath)] = promotionOverride
 
         return Application.self
     }

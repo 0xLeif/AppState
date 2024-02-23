@@ -1,3 +1,4 @@
+import Waiter
 import XCTest
 @testable import AppState
 
@@ -58,7 +59,7 @@ final class AppDependencyTests: XCTestCase {
         composableService.networking.fetch()
     }
 
-    func testDependency() {
+    func testDependency() async throws {
         Application.promote(\.networking, with: NetworkService())
 
         let networkingOverride = Application.override(\.networking, with: MockNetworking())
@@ -74,6 +75,12 @@ final class AppDependencyTests: XCTestCase {
         example.fetch()
 
         networkingOverride.cancel()
+
+        try await Waiter.wait(
+            on: Application.shared,
+            for: \.networking,
+            expecting: { $0.value is NetworkService }
+        )
 
         let networkingService = Application.dependency(\.networking)
 

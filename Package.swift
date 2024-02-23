@@ -18,7 +18,8 @@ let package = Package(
         )
     ],
     dependencies: [
-        .package(url: "https://github.com/0xLeif/Cache", from: "2.0.0")
+        .package(url: "https://github.com/0xLeif/Cache", from: "2.0.0"),
+        .package(url: "https://github.com/0xLeif/Waiter", from: "1.0.0")
     ],
     targets: [
         .target(
@@ -29,7 +30,10 @@ let package = Package(
         ),
         .testTarget(
             name: "AppStateTests",
-            dependencies: ["AppState"]
+            dependencies: [
+                "AppState",
+                "Waiter"
+            ]
         )
     ]
 )

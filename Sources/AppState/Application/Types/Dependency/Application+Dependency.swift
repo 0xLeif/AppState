@@ -1,6 +1,6 @@
 extension Application {
-    var dependencyPromotions: State<[DependencyOverride]> {
-        state(initial: [])
+    var dependencyPromotions: State<[String: DependencyOverride]> {
+        state(initial: [:])
     }
 
     /// `Dependency` struct encapsulates dependencies used throughout the app.
