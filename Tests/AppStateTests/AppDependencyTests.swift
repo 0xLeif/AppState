@@ -43,7 +43,9 @@ fileprivate struct ExampleDependencyWrapper {
 
 final class AppDependencyTests: XCTestCase {
     override class func setUp() {
-        Application.logging(isEnabled: true)
+        Application
+            .logging(isEnabled: true)
+            .promote(\.networking, with: MockNetworking())
     }
 
     override class func tearDown() {
@@ -51,16 +53,14 @@ final class AppDependencyTests: XCTestCase {
     }
 
     func testComposableDependencies() {
-        let networkingOverride = Application.override(\.networking, with: MockNetworking())
-
         let composableService = Application.dependency(\.composableService)
 
         composableService.networking.fetch()
-
-        networkingOverride.cancel()
     }
 
-    func testDependency() {
+    func testDependency() async throws {
+        Application.promote(\.networking, with: NetworkService())
+
         let networkingOverride = Application.override(\.networking, with: MockNetworking())
 
         let mockNetworking = Application.dependency(\.networking)

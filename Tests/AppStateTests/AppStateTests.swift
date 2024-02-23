@@ -13,11 +13,11 @@ fileprivate extension Application {
     var username: State<String> {
         state(initial: "Leif")
     }
-    
+
     var date: State<Date> {
         state(initial: Date())
     }
-    
+
     var colors: State<[String: String]> {
         state(initial: ["primary": "#A020F0"])
     }
@@ -53,7 +53,7 @@ final class AppStateTests: XCTestCase {
     override class func setUp() {
         Application.logging(isEnabled: true)
     }
-    
+
     override class func tearDown() {
         Application.logger.debug("AppStateTests \(Application.description)")
     }
@@ -73,22 +73,13 @@ final class AppStateTests: XCTestCase {
         XCTAssertEqual(appState.value, "0xL")
         XCTAssertEqual(Application.state(\.username).value, "0xL")
     }
-    
+
     func testStateClosureCachesValueOnGet() async {
         let dateState: Application.State = Application.state(\.date)
-        #if !os(Linux) && !os(Windows)
-        await MainActor.run {
-            let copyOfDateState: Application.State =
-            Application.state(\.date)
-            
-            XCTAssertEqual(copyOfDateState.value, dateState.value)
-        }
-        #else
-        let copyOfDateState: Application.State =
-        Application.state(\.date)
-        
+
+        let copyOfDateState: Application.State = Application.state(\.date)
+
         XCTAssertEqual(copyOfDateState.value, dateState.value)
-        #endif
     }
 
     func testPropertyWrappers() {
