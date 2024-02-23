@@ -25,7 +25,7 @@ fileprivate extension Application {
 
 fileprivate class ExampleViewModel {
     @AppState(\.username) var username
-    
+
     func testPropertyWrapper() {
         username = "Hello, ExampleView"
     }
@@ -53,50 +53,50 @@ final class AppStateTests: XCTestCase {
     override class func setUp() {
         Application.logging(isEnabled: true)
     }
-    
+
     override class func tearDown() {
         Application.logger.debug("AppStateTests \(Application.description)")
     }
-    
+
     override func tearDown() {
         var username: Application.State = Application.state(\.username)
         username.value = "Leif"
     }
-    
+
     func testState() {
         var appState: Application.State = Application.state(\.username)
-        
+
         XCTAssertEqual(appState.value, "Leif")
-        
+
         appState.value = "0xL"
-        
+
         XCTAssertEqual(appState.value, "0xL")
         XCTAssertEqual(Application.state(\.username).value, "0xL")
     }
-    
+
     func testStateClosureCachesValueOnGet() async {
         let dateState: Application.State = Application.state(\.date)
-        
+
         let copyOfDateState: Application.State = Application.state(\.date)
-        
+
         XCTAssertEqual(copyOfDateState.value, dateState.value)
     }
-    
+
     func testPropertyWrappers() {
         let exampleView = ExampleView()
-        
+
         XCTAssertEqual(exampleView.username, "Leif")
-        
+
         exampleView.testPropertyWrappers()
-        
+
         XCTAssertEqual(exampleView.username, "Hello, ExampleView")
-        
+
         let viewModel = ExampleViewModel()
-        
+
         XCTAssertEqual(viewModel.username, "Hello, ExampleView")
-        
+
         viewModel.username = "Hello, ViewModel"
-        
+
         XCTAssertEqual(viewModel.username, "Hello, ViewModel")
     }
 }
