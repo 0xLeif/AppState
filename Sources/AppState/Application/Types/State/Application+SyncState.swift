@@ -39,6 +39,12 @@ extension Application {
         /// The initial value of the state.
         private var initial: () -> Value
 
+        /// The scope in which this state exists.
+        private let scope: Scope
+
+        /// The fallback state for when icloudStore doesn't have the data.
+        private var storedState: StoredState<Value>
+
         /// The current state value.
         /// This value is retrieved from the iCloud Key-Value Store or the local cache.
         /// If the value is not found in either, the initial value is returned.
@@ -48,35 +54,21 @@ extension Application {
                 if
                     let data = icloudStore.data(forKey: scope.key),
                     let storedValue = try? JSONDecoder().decode(Value.self, from: data)
-                { 
+                {
                     return storedValue
-                } 
+                }
 
-                guard
-                    let cachedValue = shared.cache.get(
-                        scope.key,
-                        as: State<Value>.self
-                    )
-                else { return initial() }
-
-                return cachedValue.value
+                return storedState.value
             }
             set {
                 let mirror = Mirror(reflecting: newValue)
 
                 if mirror.displayStyle == .optional,
                    mirror.children.isEmpty {
-                    shared.cache.remove(scope.key)
+                    storedState.reset()
                     icloudStore.removeObject(forKey: scope.key)
                 } else {
-                    shared.cache.set(
-                        value: Application.State(
-                            type: .sync,
-                            initial: newValue,
-                            scope: scope
-                        ),
-                        forKey: scope.key
-                    )
+                    storedState.value = newValue
 
                     do {
                         let data = try JSONEncoder().encode(newValue)
@@ -95,8 +87,6 @@ extension Application {
             }
         }
 
-        /// The scope in which this state exists.
-        let scope: Scope
 
         /**
          Creates a new state within a given scope initialized with the provided value.
@@ -111,6 +101,7 @@ extension Application {
         ) {
             self.initial = initial
             self.scope = scope
+            self.storedState = StoredState(initial: initial(), scope: scope)
         }
 
         /// Resets the value to the inital value. If the inital value was `nil`, then the value will be removed from `iCloud`
