@@ -6,6 +6,7 @@ This protocol defines a type, `Value`, and a mutable property, `value`, of that 
 public protocol MutableApplicationState {
     associatedtype Value
 
+    /// An emoji to use when logging about this state.
     static var emoji: Character { get }
 
     /// The actual value that this state holds. It can be both retrieved and modified.
