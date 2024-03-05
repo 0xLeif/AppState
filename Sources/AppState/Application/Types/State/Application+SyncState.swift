@@ -34,6 +34,8 @@ extension Application {
      - Warning: Avoid using this class for data that is essential to your app’s behavior when offline; instead, store such data directly into the local user defaults database.
      */
     public struct SyncState<Value: Codable>: MutableApplicationState {
+        public static var emoji: Character { "☁️" }
+
         @AppDependency(\.icloudStore) private var icloudStore: NSUbiquitousKeyValueStore
 
         /// The initial value of the state.
@@ -76,7 +78,7 @@ extension Application {
                     } catch {
                         Application.log(
                             error: error,
-                            message: "☁️ SyncState failed to encode: \(newValue)",
+                            message: "\(SyncState.emoji) SyncState failed to encode: \(newValue)",
                             fileID: #fileID,
                             function: #function,
                             line: #line,

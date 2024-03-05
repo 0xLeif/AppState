@@ -9,7 +9,9 @@ extension Application {
     }
 
     /// The SecureState structure provides secure and persistent key-value string storage backed by the Keychain that can be used across the application.
-    public struct SecureState {
+    public struct SecureState: MutableApplicationState {
+        public static var emoji: Character { "🔑" }
+        
         @AppDependency(\.keychain) private var keychain: Keychain
 
         /// The initial value of the state.

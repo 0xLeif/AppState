@@ -8,6 +8,8 @@ extension Application {
 
     /// `StoredState` encapsulates the value within the application's scope and allows any changes to be propagated throughout the scoped area.  State is stored using `UserDefaults`.
     public struct StoredState<Value: Codable>: MutableApplicationState {
+        public static var emoji: Character { "💾" }
+
         @AppDependency(\.userDefaults) private var userDefaults: UserDefaults
 
         /// The initial value of the state.

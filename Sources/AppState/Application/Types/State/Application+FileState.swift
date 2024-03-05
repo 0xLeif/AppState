@@ -8,6 +8,8 @@ extension Application {
 
     /// `FileState` encapsulates the value within the application's scope and allows any changes to be propagated throughout the scoped area.  State is stored using `FileManager`.
     public struct FileState<Value: Codable>: MutableApplicationState {
+        public static var emoji: Character { "🗄️" }
+
         @AppDependency(\.fileManager) private var fileManager: FileManager
 
         /// The initial value of the state.
@@ -30,7 +32,7 @@ extension Application {
                 } catch {
                     log(
                         error: error,
-                        message: "🗄️ FileState Fetching",
+                        message: "\(FileState.emoji) FileState Fetching",
                         fileID: #fileID,
                         function: #function,
                         line: #line,
@@ -51,7 +53,7 @@ extension Application {
                     } catch {
                         log(
                             error: error,
-                            message: "🗄️ FileState Deleting",
+                            message: "\(FileState.emoji) FileState Deleting",
                             fileID: #fileID,
                             function: #function,
                             line: #line,
@@ -78,7 +80,7 @@ extension Application {
                     } catch {
                         log(
                             error: error,
-                            message: "🗄️ FileState Saving",
+                            message: "\(FileState.emoji) FileState Saving",
                             fileID: #fileID,
                             function: #function,
                             line: #line,
