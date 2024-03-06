@@ -4,7 +4,7 @@ import SwiftUI
 #endif
 
 /// `AppState` is a property wrapper allowing SwiftUI views to subscribe to Application's state changes in a reactive way. Works similar to `State` and `Published`.
-@propertyWrapper public struct AppState<Value> {
+@propertyWrapper public struct AppState<Value, ApplicationState: MutableApplicationState> where ApplicationState.Value == Value {
     #if !os(Linux) && !os(Windows)
     /// Holds the singleton instance of `Application`.
     @ObservedObject private var app: Application = Application.shared
@@ -14,7 +14,7 @@ import SwiftUI
     #endif
 
     /// Path for accessing `State` from Application.
-    private let keyPath: KeyPath<Application, Application.State<Value>>
+    private let keyPath: KeyPath<Application, ApplicationState>
 
     private let fileID: StaticString
     private let function: StaticString
@@ -33,14 +33,8 @@ import SwiftUI
             ).value
         }
         nonmutating set {
-            #if !os(Linux) && !os(Windows)
-            let debugEmoji = "🔄"
-            #else
-            let debugEmoji = "📦"
-            #endif
-
             Application.log(
-                debug: "\(debugEmoji) Setting State \(String(describing: keyPath)) = \(newValue)",
+                debug: "\(ApplicationState.emoji) Setting State \(String(describing: keyPath)) = \(newValue)",
                 fileID: fileID,
                 function: function,
                 line: line,
@@ -68,7 +62,7 @@ import SwiftUI
      - Parameter keyPath: The `KeyPath` for accessing `State` in Application.
      */
     public init(
-        _ keyPath: KeyPath<Application, Application.State<Value>>,
+        _ keyPath: KeyPath<Application, ApplicationState>,
         _ fileID: StaticString = #fileID,
         _ function: StaticString = #function,
         _ line: Int = #line,

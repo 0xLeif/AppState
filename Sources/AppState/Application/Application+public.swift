@@ -302,22 +302,17 @@ public extension Application {
      - Parameter keyPath: KeyPath of the state value to be fetched
      - Returns: The requested state of type `Value`.
      */
-    static func state<Value>(
-        _ keyPath: KeyPath<Application, State<Value>>,
+    static func state<Value, ApplicationState: MutableApplicationState>(
+        _ keyPath: KeyPath<Application, ApplicationState>,
         _ fileID: StaticString = #fileID,
         _ function: StaticString = #function,
         _ line: Int = #line,
         _ column: Int = #column
-    ) -> State<Value> {
+    ) -> ApplicationState where ApplicationState.Value == Value {
         let appState = shared.value(keyPath: keyPath)
-        #if !os(Linux) && !os(Windows)
-        let debugEmoji = "🔄"
-        #else
-        let debugEmoji = "📦"
-        #endif
 
         log(
-            debug: "\(debugEmoji) Getting State \(String(describing: keyPath)) -> \(appState.value)",
+            debug: "\(ApplicationState.emoji) Getting State \(String(describing: keyPath)) -> \(appState.value)",
             fileID: fileID,
             function: function,
             line: line,

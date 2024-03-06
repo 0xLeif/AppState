@@ -3,11 +3,20 @@ import Foundation
 extension Application {
     /// `State` encapsulates the value within the application's scope and allows any changes to be propagated throughout the scoped area.
     public struct State<Value>: MutableApplicationState, CustomStringConvertible {
+        /// Values that are available in the cache.
         enum StateType {
             case state
             case stored
             case sync
             case file
+        }
+
+        public static var emoji: Character {
+            #if !os(Linux) && !os(Windows)
+            return "🔄"
+            #else
+            return "📦"
+            #endif
         }
 
         private let type: StateType
