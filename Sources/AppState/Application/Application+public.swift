@@ -214,15 +214,15 @@ public extension Application {
      - Returns: The requested dependency of type `Dependency<Value>`.
      */
     func dependency<Value>(
-        _ object: () -> Value,
+        _ object: () throws -> Value,
         feature: String = "App",
         id: String
-    ) -> Dependency<Value> {
+    ) rethrows -> Dependency<Value> {
         let scope = Scope(name: feature, id: id)
         let key = scope.key
 
         guard let dependency = cache.get(key, as: Dependency<Value>.self) else {
-            let value = object()
+            let value = try object()
             let dependency = Dependency(
                 value,
                 scope: scope
@@ -238,13 +238,13 @@ public extension Application {
 
     /// Overloaded version of `dependency(_:feature:id:)` function where id is generated from the code context.
     func dependency<Value>(
-        setup: () -> Value,
+        setup: () throws -> Value,
         _ fileID: StaticString = #fileID,
         _ function: StaticString = #function,
         _ line: Int = #line,
         _ column: Int = #column
-    ) -> Dependency<Value> {
-        dependency(
+    ) rethrows -> Dependency<Value> {
+        try dependency(
             setup,
             id: Application.codeID(
                 fileID: fileID,

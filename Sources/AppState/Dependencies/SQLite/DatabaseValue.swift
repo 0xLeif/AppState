@@ -127,7 +127,7 @@ public enum DatabaseValue {
         }
     }
 
-    func run(statement: OpaquePointer?, index: Int32) {
+    func bind(statement: OpaquePointer?, index: Int32) {
         switch self {
         case .null:
             sqlite3_bind_null(statement, index)

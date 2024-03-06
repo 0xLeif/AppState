@@ -90,7 +90,7 @@ public class Database: ObservableObject {
 
         var index: Int32 = 1
         for datum in data {
-            try DatabaseValue(value: datum).run(statement: sqlStatement, index: index)
+            try DatabaseValue(value: datum).bind(statement: sqlStatement, index: index)
             index += 1
         }
 

@@ -1,11 +1,15 @@
 import Foundation
 
-public protocol SQLiteInitializable {
+public protocol SQLiteInitializable: Codable {
+    var values: [Any] { get }
+
     init?(values: [String: DatabaseValue]) throws
 }
 
 extension Application {
-    public struct SQLiteValue<Value: Codable & SQLiteInitializable>: MutableApplicationState {
+    public struct SQLiteValue<Value: SQLiteInitializable>: MutableApplicationState {
+        public static var emoji: Character { "🪶" }
+
         private let database: Database
 
         private let readQuery: String
@@ -18,19 +22,19 @@ extension Application {
         /// The current state value.
         public var value: Value {
             get {
-                let cachedValue = shared.cache.get(
-                    scope.key,
-                    as: State<Value>.self
-                )
-
-                if let cachedValue = cachedValue {
-                    return cachedValue.value
-                }
+//                let cachedValue = shared.cache.get(
+//                    scope.key,
+//                    as: State<Value>.self
+//                )
+//
+//                if let cachedValue = cachedValue {
+//                    return cachedValue.value
+//                }
 
                 let queryResult: [[String: DatabaseValue]]
 
                 do {
-                    queryResult = try database.query(statement: readQuery)
+                    queryResult = try database.query(statement: deleteQuery)
                 } catch {
                     // log
                     return initial()
@@ -60,6 +64,8 @@ extension Application {
                    mirror.children.isEmpty {
                     shared.cache.remove(scope.key)
                     do {
+//                        try DatabaseValue(value: id).bind(statement: <#T##OpaquePointer?#>, index: <#T##Int32#>)
+
                         try database.run(statement: deleteQuery)
                     } catch {
                         // log
@@ -75,9 +81,10 @@ extension Application {
                     )
 
                     do {
-                        try database.run(statement: writeQuery)
+                        try database.insert(statement: writeQuery, data: newValue.values)
                     } catch {
                         // log
+                        print(error.localizedDescription)
                     }
                 }
             }
