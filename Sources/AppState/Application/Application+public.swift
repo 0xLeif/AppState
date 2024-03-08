@@ -311,7 +311,7 @@ public extension Application {
      */
     @ViewBuilder
     static func preview<Content: View>(
-        dependencyOverrides: [DependencyOverride],
+        _ dependencyOverrides: DependencyOverride...,
         content: @escaping () -> Content
     ) -> some View {
         ApplicationPreview(
