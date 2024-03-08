@@ -1,4 +1,7 @@
 import Foundation
+#if !os(Linux) && !os(Windows)
+import SwiftUI
+#endif
 
 // MARK: Application Functions
 
@@ -292,6 +295,32 @@ public extension Application {
         )
     }
 }
+
+#if !os(Linux) && !os(Windows)
+// MARK: - SwiftUI Preview Dependency Functions
+
+public extension Application {
+    /**
+    Use in SwiftUI previews to inject mock dependencies into the content view.
+
+     - Parameters:
+        - dependencyOverrides: An array of `Application.override(_, with:)` outputs that you want to use for the preview.
+        - content: A closure that returns the View you want to preview.
+
+     - Returns: A View with the overridden dependencies applied.
+     */
+    @ViewBuilder
+    static func preview<Content: View>(
+        dependencyOverrides: [DependencyOverride],
+        content: @escaping () -> Content
+    ) -> some View {
+        ApplicationPreview(
+            dependencyOverrides: dependencyOverrides,
+            content: content
+        )
+    }
+}
+#endif
 
 // MARK: - State Functions
 
