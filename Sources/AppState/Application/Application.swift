@@ -16,7 +16,7 @@ open class Application: NSObject {
     public static let logger: Logger = Logger(subsystem: "AppState", category: "Application")
     #else
     /// Logger specifically for AppState
-    public static let logger: ApplicationLogger = ApplicationLogger()
+    public static var logger: ApplicationLogger = ApplicationLogger()
     #endif
 
     static var isLoggingEnabled: Bool = false
@@ -32,13 +32,16 @@ open class Application: NSObject {
     deinit { bag.removeAll() }
     #endif
 
-    /// Default init used as the default Application, but also any custom implementation of Application. You should never call this function, but instead should use `Application.promote(to: CustomApplication.self)`
-    public override required init() {
+    /// Default init used as the default Application, but also any custom implementation of Application. You should never call this function, but instead should use `Application.promote(to: CustomApplication.self)`.
+    public required init(
+        setup: (Application) -> Void = { _ in }
+    ) {
         lock = NSRecursiveLock()
         cache = Cache()
 
         super.init()
 
+        setup(self)
         loadDefaultDependencies()
 
         #if !os(Linux) && !os(Windows)
