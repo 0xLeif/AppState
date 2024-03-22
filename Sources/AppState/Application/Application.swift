@@ -79,6 +79,31 @@ open class Application: NSObject {
             column: #column
         )
     }
+
+    open func cloudStoreItemDidChange(url: URL) {
+        Application.log(
+            debug: """
+                    ☁️ CloudState was changed externally (\(url.absoluteString))
+                    """,
+            fileID: #fileID,
+            function: #function,
+            line: #line,
+            column: #column
+        )
+
+        var hasExternalChangesState: State<Bool> = Application.state(\.hasExternalChanges)
+
+        DispatchQueue.main.async {
+            self.objectWillChange.send()
+            hasExternalChangesState.value = true
+            print("HERE: True")
+        }
+    }
+
+    public static func loadCloudDependencies() {
+        load(dependency: \.icloudStore)
+        load(dependency: \.icloudDocumentStore)
+    }
     #endif
 
     /// Loads the default dependencies for use in Application.

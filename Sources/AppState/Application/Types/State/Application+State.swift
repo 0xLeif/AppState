@@ -9,6 +9,7 @@ extension Application {
             case stored
             case sync
             case file
+            case cloud
         }
 
         public static var emoji: Character {
@@ -102,6 +103,7 @@ extension Application {
             case .stored:   return "StoredState<\(Value.self)>(\(value)) (\(scope.key))"
             case .sync:     return "SyncState<\(Value.self)>(\(value)) (\(scope.key))"
             case .file:     return "FileState<\(Value.self)>(\(value)) (\(scope.key))"
+            case .cloud:    return "CloudState<\(Value.self)>(\(value)) (\(scope.key))"
             }
         }
     }

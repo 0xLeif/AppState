@@ -60,6 +60,9 @@ extension Application {
             "AppState/Application+SecureState.swift",
             "AppState/Application+Slice.swift",
             "AppState/Application+FileState.swift",
+            "AppState/Application+CloudState.swift",
+            "AppState/Application+CloudStateViewModel.swift",
+            "AppState/CloudStateStore.swift"
         ]
         let isFileIDValue: Bool = excludedFileIDs.contains(fileID.description) == false
 

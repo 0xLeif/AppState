@@ -348,6 +348,8 @@ public extension Application {
             column: column
         )
 
+        print("\(ApplicationState.emoji) Getting State \(String(describing: keyPath)) -> \(appState.value)")
+
         return appState
     }
 
@@ -1143,3 +1145,97 @@ public extension Application {
         )
     }
 }
+
+// MARK: - CloudState Functions
+
+public extension Application {
+    /// Resets the value to the inital value. If the inital value was `nil`, then the value will be removed from `FileManager`
+    static func reset<Value>(
+        cloudState keyPath: KeyPath<Application, CloudState<Value>>,
+        _ fileID: StaticString = #fileID,
+        _ function: StaticString = #function,
+        _ line: Int = #line,
+        _ column: Int = #column
+    ) {
+        log(
+            debug: "☁️ Resetting CloudState \(String(describing: keyPath))",
+            fileID: fileID,
+            function: function,
+            line: line,
+            column: column
+        )
+
+        var cloudState = shared.value(keyPath: keyPath)
+        cloudState.reset()
+    }
+
+    /**
+     Retrieves a stored state from Application instance using the provided keypath.
+
+     - Parameter keyPath: KeyPath of the state value to be fetched
+     - Returns: The requested state of type `Value`.
+     */
+    static func cloudState<Value>(
+        _ keyPath: KeyPath<Application, CloudState<Value>>,
+        _ fileID: StaticString = #fileID,
+        _ function: StaticString = #function,
+        _ line: Int = #line,
+        _ column: Int = #column
+    ) -> CloudState<Value> {
+        let cloudState = shared.value(keyPath: keyPath)
+
+        log(
+            debug: "☁️ Getting CloudState \(String(describing: keyPath)) -> \(cloudState.value)",
+            fileID: fileID,
+            function: function,
+            line: line,
+            column: column
+        )
+
+        return cloudState
+    }
+
+    /**
+     Retrieves a `FileManager` backed state for the provided `path` and `filename`. If the state is not present, it initializes a new state with the `initial` value.
+
+     - Parameters:
+        - initial: The closure that returns initial state value.
+        - path: The path to the directory containing the file. The default is `"AppState"`.
+        - filename: The name of the file to read.
+     - Returns: The state of type `Value`.
+     */
+    func cloudState<Value>(
+        initial: @escaping @autoclosure () -> Value,
+        path: String = "AppState",
+        filename: String,
+        isBase64Encoded: Bool = true
+    ) -> CloudState<Value> {
+        CloudState(
+            initial: initial(),
+            scope: Scope(name: path, id: filename),
+            isBase64Encoded: isBase64Encoded
+        )
+    }
+
+    /**
+     Retrieves a `FileManager` backed state for the provided `path` and `filename` with a default value of `nil`.
+
+     - Parameters:
+        - path: The path to the directory containing the file. The default is `"AppState"`.
+        - filename: The name of the file to read.
+     - Returns: The state of type `Value`.
+     */
+    func cloudState<Value>(
+        path: String = "AppState",
+        filename: String,
+        isBase64Encoded: Bool = true
+    ) -> CloudState<Value?> {
+        cloudState(
+            initial: nil,
+            path: path,
+            filename: filename,
+            isBase64Encoded: isBase64Encoded
+        )
+    }
+}
+
