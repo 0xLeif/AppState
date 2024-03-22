@@ -1,3 +1,4 @@
+#if !os(Linux) && !os(Windows)
 import Cache
 import Foundation
 
@@ -182,3 +183,4 @@ actor CloudStateStore {
         return FilePresenter(url: documentURL)
     }
 }
+#endif
