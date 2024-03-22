@@ -1146,6 +1146,7 @@ public extension Application {
     }
 }
 
+#if !os(Linux) && !os(Windows)
 // MARK: - CloudState Functions
 
 public extension Application {
@@ -1238,4 +1239,4 @@ public extension Application {
         )
     }
 }
-
+#endif
