@@ -62,8 +62,6 @@ extension Application {
                         
                         var hasExternalChangesState: State<Bool> = Application.state(\.hasExternalChanges)
                         hasExternalChangesState.value = false
-
-                        print("HERE: False")
                     }
                 } catch {
                     log(

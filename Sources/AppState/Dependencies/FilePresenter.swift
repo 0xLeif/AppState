@@ -16,7 +16,9 @@ class FilePresenter<Observed: ObservableObject>: NSObject, NSFilePresenter {
         NSFileCoordinator.addFilePresenter(self)
     }
 
-    deinit { NSFileCoordinator.removeFilePresenter(self) }
+    deinit {
+        NSFileCoordinator.removeFilePresenter(self)
+    }
 
     func presentedItemDidChange() {
         guard let presentedItemURL else { return }

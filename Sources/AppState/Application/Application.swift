@@ -96,7 +96,6 @@ open class Application: NSObject {
         DispatchQueue.main.async {
             self.objectWillChange.send()
             hasExternalChangesState.value = true
-            print("HERE: True")
         }
     }
 

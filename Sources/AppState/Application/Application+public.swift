@@ -348,8 +348,6 @@ public extension Application {
             column: column
         )
 
-        print("\(ApplicationState.emoji) Getting State \(String(describing: keyPath)) -> \(appState.value)")
-
         return appState
     }
 
