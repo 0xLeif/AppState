@@ -3,12 +3,31 @@ import Foundation
 import SwiftUI
 
 extension Application {
+    struct ExternalChange {
+        var modificationDate: Date
+        var attributeModificationDate: Date
+        var hasCompletedChange: Bool
+
+        init(
+            modificationDate: Date,
+            attributeModificationDate: Date
+        ) {
+            self.modificationDate = modificationDate
+            self.attributeModificationDate = attributeModificationDate
+            self.hasCompletedChange = false
+        }
+    }
+
     var icloudDocumentStore: Dependency<CloudStateStore> {
         dependency(CloudStateStore())
     }
 
-    var hasExternalChanges: State<Bool> {
-        state(initial: true)
+    var initialFetches: State<Set<String>> {
+        state(initial: [])
+    }
+
+    var externalChanges: State<[String: ExternalChange]> {
+        state(initial: [:])
     }
 
     /// `CloudDocumentState` ...
@@ -28,7 +47,12 @@ extension Application {
                     as: State<Value>.self
                 )
 
-                if shared.value(keyPath: \.hasExternalChanges).value {
+                if shared.initialFetches.value.contains(scope.key) == false {
+                    viewModel.getValue(cachedValue: cachedValue?.value)
+                } else if
+                    let externalChange = shared.value(keyPath: \.externalChanges).value[scope.key],
+                    externalChange.hasCompletedChange == false
+                {
                     viewModel.getValue(cachedValue: cachedValue?.value)
                 }
 

@@ -2,6 +2,12 @@
 import Cache
 import Foundation
 
+extension Application {
+    var fileCoordinator: Dependency<NSFileCoordinator> {
+        dependency(NSFileCoordinator())
+    }
+}
+
 actor CloudStateStore {
     struct Blob<Value: Codable>: Codable {
         let value: Value
@@ -10,17 +16,18 @@ actor CloudStateStore {
     enum CloudError: LocalizedError {
         case invalidURL(String?)
         case noData(String?)
-        
+        case unitTest
+
         var errorDescription: String? {
             switch self {
-            case .invalidURL(let string): return "Invalid URL \(String(describing: string))"
-            case .noData(let string): return "No data for \(String(describing: string))"
+            case .invalidURL(let string):   return "Invalid URL \(String(describing: string))"
+            case .noData(let string):       return "No data for \(String(describing: string))"
+            case .unitTest:                 return "Accessing the iCloud isn't allowed for unit tests. (Using State)."
             }
         }
     }
     
-    private let coordinator: NSFileCoordinator
-    
+    @AppDependency(\.fileCoordinator) private var coordinator: NSFileCoordinator
     @AppDependency(\.fileManager) private var fileManager: FileManager
     
     private var cloudDocumentsURL: URL? {
@@ -32,7 +39,6 @@ actor CloudStateStore {
     var viewModels: [String: any ObservableObject]
     
     init() {
-        self.coordinator = NSFileCoordinator()
         self.viewModels = [:]
     }
     
@@ -46,7 +52,11 @@ actor CloudStateStore {
         let documentURL = cloudDocumentsURL?.appendingPathComponent("\(scope.name).\(scope.id)")
         
         guard let documentURL else {
-            throw CloudError.invalidURL(documentURL?.absoluteString)
+            if NSClassFromString("XCTest") == nil {
+                throw CloudError.invalidURL(documentURL?.absoluteString)
+            } else {
+                throw CloudError.unitTest
+            }
         }
         
         var coordinationError: NSError?
@@ -96,7 +106,11 @@ actor CloudStateStore {
         let documentURL = cloudDocumentsURL?.appendingPathComponent("\(scope.name).\(scope.id)")
         
         guard let documentURL else {
-            throw CloudError.invalidURL(documentURL?.absoluteString)
+            if NSClassFromString("XCTest") == nil {
+                throw CloudError.invalidURL(documentURL?.absoluteString)
+            } else {
+                throw CloudError.unitTest
+            }
         }
         
         let blob = Blob(value: value)
@@ -143,7 +157,11 @@ actor CloudStateStore {
         let documentURL = cloudDocumentsURL?.appendingPathComponent("\(scope.name).\(scope.id)")
         
         guard let documentURL else {
-            throw CloudError.invalidURL(documentURL?.absoluteString)
+            if NSClassFromString("XCTest") == nil {
+                throw CloudError.invalidURL(documentURL?.absoluteString)
+            } else {
+                throw CloudError.unitTest
+            }
         }
         
         var coordinationError: NSError?
@@ -172,7 +190,58 @@ actor CloudStateStore {
             throw coordinationError
         }
     }
-    
+
+    func resourceValues(
+        _ scope: Application.Scope
+    ) throws -> URLResourceValues {
+        let documentURL = cloudDocumentsURL?.appendingPathComponent("\(scope.name).\(scope.id)")
+
+        guard let documentURL else {
+            if NSClassFromString("XCTest") == nil {
+                throw CloudError.invalidURL(documentURL?.absoluteString)
+            } else {
+                throw CloudError.unitTest
+            }
+        }
+
+        var coordinationError: NSError?
+        var resourceValues: URLResourceValues?
+        var readError: Error?
+
+        coordinator.coordinate(
+            readingItemAt: documentURL,
+            options: [],
+            error: &coordinationError,
+            byAccessor: { url in
+                do {
+                    resourceValues = try url.resourceValues(
+                        forKeys: [
+                            .contentModificationDateKey,
+                            .attributeModificationDateKey
+                        ]
+                    )
+                } catch {
+                    readError = error
+                }
+            }
+        )
+
+        if let error = readError {
+            throw error
+        }
+
+        if let coordinationError = coordinationError {
+            throw coordinationError
+        }
+
+        guard let resourceValues else {
+            throw CloudError.noData(documentURL.absoluteString)
+        }
+
+        return resourceValues
+    }
+
+
     func startMonitoringFile<Observed: ObservableObject>(
         scope: Application.Scope
     ) -> FilePresenter<Observed>? {
@@ -180,7 +249,7 @@ actor CloudStateStore {
             return nil
         }
         
-        return FilePresenter(url: documentURL)
+        return FilePresenter(scope: scope, url: documentURL)
     }
 }
 #endif

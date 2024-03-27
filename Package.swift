@@ -5,10 +5,10 @@ import PackageDescription
 let package = Package(
     name: "AppState",
     platforms: [
-        .iOS(.v15),
-        .watchOS(.v8),
-        .macOS(.v11),
-        .tvOS(.v15),
+        .iOS(.v16),
+        .watchOS(.v9),
+        .macOS(.v12),
+        .tvOS(.v16),
         .visionOS(.v1)
     ],
     products: [

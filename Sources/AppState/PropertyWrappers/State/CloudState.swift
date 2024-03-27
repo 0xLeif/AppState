@@ -6,7 +6,6 @@ import SwiftUI
 /**
 
  */
-@available(watchOS 9.0, *)
 @propertyWrapper public struct CloudState<Value: Codable & Equatable>: DynamicProperty {
     /// Holds the singleton instance of `Application`.
     @ObservedObject private var app: Application = Application.shared

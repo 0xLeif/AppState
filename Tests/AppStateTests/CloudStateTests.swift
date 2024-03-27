@@ -40,7 +40,6 @@ fileprivate class ExampleStoringViewModel: ObservableObject {
     }
 }
 
-
 @available(watchOS 9.0, *)
 final class CloudStateTests: XCTestCase {
     override class func setUp() {

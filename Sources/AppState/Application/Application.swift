@@ -80,28 +80,75 @@ open class Application: NSObject {
         )
     }
 
-    open func cloudStoreItemDidChange(url: URL) {
+    open func cloudStoreItemDidChange(
+        scope: Scope,
+        url: URL, 
+        modificationDate: Date?,
+        attributeModificationDate: Date?,
+        completion: () -> Void
+    ) {
+        var externalChangesState: State<[String: ExternalChange]> = externalChanges
+
+        let lastChange = externalChangesState.value[scope.key]
+        guard
+            lastChange?.modificationDate != modificationDate,
+            lastChange?.attributeModificationDate != attributeModificationDate
+        else {
+            return
+        }
+
+        var debugMessage: String = "☁️ CloudState was changed externally \(scope.key)"
+
+        if lastChange?.modificationDate != nil || modificationDate != nil {
+            let lastExternalChangeMessage = lastChange?.modificationDate
+                .formatted(date: .long, time: .complete) ?? "nil"
+
+            let newExternalChangeMessage = modificationDate?
+                .formatted(date: .long, time: .complete) ?? "nil"
+
+            debugMessage += """
+            \n\t- Content Modification Dates:
+            \t\t- Last: \(lastExternalChangeMessage)
+            \t\t- New: \(newExternalChangeMessage)
+            """
+        }
+
+        if lastChange?.attributeModificationDate != nil || attributeModificationDate != nil {
+            let lastExternalChangeMessage = lastChange?.attributeModificationDate
+                .formatted(date: .long, time: .complete) ?? "nil"
+
+            let newExternalChangeMessage = attributeModificationDate?
+                .formatted(date: .long, time: .complete) ?? "nil"
+
+            debugMessage += """
+            \n\t- Attribute Modification Dates:
+            \t\t- Last: \(lastExternalChangeMessage)
+            \t\t- New: \(newExternalChangeMessage)
+            """
+        }
+
         Application.log(
-            debug: """
-                    ☁️ CloudState was changed externally (\(url.absoluteString))
-                    """,
+            debug: debugMessage,
             fileID: #fileID,
             function: #function,
             line: #line,
             column: #column
         )
 
-        var hasExternalChangesState: State<Bool> = Application.state(\.hasExternalChanges)
-
         DispatchQueue.main.async {
-            self.objectWillChange.send()
-            hasExternalChangesState.value = true
+            externalChangesState.value[scope.key] = ExternalChange(
+                modificationDate: modificationDate ?? Date(),
+                attributeModificationDate: attributeModificationDate ?? Date()
+            )
         }
+
+        completion()
     }
 
     public static func loadCloudDependencies() {
         load(dependency: \.icloudStore)
         load(dependency: \.icloudDocumentStore)
+        load(dependency: \.fileCoordinator)
     }
     #endif
 
