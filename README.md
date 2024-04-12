@@ -183,7 +183,6 @@ class ViewModel: ObservableObject {
 
 - [Small Code Samples](https://github.com/0xLeif/AppState/wiki/Small-Code-Samples)
 
-
 ## Documentation
 
 AppState is designed to uphold application state management ease and intuitiveness. Here's how to use it:
