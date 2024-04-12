@@ -181,6 +181,7 @@ class ViewModel: ObservableObject {
 
 </details>
 
+- [Small Code Samples](https://github.com/0xLeif/AppState/wiki/Small-Code-Samples)
 
 ## Documentation
 
@@ -385,6 +386,8 @@ class CustomApplication: Application {
 Application.promote(to: CustomApplication.self)
 ```
 
+By doing this, your custom Application subclass becomes the shared singleton instance that you can use throughout your application. This allows you to extend the functionalities of the Application class and utilize these extensions wherever you need in your application.
+
 ## SyncState: Near Real-Time State Synchronization
 
 SyncState offers near real-time synchronization of application state across multiple devices using Apple's [NSUbiquitousKeyValueStore](https://developer.apple.com/documentation/foundation/nsubiquitouskeyvaluestore). This allows for a consistent application state across various devices in your ecosystem. If your application operates on multiple platforms, SyncState ensures that all instances share the same state in near real-time.
@@ -394,8 +397,6 @@ NSUbiquitousKeyValueStore provides a lightweight, quick setup solution to store 
 The total amount of space available in your app’s key-value store, for a given user, is 1 MB. There is a per-key value size limit of 1 MB, and a maximum of 1024 keys. If you attempt to write data that exceeds these quotas, the write attempt fails and no change is made to your iCloud key-value storage. In this scenario, the system posts the didChangeExternallyNotification notification with a change reason of NSUbiquitousKeyValueStoreQuotaViolationChange.
 
 For more information on synchronizing app preferences with iCloud, you can refer to [Apple's official documentation](https://developer.apple.com/documentation/foundation/icloud/synchronizing_app_preferences_with_icloud).
-
-By doing this, your custom Application subclass becomes the shared singleton instance that you can use throughout your application. This allows you to extend the functionalities of the Application class and utilize these extensions wherever you need in your application.
 
 ## License
 
