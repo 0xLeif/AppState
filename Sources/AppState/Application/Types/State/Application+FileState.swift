@@ -28,7 +28,36 @@ extension Application {
                 }
 
                 do {
-                    return try fileManager.in(path: path, filename: filename)
+                    let storedValue: Value = try fileManager.in(path: path, filename: filename)
+
+                    defer {
+                        let setValue = {
+                            shared.cache.set(
+                                value: Application.State(
+                                    type: .state,
+                                    initial: storedValue,
+                                    scope: scope
+                                ),
+                                forKey: scope.key
+                            )
+                        }
+
+                        #if (!os(Linux) && !os(Windows))
+                        if NSClassFromString("XCTest") == nil {
+                            Task {
+                                await MainActor.run {
+                                    setValue()
+                                }
+                            }
+                        } else {
+                            setValue()
+                        }
+                        #else
+                        setValue()
+                        #endif
+                    }
+
+                    return storedValue
                 } catch {
                     log(
                         error: error,
