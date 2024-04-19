@@ -34,7 +34,7 @@ extension Application {
                         let setValue = {
                             shared.cache.set(
                                 value: Application.State(
-                                    type: .state,
+                                    type: .file,
                                     initial: storedValue,
                                     scope: scope
                                 ),
