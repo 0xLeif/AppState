@@ -11,6 +11,7 @@ import SwiftUI
     @ObservedObject private var app: Application = Application.shared
     #else
     /// Holds the singleton instance of `Application`.
+    @MainActor
     private var app: Application = Application.shared
     #endif
 
