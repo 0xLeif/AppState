@@ -3,6 +3,10 @@ import Foundation
 
 /// `ApplicationLogger` is a struct that provides logging functionalities for Linux and Windows operating systems using closures.
 public struct ApplicationLogger: Sendable {
+    public enum LoggerError: Error {
+        case generalError
+    }
+
     private var debugClosure: @Sendable (String) -> Void
     private var errorClosure: @Sendable (Error, String?) -> Void
 
@@ -44,6 +48,13 @@ public struct ApplicationLogger: Sendable {
     ///   - message: An optional custom message to accompany the error.
     public func error(_ error: Error, message: String? = nil) {
         errorClosure(error, message)
+    }
+
+    /// Logs a general error message.
+    /// - Parameters:
+    ///   - message: An custom message to accompany the error.
+    public func error(message: String) {
+        errorClosure(LoggerError.generalError, message)
     }
 }
 
