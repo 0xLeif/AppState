@@ -1,4 +1,6 @@
 #if os(Linux) || os(Windows)
+import Foundation
+
 /// `ApplicationLogger` is a struct that provides logging functionalities for Linux and Windows operating systems using closures.
 public struct ApplicationLogger: Sendable {
     private var debugClosure: @Sendable (String) -> Void
