@@ -11,10 +11,12 @@ fileprivate extension Application {
     }
 }
 
+@MainActor
 fileprivate struct ExampleStoredValue {
     @StoredState(\.storedValue) var count
 }
 
+@MainActor
 fileprivate class ExampleStoringViewModel {
     @StoredState(\.storedValue) var count
 
@@ -35,14 +37,17 @@ extension ExampleStoringViewModel: ObservableObject { }
 #endif
 
 final class StoredStateTests: XCTestCase {
-    override class func setUp() {
-        Application.logging(isEnabled: true)
+    override func setUp() async throws {
+        await Application.logging(isEnabled: true)
     }
 
-    override class func tearDown() {
-        Application.logger.debug("StoredStateTests \(Application.description)")
+    override func tearDown() async throws {
+        let applicationDescription = await Application.description
+
+        Application.logger.debug("StoredStateTests \(applicationDescription)")
     }
 
+    @MainActor
     func testStoredState() {
         XCTAssertNil(Application.storedState(\.storedValue).value)
 
@@ -61,6 +66,7 @@ final class StoredStateTests: XCTestCase {
         XCTAssertNil(Application.storedState(\.storedValue).value)
     }
 
+    @MainActor
     func testStoringViewModel() {
         XCTAssertNil(Application.storedState(\.storedValue).value)
 

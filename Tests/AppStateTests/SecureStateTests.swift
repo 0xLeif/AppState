@@ -9,10 +9,12 @@ fileprivate extension Application {
     }
 }
 
+@MainActor
 fileprivate struct ExampleSecureValue {
     @SecureState(\.secureValue) var token: String?
 }
 
+@MainActor
 fileprivate class ExampleSecureViewModel: ObservableObject {
     @SecureState(\.secureValue) var token: String?
 
@@ -23,16 +25,19 @@ fileprivate class ExampleSecureViewModel: ObservableObject {
 }
 
 final class SecureStateTests: XCTestCase {
-    override class func setUp() {
-        Application
+    override func setUp() async throws {
+        await Application
             .logging(isEnabled: true)
             .load(dependency: \.keychain)
     }
 
-    override class func tearDown() {
-        Application.logger.debug("SecureStateTests \(Application.description)")
+    override func tearDown() async throws {
+        let applicationDescription = await Application.description
+
+        Application.logger.debug("SecureStateTests \(applicationDescription)")
     }
 
+    @MainActor
     func testSecureState() {
         XCTAssertNil(Application.secureState(\.secureValue).value)
 
@@ -55,6 +60,7 @@ final class SecureStateTests: XCTestCase {
         XCTAssertNil(Application.secureState(\.secureValue).value)
     }
 
+    @MainActor
     func testStoringViewModel() {
         XCTAssertNil(Application.secureState(\.secureValue).value)
 

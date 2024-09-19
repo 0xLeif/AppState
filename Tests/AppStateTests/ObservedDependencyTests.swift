@@ -3,6 +3,7 @@ import SwiftUI
 import XCTest
 @testable import AppState
 
+@MainActor
 fileprivate class ObservableService: ObservableObject {
     @Published var count: Int
 
@@ -16,11 +17,13 @@ fileprivate extension Application {
         dependency("!!!")
     }
 
+    @MainActor
     var observableService: Dependency<ObservableService> {
         dependency(ObservableService())
     }
 }
 
+@MainActor
 fileprivate struct ExampleDependencyWrapper {
     @ObservedDependency(\.observableService) var service
 
@@ -32,14 +35,17 @@ fileprivate struct ExampleDependencyWrapper {
 }
 
 final class ObservedDependencyTests: XCTestCase {
-    override class func setUp() {
-        Application.logging(isEnabled: true)
+    override func setUp() async throws {
+        await Application.logging(isEnabled: true)
     }
 
-    override class func tearDown() {
-        Application.logger.debug("ObservedDependencyTests \(Application.description)")
+    override func tearDown() async throws {
+        let applicationDescription = await Application.description
+
+        Application.logger.debug("ObservedDependencyTests \(applicationDescription)")
     }
 
+    @MainActor
     func testDependency() {
         let example = ExampleDependencyWrapper()
 

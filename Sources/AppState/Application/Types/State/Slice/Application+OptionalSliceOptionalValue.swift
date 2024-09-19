@@ -10,6 +10,7 @@ extension Application {
         private var state: SlicedState
         private let keyPath: SliceKeyPath
 
+        @MainActor
         init(
             _ stateKeyPath: KeyPath<Application, SlicedState>,
             value valueKeyPath: SliceKeyPath
@@ -22,6 +23,7 @@ extension Application {
 
 extension Application.OptionalSliceOptionalValue where SliceKeyPath == KeyPath<Value, SliceValue?> {
     /// The current state value.
+    @MainActor
     public var value: SliceValue? {
         state.value?[keyPath: keyPath]
     }
@@ -29,6 +31,7 @@ extension Application.OptionalSliceOptionalValue where SliceKeyPath == KeyPath<V
 
 extension Application.OptionalSliceOptionalValue where SliceKeyPath == WritableKeyPath<Value, SliceValue?> {
     /// The current state value.
+    @MainActor
     public var value: SliceValue? {
         get {
             guard let sliceState = state.value else { return nil }

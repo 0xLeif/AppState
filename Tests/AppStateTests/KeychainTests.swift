@@ -10,11 +10,9 @@ final class KeychainTests: XCTestCase {
     }
 
     func testKeychainInitValues() throws {
-        let keychain = Keychain(
-            initialValues: [
-                "key": "abc"
-            ]
-        )
+        let keychain = Keychain(keys: ["key"])
+
+        keychain.set(value: "abc", forKey: "key")
 
         let value = try keychain.resolve("key")
 
@@ -35,12 +33,11 @@ final class KeychainTests: XCTestCase {
         keychain.remove("key")
     }
 
+    @MainActor
     func testKeychainRequiresSuccess() throws {
-        let keychain = Keychain(
-            initialValues: [
-                "key": "abc"
-            ]
-        )
+        let keychain = Keychain(keys: ["key"])
+
+        keychain.set(value: "abs", forKey: "key")
 
         XCTAssertNoThrow(try keychain.require("key"))
 
@@ -53,12 +50,11 @@ final class KeychainTests: XCTestCase {
         XCTAssertThrowsError(try keychain.require("key"))
     }
 
+    @MainActor
     func testKeychainValues() throws {
-        let keychain = Keychain(
-            initialValues: [
-                "key": "abc"
-            ]
-        )
+        let keychain = Keychain(keys: ["key"])
+
+        keychain.set(value: "abc", forKey: "key")
 
         let values = keychain.values()
         let secureValue = keychain.get("key")

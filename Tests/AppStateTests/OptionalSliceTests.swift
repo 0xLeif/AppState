@@ -23,6 +23,7 @@ fileprivate extension Application {
     }
 }
 
+@MainActor
 fileprivate class ExampleViewModel {
     @OptionalSlice(\.exampleValue, \.username) var username
     @OptionalConstant(\.exampleValue, \.value) var value
@@ -38,6 +39,7 @@ fileprivate class ExampleViewModel {
 extension ExampleViewModel: ObservableObject { }
 #endif
 
+@MainActor
 fileprivate struct ExampleView {
     @OptionalSlice(\.exampleValue, \.username) var username
     @OptionalSlice(\.exampleValue, \.isLoading) var isLoading
@@ -51,14 +53,17 @@ fileprivate struct ExampleView {
 }
 
 final class OptionalSliceTests: XCTestCase {
-    override class func setUp() {
-        Application.logging(isEnabled: true)
+    override func setUp() async throws {
+        await Application.logging(isEnabled: true)
     }
 
-    override class func tearDown() {
-        Application.logger.debug("AppStateTests \(Application.description)")
+    override func tearDown() async throws {
+        let applicationDescription = await Application.description
+
+        Application.logger.debug("AppStateTests \(applicationDescription)")
     }
 
+    @MainActor
     func testApplicationSliceFunction() {
         var exampleSlice = Application.slice(\.exampleValue, \.username)
 
@@ -77,6 +82,7 @@ final class OptionalSliceTests: XCTestCase {
         exampleSlice.value = nil
     }
 
+    @MainActor
     func testPropertyWrappers() {
         let exampleView = ExampleView()
 
@@ -107,6 +113,7 @@ final class OptionalSliceTests: XCTestCase {
         XCTAssertEqual(viewModel.value, "value")
     }
 
+    @MainActor
     func testNil() {
         let viewModel = ExampleViewModel()
         viewModel.username = nil

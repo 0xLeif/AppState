@@ -1,4 +1,5 @@
 extension Application {
+    @MainActor
     static var cacheDescription: String {
         shared.cache.allValues
             .map { key, value in
@@ -28,6 +29,7 @@ extension Application {
     }
 
     /// Internal log function.
+    @MainActor
     static func log(
         debug message: String,
         fileID: StaticString,
@@ -45,6 +47,7 @@ extension Application {
     }
 
     /// Internal log function.
+    @MainActor
     static func log(
         debug message: () -> String,
         fileID: StaticString,
@@ -72,6 +75,7 @@ extension Application {
     }
 
     /// Internal log function.
+    @MainActor
     static func log(
         error: Error,
         message: String,

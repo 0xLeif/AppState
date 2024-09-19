@@ -6,20 +6,24 @@ import XCTest
 @testable import AppState
 
 fileprivate extension Application {
+    @MainActor
     var storedValue: FileState<Int?> {
         fileState(filename: "storedValue")
     }
 
+   @MainActor
     var storedString: FileState<String?> {
         fileState(filename: "storedString", isBase64Encoded: false)
     }
 }
 
+@MainActor
 fileprivate struct ExampleStoredValue {
     @FileState(\.storedValue) var count
     @FileState(\.storedString) var storedString
 }
 
+@MainActor
 fileprivate class ExampleStoringViewModel {
     @FileState(\.storedValue) var count
     @FileState(\.storedString) var storedString
@@ -42,17 +46,25 @@ extension ExampleStoringViewModel: ObservableObject { }
 #endif
 
 final class FileStateTests: XCTestCase {
-    override class func setUp() {
-        Application.logging(isEnabled: true)
+    override func setUp() async throws {
+        await Application.logging(isEnabled: true)
 
-        FileManager.defaultFileStatePath = "./AppStateTests"
+        await MainActor.run {
+            FileManager.defaultFileStatePath = "./AppStateTests"
+        }
     }
 
-    override class func tearDown() {
-        Application.logger.debug("FileStateTests \(Application.description)")
-        try? Application.dependency(\.fileManager).removeItem(atPath: "./AppStateTests")
+    override func tearDown() async throws {
+        let applicationDescription = await Application.description
+
+        Application.logger.debug("FileStateTests \(applicationDescription)")
+
+        await MainActor.run {
+            try? Application.dependency(\.fileManager).removeItem(atPath: "./AppStateTests")
+        }
     }
 
+    @MainActor
     func testFileState() {
         XCTAssertEqual(FileManager.defaultFileStatePath, "./AppStateTests")
         XCTAssertNil(Application.fileState(\.storedValue).value)
@@ -78,6 +90,7 @@ final class FileStateTests: XCTestCase {
         XCTAssertNil(Application.fileState(\.storedString).value)
     }
 
+    @MainActor
     func testStoringViewModel() {
         XCTAssertEqual(FileManager.defaultFileStatePath, "./AppStateTests")
         XCTAssertNil(Application.fileState(\.storedValue).value)

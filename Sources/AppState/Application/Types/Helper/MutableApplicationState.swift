@@ -10,6 +10,7 @@ public protocol MutableApplicationState {
     static var emoji: Character { get }
 
     /// The actual value that this state holds. It can be both retrieved and modified.
+    @MainActor
     var value: Value { get set }
 }
 

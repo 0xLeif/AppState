@@ -58,6 +58,7 @@ extension Application {
         }
 
         /// Resets the state value to the initial value and store it in the keychain.
+        @MainActor
         public mutating func reset() {
             value = initial()
         }

@@ -1,16 +1,47 @@
 import Foundation
 
 extension Application {
+    public struct SendableFileManager: Sendable {
+        public func `in`<Value: Decodable>(
+            path: String = ".",
+            filename: String
+        ) throws -> Value {
+            try FileManager.default.in(path: path, filename: filename)
+        }
+
+        public func `out`<Value: Encodable>(
+            _ value: Value,
+            path: String = ".",
+            filename: String,
+            base64Encoded: Bool = true
+        ) throws {
+            try FileManager.default.out(
+                value,
+                path: path,
+                filename: filename,
+                base64Encoded: base64Encoded
+            )
+        }
+
+        public func `delete`(path: String = ".", filename: String) throws {
+            try FileManager.default.delete(path: path, filename: filename)
+        }
+
+        public func removeItem(atPath path: String) throws {
+            try FileManager.default.removeItem(atPath: path)
+        }
+    }
+
     /// The shared `FileManager` instance.
-    public var fileManager: Dependency<FileManager> {
-        dependency(FileManager.default)
+    public var fileManager: Dependency<SendableFileManager> {
+        dependency(SendableFileManager())
     }
 
     /// `FileState` encapsulates the value within the application's scope and allows any changes to be propagated throughout the scoped area.  State is stored using `FileManager`.
-    public struct FileState<Value: Codable>: MutableApplicationState {
+    public struct FileState<Value: Codable & Sendable>: MutableApplicationState {
         public static var emoji: Character { "🗄️" }
 
-        @AppDependency(\.fileManager) private var fileManager: FileManager
+        @AppDependency(\.fileManager) private var fileManager: SendableFileManager
 
         /// The initial value of the state.
         private var initial: () -> Value
@@ -146,6 +177,7 @@ extension Application {
         }
 
         /// Resets the value to the inital value. If the inital value was `nil`, then the value will be removed from `FileManager`
+        @MainActor
         public mutating func reset() {
             value = initial()
         }

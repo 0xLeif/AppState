@@ -22,6 +22,7 @@ import SwiftUI
     private let column: Int
 
     /// Represents the current value of the `State`.
+    @MainActor
     public var wrappedValue: Value {
         get {
             Application.state(
@@ -48,6 +49,7 @@ import SwiftUI
 
     #if !os(Linux) && !os(Windows)
     /// A binding to the `State`'s value, which can be used with SwiftUI views.
+    @MainActor
     public var projectedValue: Binding<Value> {
         Binding(
             get: { wrappedValue },
@@ -61,6 +63,7 @@ import SwiftUI
 
      - Parameter keyPath: The `KeyPath` for accessing `State` in Application.
      */
+    @MainActor
     public init(
         _ keyPath: KeyPath<Application, ApplicationState>,
         _ fileID: StaticString = #fileID,
@@ -77,6 +80,7 @@ import SwiftUI
 
     #if !os(Linux) && !os(Windows)
     /// A property wrapper's synthetic storage property. This is just for SwiftUI to mutate the `wrappedValue` and send event through `objectWillChange` publisher when the `wrappedValue` changes
+    @MainActor
     public static subscript<OuterSelf: ObservableObject>(
         _enclosingInstance observed: OuterSelf,
         wrapped wrappedKeyPath: ReferenceWritableKeyPath<OuterSelf, Value>,

@@ -23,6 +23,7 @@ fileprivate extension Application {
     }
 }
 
+@MainActor
 fileprivate class ExampleViewModel {
     @AppState(\.username) var username
 
@@ -33,9 +34,8 @@ fileprivate class ExampleViewModel {
 
 #if !os(Linux) && !os(Windows)
 extension ExampleViewModel: ObservableObject { }
-#endif
 
-fileprivate struct ExampleView {
+fileprivate struct ExampleView: View {
     @AppState(\.username) var username
     @AppState(\.isLoading) var isLoading
 
@@ -47,23 +47,39 @@ fileprivate struct ExampleView {
         }
         #endif
     }
+
+    var body: some View { EmptyView() }
 }
+#else
+@MainActor
+fileprivate struct ExampleView {
+    @AppState(\.username) var username
+    @AppState(\.isLoading) var isLoading
+
+    func testPropertyWrappers() {
+        username = "Hello, ExampleView"
+    }
+}
+#endif
 
 final class AppStateTests: XCTestCase {
-    override class func setUp() {
-        Application.logging(isEnabled: true)
+    override func setUp() async throws {
+        await Application.logging(isEnabled: true)
     }
 
-    override class func tearDown() {
-        Application.logger.debug("AppStateTests \(Application.description)")
+    override func tearDown() async throws {
+        let applicationDescription = await Application.description
+        Application.logger.debug("AppStateTests \(applicationDescription)")
+
+        var username: Application.State = await Application.state(\.username)
+
+        await MainActor.run {
+            username.value = "Leif"
+        }
     }
 
-    override func tearDown() {
-        var username: Application.State = Application.state(\.username)
-        username.value = "Leif"
-    }
-
-    func testState() {
+    @MainActor
+    func testState() async {
         var appState: Application.State = Application.state(\.username)
 
         XCTAssertEqual(appState.value, "Leif")
@@ -74,6 +90,7 @@ final class AppStateTests: XCTestCase {
         XCTAssertEqual(Application.state(\.username).value, "0xL")
     }
 
+    @MainActor
     func testStateClosureCachesValueOnGet() async {
         let dateState: Application.State = Application.state(\.date)
 
@@ -82,6 +99,7 @@ final class AppStateTests: XCTestCase {
         XCTAssertEqual(copyOfDateState.value, dateState.value)
     }
 
+    @MainActor
     func testPropertyWrappers() {
         let exampleView = ExampleView()
 

@@ -15,18 +15,21 @@ fileprivate extension Application {
 }
 
 @available(watchOS 9.0, *)
+@MainActor
 fileprivate struct ExampleSyncValue {
     @SyncState(\.syncValue) var count
 }
 
 
 @available(watchOS 9.0, *)
+@MainActor
 fileprivate struct ExampleFailureSyncValue {
     @SyncState(\.syncFailureValue) var count
 }
 
 
 @available(watchOS 9.0, *)
+@MainActor
 fileprivate class ExampleStoringViewModel: ObservableObject {
     @SyncState(\.syncValue) var count
 
@@ -43,16 +46,19 @@ fileprivate class ExampleStoringViewModel: ObservableObject {
 
 @available(watchOS 9.0, *)
 final class SyncStateTests: XCTestCase {
-    override class func setUp() {
-        Application
+    override func setUp() async throws {
+        await Application
             .logging(isEnabled: true)
             .load(dependency: \.icloudStore)
     }
 
-    override class func tearDown() {
-        Application.logger.debug("SyncStateTests \(Application.description)")
+    override func tearDown() async throws {
+        let applicationDescription = await Application.description
+
+        Application.logger.debug("SyncStateTests \(applicationDescription)")
     }
 
+    @MainActor
     func testSyncState() {
         XCTAssertNil(Application.syncState(\.syncValue).value)
 
@@ -71,6 +77,7 @@ final class SyncStateTests: XCTestCase {
         XCTAssertNil(Application.syncState(\.syncValue).value)
     }
 
+    @MainActor
     func testFailEncodingSyncState() {
         XCTAssertNotNil(Application.syncState(\.syncFailureValue).value)
 
@@ -83,6 +90,7 @@ final class SyncStateTests: XCTestCase {
         XCTAssertEqual(syncValue.count, Double.infinity)
     }
 
+    @MainActor
     func testStoringViewModel() {
         XCTAssertNil(Application.syncState(\.syncValue).value)
 

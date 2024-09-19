@@ -5,7 +5,8 @@ import SwiftUI
 import XCTest
 @testable import AppState
 
-fileprivate class ExampleViewModel {
+@MainActor
+fileprivate class ExampleViewModel: Sendable {
     var username: String? = nil
     var isLoading: Bool = false
     let value: String = "Hello, World!"
@@ -22,6 +23,7 @@ fileprivate extension Application {
     }
 }
 
+@MainActor
 fileprivate struct ExampleView {
     @DependencySlice(\.exampleViewModel, \.username) var username
     @DependencySlice(\.exampleViewModel, \.isLoading) var isLoading
@@ -39,14 +41,17 @@ fileprivate struct ExampleView {
 }
 
 final class DependencySliceTests: XCTestCase {
-    override class func setUp() {
-        Application.logging(isEnabled: true)
+    override func setUp() async throws {
+        await Application.logging(isEnabled: true)
     }
 
-    override class func tearDown() {
-        Application.logger.debug("DependencySliceTests \(Application.description)")
+    override func tearDown() async throws {
+        let applicationDescription = await Application.description
+
+        Application.logger.debug("DependencySliceTests \(applicationDescription)")
     }
 
+    @MainActor
     func testApplicationSliceFunction() {
         var exampleSlice = Application.dependencySlice(\.exampleViewModel, \.username)
 
@@ -63,6 +68,7 @@ final class DependencySliceTests: XCTestCase {
         XCTAssertEqual(Application.dependency(\.exampleViewModel).username, "Leif")
     }
 
+    @MainActor
     func testPropertyWrappers() {
         let exampleView = ExampleView()
 

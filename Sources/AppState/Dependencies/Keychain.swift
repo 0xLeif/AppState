@@ -21,11 +21,12 @@ import Foundation
  let token = try keychain.resolve("token")
  ```
  */
-public class Keychain: Cacheable {
+public final class Keychain: Sendable {
     public typealias Key = String
     public typealias Value = String
     
     private let lock: NSLock
+    @MainActor
     private var keys: Set<Key>
     
     /// Default initializer
@@ -41,19 +42,6 @@ public class Keychain: Cacheable {
     public init(keys: Set<Key>) {
         self.lock = NSLock()
         self.keys = keys
-    }
-    
-    /**
-     Initialize a new instance with key-value pairs.
-     - Parameter initialValues: The key-value pairs to add to the keychain.
-     */
-    public required init(initialValues: [Key: String]) {
-        self.lock = NSLock()
-        self.keys = []
-        
-        for (key, value) in initialValues {
-            set(value: value, forKey: key)
-        }
     }
     
     public func get<Output>(_ key: Key, as: Output.Type) -> Output? {
@@ -99,8 +87,6 @@ public class Keychain: Cacheable {
             kSecValueData: data
         ]
         
-        lock.lock()
-        
         let updateStatus = SecItemUpdate(query as CFDictionary, updateAttributes as CFDictionary)
         
         if updateStatus == errSecItemNotFound {
@@ -108,10 +94,10 @@ public class Keychain: Cacheable {
             addQuery[kSecValueData] = data
             SecItemAdd(addQuery as CFDictionary, nil)
         }
-        
-        keys.insert(key)
-        
-        lock.unlock()
+
+        Task { @MainActor in
+            keys.insert(key)
+        }
     }
     
     public func remove(_ key: Key) {
@@ -143,7 +129,8 @@ public class Keychain: Cacheable {
     public func require(_ key: Key) throws -> Self {
         try require(keys: [key])
     }
-    
+
+    @MainActor
     public func values<Output>(ofType: Output.Type) -> [Key: Output] {
         let storedKeys: [Key]
         var values: [Key: Output] = [:]
@@ -186,6 +173,7 @@ public extension Keychain {
      Returns all keys and their string values currently in the keychain.
      - Returns: A dictionary with keys and their corresponding string values.
      */
+    @MainActor
     func values() -> [Key: String] {
         values(ofType: String.self)
     }

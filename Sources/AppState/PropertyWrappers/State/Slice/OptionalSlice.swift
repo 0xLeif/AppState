@@ -29,6 +29,7 @@ import SwiftUI
     private let sliceKeyPath: String
 
     /// Represents the current value of the `State`.
+    @MainActor
     public var wrappedValue: SliceValue? {
         get {
             if let valueKeyPath {
@@ -92,6 +93,7 @@ import SwiftUI
 
     #if !os(Linux) && !os(Windows)
     /// A binding to the `State`'s value, which can be used with SwiftUI views.
+    @MainActor
     public var projectedValue: Binding<SliceValue?> {
         Binding(
             get: { wrappedValue },
@@ -107,6 +109,7 @@ import SwiftUI
          - stateKeyPath: A KeyPath that points to the state in AppState that should be sliced.
          - valueKeyPath: A WritableKeyPath that points to the specific part of the state that should be accessed.
      */
+    @MainActor
     public init(
         _ stateKeyPath: KeyPath<Application, SlicedState>,
         _ valueKeyPath: WritableKeyPath<Value, SliceValue>,
@@ -139,6 +142,7 @@ import SwiftUI
          - stateKeyPath: A KeyPath that points to the state in AppState that should be sliced.
          - valueKeyPath: A WritableKeyPath that points to the specific part of the state that should be accessed. Must be Optional.
      */
+    @MainActor
     public init(
         _ stateKeyPath: KeyPath<Application, SlicedState>,
         _ optionalValueKeyPath: WritableKeyPath<Value, SliceValue?>,
@@ -166,6 +170,7 @@ import SwiftUI
 
     #if !os(Linux) && !os(Windows)
     /// A property wrapper's synthetic storage property. This is just for SwiftUI to mutate the `wrappedValue` and send event through `objectWillChange` publisher when the `wrappedValue` changes
+    @MainActor
     public static subscript<OuterSelf: ObservableObject>(
         _enclosingInstance observed: OuterSelf,
         wrapped wrappedKeyPath: ReferenceWritableKeyPath<OuterSelf, SliceValue?>,

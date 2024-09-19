@@ -4,7 +4,7 @@ extension Application {
     }
 
     /// `Dependency` struct encapsulates dependencies used throughout the app.
-    public struct Dependency<Value>: CustomStringConvertible {
+    public struct Dependency<Value: Sendable>: CustomStringConvertible, Sendable {
         /// The dependency value.
         var value: Value
 
@@ -34,9 +34,9 @@ extension Application {
     }
 
     /// `DependencyOverride` provides a handle to revert a dependency override operation.
-    public class DependencyOverride {
+    public final class DependencyOverride: Sendable {
         /// Closure to be invoked when the dependency override is cancelled. This closure typically contains logic to revert the overrides on the dependency.
-        private let cancelOverride: () -> Void
+        private let cancelOverride: @Sendable () async -> Void
 
         /**
          Initializes a `DependencyOverride` instance.
@@ -44,16 +44,13 @@ extension Application {
          - Parameter cancelOverride: The closure to be invoked when the
            dependency override is cancelled.
          */
-        init(cancelOverride: @escaping () -> Void) {
+        init(cancelOverride: @Sendable @escaping () async -> Void) {
             self.cancelOverride = cancelOverride
         }
 
-        /// Automatically cancels the override when `DependencyOverride` instance is deallocated.
-        deinit { cancel() }
-
         /// Cancels the override and resets the Dependency back to its value before the override.
-        public func cancel() {
-            cancelOverride()
+        public func cancel() async {
+            await cancelOverride()
         }
     }
 }

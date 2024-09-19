@@ -4,7 +4,7 @@ extension Application {
 
      For example, it could be used to scope a state to a particular screen or user interaction flow.
     */
-    public struct Scope {
+    public struct Scope: Sendable {
         /// The name of the scope context
         public let name: String
 
