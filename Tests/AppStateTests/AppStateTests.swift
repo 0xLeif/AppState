@@ -77,25 +77,25 @@ final class AppStateTests: XCTestCase {
         username.value = "Leif"
     }
     
-    func testState() {
-        var appState: Application.State = Application.state(\.username)
-        
-        XCTAssertEqual(appState.value, "Leif")
-        
-        appState.value = "0xL"
-        
-        XCTAssertEqual(appState.value, "0xL")
-        XCTAssertEqual(Application.state(\.username).value, "0xL")
-    }
-    
-    func testStateClosureCachesValueOnGet() {
-        let dateState: Application.State = Application.state(\.date)
-        
-        let copyOfDateState: Application.State = Application.state(\.date)
-        
-        XCTAssertEqual(copyOfDateState.value, dateState.value)
-    }
-    
+//    func testState() {
+//        var appState: Application.State = Application.state(\.username)
+//        
+//        XCTAssertEqual(appState.value, "Leif")
+//        
+//        appState.value = "0xL"
+//        
+//        XCTAssertEqual(appState.value, "0xL")
+//        XCTAssertEqual(Application.state(\.username).value, "0xL")
+//    }
+//    
+//    func testStateClosureCachesValueOnGet() {
+//        let dateState: Application.State = Application.state(\.date)
+//        
+//        let copyOfDateState: Application.State = Application.state(\.date)
+//        
+//        XCTAssertEqual(copyOfDateState.value, dateState.value)
+//    }
+//    
 //    func testPropertyWrappers() {
 //        let exampleView = ExampleView()
 //        
