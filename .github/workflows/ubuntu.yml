@@ -12,10 +12,9 @@ jobs:
     runs-on: ubuntu-20.04
 
     steps:
-      - uses: compnerd/gha-setup-swift@main
+      - uses: sersoft-gmbh/swifty-linux-action@v3
         with:
-          branch: swift-6.0-release
-          tag: 6.0-RELEASE
+          release-version: 6.0
       - uses: actions/checkout@v3
       - name: Build for release
         run: swift build -v -c release
