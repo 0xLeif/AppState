@@ -6,8 +6,9 @@ fileprivate class SomeApplication: Application {
 }
 
 final class ApplicationTests: XCTestCase {
+    @MainActor
     func testCustomFunction() async throws {
-        let applicationType = await Application.logging(isEnabled: true)
+        let applicationType = Application.logging(isEnabled: true)
             .load(dependency: \.userDefaults)
             .promote(to: SomeApplication.self)
 
