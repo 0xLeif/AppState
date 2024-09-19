@@ -7,7 +7,7 @@ import XCTest
 fileprivate class ObservableService: ObservableObject {
     @Published var count: Int
 
-    init() { 
+    init() {
         count = 0
     }
 }
@@ -34,19 +34,18 @@ fileprivate struct ExampleDependencyWrapper {
     }
 }
 
+@MainActor
 final class ObservedDependencyTests: XCTestCase {
     override func setUp() async throws {
-        await Application.logging(isEnabled: true)
+        Application.logging(isEnabled: true)
     }
 
-    @MainActor
     override func tearDown() async throws {
         let applicationDescription = Application.description
 
         Application.logger.debug("ObservedDependencyTests \(applicationDescription)")
     }
 
-    @MainActor
     func testDependency() {
         let example = ExampleDependencyWrapper()
 

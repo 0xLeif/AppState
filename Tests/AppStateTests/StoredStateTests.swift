@@ -36,19 +36,18 @@ fileprivate class ExampleStoringViewModel {
 extension ExampleStoringViewModel: ObservableObject { }
 #endif
 
+@MainActor
 final class StoredStateTests: XCTestCase {
     override func setUp() async throws {
-        await Application.logging(isEnabled: true)
+        Application.logging(isEnabled: true)
     }
 
-    @MainActor
     override func tearDown() async throws {
         let applicationDescription = Application.description
 
         Application.logger.debug("StoredStateTests \(applicationDescription)")
     }
 
-    @MainActor
     func testStoredState() {
         XCTAssertNil(Application.storedState(\.storedValue).value)
 
@@ -67,7 +66,6 @@ final class StoredStateTests: XCTestCase {
         XCTAssertNil(Application.storedState(\.storedValue).value)
     }
 
-    @MainActor
     func testStoringViewModel() {
         XCTAssertNil(Application.storedState(\.storedValue).value)
 

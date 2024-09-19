@@ -40,19 +40,18 @@ fileprivate struct ExampleView {
     }
 }
 
+@MainActor
 final class DependencySliceTests: XCTestCase {
     override func setUp() async throws {
-        await Application.logging(isEnabled: true)
+        Application.logging(isEnabled: true)
     }
 
-    @MainActor
     override func tearDown() async throws {
         let applicationDescription = Application.description
 
         Application.logger.debug("DependencySliceTests \(applicationDescription)")
     }
 
-    @MainActor
     func testApplicationSliceFunction() {
         var exampleSlice = Application.dependencySlice(\.exampleViewModel, \.username)
 
@@ -69,7 +68,6 @@ final class DependencySliceTests: XCTestCase {
         XCTAssertEqual(Application.dependency(\.exampleViewModel).username, "Leif")
     }
 
-    @MainActor
     func testPropertyWrappers() {
         let exampleView = ExampleView()
 

@@ -32,7 +32,7 @@ fileprivate struct ExampleFailureSyncValue {
 @MainActor
 fileprivate class ExampleStoringViewModel: ObservableObject {
     @SyncState(\.syncValue) var count
-
+    
     func testPropertyWrapper() {
         count = 27
         _ = TextField(
@@ -45,66 +45,63 @@ fileprivate class ExampleStoringViewModel: ObservableObject {
 
 
 @available(watchOS 9.0, *)
+@MainActor
 final class SyncStateTests: XCTestCase {
     override func setUp() async throws {
-        await Application
+        Application
             .logging(isEnabled: true)
             .load(dependency: \.icloudStore)
     }
-
-    @MainActor
+    
     override func tearDown() async throws {
         let applicationDescription = Application.description
-
+        
         Application.logger.debug("SyncStateTests \(applicationDescription)")
     }
-
-    @MainActor
+    
     func testSyncState() {
         XCTAssertNil(Application.syncState(\.syncValue).value)
-
+        
         let syncValue = ExampleSyncValue()
-
+        
         XCTAssertEqual(syncValue.count, nil)
-
+        
         syncValue.count = 1
-
+        
         XCTAssertEqual(syncValue.count, 1)
         
         Application.logger.debug("SyncStateTests \(Application.description)")
-
+        
         syncValue.count = nil
-
+        
         XCTAssertNil(Application.syncState(\.syncValue).value)
     }
-
-    @MainActor
+    
     func testFailEncodingSyncState() {
         XCTAssertNotNil(Application.syncState(\.syncFailureValue).value)
-
+        
         let syncValue = ExampleFailureSyncValue()
-
+        
         XCTAssertEqual(syncValue.count, -1)
-
+        
         syncValue.count = Double.infinity
-
+        
         XCTAssertEqual(syncValue.count, Double.infinity)
     }
-
-    @MainActor
+    
     func testStoringViewModel() {
         XCTAssertNil(Application.syncState(\.syncValue).value)
-
+        
         let viewModel = ExampleStoringViewModel()
-
+        
         XCTAssertEqual(viewModel.count, nil)
-
+        
         viewModel.testPropertyWrapper()
-
+        
         XCTAssertEqual(viewModel.count, 27)
-
+        
         Application.reset(syncState: \.syncValue)
-
+        
         XCTAssertNil(viewModel.count)
     }
 }

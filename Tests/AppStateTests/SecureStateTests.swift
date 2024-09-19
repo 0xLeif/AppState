@@ -24,32 +24,31 @@ fileprivate class ExampleSecureViewModel: ObservableObject {
     }
 }
 
+@MainActor
 final class SecureStateTests: XCTestCase {
     override func setUp() async throws {
-        await Application
+        Application
             .logging(isEnabled: true)
             .load(dependency: \.keychain)
     }
 
-    @MainActor
     override func tearDown() async throws {
         let applicationDescription = Application.description
 
         Application.logger.debug("SecureStateTests \(applicationDescription)")
     }
 
-    @MainActor
     func testSecureState() {
         XCTAssertNil(Application.secureState(\.secureValue).value)
 
         let secureValue = ExampleSecureValue()
 
         XCTAssertEqual(secureValue.token, nil)
-        
+
         secureValue.token = "QWERTY"
 
         XCTAssertEqual(secureValue.token, "QWERTY")
-        
+
         secureValue.token = UUID().uuidString
 
         XCTAssertNotEqual(secureValue.token, "QWERTY")
@@ -61,7 +60,6 @@ final class SecureStateTests: XCTestCase {
         XCTAssertNil(Application.secureState(\.secureValue).value)
     }
 
-    @MainActor
     func testStoringViewModel() {
         XCTAssertNil(Application.secureState(\.secureValue).value)
 

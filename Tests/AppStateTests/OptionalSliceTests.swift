@@ -52,19 +52,18 @@ fileprivate struct ExampleView {
     }
 }
 
+@MainActor
 final class OptionalSliceTests: XCTestCase {
     override func setUp() async throws {
-        await Application.logging(isEnabled: true)
+        Application.logging(isEnabled: true)
     }
 
-    @MainActor
     override func tearDown() async throws {
         let applicationDescription = Application.description
 
         Application.logger.debug("AppStateTests \(applicationDescription)")
     }
 
-    @MainActor
     func testApplicationSliceFunction() {
         var exampleSlice = Application.slice(\.exampleValue, \.username)
 
@@ -83,7 +82,6 @@ final class OptionalSliceTests: XCTestCase {
         exampleSlice.value = nil
     }
 
-    @MainActor
     func testPropertyWrappers() {
         let exampleView = ExampleView()
 
@@ -114,7 +112,6 @@ final class OptionalSliceTests: XCTestCase {
         XCTAssertEqual(viewModel.value, "value")
     }
 
-    @MainActor
     func testNil() {
         let viewModel = ExampleViewModel()
         viewModel.username = nil

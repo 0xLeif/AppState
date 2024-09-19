@@ -44,7 +44,7 @@ fileprivate struct ExampleView {
     @Slice(\.exampleValue, \.username) var username
     @Slice(\.exampleValue, \.isLoading) var isLoading
     @Constant(\.exampleValue, \.mutableValue) var constantMutableValue
-    
+
     func testPropertyWrappers() {
         username = "Hello, ExampleView"
         #if !os(Linux) && !os(Windows)
@@ -55,19 +55,18 @@ fileprivate struct ExampleView {
     }
 }
 
+@MainActor
 final class SliceTests: XCTestCase {
     override func setUp() async throws {
-        await Application.logging(isEnabled: true)
+        Application.logging(isEnabled: true)
     }
 
-    @MainActor
     override func tearDown() async throws {
         let applicationDescription = Application.description
 
         Application.logger.debug("AppStateTests \(applicationDescription)")
     }
 
-    @MainActor
     func testApplicationSliceFunction() {
         var exampleSlice = Application.slice(\.exampleValue, \.username)
 
@@ -84,22 +83,21 @@ final class SliceTests: XCTestCase {
         XCTAssertEqual(Application.state(\.exampleValue).value.username, "Leif")
     }
 
-    @MainActor
     func testPropertyWrappers() {
         let exampleView = ExampleView()
-        
+
         XCTAssertEqual(exampleView.username, "Leif")
-        
+
         exampleView.testPropertyWrappers()
-        
+
         XCTAssertEqual(exampleView.username, "Hello, ExampleView")
-        
+
         let viewModel = ExampleViewModel()
-        
+
         XCTAssertEqual(viewModel.username, "Hello, ExampleView")
-        
+
         viewModel.username = "Hello, ViewModel"
-        
+
         XCTAssertEqual(viewModel.username, "Hello, ViewModel")
 
         XCTAssertEqual(viewModel.value, "value")
