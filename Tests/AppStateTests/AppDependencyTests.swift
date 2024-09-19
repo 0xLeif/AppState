@@ -47,8 +47,9 @@ final class AppDependencyTests: XCTestCase {
             .promote(\.networking, with: MockNetworking())
     }
 
+    @MainActor
     override func tearDown() async throws {
-        let applicationDescription = await Application.description
+        let applicationDescription = Application.description
 
         Application.logger.debug("AppDependencyTests \(applicationDescription)")
     }

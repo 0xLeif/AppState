@@ -52,8 +52,9 @@ final class SyncStateTests: XCTestCase {
             .load(dependency: \.icloudStore)
     }
 
+    @MainActor
     override func tearDown() async throws {
-        let applicationDescription = await Application.description
+        let applicationDescription = Application.description
 
         Application.logger.debug("SyncStateTests \(applicationDescription)")
     }

@@ -67,15 +67,14 @@ final class AppStateTests: XCTestCase {
         await Application.logging(isEnabled: true)
     }
 
+    @MainActor
     override func tearDown() async throws {
-        let applicationDescription = await Application.description
+        let applicationDescription = Application.description
         Application.logger.debug("AppStateTests \(applicationDescription)")
 
-        var username: Application.State = await Application.state(\.username)
+        var username: Application.State = Application.state(\.username)
 
-        await MainActor.run {
-            username.value = "Leif"
-        }
+        username.value = "Leif"
     }
 
     @MainActor

@@ -41,8 +41,9 @@ final class StoredStateTests: XCTestCase {
         await Application.logging(isEnabled: true)
     }
 
+    @MainActor
     override func tearDown() async throws {
-        let applicationDescription = await Application.description
+        let applicationDescription = Application.description
 
         Application.logger.debug("StoredStateTests \(applicationDescription)")
     }
