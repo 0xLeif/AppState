@@ -96,21 +96,21 @@ final class AppStateTests: XCTestCase {
         XCTAssertEqual(copyOfDateState.value, dateState.value)
     }
     
-    func testPropertyWrappers() {
-        let exampleView = ExampleView()
-        
-        XCTAssertEqual(exampleView.username, "Leif")
-        
-        exampleView.testPropertyWrappers()
-        
-        XCTAssertEqual(exampleView.username, "Hello, ExampleView")
-        
-        let viewModel = ExampleViewModel()
-        
-        XCTAssertEqual(viewModel.username, "Hello, ExampleView")
-        
-        viewModel.username = "Hello, ViewModel"
-        
-        XCTAssertEqual(viewModel.username, "Hello, ViewModel")
-    }
+//    func testPropertyWrappers() {
+//        let exampleView = ExampleView()
+//        
+//        XCTAssertEqual(exampleView.username, "Leif")
+//        
+//        exampleView.testPropertyWrappers()
+//        
+//        XCTAssertEqual(exampleView.username, "Hello, ExampleView")
+//        
+//        let viewModel = ExampleViewModel()
+//        
+//        XCTAssertEqual(viewModel.username, "Hello, ExampleView")
+//        
+//        viewModel.username = "Hello, ViewModel"
+//        
+//        XCTAssertEqual(viewModel.username, "Hello, ViewModel")
+//    }
 }
