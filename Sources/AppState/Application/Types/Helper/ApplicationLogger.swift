@@ -46,14 +46,14 @@ public struct ApplicationLogger: Sendable {
     /// - Parameters:
     ///   - error: The error that occurred.
     ///   - message: An optional custom message to accompany the error.
-    public func error(_ error: Error, message: String? = nil) {
+    public func error(_ error: Error, _ message: String? = nil) {
         errorClosure(error, message)
     }
 
     /// Logs a general error message.
     /// - Parameters:
     ///   - message: An custom message to accompany the error.
-    public func error(message: String) {
+    public func error(_ message: String) {
         errorClosure(LoggerError.generalError, message)
     }
 }
