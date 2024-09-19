@@ -45,11 +45,12 @@ final class DependencySliceTests: XCTestCase {
         await Application.logging(isEnabled: true)
     }
 
-    @MainActor
     override func tearDown() async throws {
-        let applicationDescription = Application.description
+        let applicationDescription = await Application.description
 
-        Application.logger.debug("DependencySliceTests \(applicationDescription)")
+        await MainActor.run {
+            Application.logger.debug("DependencySliceTests \(applicationDescription)")
+        }
     }
 
     @MainActor
