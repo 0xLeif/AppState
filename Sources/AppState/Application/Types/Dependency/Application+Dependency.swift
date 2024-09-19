@@ -4,7 +4,7 @@ extension Application {
     }
 
     /// `Dependency` struct encapsulates dependencies used throughout the app.
-    public struct Dependency<Value: Sendable>: CustomStringConvertible, Sendable {
+    public struct Dependency<Value: Sendable>: Sendable, Loggable {
         /// The dependency value.
         var value: Value
 
@@ -28,7 +28,7 @@ extension Application {
             self.scope = scope
         }
 
-        public var description: String {
+        public var logValue: String {
             "Dependency<\(Value.self)>(\(value)) (\(scope.key))"
         }
     }

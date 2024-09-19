@@ -2,7 +2,7 @@ import Foundation
 
 extension Application {
     /// `State` encapsulates the value within the application's scope and allows any changes to be propagated throughout the scoped area.
-    public struct State<Value: Sendable>: MutableApplicationState, Sendable {
+    public struct State<Value: Sendable>: Sendable, MutableApplicationState, Loggable {
         /// Values that are available in the cache.
         enum StateType {
             case state
@@ -98,7 +98,7 @@ extension Application {
         }
 
         @MainActor
-        public var description: String {
+        public var logValue: String {
             switch type {
             case .state:    return "State<\(Value.self)>(\(value)) (\(scope.key))"
             case .stored:   return "StoredState<\(Value.self)>(\(value)) (\(scope.key))"

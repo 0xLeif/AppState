@@ -3,7 +3,11 @@ extension Application {
     static var cacheDescription: String {
         shared.cache.allValues
             .map { key, value in
-                "\t- \(value)"
+                if let value = value as? Loggable {
+                    "\t- \(value.logValue)"
+                } else {
+                    "\t- \(value)"
+                }
             }
             .sorted(by: <)
             .joined(separator: "\n")
