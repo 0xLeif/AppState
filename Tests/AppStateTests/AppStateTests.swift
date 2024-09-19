@@ -76,7 +76,8 @@ final class AppStateTests: XCTestCase {
         
         username.value = "Leif"
     }
-    
+
+    @MainActor
     func testState() {
         var appState: Application.State = Application.state(\.username)
         
