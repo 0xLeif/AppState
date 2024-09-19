@@ -17,6 +17,7 @@ open class Application: NSObject {
     public static let logger: Logger = Logger(subsystem: "AppState", category: "Application")
     #else
     /// Logger specifically for AppState
+    @MainActor
     public static var logger: ApplicationLogger = ApplicationLogger()
     #endif
 
