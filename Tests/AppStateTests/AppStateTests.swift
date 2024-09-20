@@ -62,12 +62,13 @@ fileprivate struct ExampleView {
 }
 #endif
 
-@MainActor
 final class AppStateTests: XCTestCase {
+    @MainActor
     override func setUp() async throws {
         Application.logging(isEnabled: true)
     }
-    
+
+    @MainActor
     override func tearDown() async throws {
         let applicationDescription = Application.description
         Application.logger.debug("AppStateTests \(applicationDescription)")
@@ -77,6 +78,7 @@ final class AppStateTests: XCTestCase {
         username.value = "Leif"
     }
 
+    @MainActor
     func testState() {
         var appState: Application.State = Application.state(\.username)
 //        
