@@ -89,30 +89,32 @@ final class AppStateTests: XCTestCase {
         XCTAssertEqual(appState.value, "0xL")
         XCTAssertEqual(Application.state(\.username).value, "0xL")
     }
-    
-//    func testStateClosureCachesValueOnGet() {
-//        let dateState: Application.State = Application.state(\.date)
-//        
-//        let copyOfDateState: Application.State = Application.state(\.date)
-//        
-//        XCTAssertEqual(copyOfDateState.value, dateState.value)
-//    }
-//    
-//    func testPropertyWrappers() {
-//        let exampleView = ExampleView()
-//        
-//        XCTAssertEqual(exampleView.username, "Leif")
-//        
-//        exampleView.testPropertyWrappers()
-//        
-//        XCTAssertEqual(exampleView.username, "Hello, ExampleView")
-//        
-//        let viewModel = ExampleViewModel()
-//        
-//        XCTAssertEqual(viewModel.username, "Hello, ExampleView")
-//        
-//        viewModel.username = "Hello, ViewModel"
-//        
-//        XCTAssertEqual(viewModel.username, "Hello, ViewModel")
-//    }
+
+    @MainActor
+    func testStateClosureCachesValueOnGet() async {
+        let dateState: Application.State = Application.state(\.date)
+        
+        let copyOfDateState: Application.State = Application.state(\.date)
+        
+        XCTAssertEqual(copyOfDateState.value, dateState.value)
+    }
+
+    @MainActor
+    func testPropertyWrappers() async {
+        let exampleView = ExampleView()
+        
+        XCTAssertEqual(exampleView.username, "Leif")
+        
+        exampleView.testPropertyWrappers()
+        
+        XCTAssertEqual(exampleView.username, "Hello, ExampleView")
+        
+        let viewModel = ExampleViewModel()
+        
+        XCTAssertEqual(viewModel.username, "Hello, ExampleView")
+        
+        viewModel.username = "Hello, ViewModel"
+        
+        XCTAssertEqual(viewModel.username, "Hello, ViewModel")
+    }
 }
