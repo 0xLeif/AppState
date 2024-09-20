@@ -13,6 +13,7 @@
     private let sliceKeyPath: String
 
     /// Represents the current value of the `State`.
+    @MainActor
     public var wrappedValue: SliceValue {
         Application.slice(
             stateKeyPath,
@@ -31,6 +32,7 @@
          - stateKeyPath: A KeyPath that points to the state in AppState that should be sliced.
          - valueKeyPath: A KeyPath that points to the specific part of the state that should be accessed.
      */
+    @MainActor
     public init(
         _ stateKeyPath: KeyPath<Application, SlicedState>,
         _ valueKeyPath: KeyPath<Value, SliceValue>,
@@ -62,6 +64,7 @@
          - stateKeyPath: A KeyPath that points to the state in AppState that should be sliced.
          - valueKeyPath: A WritableKeyPath that points to the specific part of the state that should be accessed.
      */
+    @MainActor
     public init(
         _ stateKeyPath: KeyPath<Application, SlicedState>,
         _ valueKeyPath: WritableKeyPath<Value, SliceValue>,

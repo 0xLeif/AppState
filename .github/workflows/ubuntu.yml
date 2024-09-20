@@ -9,10 +9,12 @@ on:
 
 jobs:
   build:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-20.04
 
     steps:
-      - uses: swift-actions/setup-swift@v1
+      - uses: sersoft-gmbh/swifty-linux-action@v3
+        with:
+          release-version: 6.0
       - uses: actions/checkout@v3
       - name: Build for release
         run: swift build -v -c release

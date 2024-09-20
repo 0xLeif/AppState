@@ -1,26 +1,23 @@
 import XCTest
 @testable import AppState
 
-fileprivate protocol Networking {
+fileprivate protocol Networking: Sendable {
     func fetch()
 }
 
-fileprivate class NetworkService: Networking {
+fileprivate final class NetworkService: Networking {
     func fetch() {
         fatalError()
     }
 }
 
-fileprivate class MockNetworking: Networking {
+fileprivate final class MockNetworking: Networking {
     func fetch() { /* no-op */ }
 }
 
+@MainActor
 fileprivate class ComposableService {
-    let networking: Networking
-
-    init(networking: Networking) {
-        self.networking = networking
-    }
+    @AppDependency(\.networking) var networking: Networking
 }
 
 fileprivate extension Application {
@@ -28,28 +25,33 @@ fileprivate extension Application {
         dependency(NetworkService())
     }
 
+    @MainActor
     var composableService: Dependency<ComposableService> {
-        dependency(ComposableService(networking: Application.dependency(\.networking)))
+        dependency(ComposableService())
     }
 }
 
 fileprivate struct ExampleDependencyWrapper {
     @AppDependency(\.networking) private var networking
 
+    @MainActor
     func fetch() {
         networking.fetch()
     }
 }
 
+@MainActor
 final class AppDependencyTests: XCTestCase {
-    override class func setUp() {
+    override func setUp() async throws {
         Application
             .logging(isEnabled: true)
             .promote(\.networking, with: MockNetworking())
     }
 
-    override class func tearDown() {
-        Application.logger.debug("AppDependencyTests \(Application.description)")
+    override func tearDown() async throws {
+        let applicationDescription = Application.description
+
+        Application.logger.debug("AppDependencyTests \(applicationDescription)")
     }
 
     func testComposableDependencies() {
@@ -58,7 +60,7 @@ final class AppDependencyTests: XCTestCase {
         composableService.networking.fetch()
     }
 
-    func testDependency() async throws {
+    func testDependency() async {
         Application.promote(\.networking, with: NetworkService())
 
         let networkingOverride = Application.override(\.networking, with: MockNetworking())
@@ -73,7 +75,7 @@ final class AppDependencyTests: XCTestCase {
 
         example.fetch()
 
-        networkingOverride.cancel()
+        await networkingOverride.cancel()
 
         let networkingService = Application.dependency(\.networking)
 

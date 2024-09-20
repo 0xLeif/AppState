@@ -26,6 +26,7 @@ import SwiftUI
      Reading this property returns the current value.
      Writing to the property will update the underlying value in the secure state and log the operation.
      */
+    @MainActor
     public var wrappedValue: String? {
         get {
             Application.secureState(
@@ -59,6 +60,7 @@ import SwiftUI
     }
 
     /// A binding to the `State`'s value, which can be used with SwiftUI views.
+    @MainActor
     public var projectedValue: Binding<String?> {
         Binding(
             get: { wrappedValue },
@@ -71,6 +73,7 @@ import SwiftUI
 
      - Parameter keyPath: The `KeyPath` for accessing `SecureState` in Application.
      */
+    @MainActor
     public init(
         _ keyPath: KeyPath<Application, Application.SecureState>,
         _ fileID: StaticString = #fileID,
@@ -86,6 +89,7 @@ import SwiftUI
     }
 
     /// A property wrapper's synthetic storage property. This is just for SwiftUI to mutate the `wrappedValue` and send event through `objectWillChange` publisher when the `wrappedValue` changes
+    @MainActor
     public static subscript<OuterSelf: ObservableObject>(
         _enclosingInstance observed: OuterSelf,
         wrapped wrappedKeyPath: ReferenceWritableKeyPath<OuterSelf, String?>,

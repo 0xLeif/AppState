@@ -3,8 +3,22 @@ import Foundation
 
 @available(watchOS 9.0, *)
 extension Application {
+    public struct SendableNSUbiquitousKeyValueStore: Sendable {
+        public func data(forKey key: String) -> Data? {
+            NSUbiquitousKeyValueStore.default.data(forKey: key)
+        }
+
+        public func set(_ value: Data?, forKey key: String) {
+            NSUbiquitousKeyValueStore.default.set(value, forKey: key)
+        }
+
+        public func removeObject(forKey key: String) {
+            NSUbiquitousKeyValueStore.default.removeObject(forKey: key)
+        }
+    }
+
     /// The default `NSUbiquitousKeyValueStore` instance.
-    public var icloudStore: Dependency<NSUbiquitousKeyValueStore> {
+    public var icloudStore: Dependency<SendableNSUbiquitousKeyValueStore> {
         dependency {
             NotificationCenter.default.addObserver(
                 self,
@@ -13,7 +27,7 @@ extension Application {
                 object: NSUbiquitousKeyValueStore.default
             )
 
-            return NSUbiquitousKeyValueStore.default
+            return SendableNSUbiquitousKeyValueStore()
         }
     }
 
@@ -33,10 +47,10 @@ extension Application {
 
      - Warning: Avoid using this class for data that is essential to your app’s behavior when offline; instead, store such data directly into the local user defaults database.
      */
-    public struct SyncState<Value: Codable>: MutableApplicationState {
+    public struct SyncState<Value: Codable & Sendable>: MutableApplicationState {
         public static var emoji: Character { "☁️" }
 
-        @AppDependency(\.icloudStore) private var icloudStore: NSUbiquitousKeyValueStore
+        @AppDependency(\.icloudStore) private var icloudStore: SendableNSUbiquitousKeyValueStore
 
         /// The initial value of the state.
         private var initial: () -> Value
@@ -107,14 +121,9 @@ extension Application {
         }
 
         /// Resets the value to the inital value. If the inital value was `nil`, then the value will be removed from `iCloud`
+        @MainActor
         public mutating func reset() {
             value = initial()
-        }
-
-        /// Resets the value to the inital value. If the inital value was `nil`, then the value will be removed from `iCloud`
-        @available(*, deprecated, renamed: "reset")
-        public mutating func remove() {
-            reset()
         }
     }
 }

@@ -3,18 +3,18 @@ import XCTest
 @testable import AppState
 
 final class KeychainTests: XCTestCase {
-    func testKeychainInitKeys() throws {
+    @MainActor
+    func testKeychainInitKeys() async throws {
         let keychain = Keychain(keys: ["key"])
 
         XCTAssertThrowsError(try keychain.resolve("key"))
     }
 
-    func testKeychainInitValues() throws {
-        let keychain = Keychain(
-            initialValues: [
-                "key": "abc"
-            ]
-        )
+    @MainActor
+    func testKeychainInitValues() async throws {
+        let keychain = Keychain(keys: ["key"])
+
+        keychain.set(value: "abc", forKey: "key")
 
         let value = try keychain.resolve("key")
 
@@ -23,7 +23,8 @@ final class KeychainTests: XCTestCase {
         keychain.remove("key")
     }
 
-    func testKeychainContains() throws {
+    @MainActor
+    func testKeychainContains() async throws {
         let keychain = Keychain()
 
         XCTAssertFalse(keychain.contains("key"))
@@ -35,30 +36,29 @@ final class KeychainTests: XCTestCase {
         keychain.remove("key")
     }
 
-    func testKeychainRequiresSuccess() throws {
-        let keychain = Keychain(
-            initialValues: [
-                "key": "abc"
-            ]
-        )
+    @MainActor
+    func testKeychainRequiresSuccess() async throws {
+        let keychain = Keychain(keys: ["key"])
+
+        keychain.set(value: "abs", forKey: "key")
 
         XCTAssertNoThrow(try keychain.require("key"))
 
         keychain.remove("key")
     }
 
-    func testKeychainRequiresFailure() throws {
+    @MainActor
+    func testKeychainRequiresFailure() async throws {
         let keychain = Keychain()
 
         XCTAssertThrowsError(try keychain.require("key"))
     }
 
-    func testKeychainValues() throws {
-        let keychain = Keychain(
-            initialValues: [
-                "key": "abc"
-            ]
-        )
+    @MainActor
+    func testKeychainValues() async throws {
+        let keychain = Keychain(keys: ["key"])
+
+        keychain.set(value: "abc", forKey: "key")
 
         let values = keychain.values()
         let secureValue = keychain.get("key")

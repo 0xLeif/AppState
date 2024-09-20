@@ -1,16 +1,30 @@
 import Foundation
 
 extension Application {
+    public struct SendableUserDefaults: Sendable {
+        public func object(forKey key: String) -> Any? {
+            UserDefaults.standard.object(forKey: key)
+        }
+
+        public func removeObject(forKey key: String) {
+            UserDefaults.standard.removeObject(forKey: key)
+        }
+
+        public func set(_ value: Any?, forKey key: String) {
+            UserDefaults.standard.set(value, forKey: key)
+        }
+    }
+
     /// The shared `UserDefaults` instance.
-    public var userDefaults: Dependency<UserDefaults> {
-        dependency(UserDefaults.standard)
+    public var userDefaults: Dependency<SendableUserDefaults> {
+        dependency(SendableUserDefaults())
     }
 
     /// `StoredState` encapsulates the value within the application's scope and allows any changes to be propagated throughout the scoped area.  State is stored using `UserDefaults`.
-    public struct StoredState<Value: Codable>: MutableApplicationState {
+    public struct StoredState<Value: Codable & Sendable>: MutableApplicationState {
         public static var emoji: Character { "💾" }
 
-        @AppDependency(\.userDefaults) private var userDefaults: UserDefaults
+        @AppDependency(\.userDefaults) private var userDefaults: SendableUserDefaults
 
         /// The initial value of the state.
         private var initial: () -> Value
@@ -89,14 +103,9 @@ extension Application {
         }
 
         /// Resets the value to the inital value. If the inital value was `nil`, then the value will be removed from `UserDefaults`
+        @MainActor
         public mutating func reset() {
             value = initial()
-        }
-
-        /// Resets the value to the inital value. If the inital value was `nil`, then the value will be removed from `UserDefaults`
-        @available(*, deprecated, renamed: "reset")
-        public mutating func remove() {
-            reset()
         }
     }
 }

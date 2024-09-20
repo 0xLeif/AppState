@@ -7,6 +7,7 @@ import SwiftUI
 
 public extension Application {
     /// Provides a description of the current application state
+    @MainActor
     static var description: String {
        """
        {
@@ -55,6 +56,7 @@ public extension Application {
 
      In this way, your custom Application subclass becomes the shared singleton instance, which you can then use throughout your application.
      */
+    @MainActor
     @discardableResult
     static func promote<CustomApplication: Application>(
         to customApplication: CustomApplication.Type
@@ -74,6 +76,7 @@ public extension Application {
     }
 
     /// Enables or disabled the default logging inside of Application.
+    @MainActor
     @discardableResult
     static func logging(isEnabled: Bool) -> Application.Type {
         Application.isLoggingEnabled = isEnabled
@@ -91,6 +94,7 @@ public extension Application {
      - Parameter dependency: KeyPath of the Dependency to be loaded
      - Returns: `Application.self` to allow chaining.
      */
+    @MainActor
     @discardableResult
     static func load<Value>(
         dependency keyPath: KeyPath<Application, Dependency<Value>>
@@ -106,6 +110,7 @@ public extension Application {
      - Parameter keyPath: KeyPath of the Dependency to be fetched
      - Returns: The requested state of type `Value`.
      */
+    @MainActor
     static func dependency<Value>(
         _ keyPath: KeyPath<Application, Dependency<Value>>,
         _ fileID: StaticString = #fileID,
@@ -134,6 +139,7 @@ public extension Application {
 
      Note: If the `DependencyOverride` object gets deallocated without calling `cancel()`, it will automatically cancel the override, restoring the original dependency.
      */
+    @MainActor
     static func `override`<Value>(
         _ keyPath: KeyPath<Application, Dependency<Value>>,
         with value: Value,
@@ -157,19 +163,23 @@ public extension Application {
             forKey: dependency.scope.key
         )
 
+        let keyPath = String(describing: keyPath)
+
         return DependencyOverride {
-            log(
-                debug: "🔗 Cancelling Dependency Override \(String(describing: keyPath)) ",
+            await log(
+                debug: "🔗 Cancelling Dependency Override \(keyPath) ",
                 fileID: fileID,
                 function: function,
                 line: line,
                 column: column
             )
 
-            shared.cache.set(
-                value: dependency,
-                forKey: dependency.scope.key
-            )
+            await MainActor.run {
+                shared.cache.set(
+                    value: dependency,
+                    forKey: dependency.scope.key
+                )
+            }
         }
     }
 
@@ -183,6 +193,7 @@ public extension Application {
 
      Note: There is no way to undo the promotion other than re-promoting a dependency. It is advised you use `override` if you ever need to undo the change.
      */
+    @MainActor
     @discardableResult
     static func promote<CustomDependency>(
         _ keyPath: KeyPath<Application, Dependency<CustomDependency>>,
@@ -309,6 +320,7 @@ public extension Application {
 
      - Returns: A View with the overridden dependencies applied.
      */
+    @MainActor
     @ViewBuilder
     static func preview<Content: View>(
         _ dependencyOverrides: DependencyOverride...,
@@ -331,6 +343,7 @@ public extension Application {
      - Parameter keyPath: KeyPath of the state value to be fetched
      - Returns: The requested state of type `Value`.
      */
+    @MainActor
     static func state<Value, ApplicationState: MutableApplicationState>(
         _ keyPath: KeyPath<Application, ApplicationState>,
         _ fileID: StaticString = #fileID,
@@ -396,6 +409,7 @@ public extension Application {
 
 public extension Application {
     /// Resets the value to the inital value. If the inital value was `nil`, then the value will be removed from `UserDefaults`
+    @MainActor
     static func reset<Value>(
         storedState keyPath: KeyPath<Application, StoredState<Value>>,
         _ fileID: StaticString = #fileID,
@@ -416,6 +430,7 @@ public extension Application {
     }
 
     /// Removes the value from `UserDefaults` and resets the value to the inital value.
+    @MainActor
     @available(*, deprecated, renamed: "reset")
     static func remove<Value>(
         storedState keyPath: KeyPath<Application, StoredState<Value>>,
@@ -439,6 +454,7 @@ public extension Application {
      - Parameter keyPath: KeyPath of the state value to be fetched
      - Returns: The requested state of type `Value`.
      */
+    @MainActor
     static func storedState<Value>(
         _ keyPath: KeyPath<Application, StoredState<Value>>,
         _ fileID: StaticString = #fileID,
@@ -504,7 +520,8 @@ public extension Application {
 
 @available(watchOS 9.0, *)
 public extension Application {
-    /// Resets the value to the inital value. If the inital value was `nil`, then the value will be removed from `iClouds`
+    /// Resets the value to the inital value. If the inital value was `nil`, then the value will be removed from `iCloud`
+    @MainActor
     static func reset<Value>(
         syncState keyPath: KeyPath<Application, SyncState<Value>>,
         _ fileID: StaticString = #fileID,
@@ -525,6 +542,7 @@ public extension Application {
     }
 
     /// Removes the value from `iCloud` and resets the value to the inital value.
+    @MainActor
     @available(*, deprecated, renamed: "reset")
     static func remove<Value>(
         syncState keyPath: KeyPath<Application, SyncState<Value>>,
@@ -548,7 +566,8 @@ public extension Application {
      - Parameter keyPath: KeyPath of the state value to be fetched
      - Returns: The requested state of type `Value`.
      */
-    static func syncState<Value: Codable>(
+    @MainActor
+    static func syncState<Value: Codable & Sendable>(
         _ keyPath: KeyPath<Application, SyncState<Value>>,
         _ fileID: StaticString = #fileID,
         _ function: StaticString = #function,
@@ -577,7 +596,7 @@ public extension Application {
         - id: The specific identifier for this state.
      - Returns: The state of type `Value`.
      */
-    func syncState<Value: Codable>(
+    func syncState<Value: Codable & Sendable>(
         initial: @escaping @autoclosure () -> Value,
         feature: String = "App",
         id: String
@@ -596,7 +615,7 @@ public extension Application {
         - id: The specific identifier for this state.
      - Returns: The state of type `Value`.
      */
-    func syncState<Value: Codable>(
+    func syncState<Value: Codable & Sendable>(
         feature: String = "App",
         id: String
     ) -> SyncState<Value?> {
@@ -617,6 +636,7 @@ public extension Application {
      - Parameters:
         - keyPath: A key path of the SecureState to be reset.
      */
+    @MainActor
     static func reset(
         secureState keyPath: KeyPath<Application, SecureState>,
         _ fileID: StaticString = #fileID,
@@ -644,6 +664,7 @@ public extension Application {
 
      - Returns: The SecureState at provided keyPath.
      */
+    @MainActor
     static func secureState(
         _ keyPath: KeyPath<Application, SecureState>,
         _ fileID: StaticString = #fileID,
@@ -730,6 +751,7 @@ extension Application {
 
      - Returns: A Slice that allows access to a specific part of an AppState's state.
      */
+    @MainActor
     public static func slice<SlicedState: MutableApplicationState, Value, SliceValue>(
         _ stateKeyPath: KeyPath<Application, SlicedState>,
         _ valueKeyPath: KeyPath<Value, SliceValue>,
@@ -775,6 +797,7 @@ extension Application {
 
      - Returns: A Slice that allows access and modification to a specific part of an AppState's state.
      */
+    @MainActor
     public static func slice<SlicedState: MutableApplicationState, Value, SliceValue>(
         _ stateKeyPath: KeyPath<Application, SlicedState>,
         _ valueKeyPath: WritableKeyPath<Value, SliceValue>,
@@ -820,6 +843,7 @@ extension Application {
 
      - Returns: A Slice that allows access to a specific part of an AppState's state.
      */
+    @MainActor
     public static func slice<SlicedState: MutableApplicationState, Value, SliceValue>(
         _ stateKeyPath: KeyPath<Application, SlicedState>,
         _ valueKeyPath: KeyPath<Value, SliceValue>,
@@ -869,6 +893,7 @@ extension Application {
 
      - Returns: A Slice that allows access and modification to a specific part of an AppState's state.
      */
+    @MainActor
     public static func slice<SlicedState: MutableApplicationState, Value, SliceValue>(
         _ stateKeyPath: KeyPath<Application, SlicedState>,
         _ valueKeyPath: WritableKeyPath<Value, SliceValue>,
@@ -918,6 +943,7 @@ extension Application {
 
      - Returns: A Slice that allows access and modification to a specific part of an AppState's state.
      */
+    @MainActor
     public static func slice<SlicedState: MutableApplicationState, Value, SliceValue>(
         _ stateKeyPath: KeyPath<Application, SlicedState>,
         _ valueKeyPath: WritableKeyPath<Value, SliceValue?>,
@@ -971,6 +997,7 @@ extension Application {
 
      - Returns: A Slice that allows access to a specific part of an AppState's state.
      */
+    @MainActor
     public static func dependencySlice<Value, SliceValue>(
         _ dependencyKeyPath: KeyPath<Application, Dependency<Value>>,
         _ valueKeyPath: KeyPath<Value, SliceValue>,
@@ -1016,6 +1043,7 @@ extension Application {
 
      - Returns: A Slice that allows access to a specific part of an AppState's state.
      */
+    @MainActor
     public static func dependencySlice<Value, SliceValue>(
         _ dependencyKeyPath: KeyPath<Application, Dependency<Value>>,
         _ valueKeyPath: WritableKeyPath<Value, SliceValue>,
@@ -1053,6 +1081,7 @@ extension Application {
 
 public extension Application {
     /// Resets the value to the inital value. If the inital value was `nil`, then the value will be removed from `FileManager`
+    @MainActor
     static func reset<Value>(
         fileState keyPath: KeyPath<Application, FileState<Value>>,
         _ fileID: StaticString = #fileID,
@@ -1078,6 +1107,7 @@ public extension Application {
      - Parameter keyPath: KeyPath of the state value to be fetched
      - Returns: The requested state of type `Value`.
      */
+    @MainActor
     static func fileState<Value>(
         _ keyPath: KeyPath<Application, FileState<Value>>,
         _ fileID: StaticString = #fileID,
@@ -1108,6 +1138,7 @@ public extension Application {
         - isBase64Encoded: Boolean to determine if the value should be encoded as Base64. The default is `true`.
      - Returns: The state of type `Value`.
      */
+    @MainActor
     func fileState<Value>(
         initial: @escaping @autoclosure () -> Value,
         path: String = FileManager.defaultFileStatePath,
@@ -1130,6 +1161,7 @@ public extension Application {
         - isBase64Encoded: Boolean to determine if the value should be encoded as Base64. The default is `true`.
      - Returns: The state of type `Value`.
      */
+    @MainActor
     func fileState<Value>(
         path: String = FileManager.defaultFileStatePath,
         filename: String,

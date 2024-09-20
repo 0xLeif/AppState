@@ -2,7 +2,7 @@
 
 AppState is a Swift Package that simplifies the management of application state in a thread-safe, type-safe, and SwiftUI-friendly way. Featuring dedicated struct types for managing state, AppState provides easy and coordinated access to this state across your application. Added to this, the package incorporates built-in logging mechanisms to aid debugging and error tracking. The AppState package also boasts a cache-based system to persistently store and retrieve any application-wide data at any given time.
 
-**Requirements:** iOS 15.0+ / watchOS 8.0+ / macOS 11.0+ / tvOS 15.0+ / visionOS 1.0+ | Swift 5.9+ / Xcode 15+
+**Requirements:** iOS 15.0+ / watchOS 8.0+ / macOS 11.0+ / tvOS 15.0+ / visionOS 1.0+ | Swift 6.0+ / Xcode 16+
 
 **Non Apple Platform Support:** Linux & Windows
 
@@ -54,7 +54,7 @@ To integrate AppState into your Swift project, you'll need to use the Swift Pack
 
 ```swift
 dependencies: [
-    .package(url: "https://github.com/0xLeif/AppState.git", from: "1.0.0")
+    .package(url: "https://github.com/0xLeif/AppState.git", from: "2.0.0")
 ]
 ```
 
@@ -357,18 +357,18 @@ extension Application {
 }
 
 // Mock network service
-class MockNetworkService: NetworkServiceType {
+class MockNetworkService: NetworkServiceType, Sendable {
     // Your mock implementation
 }
 
-func testNetworkService() {
+func testNetworkService() async {
     // Keep hold of the `DependencyOverride` for the duration of your test.
     let networkOverride = Application.override(\.networkService, with: MockNetworkService())
 
     let mockNetworkService = Application.dependency(\.networkService)
     
-    // Once done, you can allow the `DependencyOverrideen` to be deallocated 
-    // or call `networkOverride.cancel()` to revert back to the original service.
+    // call `networkOverride.cancel()` to revert back to the original service.
+    await networkOverride.cancel()
 }
 ```
 

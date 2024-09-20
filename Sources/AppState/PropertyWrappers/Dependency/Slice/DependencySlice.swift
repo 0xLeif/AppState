@@ -4,12 +4,13 @@ import SwiftUI
 #endif
 
 /// A property wrapper that provides access to a specific part of the AppState's dependencies.
-@propertyWrapper public struct DependencySlice<Value, SliceValue> {
+@propertyWrapper public struct DependencySlice<Value: Sendable, SliceValue: Sendable> {
     #if !os(Linux) && !os(Windows)
     /// Holds the singleton instance of `Application`.
     @ObservedObject private var app: Application = Application.shared
     #else
     /// Holds the singleton instance of `Application`.
+    @MainActor
     private var app: Application = Application.shared
     #endif
 
@@ -26,6 +27,7 @@ import SwiftUI
     private let sliceKeyPath: String
 
     /// Represents the current value of the `Dependency`.
+    @MainActor
     public var wrappedValue: SliceValue {
         get {
             Application.dependencySlice(
@@ -56,6 +58,7 @@ import SwiftUI
 
     #if !os(Linux) && !os(Windows)
     /// A binding to the `Dependency`'s value, which can be used with SwiftUI views.
+    @MainActor
     public var projectedValue: Binding<SliceValue> {
         Binding(
             get: { wrappedValue },
@@ -71,6 +74,7 @@ import SwiftUI
          - dependencyKeyPath: A KeyPath that points to the dependency in AppState that should be sliced.
          - valueKeyPath: A WritableKeyPath that points to the specific part of the state that should be accessed.
      */
+    @MainActor
     public init(
         _ dependencyKeyPath: KeyPath<Application, Application.Dependency<Value>>,
         _ valueKeyPath: WritableKeyPath<Value, SliceValue>,

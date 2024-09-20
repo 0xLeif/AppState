@@ -1,8 +1,13 @@
 extension Application {
+    @MainActor
     static var cacheDescription: String {
         shared.cache.allValues
             .map { key, value in
-                "\t- \(value)"
+                if let value = value as? Loggable {
+                    "\t- \(value.logValue)"
+                } else {
+                    "\t- \(value)"
+                }
             }
             .sorted(by: <)
             .joined(separator: "\n")
@@ -28,6 +33,7 @@ extension Application {
     }
 
     /// Internal log function.
+    @MainActor
     static func log(
         debug message: String,
         fileID: StaticString,
@@ -45,6 +51,7 @@ extension Application {
     }
 
     /// Internal log function.
+    @MainActor
     static func log(
         debug message: () -> String,
         fileID: StaticString,
@@ -72,6 +79,7 @@ extension Application {
     }
 
     /// Internal log function.
+    @MainActor
     static func log(
         error: Error,
         message: String,

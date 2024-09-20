@@ -25,6 +25,7 @@ fileprivate extension Application {
     }
 }
 
+@MainActor
 fileprivate class ExampleViewModel {
     @Slice(\.exampleValue, \.username) var username
     @Constant(\.exampleValue, \.value) var value
@@ -38,11 +39,12 @@ fileprivate class ExampleViewModel {
 extension ExampleViewModel: ObservableObject { }
 #endif
 
+@MainActor
 fileprivate struct ExampleView {
     @Slice(\.exampleValue, \.username) var username
     @Slice(\.exampleValue, \.isLoading) var isLoading
     @Constant(\.exampleValue, \.mutableValue) var constantMutableValue
-    
+
     func testPropertyWrappers() {
         username = "Hello, ExampleView"
         #if !os(Linux) && !os(Windows)
@@ -54,15 +56,20 @@ fileprivate struct ExampleView {
 }
 
 final class SliceTests: XCTestCase {
-    override class func setUp() {
+    @MainActor
+    override func setUp() async throws {
         Application.logging(isEnabled: true)
     }
-    
-    override class func tearDown() {
-        Application.logger.debug("AppStateTests \(Application.description)")
+
+    @MainActor
+    override func tearDown() async throws {
+        let applicationDescription = Application.description
+
+        Application.logger.debug("AppStateTests \(applicationDescription)")
     }
 
-    func testApplicationSliceFunction() {
+    @MainActor
+    func testApplicationSliceFunction() async {
         var exampleSlice = Application.slice(\.exampleValue, \.username)
 
         exampleSlice.value = "New Value!"
@@ -78,21 +85,22 @@ final class SliceTests: XCTestCase {
         XCTAssertEqual(Application.state(\.exampleValue).value.username, "Leif")
     }
 
-    func testPropertyWrappers() {
+    @MainActor
+    func testPropertyWrappers() async {
         let exampleView = ExampleView()
-        
+
         XCTAssertEqual(exampleView.username, "Leif")
-        
+
         exampleView.testPropertyWrappers()
-        
+
         XCTAssertEqual(exampleView.username, "Hello, ExampleView")
-        
+
         let viewModel = ExampleViewModel()
-        
+
         XCTAssertEqual(viewModel.username, "Hello, ExampleView")
-        
+
         viewModel.username = "Hello, ViewModel"
-        
+
         XCTAssertEqual(viewModel.username, "Hello, ViewModel")
 
         XCTAssertEqual(viewModel.value, "value")

@@ -8,25 +8,28 @@ fileprivate extension Application {
     var syncValue: SyncState<Int?> {
         syncState(id: "syncValue")
     }
-    
+
     var syncFailureValue: SyncState<Double> {
         syncState(initial: -1, id: "syncValue")
     }
 }
 
 @available(watchOS 9.0, *)
+@MainActor
 fileprivate struct ExampleSyncValue {
     @SyncState(\.syncValue) var count
 }
 
 
 @available(watchOS 9.0, *)
+@MainActor
 fileprivate struct ExampleFailureSyncValue {
     @SyncState(\.syncFailureValue) var count
 }
 
 
 @available(watchOS 9.0, *)
+@MainActor
 fileprivate class ExampleStoringViewModel: ObservableObject {
     @SyncState(\.syncValue) var count
 
@@ -43,17 +46,22 @@ fileprivate class ExampleStoringViewModel: ObservableObject {
 
 @available(watchOS 9.0, *)
 final class SyncStateTests: XCTestCase {
-    override class func setUp() {
+    @MainActor
+    override func setUp() async throws {
         Application
             .logging(isEnabled: true)
             .load(dependency: \.icloudStore)
     }
 
-    override class func tearDown() {
-        Application.logger.debug("SyncStateTests \(Application.description)")
+    @MainActor
+    override func tearDown() async throws {
+        let applicationDescription = Application.description
+
+        Application.logger.debug("SyncStateTests \(applicationDescription)")
     }
 
-    func testSyncState() {
+    @MainActor
+    func testSyncState() async {
         XCTAssertNil(Application.syncState(\.syncValue).value)
 
         let syncValue = ExampleSyncValue()
@@ -63,7 +71,7 @@ final class SyncStateTests: XCTestCase {
         syncValue.count = 1
 
         XCTAssertEqual(syncValue.count, 1)
-        
+
         Application.logger.debug("SyncStateTests \(Application.description)")
 
         syncValue.count = nil
@@ -71,7 +79,8 @@ final class SyncStateTests: XCTestCase {
         XCTAssertNil(Application.syncState(\.syncValue).value)
     }
 
-    func testFailEncodingSyncState() {
+    @MainActor
+    func testFailEncodingSyncState() async{
         XCTAssertNotNil(Application.syncState(\.syncFailureValue).value)
 
         let syncValue = ExampleFailureSyncValue()
@@ -83,7 +92,8 @@ final class SyncStateTests: XCTestCase {
         XCTAssertEqual(syncValue.count, Double.infinity)
     }
 
-    func testStoringViewModel() {
+    @MainActor
+    func testStoringViewModel() async {
         XCTAssertNil(Application.syncState(\.syncValue).value)
 
         let viewModel = ExampleStoringViewModel()
