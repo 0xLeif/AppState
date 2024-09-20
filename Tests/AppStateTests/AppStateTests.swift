@@ -81,13 +81,13 @@ final class AppStateTests: XCTestCase {
     @MainActor
     func testState() async {
         var appState: Application.State = Application.state(\.username)
-//        
-//        XCTAssertEqual(appState.value, "Leif")
-//        
-//        appState.value = "0xL"
-//        
-//        XCTAssertEqual(appState.value, "0xL")
-//        XCTAssertEqual(Application.state(\.username).value, "0xL")
+        
+        XCTAssertEqual(appState.value, "Leif")
+        
+        appState.value = "0xL"
+        
+        XCTAssertEqual(appState.value, "0xL")
+        XCTAssertEqual(Application.state(\.username).value, "0xL")
     }
     
 //    func testStateClosureCachesValueOnGet() {
