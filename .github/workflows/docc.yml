@@ -14,14 +14,14 @@ jobs:
     environment:
       name: github-pages
       url: '${{ steps.deployment.outputs.page_url }}'
-    runs-on: macos-13
+    runs-on: macos-latest
     steps:
       - uses: swift-actions/setup-swift@v1
       - name: git checkout
         uses: actions/checkout@v3
       - name: docbuild
         run: >
-          sudo xcode-select -s /Applications/Xcode_15.0.app;
+          sudo xcode-select -s /Applications/Xcode_16.0.app;
           xcodebuild docbuild -scheme AppState \
             -derivedDataPath /tmp/docbuild \
             -destination 'generic/platform=iOS';
