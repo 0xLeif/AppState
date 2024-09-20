@@ -79,7 +79,7 @@ final class AppStateTests: XCTestCase {
     }
 
     @MainActor
-    func testState() {
+    func testState() async {
         var appState: Application.State = Application.state(\.username)
 //        
 //        XCTAssertEqual(appState.value, "Leif")
