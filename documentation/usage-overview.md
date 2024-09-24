@@ -105,31 +105,6 @@ print(username)  // Prints "New Username"
 
 This example demonstrates how to access and modify a specific slice of application state.
 
-## Publisher and Subscribing
-
-`Publisher` allows objects to subscribe to changes in state or data. Subscribers are notified whenever the publisher's data changes.
-
-### Example
-
-```swift
-import AppState
-
-class MySubscriber: Subscribing {
-    typealias Value = String
-
-    func didUpdate(newValue: String?) {
-        print("New value: \(String(describing: newValue))")
-    }
-}
-
-let subscriber = MySubscriber()
-let publisher = Publisher(initialValue: "Initial value", subscribers: [subscriber])
-
-publisher.value = "Updated value"  // Prints "New value: Updated value"
-```
-
-This example shows how to create a reactive system where objects respond to state changes.
-
 ## Next Steps
 
 For more in-depth details on each component, refer to the specific usage guides:
