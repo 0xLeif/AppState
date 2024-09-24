@@ -146,15 +146,6 @@ import SwiftUI
 struct SlicingView: View {
     @Slice(\.user, \.username) var username: String
 
-<<<<<<< Updated upstream
-username = "New Username"
-print(username)  // Prints "New Username"
-```
-
-This example demonstrates how to access and modify a specific slice of application state.
-
-## Next Steps
-=======
     var body: some View {
         VStack {
             Text("Username: \(username)")
@@ -169,7 +160,6 @@ This example demonstrates how to access and modify a specific slice of applicati
 This example demonstrates how to access and modify a specific slice of application state within a SwiftUI view.
 
 ## Best Practices
->>>>>>> Stashed changes
 
 - **Use `AppState` in SwiftUI Views**: Property wrappers like `@AppState`, `@StoredState`, `@SecureState`, and others are designed to be used within the scope of SwiftUI views.
 - **Define State in Application Extension**: Centralize state management by extending `Application` to define your app’s state and dependencies.
