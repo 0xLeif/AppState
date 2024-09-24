@@ -1,6 +1,32 @@
 # Usage Overview
 
-This overview provides a quick introduction to using the key components of the **AppState** library. Each section includes simple examples to help you get started with **AppState** in your Swift projects.
+This overview provides a quick introduction to using the key components of the **AppState** library within a SwiftUI `View`. Each section includes simple examples that fit into the scope of a SwiftUI view structure, along with instructions on how to create these values by extending `Application`.
+
+## Defining Values in Application Extension
+
+To define application-wide state or dependencies, you should extend the `Application` object. This allows you to centralize all your app’s state in one place. Here's an example of how to extend `Application` to create various states and dependencies:
+
+```swift
+import AppState
+
+extension Application {
+    var user: State<User> {
+        state(initial: User(name: "Guest", isLoggedIn: false))
+    }
+
+    var userPreferences: StoredState<String> {
+        storedState(id: "userPreferences", initial: "Default Preferences")
+    }
+
+    var darkModeEnabled: SyncState<Bool> {
+        syncState(initial: false, id: "darkModeEnabled")
+    }
+
+    var userToken: SecureState {
+        secureState(id: "userToken")
+    }
+}
+```
 
 ## State
 
@@ -10,19 +36,23 @@ This overview provides a quick introduction to using the key components of the *
 
 ```swift
 import AppState
+import SwiftUI
 
-extension Application {
-    var isLoading: State<Bool> {
-        state(initial: false)
+struct ContentView: View {
+    @AppState(\.user) var user: User
+
+    var body: some View {
+        VStack {
+            Text("Hello, \(user.name)!")
+            Button("Log in") {
+                user.isLoggedIn.toggle()
+            }
+        }
     }
 }
-
-var loadingState = Application.state(\.isLoading)
-loadingState.value = true
-print(loadingState.value)  // Prints "true"
 ```
 
-This example shows how to define and modify an application-wide state.
+This example shows how to define and modify an application-wide state within a SwiftUI `View`.
 
 ## StoredState
 
@@ -32,19 +62,23 @@ This example shows how to define and modify an application-wide state.
 
 ```swift
 import AppState
+import SwiftUI
 
-extension Application {
-    var userPreferences: StoredState<String> {
-        storedState(id: "userPreferences", initial: "Default Preferences")
+struct PreferencesView: View {
+    @StoredState(\.userPreferences) var userPreferences: String
+
+    var body: some View {
+        VStack {
+            Text("Preferences: \(userPreferences)")
+            Button("Update Preferences") {
+                userPreferences = "Updated Preferences"
+            }
+        }
     }
 }
-
-var preferences = Application.state(\.userPreferences)
-preferences.value = "New Preferences"
-print(preferences.value)  // Prints "New Preferences"
 ```
 
-This example demonstrates how to use `StoredState` to persist data using `UserDefaults`.
+This example demonstrates how to use `StoredState` to persist data using `UserDefaults` within a SwiftUI view.
 
 ## SyncState
 
@@ -54,18 +88,20 @@ This example demonstrates how to use `StoredState` to persist data using `UserDe
 
 ```swift
 import AppState
+import SwiftUI
 
-extension Application {
-    var darkModeEnabled: SyncState<Bool> {
-        syncState(initial: false, id: "darkModeEnabled")
+struct SyncSettingsView: View {
+    @SyncState(\.darkModeEnabled) var isDarkModeEnabled: Bool
+
+    var body: some View {
+        VStack {
+            Toggle("Dark Mode", isOn: $isDarkModeEnabled)
+        }
     }
 }
-
-@SyncState(\.darkModeEnabled) var isDarkModeEnabled: Bool
-isDarkModeEnabled = true
 ```
 
-This example shows how to use `SyncState` to synchronize data across devices via iCloud.
+This example shows how to use `SyncState` to synchronize data across devices via iCloud within a SwiftUI `View`.
 
 ## SecureState
 
@@ -75,18 +111,27 @@ This example shows how to use `SyncState` to synchronize data across devices via
 
 ```swift
 import AppState
+import SwiftUI
 
-extension Application {
-    var userToken: SecureState {
-        secureState(id: "userToken")
+struct SecureView: View {
+    @SecureState(\.userToken) var userToken: String?
+
+    var body: some View {
+        VStack {
+            if let token = userToken {
+                Text("User token: \(token)")
+            } else {
+                Text("No token found.")
+            }
+            Button("Set Token") {
+                userToken = "secure_token_value"
+            }
+        }
     }
 }
-
-@SecureState(\.userToken) var userToken: String?
-userToken = "secret_token"
 ```
 
-This example shows how to securely store data in the Keychain using `SecureState`.
+This example shows how to securely store and access data in the Keychain using `SecureState` within a SwiftUI view.
 
 ## Slicing State
 
@@ -96,9 +141,12 @@ This example shows how to securely store data in the Keychain using `SecureState
 
 ```swift
 import AppState
+import SwiftUI
 
-@Slice(\.user, \.username) var username: String
+struct SlicingView: View {
+    @Slice(\.user, \.username) var username: String
 
+<<<<<<< Updated upstream
 username = "New Username"
 print(username)  // Prints "New Username"
 ```
@@ -106,13 +154,27 @@ print(username)  // Prints "New Username"
 This example demonstrates how to access and modify a specific slice of application state.
 
 ## Next Steps
+=======
+    var body: some View {
+        VStack {
+            Text("Username: \(username)")
+            Button("Update Username") {
+                username = "NewUsername"
+            }
+        }
+    }
+}
+```
 
-For more in-depth details on each component, refer to the specific usage guides:
+This example demonstrates how to access and modify a specific slice of application state within a SwiftUI view.
 
-- [State and Dependency Usage](usage-state-dependency.md)
-- [SendableValue Usage](usage-sendablevalue.md)
-- [SyncState Usage](usage-syncstate.md)
-- [SecureState Usage](usage-securestate.md)
-- [Slicing State Usage](usage-slice.md)
+## Best Practices
+>>>>>>> Stashed changes
 
-These guides will help you explore each feature of **AppState** in more detail and provide additional examples.
+- **Use `AppState` in SwiftUI Views**: Property wrappers like `@AppState`, `@StoredState`, `@SecureState`, and others are designed to be used within the scope of SwiftUI views.
+- **Define State in Application Extension**: Centralize state management by extending `Application` to define your app’s state and dependencies.
+- **Reactive Updates**: SwiftUI automatically updates views when state changes, so you don’t need to manually refresh the UI.
+
+## Conclusion
+
+These examples demonstrate how to use **AppState**’s key components within SwiftUI views and how to define state and dependencies using an `Application` extension. By leveraging **AppState** in your views, you can effectively manage state, sync data across devices, and securely store sensitive information.
