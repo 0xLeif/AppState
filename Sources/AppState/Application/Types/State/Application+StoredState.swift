@@ -1,15 +1,28 @@
 import Foundation
 
 extension Application {
+    /// A struct that provides a thread-safe interface for interacting with `UserDefaults`, allowing the storage,
+    /// retrieval, and removal of user preferences and data. This struct is marked as `Sendable`, enabling safe
+    /// use in concurrent environments.
     public struct SendableUserDefaults: Sendable {
+
+        /// Retrieves an object from `UserDefaults` for the given key.
+        /// - Parameter key: The key used to retrieve the associated value from `UserDefaults`.
+        /// - Returns: The value stored in `UserDefaults` for the given key, or `nil` if no value is associated with the key.
         public func object(forKey key: String) -> Any? {
             UserDefaults.standard.object(forKey: key)
         }
 
+        /// Removes the value associated with the specified key from `UserDefaults`.
+        /// - Parameter key: The key whose associated value should be removed.
         public func removeObject(forKey key: String) {
             UserDefaults.standard.removeObject(forKey: key)
         }
 
+        /// Sets the value for the specified key in `UserDefaults`.
+        /// - Parameters:
+        ///   - value: The value to store in `UserDefaults`. Can be `nil` to remove the value associated with the key.
+        ///   - key: The key with which to associate the value.
         public func set(_ value: Any?, forKey key: String) {
             UserDefaults.standard.set(value, forKey: key)
         }
