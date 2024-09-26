@@ -16,7 +16,7 @@ If you encounter any bugs, please open an issue on GitHub. When reporting a bug,
 
 ### 2. Suggesting Features
 
-We welcome new ideas! If you have a feature you'd like to see added to **AppState**, please open an issue and describe:
+New ideas are welcome! If you have a feature you'd like to see added to **AppState**, please open an issue and describe:
 
 - The problem the feature would solve.
 - How you think the feature should work.
@@ -53,7 +53,7 @@ Please follow the coding style guidelines used in the **AppState** project. Cons
 
 ### 5. License
 
-By contributing to **AppState**, you agree that your contributions will be licensed under the same license as the project: [MIT License](LICENSE).
+By contributing to **AppState**, you agree that your contributions will be licensed under the same license as the project: [LICENSE](https://github.com/0xLeif/AppState/blob/main/LICENSE).
 
 ## Thank You!
 
