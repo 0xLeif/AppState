@@ -1,17 +1,16 @@
 # State and Dependency Usage
 
-**AppState** provides powerful tools for managing application-wide state and injecting dependencies throughout your Swift application. By centralizing your state and dependencies, you can make your application easier to maintain and extend.
+**AppState** provides powerful tools for managing application-wide state and injecting dependencies into SwiftUI views. By centralizing your state and dependencies, you can ensure your application remains consistent and maintainable.
 
 ## Overview
 
-- **State**: Represents a value that can be shared across the app. State values can be modified and observed from anywhere within the application.
-- **Dependency**: Represents a shared resource or service that can be injected and accessed in different parts of the app.
+- **State**: Represents a value that can be shared across the app. State values can be modified and observed within your SwiftUI views.
+- **Dependency**: Represents a shared resource or service that can be injected and accessed within SwiftUI views.
 
 ### Key Features
 
 - **Centralized State**: Define and manage application-wide state in one place.
 - **Dependency Injection**: Inject and access shared services and resources across different components of your application.
-- **SwiftUI Integration**: `AppState` integrates easily with SwiftUI using property wrappers to provide reactive state management.
 
 ## Example Usage
 
@@ -34,24 +33,32 @@ extension Application {
 }
 ```
 
-### Accessing and Modifying State
+### Accessing and Modifying State in a View
 
-You can access and modify state values from anywhere in your application using property wrappers.
+You can access and modify state values directly within a SwiftUI view using the `@AppState` property wrapper.
 
 ```swift
-@AppState(\.user) var user: User
+import AppState
+import SwiftUI
 
-// Modify the state
-user.name = "John Doe"
-user.isLoggedIn = true
+struct ContentView: View {
+    @AppState(\.user) var user: User
 
-// Access the updated state
-print(user.name)  // Prints "John Doe"
+    var body: some View {
+        VStack {
+            Text("Hello, \(user.name)!")
+            Button("Log in") {
+                user.name = "John Doe"
+                user.isLoggedIn = true
+            }
+        }
+    }
+}
 ```
 
-### Injecting Dependencies
+### Defining Dependencies
 
-You can define dependencies in the `Application` object and inject them wherever needed. Dependencies are ideal for services like networking, database access, or API clients.
+You can define shared resources, such as a network service, as dependencies in the `Application` object. These dependencies can be injected into SwiftUI views.
 
 ```swift
 import AppState
@@ -73,39 +80,54 @@ extension Application {
 }
 ```
 
-### Accessing Dependencies
+### Accessing Dependencies in a View
 
-Once you’ve defined a dependency, you can access it anywhere in your app by using the `@AppDependency` property wrapper.
-
-```swift
-@AppDependency(\.networkService) var networkService: NetworkServiceType
-
-// Use the injected service
-let data = networkService.fetchData()
-print(data)  // Prints "Data from network"
-```
-
-### Combining State and Dependencies
-
-You can use state and dependencies together to build robust application logic. For example, you can use a dependency like `NetworkService` to fetch data and update the application state.
+Access dependencies within a SwiftUI view using the `@AppDependency` property wrapper. This allows you to inject services like a network service into your view.
 
 ```swift
-@AppState(\.user) var user: User
-@AppDependency(\.networkService) var networkService: NetworkServiceType
+import AppState
+import SwiftUI
 
-func loginUser() {
-    let data = networkService.fetchData()
-    user.name = data
-    user.isLoggedIn = true
+struct NetworkView: View {
+    @AppDependency(\.networkService) var networkService: NetworkServiceType
+
+    var body: some View {
+        VStack {
+            Text("Data: \(networkService.fetchData())")
+        }
+    }
 }
 ```
 
-## Best Practices
+### Combining State and Dependencies in a View
+
+State and dependencies can work together to build more complex application logic. For example, you can fetch data from a service and update the state:
+
+```swift
+import AppState
+import SwiftUI
+
+struct CombinedView: View {
+    @AppState(\.user) var user: User
+    @AppDependency(\.networkService) var networkService: NetworkServiceType
+
+    var body: some View {
+        VStack {
+            Text("User: \(user.name)")
+            Button("Fetch Data") {
+                user.name = networkService.fetchData()
+                user.isLoggedIn = true
+            }
+        }
+    }
+}
+```
+
+### Best Practices
 
 - **Centralize State**: Keep your application-wide state in one place to avoid duplication and ensure consistency.
 - **Use Dependencies for Shared Services**: Inject dependencies like network services, databases, or other shared resources to avoid tight coupling between components.
-- **Leverage SwiftUI**: Take advantage of `AppState` property wrappers for seamless integration with SwiftUI views and reactive data handling.
 
 ## Conclusion
 
-With **AppState**, you can efficiently manage application-wide state and inject shared dependencies across your app. This pattern helps keep your app modular and maintainable. Explore other features of the **AppState** library, such as [SecureState](usage-securestate.md) and [SyncState](usage-syncstate.md), to further enhance your app's state management.
+With **AppState**, you can manage application-wide state and inject shared dependencies directly into your SwiftUI views. This pattern helps keep your app modular and maintainable. Explore other features of the **AppState** library, such as [SecureState](usage-securestate.md) and [SyncState](usage-syncstate.md), to further enhance your app's state management.
