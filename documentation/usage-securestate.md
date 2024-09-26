@@ -6,7 +6,6 @@
 
 - **Secure Storage**: Data stored using `SecureState` is encrypted and securely saved in the Keychain.
 - **Persistence**: The data remains persistent across app launches, allowing secure retrieval of sensitive values.
-- **Automatic Synchronization**: On Apple devices, Keychain data can automatically sync between devices if iCloud Keychain is enabled.
 
 ## Keychain Limitations
 
@@ -14,7 +13,6 @@ While `SecureState` is very secure, it has certain limitations:
 
 - **Limited Storage Size**: Keychain is designed for small pieces of data. It is not suitable for storing large files or datasets.
 - **Performance**: Accessing the Keychain is slower than accessing `UserDefaults`, so use it only when necessary to securely store sensitive data.
-- **Synchronization with iCloud**: Make sure iCloud Keychain is enabled for the user’s data to sync across devices.
 
 ## Example Usage
 
