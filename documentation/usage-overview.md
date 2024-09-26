@@ -155,6 +155,11 @@ struct SlicingView: View {
 - **Define State in Application Extension**: Centralize state management by extending `Application` to define your app’s state and dependencies.
 - **Reactive Updates**: SwiftUI automatically updates views when state changes, so you don’t need to manually refresh the UI.
 
-## Conclusion
+## Next Steps
 
-These examples demonstrate how to use **AppState**’s key components within SwiftUI views and how to define state and dependencies using an `Application` extension. By leveraging **AppState** in your views, you can effectively manage state, sync data across devices, and securely store sensitive information.
+After familiarizing yourself with the basic usage, you can explore more advanced topics:
+
+- Explore using **FileState** for persisting large amounts of data to files in the [FileState Usage Guide](usage-filestate.md).
+- Learn about **Constants** and how to use them for immutable values in your app's state in the [Constant Usage Guide](usage-constant.md).
+- Investigate how **Dependency** is used in AppState to handle shared services, and see examples in the [State Dependency Usage Guide](usage-state-dependency.md).
+- Delve deeper into **Advanced SwiftUI** techniques like using `ObservedDependency` for managing observable dependencies in views in the [ObservedDependency Usage Guide](usage-observeddependency.md).
