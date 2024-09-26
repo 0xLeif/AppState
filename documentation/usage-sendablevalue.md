@@ -1,71 +1,105 @@
 # SendableValue Usage
 
-`SendableValue` is a component of the **AppState** library that allows for safe, thread-managed value storage. It ensures that values can be accessed and modified safely across different threads by using Swift's `Sendable` protocol.
+`SendableValue` is a component of the **AppState** library that allows you to work with a thread-safe wrapper around a value that can be shared across different contexts. It ensures safe access and modification of data in concurrent environments.
 
-## Overview
+## Key Features
 
-`SendableValue` is designed to handle concurrency in Swift by ensuring that any data it manages can be safely accessed by multiple tasks running concurrently. This makes it useful in scenarios where shared mutable state needs to be updated in a thread-safe manner.
-
-### Key Features
-
-- **Thread Safety**: Guarantees that the value can be accessed or modified across multiple threads safely.
-- **Concurrency Support**: Ensures that values conform to the `Sendable` protocol for safe concurrent use.
-- **Simplicity**: A simple API for getting and setting values asynchronously.
+- **Thread-Safety**: `SendableValue` ensures that access to the encapsulated value is safe even in concurrent environments.
+- **Read and Write Access**: You can safely read and write values across multiple tasks or threads without worrying about race conditions.
+- **Concurrency Support**: Built to integrate with Swift's concurrency model, `SendableValue` works seamlessly with async/await.
 
 ## Example Usage
 
-### Creating a SendableValue
+### Simple Usage of SendableValue
 
-You can create a `SendableValue` by initializing it with a value that conforms to the `Sendable` protocol.
+In this example, we use `SendableValue` to create a thread-safe shared value that is safely updated from different contexts.
 
 ```swift
 import AppState
+import SwiftUI
 
-let sendableValue = SendableValue<Int>(42)
-```
+struct SendableValueExampleView: View {
+    @State private var sendableValue = SendableValue<Int>(42)
+    @State private var result = 0
 
-### Accessing and Modifying the Value
-
-You can set a new value asynchronously using the `set` method and access the value using the `value` property.
-
-```swift
-sendableValue.set(value: 100)
-
-let value = sendableValue.value
-print(value)  // Prints "100"
-```
-
-### Accessing the Value Asynchronously
-
-To safely access the value from concurrent tasks, you can await the `value`.
-
-```swift
-Task {
-    let currentValue = await sendableValue.value
-    print(currentValue)  // Prints "100"
+    var body: some View {
+        VStack {
+            Text("Current value: \(result)")
+            Button("Set to 100") {
+                Task {
+                    await sendableValue.set(value: 100)
+                    result = await sendableValue.value
+                }
+            }
+        }
+    }
 }
 ```
 
-### Thread Safety in Action
+### Async Access to SendableValue
 
-`SendableValue` ensures that even in multi-threaded environments, values are protected from race conditions. This is especially useful when handling shared state in asynchronous tasks.
+In this example, we demonstrate how to access a `SendableValue` asynchronously using Swift's `async/await` model.
 
 ```swift
-Task {
-    sendableValue.set(value: 200)
-}
+import AppState
+import SwiftUI
 
-Task {
-    let currentValue = await sendableValue.value
-    print(currentValue)  // Prints "200"
+struct AsyncSendableValueExampleView: View {
+    @State private var sendableValue = SendableValue<String>("Initial Value")
+    @State private var currentValue = ""
+
+    var body: some View {
+        VStack {
+            Text("Value: \(currentValue)")
+            Button("Update Value") {
+                Task {
+                    await sendableValue.set(value: "Updated Value")
+                    currentValue = await sendableValue.value
+                }
+            }
+        }
+    }
+}
+```
+
+### Thread-Safe Mutation of SendableValue
+
+Here’s an example that shows how `SendableValue` can be safely mutated from different tasks without running into concurrency issues:
+
+```swift
+import AppState
+import SwiftUI
+
+struct ConcurrentSendableValueExampleView: View {
+    @State private var sendableValue = SendableValue<Int>(0)
+    @State private var result = 0
+
+    var body: some View {
+        VStack {
+            Text("Final result: \(result)")
+            Button("Run Concurrent Tasks") {
+                Task {
+                    await withTaskGroup(of: Void.self) { taskGroup in
+                        for _ in 1...5 {
+                            taskGroup.addTask {
+                                let current = await sendableValue.value
+                                await sendableValue.set(value: current + 1)
+                            }
+                        }
+                    }
+                    result = await sendableValue.value
+                }
+            }
+        }
+    }
 }
 ```
 
 ## Best Practices
 
-- **Use for Shared State**: Use `SendableValue` when you need to share and modify a value across multiple tasks or threads.
-- **Thread-Safe Access**: Always rely on `SendableValue` to handle thread-safe reads and writes when accessing shared mutable state.
+- **Use for Shared Data**: `SendableValue` is ideal when you need to share data between tasks or threads while ensuring thread safety.
+- **Leverage Swift Concurrency**: Use `SendableValue` with `async/await` and task groups to avoid race conditions in concurrent programming.
 
 ## Conclusion
 
-`SendableValue` provides a simple and safe mechanism for managing shared state across multiple threads in a Swift application. By utilizing this structure, you can ensure that your values are protected and safely accessed in concurrent programming environments. Explore other components of the **AppState** library, such as [State and Dependency Management](usage-state-dependency.md) and [SecureState](usage-securestate.md), to learn more about managing data safely in Swift applications.
+`SendableValue` provides an easy and efficient way to handle shared data in concurrent programming. By encapsulating the value in a thread-safe wrapper, it eliminates concerns about data races and allows for safe access and modification of the data across multiple tasks.

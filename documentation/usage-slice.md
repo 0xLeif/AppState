@@ -1,97 +1,91 @@
-# Slicing State Usage
+# Slice and OptionalSlice Usage
 
-`Slice` and `OptionalSlice` are components of the **AppState** library that provide fine-grained access to specific parts of your application’s state. They allow you to focus on specific sections of state while keeping the overall state management centralized.
+`Slice` and `OptionalSlice` are components of the **AppState** library that allow you to access specific parts of your application’s state. They are useful when you need to manipulate or observe a part of a more complex state structure.
 
 ## Overview
 
-`Slice` allows you to directly access and modify parts of a state, such as individual properties within a larger data structure. `OptionalSlice` serves a similar function but is designed for handling optional values.
+- **Slice**: Allows you to access and modify a specific part of an existing `State` object.
+- **OptionalSlice**: Works similarly to `Slice` but is designed to handle optional values, such as when part of your state may or may not be `nil`.
 
 ### Key Features
 
-- **Fine-Grained Control**: Access and modify specific parts of application state.
-- **State Segmentation**: Keep your state management organized by isolating specific sections of state.
-- **Optional Handling**: `OptionalSlice` is designed to work with optional values within your state, ensuring that nil values are handled gracefully.
+- **Selective State Access**: Access only the part of the state that you need.
+- **Thread Safety**: Just like with other state management types in **AppState**, `Slice` and `OptionalSlice` are thread-safe.
+- **Reactiveness**: SwiftUI views update when the slice of the state changes, ensuring your UI remains reactive.
 
 ## Example Usage
 
-### Slicing a State
+### Using Slice
 
-To access specific properties in your application’s state, you can use the `Slice` to create focused access points.
+In this example, we use `Slice` to access and update a specific part of the state—in this case, the `username` from a more complex `User` object stored in the app state.
 
 ```swift
 import AppState
+import SwiftUI
 
 struct User {
-    let id: UUID
     var username: String
+    var email: String
 }
 
 extension Application {
     var user: State<User> {
-        state(initial: User(id: UUID(), username: "Guest"))
+        state(initial: User(username: "Guest", email: "guest@example.com"))
     }
 }
 
-@Slice(\.user, \.username) var username: String
+struct SlicingView: View {
+    @Slice(\.user, \.username) var username: String
 
-// Modify the username
-username = "NewUsername"
-print(username)  // Prints "NewUsername"
+    var body: some View {
+        VStack {
+            Text("Username: \(username)")
+            Button("Update Username") {
+                username = "NewUsername"
+            }
+        }
+    }
+}
 ```
 
-### Optional Slicing
+### Using OptionalSlice
 
-`OptionalSlice` allows you to safely access and modify optional values in your state. If the parent state is `nil`, you cannot modify the child value.
+`OptionalSlice` is useful when part of your state may be `nil`. In this example, the `User` object itself may be `nil`, so we use `OptionalSlice` to safely handle this case.
 
 ```swift
 import AppState
-
-struct Preferences {
-    var isDarkModeEnabled: Bool
-}
+import SwiftUI
 
 extension Application {
-    var preferences: State<Preferences?> {
+    var user: State<User?> {
         state(initial: nil)
     }
 }
 
-@OptionalSlice(\.preferences, \.isDarkModeEnabled) var isDarkModeEnabled: Bool?
+struct OptionalSlicingView: View {
+    @OptionalSlice(\.user, \.username) var username: String?
 
-// Handle optional state safely
-if let darkMode = isDarkModeEnabled {
-    print("Dark Mode: \(darkMode)")
-} else {
-    print("Preferences not set")
-}
-```
-
-### Dictionary Slicing
-
-You can also use `Slice` and `OptionalSlice` to work with values stored in a dictionary.
-
-```swift
-import AppState
-
-extension Application {
-    var userMetadata: State<[String: String]> {
-        state(initial: [:])
+    var body: some View {
+        VStack {
+            if let username = username {
+                Text("Username: \(username)")
+            } else {
+                Text("No username available")
+            }
+            Button("Set Username") {
+                username = "UpdatedUsername"
+            }
+        }
     }
 }
-
-@Slice(\.userMetadata, \.["loginTimestamp"]) var loginTimestamp: String?
-
-// Set and access a value from the dictionary slice
-loginTimestamp = "2024-01-01T00:00:00Z"
-print(loginTimestamp ?? "No timestamp set")  // Prints the set timestamp
 ```
 
 ## Best Practices
 
-- **Use `Slice` for Non-Optional State**: When dealing with non-optional state values, `Slice` provides direct access for efficient updates.
-- **Use `OptionalSlice` for Optional Values**: Always prefer `OptionalSlice` when handling optional state to avoid unwrapping issues.
-- **Handle `nil` Safely**: When working with `OptionalSlice`, ensure your app can handle `nil` values gracefully to avoid crashes.
+- **Use `Slice` for non-optional state**: If your state is guaranteed to be non-optional, use `Slice` to access and update it.
+- **Use `OptionalSlice` for optional state**: If your state or part of the state is optional, use `OptionalSlice` to handle cases where the value may be `nil`.
+- **Thread Safety**: Just like with `State`, `Slice` and `OptionalSlice` are thread-safe and designed to work with Swift’s concurrency model.
 
 ## Conclusion
 
-`Slice` and `OptionalSlice` provide granular control over your application’s state, making it easier to manage and update specific sections of state while keeping the rest of your state management centralized. Explore other components of the **AppState** library, such as [State and Dependency Management](usage-state-dependency.md) and [SecureState](usage-securestate.md), for additional state management tools.
+`Slice` and `OptionalSlice` provide powerful ways to access and modify specific parts of your state in a thread-safe manner. By leveraging these components, you can simplify state management in more complex applications, ensuring your UI stays reactive and up-to-date.

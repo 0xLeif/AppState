@@ -1,6 +1,6 @@
 # Usage Overview
 
-This overview provides a quick introduction to using the key components of the **AppState** library within a SwiftUI `View`. Each section includes simple examples that fit into the scope of a SwiftUI view structure, along with instructions on how to create these values by extending `Application`.
+This overview provides a quick introduction to using the key components of the **AppState** library within a SwiftUI `View`. Each section includes simple examples that fit into the scope of a SwiftUI view structure.
 
 ## Defining Values in Application Extension
 
@@ -52,8 +52,6 @@ struct ContentView: View {
 }
 ```
 
-This example shows how to define and modify an application-wide state within a SwiftUI `View`.
-
 ## StoredState
 
 `StoredState` persists state using `UserDefaults` to ensure that values are saved across app launches.
@@ -78,8 +76,6 @@ struct PreferencesView: View {
 }
 ```
 
-This example demonstrates how to use `StoredState` to persist data using `UserDefaults` within a SwiftUI view.
-
 ## SyncState
 
 `SyncState` synchronizes app state across multiple devices using iCloud.
@@ -100,8 +96,6 @@ struct SyncSettingsView: View {
     }
 }
 ```
-
-This example shows how to use `SyncState` to synchronize data across devices via iCloud within a SwiftUI `View`.
 
 ## SecureState
 
@@ -131,8 +125,6 @@ struct SecureView: View {
 }
 ```
 
-This example shows how to securely store and access data in the Keychain using `SecureState` within a SwiftUI view.
-
 ## Slicing State
 
 `Slice` and `OptionalSlice` allow you to access specific parts of your application’s state.
@@ -156,8 +148,6 @@ struct SlicingView: View {
     }
 }
 ```
-
-This example demonstrates how to access and modify a specific slice of application state within a SwiftUI view.
 
 ## Best Practices
 
