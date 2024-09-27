@@ -55,7 +55,7 @@ struct PreferencesView: View {
 
 As your app evolves, you may update the models that are persisted via **StoredState**. When updating your data model, ensure backward compatibility. For example, you might add new fields or version your model to handle migration.
 
-For more information, refer to the [Migration Considerations Guide](migration_considerations.md).
+For more information, refer to the [Migration Considerations Guide](migration-considerations.md).
 
 ### Migration Considerations
 
