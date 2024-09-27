@@ -25,6 +25,10 @@ extension Application {
     var userToken: SecureState {
         secureState(id: "userToken")
     }
+    
+    var largeDataset: FileState<[String]> {
+        fileState(filename: "largeDataset", initial: [])
+    }
 }
 ```
 
@@ -97,6 +101,27 @@ struct SyncSettingsView: View {
 }
 ```
 
+## FileState
+
+`FileState` is used to store larger or more complex data persistently using the file system, making it ideal for caching or saving data that doesn't fit within the limitations of `UserDefaults`.
+
+### Example
+
+```swift
+import AppState
+import SwiftUI
+
+struct LargeDataView: View {
+    @FileState(\.largeDataset) var largeDataset: [String]
+
+    var body: some View {
+        List(largeDataset, id: \.self) { item in
+            Text(item)
+        }
+    }
+}
+```
+
 ## SecureState
 
 `SecureState` stores sensitive data securely in the Keychain.
@@ -125,6 +150,25 @@ struct SecureView: View {
 }
 ```
 
+## Constant
+
+`Constant` provides immutable, read-only access to values within your application’s state, ensuring safety when accessing values that should not be modified.
+
+### Example
+
+```swift
+import AppState
+import SwiftUI
+
+struct ExampleView: View {
+    @Constant(\.user, \.name) var name: String
+
+    var body: some View {
+        Text("Username: \(name)")
+    }
+}
+```
+
 ## Slicing State
 
 `Slice` and `OptionalSlice` allow you to access specific parts of your application’s state.
@@ -136,13 +180,13 @@ import AppState
 import SwiftUI
 
 struct SlicingView: View {
-    @Slice(\.user, \.username) var username: String
+    @Slice(\.user, \.name) var name: String
 
     var body: some View {
         VStack {
-            Text("Username: \(username)")
+            Text("Username: \(name)")
             Button("Update Username") {
-                username = "NewUsername"
+                name = "NewUsername"
             }
         }
     }
@@ -151,7 +195,7 @@ struct SlicingView: View {
 
 ## Best Practices
 
-- **Use `AppState` in SwiftUI Views**: Property wrappers like `@AppState`, `@StoredState`, `@SecureState`, and others are designed to be used within the scope of SwiftUI views.
+- **Use `AppState` in SwiftUI Views**: Property wrappers like `@AppState`, `@StoredState`, `@FileState`, `@SecureState`, and others are designed to be used within the scope of SwiftUI views.
 - **Define State in Application Extension**: Centralize state management by extending `Application` to define your app’s state and dependencies.
 - **Reactive Updates**: SwiftUI automatically updates views when state changes, so you don’t need to manually refresh the UI.
 
