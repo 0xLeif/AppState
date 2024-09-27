@@ -198,6 +198,7 @@ struct SlicingView: View {
 - **Use `AppState` in SwiftUI Views**: Property wrappers like `@AppState`, `@StoredState`, `@FileState`, `@SecureState`, and others are designed to be used within the scope of SwiftUI views.
 - **Define State in Application Extension**: Centralize state management by extending `Application` to define your app’s state and dependencies.
 - **Reactive Updates**: SwiftUI automatically updates views when state changes, so you don’t need to manually refresh the UI.
+- **[Best Practices Guide](best-practices.md)**: For a detailed breakdown of best practices when using AppState.
 
 ## Next Steps
 
@@ -207,3 +208,4 @@ After familiarizing yourself with the basic usage, you can explore more advanced
 - Learn about **Constants** and how to use them for immutable values in your app's state in the [Constant Usage Guide](usage-constant.md).
 - Investigate how **Dependency** is used in AppState to handle shared services, and see examples in the [State Dependency Usage Guide](usage-state-dependency.md).
 - Delve deeper into **Advanced SwiftUI** techniques like using `ObservedDependency` for managing observable dependencies in views in the [ObservedDependency Usage Guide](usage-observeddependency.md).
+- For more advanced usage techniques, like Just-In-Time creation and preloading dependencies, see the [Advanced Usage Guide](advanced-usage.md).
