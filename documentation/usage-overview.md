@@ -15,7 +15,7 @@ extension Application {
     }
 
     var userPreferences: StoredState<String> {
-        storedState(id: "userPreferences", initial: "Default Preferences")
+        storedState(initial: "Default Preferences", id: "userPreferences")
     }
 
     var darkModeEnabled: SyncState<Bool> {
