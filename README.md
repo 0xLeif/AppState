@@ -45,8 +45,10 @@ Here’s a detailed breakdown of **AppState**'s documentation:
 
 - [State and Dependency Management](documentation/usage-state-dependency.md): Centralize state and inject dependencies throughout your app.
 - [Slicing State](documentation/usage-slice.md): Access and modify specific parts of the state.
-- [iCloud Syncing with SyncState](documentation/usage-syncstate.md): Keep state synchronized across devices using iCloud.
+- [StoredState Usage Guide](documentation/usage-storedstate.md): How to persist lightweight data using `StoredState`.
+- [FileState Usage Guide](documentation/usage-filestate.md): Learn how to persist larger amounts of data securely on disk.
 - [Keychain SecureState Usage](documentation/usage-securestate.md): Store sensitive data securely using the Keychain.
+- [iCloud Syncing with SyncState](documentation/usage-syncstate.md): Keep state synchronized across devices using iCloud.
 
 ## Contributing
 
