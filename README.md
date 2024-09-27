@@ -43,7 +43,6 @@ Here’s a detailed breakdown of **AppState**'s documentation:
   
 ### Detailed Usage Guides:
 
-- [SendableValue Usage](documentation/usage-sendablevalue.md): Thread-safe value handling with `SendableValue`.
 - [State and Dependency Management](documentation/usage-state-dependency.md): Centralize state and inject dependencies throughout your app.
 - [Slicing State](documentation/usage-slice.md): Access and modify specific parts of the state.
 - [iCloud Syncing with SyncState](documentation/usage-syncstate.md): Keep state synchronized across devices using iCloud.
