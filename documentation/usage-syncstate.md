@@ -101,4 +101,4 @@ While `SyncState` allows easy synchronization, it's important to remember the li
 
 ## Conclusion
 
-`SyncState` provides a powerful way to synchronize small amounts of application state across devices via iCloud. It is ideal for ensuring that user preferences and other key data remain consistent across all devices logged into the same iCloud account. For more advanced use cases, explore other features of **AppState**, such as [SecureState](usage-securestate.md) and [SyncState](usage-syncstate.md).
+`SyncState` provides a powerful way to synchronize small amounts of application state across devices via iCloud. It is ideal for ensuring that user preferences and other key data remain consistent across all devices logged into the same iCloud account. For more advanced use cases, explore other features of **AppState**, such as [SecureState](usage-securestate.md) and [FileState](usage-filestate.md).
