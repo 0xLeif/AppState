@@ -673,16 +673,15 @@ public extension Application {
         _ column: Int = #column
     ) -> SecureState {
         let secureState = shared.value(keyPath: keyPath)
-        let debugMessage: String
-
-        #if DEBUG
-        debugMessage = "🔑 Getting SecureState \(String(describing: keyPath)) -> \(secureState.value ?? "nil")"
-        #else
-        debugMessage = "🔑 Getting SecureState \(String(describing: keyPath))"
-        #endif
 
         log(
-            debug: debugMessage,
+            debug: {
+                #if DEBUG
+                "🔑 Getting SecureState \(String(describing: keyPath)) -> \(secureState.value ?? "nil")"
+                #else
+                "🔑 Getting SecureState \(String(describing: keyPath))"
+                #endif
+            },
             fileID: fileID,
             function: function,
             line: line,

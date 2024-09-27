@@ -38,16 +38,14 @@ import SwiftUI
             ).value
         }
         nonmutating set {
-            let debugMessage: String
-
-            #if DEBUG
-            debugMessage = "🔑 Setting SecureState \(String(describing: keyPath)) = \(newValue ?? "nil")"
-            #else
-            debugMessage = "🔑 Setting SecureState \(String(describing: keyPath))"
-            #endif
-
             Application.log(
-                debug: debugMessage,
+                debug: {
+                    #if DEBUG
+                    "🔑 Setting SecureState \(String(describing: keyPath)) = \(newValue ?? "nil")"
+                    #else
+                    "🔑 Setting SecureState \(String(describing: keyPath))"
+                    #endif
+                },
                 fileID: fileID,
                 function: function,
                 line: line,
