@@ -25,7 +25,7 @@ struct UserProfile: Codable {
 
 extension Application {
     var userProfile: FileState<UserProfile> {
-        fileState(id: "userProfile", initial: UserProfile(name: "Guest", age: 25))
+        fileState(filename: "userProfile", initial: UserProfile(name: "Guest", age: 25))
     }
 }
 
@@ -53,7 +53,7 @@ import SwiftUI
 
 extension Application {
     var largeDataset: FileState<[String]> {
-        fileState(id: "largeDataset", initial: [])
+        fileState(filename: "largeDataset", initial: [])
     }
 }
 
