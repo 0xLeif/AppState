@@ -56,4 +56,4 @@ We welcome contributions! Please check out our [Contributing Guide](documentatio
 
 ## Next Steps
 
-With **AppState** installed, you can start exploring its key features by checking out the [Usage Overview](documentation/usage-overview.md) and more detailed guides. Get started with managing state and dependencies effectively in your Swift projects!
+With **AppState** installed, you can start exploring its key features by checking out the [Usage Overview](documentation/usage-overview.md) and more detailed guides. Get started with managing state and dependencies effectively in your Swift projects! For more advanced usage techniques, like Just-In-Time creation and preloading dependencies, see the [Advanced Usage Guide](documentation/advanced-usage.md).
