@@ -130,6 +130,17 @@ While `SyncState` allows easy synchronization, it's important to remember the li
 
 - **Storage Limit**: You can store up to 1 MB of data in iCloud using `NSUbiquitousKeyValueStore`, with a per-key value size limit of 1 MB.
 
+### Migration Considerations
+
+When updating your data model, it's important to account for potential migration challenges, especially when working with persisted data using **StoredState**, **FileState**, or **SyncState**. Without proper migration handling, changes like adding new fields or modifying data formats can cause issues when older data is loaded.
+
+Here are some key points to keep in mind:
+- **Adding New Non-Optional Fields**: Ensure new fields are either optional or have default values to maintain backward compatibility.
+- **Handling Data Format Changes**: If the structure of your model changes, implement custom decoding logic to support old formats.
+- **Versioning Your Models**: Use a `version` field in your models to help with migrations and apply logic based on the data’s version.
+
+To learn more about how to manage migrations and avoid potential issues, refer to the [Migration Considerations Guide](migration-considerations.md).
+
 ## Best Practices
 
 - **Use for Small, Critical Data**: `SyncState` is ideal for synchronizing small, important pieces of state such as user preferences, settings, or feature flags.
