@@ -10,7 +10,7 @@ extension FileManager {
 
         #if !os(Linux) && !os(Windows)
         if #available(macOS 13.0, iOS 16.0, watchOS 9.0, tvOS 16.0, *) {
-            return "\(path.path())/App"
+            return path.appending(path: "App").path()
         } else {
             return "\(path.path)/App"
         }
