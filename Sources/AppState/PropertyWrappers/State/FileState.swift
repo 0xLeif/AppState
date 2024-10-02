@@ -5,7 +5,6 @@ import SwiftUI
 #endif
 
 /// `FileState` is a property wrapper allowing SwiftUI views to subscribe to Application's state changes in a reactive way. State is stored using `FileManager`. Works similar to `State` and `Published`.
-@MainActor
 @propertyWrapper public struct FileState<Value: Codable & Sendable> {
     #if !os(Linux) && !os(Windows)
     /// Holds the singleton instance of `Application`.
@@ -25,6 +24,7 @@ import SwiftUI
     private let column: Int
 
     /// Represents the current value of the `FileState`.
+    @MainActor
     public var wrappedValue: Value {
         get {
             Application.fileState(
@@ -51,6 +51,7 @@ import SwiftUI
 
     #if !os(Linux) && !os(Windows)
     /// A binding to the `State`'s value, which can be used with SwiftUI views.
+    @MainActor
     public var projectedValue: Binding<Value> {
         Binding(
             get: { wrappedValue },
@@ -64,6 +65,7 @@ import SwiftUI
 
      - Parameter keyPath: The `KeyPath` for accessing `FileState` in Application.
      */
+    @MainActor
     public init(
         _ keyPath: KeyPath<Application, Application.FileState<Value>>,
         _ fileID: StaticString = #fileID,
@@ -80,6 +82,7 @@ import SwiftUI
 
     #if !os(Linux) && !os(Windows)
     /// A property wrapper's synthetic storage property. This is just for SwiftUI to mutate the `wrappedValue` and send event through `objectWillChange` publisher when the `wrappedValue` changes
+    @MainActor
     public static subscript<OuterSelf: ObservableObject>(
         _enclosingInstance observed: OuterSelf,
         wrapped wrappedKeyPath: ReferenceWritableKeyPath<OuterSelf, Value>,
