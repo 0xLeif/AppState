@@ -7,7 +7,6 @@ extension Application {
         enum StateType {
             case state
             case stored
-            case sync
             case file
         }
 
@@ -102,7 +101,6 @@ extension Application {
             switch type {
             case .state:    return "State<\(Value.self)>(\(value)) (\(scope.key))"
             case .stored:   return "StoredState<\(Value.self)>(\(value)) (\(scope.key))"
-            case .sync:     return "SyncState<\(Value.self)>(\(value)) (\(scope.key))"
             case .file:     return "FileState<\(Value.self)>(\(value)) (\(scope.key))"
             }
         }
