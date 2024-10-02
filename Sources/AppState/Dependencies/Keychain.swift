@@ -43,7 +43,13 @@ public final class Keychain: Sendable {
         self.lock = NSLock()
         self.keys = keys
     }
-    
+
+    /**
+     Retrieve a value from the keychain for a given key and type.
+     - Parameter key: The key to look up in the keychain.
+     - Parameter as: The type of the expected output value.
+     - Returns: The value from the keychain if it exists, otherwise returns `nil`.
+     */
     public func get<Output>(_ key: Key, as: Output.Type) -> Output? {
         let query: [NSString: Any] = [
             kSecClass: kSecClassGenericPassword,
@@ -66,7 +72,14 @@ public final class Keychain: Sendable {
         
         return output
     }
-    
+
+    /**
+     Retrieve a value from the keychain for a given key and type, throwing an error if the value is not found.
+     - Parameter key: The key to look up in the keychain.
+     - Parameter as: The type of the expected output value.
+     - Returns: The value from the keychain.
+     - Throws: `MissingRequiredKeysError` if the key is not found.
+     */
     public func resolve<Output>(_ key: Key, as: Output.Type) throws -> Output {
         guard let output = get(key, as: Output.self) else {
             throw MissingRequiredKeysError(keys: [key])
@@ -74,7 +87,12 @@ public final class Keychain: Sendable {
         
         return output
     }
-    
+
+    /**
+     Set a value in the keychain for a given key.
+     - Parameter value: The value to store in the keychain.
+     - Parameter key: The key associated with the value.
+     */
     public func set(value: String, forKey key: Key) {
         guard let data = value.data(using: .utf8) else { return }
         
@@ -99,7 +117,11 @@ public final class Keychain: Sendable {
             keys.insert(key)
         }
     }
-    
+
+    /**
+     Remove a value from the keychain for a given key.
+     - Parameter key: The key to remove from the keychain.
+     */
     public func remove(_ key: Key) {
         let query: [NSString: Any] = [
             kSecClass: kSecClassGenericPassword,
@@ -110,11 +132,22 @@ public final class Keychain: Sendable {
         SecItemDelete(query as CFDictionary)
         lock.unlock()
     }
-    
+
+    /**
+     Check whether a key exists in the keychain.
+     - Parameter key: The key to check for.
+     - Returns: `true` if the key exists, `false` otherwise.
+     */
     public func contains(_ key: Key) -> Bool {
         get(key, as: String.self) != nil
     }
-    
+
+    /**
+     Ensure the specified set of keys exist in the keychain.
+     - Parameter keys: The set of keys to check for.
+     - Returns: The `Keychain` instance if all keys exist.
+     - Throws: `MissingRequiredKeysError` if any key is missing.
+     */
     public func require(keys: Set<Key>) throws -> Self {
         let missingKeys = keys
             .filter { contains($0) == false }
@@ -125,11 +158,22 @@ public final class Keychain: Sendable {
         
         return self
     }
-    
+
+    /**
+     Ensure a specific key exists in the keychain.
+     - Parameter key: The key to check for.
+     - Returns: The `Keychain` instance if the key exists.
+     - Throws: `MissingRequiredKeysError` if the key is missing.
+     */
     public func require(_ key: Key) throws -> Self {
         try require(keys: [key])
     }
 
+    /**
+     Retrieve all keys and their values from the keychain.
+     - Parameter ofType: The type of the values expected.
+     - Returns: A dictionary with keys and their associated values.
+     */
     @MainActor
     public func values<Output>(ofType: Output.Type) -> [Key: Output] {
         let storedKeys: [Key]
