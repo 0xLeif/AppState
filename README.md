@@ -1,8 +1,8 @@
 # AppState
 
-[![macOS](https://img.shields.io/github/actions/workflow/status/0xLeif/AppState/macOS.yml?branch=main)](https://github.com/0xLeif/AppState/actions)
-[![Ubuntu](https://img.shields.io/github/actions/workflow/status/0xLeif/AppState/ubuntu.yml?branch=main)](https://github.com/0xLeif/AppState/actions)
-[![Windows](https://img.shields.io/github/actions/workflow/status/0xLeif/AppState/windows.yml?branch=main)](https://github.com/0xLeif/AppState/actions)
+[![macOS Build](https://img.shields.io/github/actions/workflow/status/0xLeif/AppState/macOS.yml?label=macOS&branch=main)](https://github.com/0xLeif/AppState/actions)
+[![Ubuntu Build](https://img.shields.io/github/actions/workflow/status/0xLeif/AppState/ubuntu.yml?label=Ubuntu&branch=main)](https://github.com/0xLeif/AppState/actions)
+[![Windows Build](https://img.shields.io/github/actions/workflow/status/0xLeif/AppState/windows.yml?label=Windows&branch=main)](https://github.com/0xLeif/AppState/actions)
 [![License](https://img.shields.io/github/license/0xLeif/AppState)](https://github.com/0xLeif/AppState/blob/main/LICENSE)
 [![Version](https://img.shields.io/github/v/release/0xLeif/AppState)](https://github.com/0xLeif/AppState/releases)
 
