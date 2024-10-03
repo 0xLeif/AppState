@@ -72,6 +72,8 @@ private extension Application {
 }
 ```
 
+While this approach is valid for sharing state and dependencies across the application, it is not advised because it relies on manually managing IDs. This can lead to potential conflicts and bugs if IDs are not managed correctly. This behavior is more of a side effect of how the IDs work in AppState, rather than a recommended practice.
+
 ### 3.2 Restricted State and Dependency Access
 
 To restrict access, use a unique ID like a UUID to ensure that only the right parts of the app can access specific states or dependencies.
