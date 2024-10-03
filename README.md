@@ -1,6 +1,6 @@
 # AppState
 
-[![Build Status](https://img.shields.io/github/actions/workflow/status/0xLeif/AppState/CI.yml?branch=main)](https://github.com/0xLeif/AppState/actions)
+[![Build Status](https://img.shields.io/github/actions/workflow/status/0xLeif/AppState/macOS.yml?branch=main)](https://github.com/0xLeif/AppState/actions)
 [![License](https://img.shields.io/github/license/0xLeif/AppState)](https://github.com/0xLeif/AppState/blob/main/LICENSE)
 [![Version](https://img.shields.io/github/v/release/0xLeif/AppState)](https://github.com/0xLeif/AppState/releases)
 
