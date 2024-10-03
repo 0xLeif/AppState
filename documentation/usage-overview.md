@@ -26,8 +26,9 @@ extension Application {
         secureState(id: "userToken")
     }
     
+    @MainActor
     var largeDataset: FileState<[String]> {
-        fileState(filename: "largeDataset", initial: [])
+        fileState(initial: [], filename: "largeDataset")
     }
 }
 ```
