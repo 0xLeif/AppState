@@ -5,33 +5,20 @@ import Foundation
 extension Application {
     /// A struct that provides a thread-safe interface for interacting with `NSUbiquitousKeyValueStore`,
     /// which synchronizes small amounts of key-value data across the user's iCloud-enabled devices.
-    /// This struct is marked as `Sendable`, allowing for safe usage in concurrent environments.
-    public struct SendableNSUbiquitousKeyValueStore: Sendable {
-
-        /// Retrieves data stored in iCloud for the specified key.
-        /// - Parameter key: The key used to retrieve the associated data from the `NSUbiquitousKeyValueStore`.
-        /// - Returns: The `Data` object associated with the key, or `nil` if no data is found.
+    public struct SendableNSUbiquitousKeyValueStore: UbiquitousKeyValueStoreManaging {
         public func data(forKey key: String) -> Data? {
             NSUbiquitousKeyValueStore.default.data(forKey: key)
         }
-
-        /// Sets a `Data` object for the specified key in iCloud's key-value store.
-        /// - Parameters:
-        ///   - value: The `Data` object to store. Pass `nil` to remove the data associated with the key.
-        ///   - key: The key with which to associate the data.
         public func set(_ value: Data?, forKey key: String) {
             NSUbiquitousKeyValueStore.default.set(value, forKey: key)
         }
-
-        /// Removes the value associated with the specified key from iCloud's key-value store.
-        /// - Parameter key: The key whose associated value should be removed.
         public func removeObject(forKey key: String) {
             NSUbiquitousKeyValueStore.default.removeObject(forKey: key)
         }
     }
 
     /// The default `NSUbiquitousKeyValueStore` instance.
-    public var icloudStore: Dependency<SendableNSUbiquitousKeyValueStore> {
+    public var icloudStore: Dependency<UbiquitousKeyValueStoreManaging> {
         dependency {
             NotificationCenter.default.addObserver(
                 self,
@@ -63,7 +50,7 @@ extension Application {
     public struct SyncState<Value: Codable & Sendable>: MutableApplicationState {
         public static var emoji: Character { "☁️" }
 
-        @AppDependency(\.icloudStore) private var icloudStore: SendableNSUbiquitousKeyValueStore
+        @AppDependency(\.icloudStore) private var icloudStore: UbiquitousKeyValueStoreManaging
 
         /// The initial value of the state.
         private var initial: () -> Value

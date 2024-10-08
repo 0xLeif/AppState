@@ -2,15 +2,7 @@ import Foundation
 
 extension Application {
     /// A struct that provides methods for reading, writing, and deleting files in a type-safe, sendable manner.
-    /// This struct is marked as `Sendable`, allowing its methods to be used in concurrent code safely.
-    public struct SendableFileManager: Sendable {
-
-        /// Reads a file from the given path and decodes its contents into the specified type.
-        /// - Parameters:
-        ///   - path: The directory path where the file is located. Defaults to the current directory `"."`.
-        ///   - filename: The name of the file to read.
-        /// - Returns: The decoded value of the file's content as the specified type.
-        /// - Throws: An error if the file cannot be found or decoded.
+    public struct SendableFileManager: FileManaging {
         public func `in`<Value: Decodable>(
             path: String = ".",
             filename: String
@@ -18,13 +10,6 @@ extension Application {
             try FileManager.default.in(path: path, filename: filename)
         }
 
-        /// Encodes and writes the given value to a file at the specified path.
-        /// - Parameters:
-        ///   - value: The value to encode and write to the file. It must conform to `Encodable`.
-        ///   - path: The directory path where the file will be written. Defaults to the current directory `"."`.
-        ///   - filename: The name of the file to write.
-        ///   - base64Encoded: Whether to encode the content as Base64. Defaults to `true`.
-        /// - Throws: An error if the file cannot be written.
         public func `out`<Value: Encodable>(
             _ value: Value,
             path: String = ".",
@@ -39,25 +24,17 @@ extension Application {
             )
         }
 
-        /// Deletes a file at the specified path.
-        /// - Parameters:
-        ///   - path: The directory path where the file is located. Defaults to the current directory `"."`.
-        ///   - filename: The name of the file to delete.
-        /// - Throws: An error if the file cannot be deleted.
         public func `delete`(path: String = ".", filename: String) throws {
             try FileManager.default.delete(path: path, filename: filename)
         }
 
-        /// Removes a file or directory at the specified path.
-        /// - Parameter path: The full path of the file or directory to remove.
-        /// - Throws: An error if the item cannot be removed.
         public func removeItem(atPath path: String) throws {
             try FileManager.default.removeItem(atPath: path)
         }
     }
 
     /// The shared `FileManager` instance.
-    public var fileManager: Dependency<SendableFileManager> {
+    public var fileManager: Dependency<FileManaging> {
         dependency(SendableFileManager())
     }
 
@@ -65,7 +42,7 @@ extension Application {
     public struct FileState<Value: Codable & Sendable>: MutableApplicationState {
         public static var emoji: Character { "🗄️" }
 
-        @AppDependency(\.fileManager) private var fileManager: SendableFileManager
+        @AppDependency(\.fileManager) private var fileManager: FileManaging
 
         /// The initial value of the state.
         private var initial: () -> Value
