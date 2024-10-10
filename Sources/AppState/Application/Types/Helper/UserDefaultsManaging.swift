@@ -1,7 +1,6 @@
 /// A protocol that provides a thread-safe interface for interacting with `UserDefaults`,
 /// allowing the storage, retrieval, and removal of user preferences and data.
 public protocol UserDefaultsManaging: Sendable {
-
     /// Retrieves an object from `UserDefaults` for the given key.
     /// - Parameter key: The key used to retrieve the associated value from `UserDefaults`.
     /// - Returns: The value stored in `UserDefaults` for the given key, or `nil` if no value is associated with the key.

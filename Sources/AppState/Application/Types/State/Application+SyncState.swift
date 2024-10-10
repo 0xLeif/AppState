@@ -9,9 +9,11 @@ extension Application {
         public func data(forKey key: String) -> Data? {
             NSUbiquitousKeyValueStore.default.data(forKey: key)
         }
+
         public func set(_ value: Data?, forKey key: String) {
             NSUbiquitousKeyValueStore.default.set(value, forKey: key)
         }
+
         public func removeObject(forKey key: String) {
             NSUbiquitousKeyValueStore.default.removeObject(forKey: key)
         }
