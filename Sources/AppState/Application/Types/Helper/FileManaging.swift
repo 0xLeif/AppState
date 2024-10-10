@@ -1,6 +1,5 @@
 /// A protocol that provides methods for reading, writing, and deleting files in a type-safe, sendable manner.
 public protocol FileManaging: Sendable {
-
     /// Reads a file from the given path and decodes its contents into the specified type.
     /// - Parameters:
     ///   - path: The directory path where the file is located. Defaults to the current directory `"."`.

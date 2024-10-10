@@ -4,7 +4,6 @@ import Foundation
 /// A protocol that provides a thread-safe interface for interacting with `NSUbiquitousKeyValueStore`,
 /// which synchronizes key-value data across the user's iCloud-enabled devices.
 public protocol UbiquitousKeyValueStoreManaging: Sendable {
-
     /// Retrieves data stored in iCloud for the specified key.
     /// - Parameter key: The key used to retrieve the associated data from the `NSUbiquitousKeyValueStore`.
     /// - Returns: The `Data` object associated with the key, or `nil` if no data is found.
