@@ -34,30 +34,14 @@ extension Application {
                     )
                 else {
                     defer {
-                        let setValue = {
-                            shared.cache.set(
-                                value: Application.State(
-                                    type: .state,
-                                    initial: _value,
-                                    scope: scope
-                                ),
-                                forKey: scope.key
-                            )
-                        }
-
-                        #if (!os(Linux) && !os(Windows))
-                        if NSClassFromString("XCTest") == nil {
-                            Task {
-                                await MainActor.run {
-                                    setValue()
-                                }
-                            }
-                        } else {
-                            setValue()
-                        }
-                        #else
-                        setValue()
-                        #endif
+                        shared.cache.set(
+                            value: Application.State(
+                                type: .state,
+                                initial: _value,
+                                scope: scope
+                            ),
+                            forKey: scope.key
+                        )
                     }
                     return _value
                 }
