@@ -34,14 +34,16 @@ extension Application {
                     )
                 else {
                     defer {
-                        shared.cache.set(
-                            value: Application.State(
-                                type: .state,
-                                initial: _value,
-                                scope: scope
-                            ),
-                            forKey: scope.key
-                        )
+                        Task { @MainActor in
+                            shared.cache.set(
+                                value: Application.State(
+                                    type: .state,
+                                    initial: _value,
+                                    scope: scope
+                                ),
+                                forKey: scope.key
+                            )
+                        }
                     }
                     return _value
                 }
