@@ -34,7 +34,7 @@ extension Application {
                     )
                 else {
                     defer {
-                        Task { @MainActor in
+                        let setValue = {
                             shared.cache.set(
                                 value: Application.State(
                                     type: .state,
@@ -44,6 +44,17 @@ extension Application {
                                 forKey: scope.key
                             )
                         }
+                        #if (!os(Linux) && !os(Windows))
+                        if NSClassFromString("XCTest") == nil {
+                            Task { @MainActor in
+                                setValue()
+                            }
+                        } else {
+                            setValue()
+                        }
+                        #else
+                        setValue()
+                        #endif
                     }
                     return _value
                 }
