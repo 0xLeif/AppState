@@ -2,6 +2,7 @@
 import SwiftUI
 
 /// The `@ObservedDependency` property wrapper is a feature provided by AppState, intended to simplify dependency handling throughout your application. It makes it easy to access, share, and manage dependencies in a neat and Swift idiomatic way. It works the same as `@AppDependency`, but comes with the power of the `@ObservedObject` property wrapper.
+@MainActor
 @propertyWrapper public struct ObservedDependency<Value: Sendable>: DynamicProperty where Value: ObservableObject {
     /// Path for accessing `ObservedDependency` from Application.
     private let keyPath: KeyPath<Application, Application.Dependency<Value>>
