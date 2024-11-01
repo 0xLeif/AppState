@@ -42,24 +42,28 @@ fileprivate struct ExampleDependencyWrapper {
 
 @MainActor
 final class AppDependencyTests: XCTestCase {
+    @MainActor
     override func setUp() async throws {
         Application
             .logging(isEnabled: true)
             .promote(\.networking, with: MockNetworking())
     }
 
+    @MainActor
     override func tearDown() async throws {
         let applicationDescription = Application.description
 
         Application.logger.debug("AppDependencyTests \(applicationDescription)")
     }
 
+    @MainActor
     func testComposableDependencies() {
         let composableService = Application.dependency(\.composableService)
 
         composableService.networking.fetch()
     }
 
+    @MainActor
     func testDependency() async {
         Application.promote(\.networking, with: NetworkService())
 
