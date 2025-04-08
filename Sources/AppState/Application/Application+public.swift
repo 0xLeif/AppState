@@ -429,25 +429,6 @@ public extension Application {
         storedState.reset()
     }
 
-    /// Removes the value from `UserDefaults` and resets the value to the inital value.
-    @MainActor
-    @available(*, deprecated, renamed: "reset")
-    static func remove<Value>(
-        storedState keyPath: KeyPath<Application, StoredState<Value>>,
-        _ fileID: StaticString = #fileID,
-        _ function: StaticString = #function,
-        _ line: Int = #line,
-        _ column: Int = #column
-    ) {
-        reset(
-            storedState: keyPath,
-            fileID,
-            function,
-            line,
-            column
-        )
-    }
-
     /**
      Retrieves a stored state from Application instance using the provided keypath.
 
@@ -539,25 +520,6 @@ public extension Application {
 
         var syncState = shared.value(keyPath: keyPath)
         syncState.reset()
-    }
-
-    /// Removes the value from `iCloud` and resets the value to the inital value.
-    @MainActor
-    @available(*, deprecated, renamed: "reset")
-    static func remove<Value>(
-        syncState keyPath: KeyPath<Application, SyncState<Value>>,
-        _ fileID: StaticString = #fileID,
-        _ function: StaticString = #function,
-        _ line: Int = #line,
-        _ column: Int = #column
-    ) {
-        reset(
-            syncState: keyPath,
-            fileID,
-            function,
-            line,
-            column
-        )
     }
 
     /**
