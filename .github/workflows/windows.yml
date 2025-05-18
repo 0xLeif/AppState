@@ -9,10 +9,6 @@ jobs:
     runs-on: windows-latest
     steps:
       - uses: actions/checkout@v4
-
-      - uses: swift-actions/setup-swift@v1
-        with:
-          swift-version: "6.0"
-
+      - uses: swift-actions/setup-swift@v2
       - run: swift build
       - run: swift test
