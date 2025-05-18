@@ -8,11 +8,11 @@ jobs:
   build:
     runs-on: windows-latest
     steps:
-      - uses: compnerd/gha-setup-swift@main
+      - uses: actions/checkout@v4
+
+      - uses: swift-actions/setup-swift@v1
         with:
-          branch: swift-6.0-release
-          tag: 6.0-RELEASE
-  
-      - uses: actions/checkout@v2
+          swift-version: "6.0"
+
       - run: swift build
       - run: swift test
