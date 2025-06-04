@@ -40,6 +40,34 @@ To integrate **AppState** into your Swift project, you’ll need to use the Swif
 
 After installation, refer to the [Usage Overview](documentation/usage-overview.md) for a quick introduction on how to manage state and inject dependencies into your project.
 
+## Quick Example
+
+Below is a minimal example showing how to define a piece of state and access it from a SwiftUI view:
+
+```swift
+import AppState
+import SwiftUI
+
+private extension Application {
+    var counter: State<Int> {
+        state(initial: 0)
+    }
+}
+
+struct ContentView: View {
+    @AppState(\.counter) var counter: Int
+
+    var body: some View {
+        VStack {
+            Text("Count: \(counter)")
+            Button("Increment") { counter += 1 }
+        }
+    }
+}
+```
+
+This snippet demonstrates defining a state value in an `Application` extension and using the `@AppState` property wrapper to bind it inside a view.
+
 ## Documentation
 
 Here’s a detailed breakdown of **AppState**'s documentation:
@@ -55,6 +83,7 @@ Here’s a detailed breakdown of **AppState**'s documentation:
 - [FileState Usage Guide](documentation/usage-filestate.md): Learn how to persist larger amounts of data securely on disk.
 - [Keychain SecureState Usage](documentation/usage-securestate.md): Store sensitive data securely using the Keychain.
 - [iCloud Syncing with SyncState](documentation/usage-syncstate.md): Keep state synchronized across devices using iCloud.
+- [FAQ](documentation/faq.md): Answers to common questions when using **AppState**.
 
 ## Contributing
 
