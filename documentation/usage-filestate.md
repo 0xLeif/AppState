@@ -88,19 +88,6 @@ To learn more about how to manage migrations and avoid potential issues, refer t
 - **Thread-Safe Access**: Like other components of **AppState**, `FileState` ensures data is accessed safely even when multiple tasks interact with the stored data.
 - **Combine with Codable**: When working with custom data types, ensure they conform to `Codable` to simplify encoding and decoding to and from the file system.
 
-## FileManager Helpers
-
-`AppState` extends `FileManager` with convenience functions for reading and writing data. These helpers automatically create directories as needed and optionally Base64‑encode the output.
-
-```swift
-let manager = FileManager.default
-try manager.out("Hello", path: "./Data", filename: "greeting.txt", base64Encoded: false)
-let greeting: String = try manager.in(path: "./Data", filename: "greeting.txt")
-try manager.delete(path: "./Data", filename: "greeting.txt")
-```
-
-These APIs make it easy to persist Codable values or raw `Data` to disk without needing to manage directory creation or encoding yourself.
-
 ## Conclusion
 
 `FileState` is a powerful tool for handling persistent data in your app, allowing you to store and retrieve larger or more complex objects in a thread-safe and persistent manner. It works seamlessly with Swift’s `Codable` protocol, ensuring your data can be easily serialized and deserialized for long-term storage.
