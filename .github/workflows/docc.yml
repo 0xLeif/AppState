@@ -34,7 +34,6 @@ jobs:
 
       - name: Build and Export DocC
         run: |
-          sudo xcode-select -s /Applications/Xcode_16.0.app
           xcodebuild docbuild \
             -scheme AppState \
             -derivedDataPath /tmp/docbuild \
