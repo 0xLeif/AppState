@@ -1,41 +1,57 @@
 name: docc
+
 on:
   push:
     branches: [ "main" ]
+
 permissions:
   contents: read
   pages: write
   id-token: write
+
 concurrency:
   group: pages
   cancel-in-progress: true
+
 jobs:
   pages:
     environment:
       name: github-pages
       url: '${{ steps.deployment.outputs.page_url }}'
     runs-on: macos-latest
+
     steps:
-      - uses: swift-actions/setup-swift@v1
-      - name: git checkout
+      - name: Checkout code
         uses: actions/checkout@v3
-      - name: docbuild
-        run: >
-          sudo xcode-select -s /Applications/Xcode_16.0.app;
-          xcodebuild docbuild -scheme AppState \
+
+      - name: Set up Swift
+        uses: swift-actions/setup-swift@v1
+
+      - name: Build and Export DocC
+        run: |
+          sudo xcode-select -s /Applications/Xcode_16.0.app
+          xcodebuild docbuild \
+            -scheme AppState \
             -derivedDataPath /tmp/docbuild \
-            -destination 'generic/platform=iOS';
+            -destination 'generic/platform=iOS'
+          
+          DOC_ARCHIVE="/tmp/docbuild/Build/Products/Debug-iphoneos/AppState.doccarchive"
+          OUTPUT_PATH="docs"
+          HOSTING_PATH="AppState"
+          
           $(xcrun --find docc) process-archive \
-            transform-for-static-hosting /tmp/docbuild/Build/Products/Debug-iphoneos/AppState.doccarchive \
-            --output-path docs \
-            --hosting-base-path 'AppState';
-          echo "<script>window.location.href +=
-          \"/documentation/appstate\"</script>" > docs/index.html;
+            transform-for-static-hosting "$DOC_ARCHIVE" \
+            --output-path "$OUTPUT_PATH" \
+            --hosting-base-path "$HOSTING_PATH"
+          
+          echo '<script>window.location.href += "/documentation/appstate"</script>' > docs/index.html
+
       - name: Upload build artifacts
         uses: actions/upload-artifact@v3
         with:
           name: build-output
           path: docs
-      - name: deploy
+
+      - name: Deploy to GitHub Pages
         id: deployment
         uses: actions/deploy-pages@v1
