@@ -31,10 +31,11 @@ jobs:
             --hosting-base-path 'AppState';
           echo "<script>window.location.href +=
           \"/documentation/appstate\"</script>" > docs/index.html;
-      - name: artifacts
-        uses: actions/upload-pages-artifact@v1
+      - name: Upload build artifacts
+        uses: actions/upload-artifact@v3
         with:
-          path: docs
+          name: build-output
+          path: ./build
       - name: deploy
         id: deployment
         uses: actions/deploy-pages@v1
