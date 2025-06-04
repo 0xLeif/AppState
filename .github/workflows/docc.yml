@@ -22,15 +22,13 @@ jobs:
     runs-on: macos-latest
 
     steps:
-      - uses: maxim-lobanov/setup-xcode@v1
-        with:
-          xcode-version: 16.0
-
       - name: Checkout code
         uses: actions/checkout@v3
 
       - name: Set up Swift
-        uses: swift-actions/setup-swift@v1
+        uses: swift-actions/setup-swift@v2
+        with:
+          swift-version: '6.0.0'
 
       - name: Build and Export DocC
         run: |
