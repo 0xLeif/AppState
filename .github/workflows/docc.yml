@@ -2,7 +2,8 @@ name: docc
 
 on:
   push:
-    branches: [ "main" ]
+    branches: ["**"] # TEMP
+#    branches: [ "main" ]
 
 permissions:
   contents: read
