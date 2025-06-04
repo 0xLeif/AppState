@@ -29,6 +29,7 @@
 - **State**: Centralized state management that allows you to encapsulate and broadcast changes across the app.
 - **StoredState**: Persistent state using `UserDefaults`, ideal for saving small amounts of data between app launches.
 - **FileState**: Persistent state stored using `FileManager`, useful for storing larger amounts of data securely on disk.
+- **FileManager Helper Functions**: Convenience APIs for reading and writing files using `FileManager`.
 - 🍎 **SyncState**: Synchronize state across multiple devices using iCloud, ensuring consistency in user preferences and settings.
 - 🍎 **SecureState**: Store sensitive data securely using the Keychain, protecting user information such as tokens or passwords.
 - **Dependency Management**: Inject dependencies like network services or database clients across your app for better modularity and testing.
