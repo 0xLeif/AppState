@@ -48,7 +48,7 @@ jobs:
           echo '<script>window.location.href += "/documentation/appstate"</script>' > docs/index.html
 
       - name: Upload build artifacts
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: build-output
           path: docs
