@@ -35,7 +35,7 @@ jobs:
         uses: actions/upload-artifact@v3
         with:
           name: build-output
-          path: ./build
+          path: docs
       - name: deploy
         id: deployment
         uses: actions/deploy-pages@v1
