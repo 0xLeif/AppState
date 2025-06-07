@@ -14,6 +14,7 @@ open class Application: NSObject {
 
     #if !os(Linux) && !os(Windows)
     /// Logger specifically for AppState
+    @MainActor
     public static let logger: Logger = Logger(subsystem: "AppState", category: "Application")
     #else
     /// Logger specifically for AppState

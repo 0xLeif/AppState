@@ -12,9 +12,10 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - uses: sersoft-gmbh/swifty-linux-action@v3
-        with:
-          release-version: 6.0.1
+      - name: Set up Swift
+        uses: swift-actions/setup-swift@v2
+        with: 
+          swift-version: '6.1.0'
       - uses: actions/checkout@v3
       - name: Build for release
         run: swift build -v -c release
