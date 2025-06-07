@@ -14,7 +14,7 @@ jobs:
     steps:
       - uses: sersoft-gmbh/swifty-linux-action@v3
         with:
-          release-version: 6.1.0
+          release-version: 6.0.1
       - uses: actions/checkout@v3
       - name: Build for release
         run: swift build -v -c release
