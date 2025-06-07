@@ -33,6 +33,8 @@
 - 🍎 **SecureState**: Store sensitive data securely using the Keychain, protecting user information such as tokens or passwords.
 - **Dependency Management**: Inject dependencies like network services or database clients across your app for better modularity and testing.
 - **Slicing**: Access specific parts of a state or dependency for granular control without needing to manage the entire application state.
+- **Constants**: Access read-only slices of your state when you need immutable values.
+- **Observed Dependencies**: Observe `ObservableObject` dependencies so your views update when they change.
 
 ## Getting Started
 
@@ -84,6 +86,11 @@ Here’s a detailed breakdown of **AppState**'s documentation:
 - [Keychain SecureState Usage](documentation/usage-securestate.md): Store sensitive data securely using the Keychain.
 - [iCloud Syncing with SyncState](documentation/usage-syncstate.md): Keep state synchronized across devices using iCloud.
 - [FAQ](documentation/faq.md): Answers to common questions when using **AppState**.
+- [Constant Usage Guide](documentation/usage-constant.md): Access read-only values from your state.
+- [ObservedDependency Usage Guide](documentation/usage-observeddependency.md): Work with `ObservableObject` dependencies in your views.
+- [Advanced Usage](documentation/advanced-usage.md): Techniques like just‑in‑time creation and preloading dependencies.
+- [Best Practices](documentation/best-practices.md): Tips for structuring your app’s state effectively.
+- [Migration Considerations](documentation/migration-considerations.md): Guidance when updating persisted models.
 
 ## Contributing
 
@@ -91,4 +98,4 @@ We welcome contributions! Please check out our [Contributing Guide](documentatio
 
 ## Next Steps
 
-With **AppState** installed, you can start exploring its key features by checking out the [Usage Overview](documentation/usage-overview.md) and more detailed guides. Get started with managing state and dependencies effectively in your Swift projects! For more advanced usage techniques, like Just-In-Time creation and preloading dependencies, see the [Advanced Usage Guide](documentation/advanced-usage.md).
+With **AppState** installed, you can start exploring its key features by checking out the [Usage Overview](documentation/usage-overview.md) and more detailed guides. Get started with managing state and dependencies effectively in your Swift projects! For more advanced usage techniques, like Just-In-Time creation and preloading dependencies, see the [Advanced Usage Guide](documentation/advanced-usage.md). You can also review the [Constant](documentation/usage-constant.md) and [ObservedDependency](documentation/usage-observeddependency.md) guides for additional features.
