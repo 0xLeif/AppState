@@ -25,18 +25,27 @@ open class Application: NSObject {
     @MainActor
     static var isLoggingEnabled: Bool = false
 
+    /// A recursive lock to ensure thread-safe access to shared resources within the Application instance.
     let lock: NSRecursiveLock
 
-    /// Cache to store values
+    /// The underlying cache used to store all state and dependency values.
     let cache: Cache<String, Any>
 
     #if !os(Linux) && !os(Windows)
+    /// A set to store cancellables for Combine subscriptions, ensuring they are properly managed and released.
     private var bag: Set<AnyCancellable> = Set()
 
     deinit { bag.removeAll() }
     #endif
 
-    /// Default init used as the default Application, but also any custom implementation of Application. You should never call this function, but instead should use `Application.promote(to: CustomApplication.self)`.
+    /// Initializes a new instance of `Application`.
+    ///
+    /// This initializer is used for the default `Application.shared` instance and any custom `Application` subclasses.
+    /// You should typically not call this directly. To use a custom application subclass, call `Application.promote(to: CustomApplication.self)`
+    /// early in your application's lifecycle.
+    ///
+    /// - Parameter setup: A closure that is called after the Application instance is initialized, allowing for custom setup logic.
+    ///                  This can be used, for example, to register custom dependencies or perform initial state configuration.
     public required init(
         setup: (Application) -> Void = { _ in }
     ) {
@@ -112,5 +121,8 @@ open class Application: NSObject {
 }
 
 #if !os(Linux) && !os(Windows)
+/// Conform `Application` to `ObservableObject` to allow SwiftUI views to subscribe to its changes.
+/// This enables the `@ObservedObject` property wrapper to work with `Application.shared` or custom instances,
+/// triggering view updates when `objectWillChange` is published.
 extension Application: ObservableObject { }
 #endif

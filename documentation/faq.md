@@ -4,15 +4,30 @@ This short FAQ addresses common questions developers may have when using **AppSt
 
 ## How do I reset a state value?
 
-Each `State` provides a `reset()` function that restores the value to the `initial` one defined in your `Application` extension. Call `reset()` when you need to clear user data or return to a default configuration.
+For states like `State`, `StoredState`, `FileState`, and `SyncState`, you can reset them to their initial values. The `Application` type provides static `reset` functions for this.
 
+For example, if you have a `State<Int>` defined as `\.counter`:
 ```swift
-@AppState(\.counter) var counter: Int
-
-func clearCounter() {
-    counter.reset() // Resets to the initial value
+extension Application {
+    var counter: State<Int> { state(initial: 0) }
 }
 ```
+
+You can reset it like this:
+```swift
+// Somewhere in your code, typically in a ViewModel or an action handler
+Application.reset(state: \.counter)
+```
+This will reset the counter back to `0`. Similar `reset` functions exist for `StoredState`, `FileState`, `SyncState`, and `SecureState`, prefixed accordingly (e.g., `Application.reset(storedState: \.myStoredValue)`).
+
+Alternatively, you can get the state wrapper object and call `reset()` on it:
+```swift
+// Get the state wrapper
+var counterState = Application.state(\.counter)
+// Call reset on the wrapper
+counterState.reset()
+```
+The property wrappers themselves (e.g., `@AppState`) provide direct access to the *value* of the state, not the state management object that has the `reset()` method.
 
 ## Can I use AppState with asynchronous tasks?
 
