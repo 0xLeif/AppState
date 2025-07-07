@@ -19,18 +19,22 @@ let package = Package(
     ],
     dependencies: [
         .package(url: "https://github.com/0xLeif/Cache", from: "2.0.0"),
-        .package(url: "https://github.com/apple/swift-docc-plugin", from: "1.4.0")
+        .package(url: "https://github.com/apple/swift-docc-plugin", from: "1.4.0"),
+        .package(url: "https://github.com/groue/GRDB.swift", from: "6.0.0") // Version GRDB v6.26.0
     ],
     targets: [
         .target(
             name: "AppState",
             dependencies: [
-                "Cache"
+                "Cache",
+                .product(name: "GRDB", package: "GRDB.swift")
             ]
         ),
         .testTarget(
             name: "AppStateTests",
-            dependencies: ["AppState"]
+            dependencies: [
+                "AppState",
+                .product(name: "GRDB", package: "GRDB.swift")]
         )
     ]
 )
