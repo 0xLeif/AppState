@@ -227,7 +227,8 @@ final class AppStateTests: XCTestCase {
         let keyPath = \Application.count
         let targetValueBase = 999
 
-        Application.state(keyPath).value = 0 // Initial value
+        var countState = Application.state(keyPath)
+        countState.value = 0 // Initial value
 
         await withTaskGroup(of: Void.self) { group in
             for writerId in 0..<concurrentWriters {
@@ -261,7 +262,8 @@ final class AppStateTests: XCTestCase {
         let iterations = 1000
         let numReaders = 5
 
-        Application.state(keyPath).value = "Initial"
+        var usernameState = Application.state(keyPath)
+        usernameState.value = "Initial"
 
         await withTaskGroup(of: Void.self) { group in
             // Writer Task
