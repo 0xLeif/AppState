@@ -65,7 +65,7 @@ Then click "Next."
 
 ### Step 4: Specify the Version
 
-Choose the version you wish to use. It's recommended to select the "Up to Next Major Version" option and specify `2.1.3` as the lower bound. Then click "Next."
+Choose the version you wish to use. It's recommended to select the "Up to Next Major Version" option and specify `2.0.0` as the lower bound. Then click "Next."
 
 ### Step 5: Add the Package
 
