@@ -240,7 +240,8 @@ final class AppStateTests: XCTestCase {
                         // However, Application.state itself uses an NSRecursiveLock,
                         // which should make these operations thread-safe from background tasks.
                         let valueToWrite = targetValueBase + writerId
-                        Application.state(keyPath).value = valueToWrite
+                        var state = Application.state(keyPath)
+                        state.value = valueToWrite
 
                         // Yield to increase contention if desired, though Task.yield() is preferred in async context
                         if i % 10 == 0 { await Task.yield() }
@@ -269,10 +270,12 @@ final class AppStateTests: XCTestCase {
             // Writer Task
             group.addTask {
                 for i in 0..<iterations {
-                    Application.state(keyPath).value = "\(writeValuePrefix)_\(i)"
+                    var state = Application.state(keyPath)
+                    state.value = "\(writeValuePrefix)_\(i)"
                     if i % 10 == 0 { await Task.yield() }
                 }
-                Application.state(keyPath).value = "FinalStableValue"
+                var finalState = Application.state(keyPath)
+                finalState.value = "FinalStableValue"
                 print("Writer finished, set to FinalStableValue")
             }
 
@@ -280,8 +283,9 @@ final class AppStateTests: XCTestCase {
             for readerId in 0..<numReaders {
                 group.addTask {
                     var reads = 0
+                    var currentReaderState = Application.state(keyPath) // Get wrapper once for reading loop
                     while reads < iterations {
-                        let currentValue = Application.state(keyPath).value
+                        let currentValue = currentReaderState.value
                         XCTAssertNotNil(currentValue, "Reader \(readerId) read a nil value unexpectedly.")
                         // If we see the final value, we can stop early for this reader.
                         if currentValue == "FinalStableValue" {
@@ -290,22 +294,26 @@ final class AppStateTests: XCTestCase {
                         }
                         reads += 1
                         await Task.yield() // Yield to allow writer and other readers to run
+                        currentReaderState = Application.state(keyPath) // Re-fetch for next read
                     }
                      // Ensure reader eventually sees the final value if it didn't break early
-                    if Application.state(keyPath).value != "FinalStableValue" {
+                    var finalReadState = Application.state(keyPath)
+                    if finalReadState.value != "FinalStableValue" {
                          // Poll a few more times with slight delay if final value not seen
                         for _ in 0..<10 {
                             await Task.sleep(nanoseconds: 10_000_000) // 10ms
-                            if Application.state(keyPath).value == "FinalStableValue" { break }
+                            finalReadState = Application.state(keyPath)
+                            if finalReadState.value == "FinalStableValue" { break }
                         }
                     }
                     // Final check after loop/polling
-                    XCTAssertEqual(Application.state(keyPath).value, "FinalStableValue", "Reader \(readerId) did not observe 'FinalStableValue' as the final state.")
+                    XCTAssertEqual(finalReadState.value, "FinalStableValue", "Reader \(readerId) did not observe 'FinalStableValue' as the final state.")
                 }
             }
         }
 
         // Final assertion after task group completion
-        XCTAssertEqual(Application.state(keyPath).value, "FinalStableValue", "The final state was not the expected 'FinalStableValue'.")
+        let finalAssertState = Application.state(keyPath)
+        XCTAssertEqual(finalAssertState.value, "FinalStableValue", "The final state was not the expected 'FinalStableValue'.")
     }
 }
