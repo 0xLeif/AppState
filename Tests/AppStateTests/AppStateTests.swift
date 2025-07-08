@@ -197,7 +197,7 @@ final class AppStateTests: XCTestCase {
         XCTAssertEqual(callCount, 1, "Initial value closure should not be called on subsequent access if cached.")
 
         // Reset for next part of test: remove the value from cache
-        Application.shared.cache.remove(key: testKey)
+        Application.shared.cache.remove(testKey)
         callCount = 0 // Reset call count
 
         // Re-access to ensure closure is called again if not cached
