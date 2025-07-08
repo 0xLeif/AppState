@@ -424,13 +424,13 @@ public extension Application {
     ///   - line: The line number on which this function is called. Defaults to `#line`.
     ///   - column: The column number in which this function is called. Defaults to `#column`.
     @MainActor
-    static func reset<Value, ApplicationState: MutableApplicationState>(
+    static func reset<ApplicationState: MutableApplicationState>(
         _ keyPath: KeyPath<Application, ApplicationState>,
         _ fileID: StaticString = #fileID,
         _ function: StaticString = #function,
         _ line: Int = #line,
         _ column: Int = #column
-    ) where ApplicationState.Value == Value {
+    ) {
 
         log(
             debug: "\(ApplicationState.emoji) Resetting State \(String(describing: keyPath))",
