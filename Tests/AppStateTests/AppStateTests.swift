@@ -197,7 +197,7 @@ final class AppStateTests: XCTestCase {
         XCTAssertEqual(callCount, 1, "Initial value closure should not be called on subsequent access if cached.")
 
         // Reset for next part of test: remove the value from cache
-        Application.shared.cache.removeValue(forKey: testKey)
+        Application.shared.cache.remove(key: testKey)
         callCount = 0 // Reset call count
 
         // Re-access to ensure closure is called again if not cached
@@ -227,8 +227,9 @@ final class AppStateTests: XCTestCase {
         let keyPath = \Application.count
         let targetValueBase = 999
 
-        var countState = await Application.state(keyPath) // Must await due to @MainActor
-        await MainActor.run { countState.value = 0 }      // Ensure mutation is on MainActor
+        // Since testConcurrentWrites is @MainActor, `Application.state(keyPath)` is a synchronous call.
+        var countState = Application.state(keyPath)
+        countState.value = 0 // This is also synchronous as countState is a local var.
 
         await withTaskGroup(of: Void.self) { group in
             for writerId in 0..<concurrentWriters {
@@ -237,8 +238,8 @@ final class AppStateTests: XCTestCase {
                         let valueToWrite = targetValueBase + writerId
                         // Perform state mutation on the MainActor
                         await MainActor.run {
-                            var state = Application.state(keyPath) // Application.state is @MainActor
-                            state.value = valueToWrite             // State.value is @MainActor
+                            var state = Application.state(keyPath) // Accessing @MainActor static var
+                            state.value = valueToWrite             // Accessing @MainActor .value
                         }
 
                         if i % 10 == 0 { await Task.yield() }
@@ -248,8 +249,8 @@ final class AppStateTests: XCTestCase {
         }
 
         // After all writes, the value should be one of the values written by the writers.
-        let finalValueState = await Application.state(keyPath) // Access on MainActor
-        let finalValue = await finalValueState.value
+        // Accessing state and its value on the MainActor.
+        let finalValue = await MainActor.run { Application.state(keyPath).value }
         let possibleValues = (0..<concurrentWriters).map { targetValueBase + $0 }
         XCTAssertTrue(possibleValues.contains(finalValue), "Final value \(finalValue) is not one of the expected written values \(possibleValues). This might indicate a race condition in the set operation or the test logic itself.")
     }
@@ -261,8 +262,9 @@ final class AppStateTests: XCTestCase {
         let iterations = 1000
         let numReaders = 5
 
-        var usernameState = await Application.state(keyPath) // Must await
-        await MainActor.run { usernameState.value = "Initial" } // Mutate on MainActor
+        // Since test function is @MainActor, these are synchronous calls.
+        var usernameState = Application.state(keyPath)
+        usernameState.value = "Initial"
 
         await withTaskGroup(of: Void.self) { group in
             // Writer Task
@@ -278,7 +280,6 @@ final class AppStateTests: XCTestCase {
                     var finalState = Application.state(keyPath)
                     finalState.value = "FinalStableValue"
                 }
-                // print("Writer finished, set to FinalStableValue") // Best to avoid print in tests
             }
 
             // Reader Tasks
@@ -297,31 +298,29 @@ final class AppStateTests: XCTestCase {
                         await Task.yield()
                     }
 
-                    if !sawFinal { // If not seen during loop, poll a bit
-                        for _ in 0..<20 { // Increased polling attempts
-                            await MainActor.run { // Ensure read is on MainActor
-                                if Application.state(keyPath).value == "FinalStableValue" {
-                                    sawFinal = true
-                                }
+                    if !sawFinal {
+                        for _ in 0..<20 {
+                            let valueOnMain = await MainActor.run { Application.state(keyPath).value }
+                            if valueOnMain == "FinalStableValue" {
+                                sawFinal = true
+                                break
                             }
-                            if sawFinal { break }
                             do {
-                                try await Task.sleep(nanoseconds: 20_000_000) // 20ms, allow writer to complete
+                                try await Task.sleep(nanoseconds: 20_000_000)
                             } catch {
-                                XCTFail("Task.sleep threw an error: \(error)")
+                                XCTFail("Task.sleep threw an error in reader \(readerId): \(error)")
                             }
                         }
                     }
-                    await MainActor.run { // Final assertion on MainActor
+                    await MainActor.run {
                         XCTAssertEqual(Application.state(keyPath).value, "FinalStableValue", "Reader \(readerId) did not observe 'FinalStableValue' as the final state.")
                     }
                 }
             }
         }
 
-        // Final assertion after task group completion
-        let finalAssertState = await Application.state(keyPath)
-        let finalValue = await finalAssertState.value
+        // Final assertion after task group completion, already on MainActor.
+        let finalValue = Application.state(keyPath).value
         XCTAssertEqual(finalValue, "FinalStableValue", "The final state was not the expected 'FinalStableValue'.")
     }
 }
