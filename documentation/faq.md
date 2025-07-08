@@ -17,16 +17,14 @@ Application.reset(storedState: \.hasCompletedOnboarding)
 ```
 This will reset the value in `UserDefaults` back to `false`. Similar `reset` functions exist for `FileState`, `SyncState`, and `SecureState`.
 
-For a non-persistent `State`, there is no built-in `reset` function. You can achieve the same effect by manually setting it back to its initial value:
+For non-persistent `State`, you can reset it the same way as persistent states:
 ```swift
 extension Application {
     var counter: State<Int> { state(initial: 0) }
 }
 
 // To reset:
-var counterState = Application.state(\.counter)
-counterState.value = 0
-```
+Application.reset(\.counter)
 
 ## Can I use AppState with asynchronous tasks?
 
