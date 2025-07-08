@@ -98,7 +98,7 @@ extension Application {
             self.scope = scope
         }
 
-        /// Resets the value to the inital value.
+        /// Resets the value to the initial value.
         @MainActor
         public mutating func reset() {
             value = initial
