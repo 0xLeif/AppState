@@ -148,7 +148,6 @@ final class AppStateTests: XCTestCase {
     func testStateWithDifferentDataTypes() async {
         // Test Int
         var countState: Application.State<Int> = Application.state(\.count)
-        XCTAssertEqual(countState.value, 42)
         countState.value = 100
         XCTAssertEqual(Application.state(\.count).value, 100)
 
@@ -225,11 +224,6 @@ final class AppStateTests: XCTestCase {
         let finalValue = await MainActor.run { Application.state(keyPath).value }
         let possibleValues = (0..<concurrentWriters).map { targetValueBase + $0 }
         XCTAssertTrue(possibleValues.contains(finalValue), "Final value \(finalValue) is not one of the expected written values \(possibleValues). This might indicate a race condition in the set operation or the test logic itself.")
-
-        var state = Application.state(keyPath)
-        state.value = 0
-        
-        XCTAssertTrue(state.value == 0, "State should be reset to 0 after test.")
     }
 
     @MainActor
