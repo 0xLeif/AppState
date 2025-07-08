@@ -415,6 +415,35 @@ public extension Application {
 // MARK: - State Functions
 
 public extension Application {
+    /// Resets any `State` instance to its initial value.
+    ///
+    /// - Parameters:
+    ///   - keyPath: The `KeyPath` of the `MutableApplicationState` to reset (e.g., `\.myState`).
+    ///   - fileID: The identifier of the file in which this function is called. Defaults to `#fileID`.
+    ///   - function: The name of the declaration in which this function is called. Defaults to `#function`.
+    ///   - line: The line number on which this function is called. Defaults to `#line`.
+    ///   - column: The column number in which this function is called. Defaults to `#column`.
+    @MainActor
+    static func reset<Value, ApplicationState: MutableApplicationState>(
+        _ keyPath: KeyPath<Application, ApplicationState>,
+        _ fileID: StaticString = #fileID,
+        _ function: StaticString = #function,
+        _ line: Int = #line,
+        _ column: Int = #column
+    ) where ApplicationState.Value == Value {
+
+        log(
+            debug: "\(ApplicationState.emoji) Resetting State \(String(describing: keyPath))",
+            fileID: fileID,
+            function: function,
+            line: line,
+            column: column
+        )
+
+        var storedState = shared.value(keyPath: keyPath)
+        storedState.reset()
+    }
+
     /**
      Retrieves a `State`, `StoredState`, `FileState`, `SyncState`, or `SecureState` instance
      from the shared `Application` using its `KeyPath`.

@@ -12,6 +12,10 @@ public protocol MutableApplicationState {
     /// The actual value that this state holds. It can be both retrieved and modified.
     @MainActor
     var value: Value { get set }
+
+    /// The function used to reset the state to its initial value.
+    @MainActor
+    mutating func reset()
 }
 
 extension MutableApplicationState {
