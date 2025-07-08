@@ -122,17 +122,27 @@ internal class QueryObserver<Value>: ObservableObject {
         self.dbManager = dbManager
         self.request = request
         self.value = initialValue
+        // Defer starting observation until dbManager is confirmed to be correct,
+        // though AppDependency should handle this. For safety in test environments or complex setups,
+        // one might consider a mechanism to restart observation if dbManager changes.
+        // However, standard SwiftUI view lifecycle with @AppDependency should be fine.
         startObservation()
     }
 
     private func startObservation() {
-        guard let concreteRequest = request as? SQLRequest<Value> else {
-            AppLogger.error("SQLQuery: Could not cast to SQLRequest<\(String(describing: Value.self))>. Type mismatch.")
-            return
-        }
-
-        let observation = ValueObservation.tracking { db in
-            try concreteRequest.fetch(db)
+        // The `init` constraint `Request.Value == Value` ensures that `self.request.fetch(_:)`
+        // will return the same `Value` type that this QueryObserver is generic over.
+        let observation = ValueObservation.tracking { [weak self] db in
+            guard let self = self else {
+                // This scenario (observer deallocated while observation is running)
+                // might lead to unexpected behavior if not handled.
+                // GRDB's ValueObservation might handle this gracefully by stopping.
+                // However, explicitly returning or throwing might be clearer.
+                // For now, assuming GRDB handles deallocation of observer.
+                // A common pattern is to throw an error like `CancellationError`.
+                throw CancellationError() // Or some other specific error
+            }
+            return try self.request.fetch(db)
         }
 
         observationCancellable = observation

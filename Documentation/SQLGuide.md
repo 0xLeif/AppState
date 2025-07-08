@@ -323,16 +323,23 @@ import SwiftUI
 import AppState
 
 struct UserDetailView: View {
-    let userId: Int64
+    // The user property will be populated by @SQLState based on the userId.
+    @SQLState private var user: User? // The wrappedValue type is User?
 
-    // Use the static factory method on Application that returns SQLQuery<User?>
-    // and pass its result to SQLState.
-    @SQLState(Application.user(id: userId)) private var user // user is User?
-
+    // Initialize SQLState in the view's init, passing the dynamic userId.
     init(userId: Int64) {
-        self.userId = userId
-        // The @SQLState property wrapper will use the `userId` from the init parameter
-        // when it initializes the query.
+        // 1. Construct the SQLQuery<User?> instance using the Application helper.
+        //    (Assuming `Application.user(id:)` is defined as shown in "Defining Reusable Queries")
+        let queryForUser = Application.user(id: userId)
+
+        // 2. Initialize the @SQLState property wrapper by assigning to `_user`.
+        //    This uses the `SQLState.init(_ query: SQLQuery<Value>)` initializer.
+        self._user = SQLState(queryForUser)
+
+        // Alternatively, if not using an Application helper that returns a full SQLQuery instance,
+        // you could use the request-based initializer for SQLState directly:
+        // let userRequest = SQLRequest(User.filter(key: userId)) // Creates SQLRequest<User?>
+        // self._user = SQLState(request: userRequest, initialValue: nil)
     }
 
     var body: some View {

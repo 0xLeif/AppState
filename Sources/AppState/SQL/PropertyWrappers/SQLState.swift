@@ -148,90 +148,10 @@ public extension Application {
         )
         return SQLQuery<Record?>(observer: observer)
     }
-
-    /// A helper function to create an `SQLState` instance for observing a single, non-optional `SQLModel` record.
-    /// If the record is not found, this will result in an error during fetching.
-    ///
-    /// - Parameters:
-    ///   - grdbRequest: A GRDB `QueryInterfaceRequest` that is expected to return exactly one record.
-    /// - Returns: An `SQLQuery<Record>` instance.
-    ///
-    /// ### Example
-    /// ```swift
-    /// // Assuming user with ID 1 is guaranteed to exist or an error is acceptable.
-    /// @SQLState(Application.sqlState(expected: User.filter(key: 1))) var user: User
-    /// ```
-    static func sqlState<Record: FetchableRecord & SQLModel>(
-        expected grdbRequest: QueryInterfaceRequest<Record>
-    ) -> SQLQuery<Record> { // Returns SQLQuery<Record>, used by SQLState for non-optional
-        let request = SQLRequest(expected: grdbRequest) // This SQLRequest init fetches one or throws
-        let observer = QueryObserver(
-            dbManager: Application.dependency(\.sqlDatabaseManager),
-            request: request,
-            // For non-optional, initialValue is tricky. The view will typically show a loading
-            // state or handle potential errors if the observer reports them.
-            // Providing a "default" non-optional value here might be misleading.
-            // The QueryObserver will publish the fetched value or an error.
-            // Let's consider what initial value makes sense.
-            // For now, this will crash if not careful because `QueryObserver.value` would need a valid initial `Record`.
-            // This highlights a need for better error handling or clearer initial state management for non-optional SQLState.
-            //
-            // A common pattern is for the view to handle the loading state until the first value arrives.
-            // Forcing an `initialValue` here for a non-optional generic `Record` is not feasible without more constraints.
-            // The `QueryObserver`'s `@Published var value: Value` will hold the initial value.
-            //
-            // Let's refine the SQLRequest for non-optional to make this clearer.
-            // The `SQLRequest(expected:)` will throw if not found. The observer will then propagate this error.
-            // The `wrappedValue` of SQLState would ideally reflect this loading/error state or require a default.
-            //
-            // For simplicity and consistency with how SQLQuery<[Record]> defaults to [],
-            // SQLQuery<Record?> defaults to nil.
-            // SQLQuery<Record> (non-optional single) is the challenging one for an initialValue.
-            // The `QueryObserver` would need a way to represent "not yet loaded" for a non-optional type,
-            // or the view using `@SQLState` for a non-optional record must be prepared for an error if it's not found.
-            //
-            // The current `QueryObserver` takes an `initialValue`. If this function is to return `SQLQuery<Record>`,
-            // then `QueryObserver` needs an initial `Record`. This implies the user must provide it,
-            // or we accept a brief period where a potentially "fake" or "loading" version of `Record` is shown.
-            //
-            // Alternative: SQLState for non-optional is implicitly `SQLState<Record?>` and the view asserts non-nil.
-            // Or, `SQLState` itself could have an `isLoading` and `error` property.
-            //
-            // Let's assume for now that `SQLState` for a non-optional record implies that the record *is expected*
-            // to exist, and if not, it's an error state handled by the observation's completion.
-            // The `initialValue` for the `QueryObserver` in this case is problematic if `Record` has no sensible default.
-            //
-            // The `SQLQuery.init(request:initialValue:)` is the one being used.
-            // `SQLState.init(_ queryPath...)` gets the observer from the `SQLQuery` which should have its initial value set.
-            //
-            // This `Application.sqlState(expected:)` helper is constructing the `SQLQuery` and its `QueryObserver`.
-            // The `QueryObserver` for `QueryObserver<Record>` (non-optional) needs an initial `Record`.
-            // This is a design constraint.
-            // A possible solution: The `QueryObserver`'s `value` could be `Value?` internally, and `SQLState` exposes it as `Value`
-            // and throws an error or fatalError if accessed while nil (i.e. loading or actual error).
-            // This is how `@StateObject` behaves before `init` completes for its `wrappedValue`.
-            //
-            // For now, to make this compilable, the `SQLQuery<Record>` would need an initial `Record`.
-            // This means the `Application.sqlQuery(expected grdbRequest: ...)` would need to accept one.
-            // This isn't ideal.
-            //
-            // Let's defer the non-optional single record `SQLState` or refine its error/loading handling.
-            // The primary use case is `SQLState<Record?>`.
-            //
-            // Reverting to the simpler model: `SQLState` is primarily for `Value?`.
-            // If a user wants a non-optional, they can use `@SQLState(query) var record: MyType?` and then
-            // `guard let record = record else { LoadingView(); return }`.
-            //
-            // The `SQLRequest(expected:)` is fine for `SQLQuery` if the user handles the error.
-            // But for `@SQLState`'s `wrappedValue` to be non-optional, it's more complex.
-            //
-            // Let's remove the `sqlState(expected:)` helper for now to keep `SQLState` focused on optionality,
-            // which aligns better with the nature of data that might not exist.
-            // Users wanting a non-optional value can use `.compactMap()` or similar on the publisher if they build
-            // their own observer, or handle the optionality in the view.
-            fatalError("Non-optional SQLState(expected:) is not yet fully supported without a clear strategy for initial value or loading/error state exposure through wrappedValue. Use SQLState for an optional type e.g. Record?")
-        )
-    }
+    // The `sqlState(expected:)` function that previously had a fatalError has been removed.
+    // Users should use `SQLState<Record?>` and handle optionality in their views,
+    // or use `Application.sqlQuery(expected:)` if they need a non-optional SQLQuery<Record>
+    // and handle potential errors from the request itself.
 }
 
 // Make SQLState itself usable with an SQLQuery<Value>
