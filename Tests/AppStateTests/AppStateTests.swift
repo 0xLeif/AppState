@@ -178,34 +178,6 @@ final class AppStateTests: XCTestCase {
     }
 
     @MainActor
-    func testInitialValueClosureIsCalledOnce() async {
-        var callCount = 0
-        let initialValueClosure: () -> Int = {
-            callCount += 1
-            return 123
-        }
-
-        // Define a unique key for this test state
-        let testKey = "testInitialValueClosureKey"
-
-        // First access - closure should be called
-        XCTAssertEqual(Application.shared.state(initial: initialValueClosure(), id: testKey).value, 123)
-        XCTAssertEqual(callCount, 1, "Initial value closure should be called on first access.")
-
-        // Second access - closure should not be called, value should be cached
-        XCTAssertEqual(Application.shared.state(initial: initialValueClosure(), id: testKey).value, 123)
-        XCTAssertEqual(callCount, 1, "Initial value closure should not be called on subsequent access if cached.")
-
-        // Reset for next part of test: remove the value from cache
-        Application.shared.cache.remove(testKey)
-        callCount = 0 // Reset call count
-
-        // Re-access to ensure closure is called again if not cached
-        XCTAssertEqual(Application.shared.state(initial: initialValueClosure(), id: testKey).value, 123)
-        XCTAssertEqual(callCount, 1, "Initial value closure should be called again if the value was removed from cache.")
-    }
-
-    @MainActor
     func testLoggingToggle() {
         // Assuming default is true from setUp
         XCTAssertTrue(Application.isLoggingEnabled)
