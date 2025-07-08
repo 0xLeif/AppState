@@ -93,7 +93,7 @@ final class AppStateTests: XCTestCase {
         try await super.setUp()
 
         await MainActor.run {
-            // Reset Application.shared to a new instance for each test to ensure isolation.
+// Reset all states to their initial values to ensure test isolation.
             Application.reset(\.username)
             Application.reset(\.customEnum)
             Application.reset(\.customStruct)
