@@ -12,7 +12,7 @@ Add **AppState** to the `dependencies` section of your `Package.swift` file:
 
 ```swift
 dependencies: [
-    .package(url: "https://github.com/0xLeif/AppState.git", from: "2.1.3")
+    .package(url: "https://github.com/0xLeif/AppState.git", from: "2.2.0")
 ]
 ```
 
