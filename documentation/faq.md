@@ -4,30 +4,29 @@ This short FAQ addresses common questions developers may have when using **AppSt
 
 ## How do I reset a state value?
 
-For states like `State`, `StoredState`, `FileState`, and `SyncState`, you can reset them to their initial values. The `Application` type provides static `reset` functions for this.
+For persistent states like `StoredState`, `FileState`, and `SyncState`, you can reset them to their initial values using the static `reset` functions on the `Application` type.
 
-For example, if you have a `State<Int>` defined as `\.counter`:
+For example, to reset a `StoredState<Bool>`:
+```swift
+extension Application {
+    var hasCompletedOnboarding: StoredState<Bool> { storedState(initial: false, id: "onboarding_complete") }
+}
+
+// Somewhere in your code
+Application.reset(storedState: \.hasCompletedOnboarding)
+```
+This will reset the value in `UserDefaults` back to `false`. Similar `reset` functions exist for `FileState`, `SyncState`, and `SecureState`.
+
+For a non-persistent `State`, there is no built-in `reset` function. You can achieve the same effect by manually setting it back to its initial value:
 ```swift
 extension Application {
     var counter: State<Int> { state(initial: 0) }
 }
-```
 
-You can reset it like this:
-```swift
-// Somewhere in your code, typically in a ViewModel or an action handler
-Application.reset(state: \.counter)
-```
-This will reset the counter back to `0`. Similar `reset` functions exist for `StoredState`, `FileState`, `SyncState`, and `SecureState`, prefixed accordingly (e.g., `Application.reset(storedState: \.myStoredValue)`).
-
-Alternatively, you can get the state wrapper object and call `reset()` on it:
-```swift
-// Get the state wrapper
+// To reset:
 var counterState = Application.state(\.counter)
-// Call reset on the wrapper
-counterState.reset()
+counterState.value = 0
 ```
-The property wrappers themselves (e.g., `@AppState`) provide direct access to the *value* of the state, not the state management object that has the `reset()` method.
 
 ## Can I use AppState with asynchronous tasks?
 
