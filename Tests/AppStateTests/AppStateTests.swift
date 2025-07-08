@@ -93,7 +93,7 @@ final class AppStateTests: XCTestCase {
         try await super.setUp()
 
         await MainActor.run {
-// Reset all states to their initial values to ensure test isolation.
+            // Reset all states to their initial values to ensure test isolation.
             Application.reset(\.username)
             Application.reset(\.customEnum)
             Application.reset(\.customStruct)
@@ -103,6 +103,7 @@ final class AppStateTests: XCTestCase {
             Application.reset(\.colors)
             Application.reset(\.isLoading)
 
+            // Ensure logging is enabled.
             Application.logging(isEnabled: true)
         }
     }

@@ -92,8 +92,9 @@ extension Application {
             scope: Scope
         ) {
             self.type = type
-            self._value = initial()
-            self.initial = initial()
+            let initialValue = initial()
+            self._value = initialValue
+            self.initial = initialValue
             self.scope = scope
         }
 
