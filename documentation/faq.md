@@ -4,15 +4,27 @@ This short FAQ addresses common questions developers may have when using **AppSt
 
 ## How do I reset a state value?
 
-Each `State` provides a `reset()` function that restores the value to the `initial` one defined in your `Application` extension. Call `reset()` when you need to clear user data or return to a default configuration.
+For persistent states like `StoredState`, `FileState`, and `SyncState`, you can reset them to their initial values using the static `reset` functions on the `Application` type.
 
+For example, to reset a `StoredState<Bool>`:
 ```swift
-@AppState(\.counter) var counter: Int
-
-func clearCounter() {
-    counter.reset() // Resets to the initial value
+extension Application {
+    var hasCompletedOnboarding: StoredState<Bool> { storedState(initial: false, id: "onboarding_complete") }
 }
+
+// Somewhere in your code
+Application.reset(storedState: \.hasCompletedOnboarding)
 ```
+This will reset the value in `UserDefaults` back to `false`. Similar `reset` functions exist for `FileState`, `SyncState`, and `SecureState`.
+
+For non-persistent `State`, you can reset it the same way as persistent states:
+```swift
+extension Application {
+    var counter: State<Int> { state(initial: 0) }
+}
+
+// To reset:
+Application.reset(\.counter)
 
 ## Can I use AppState with asynchronous tasks?
 

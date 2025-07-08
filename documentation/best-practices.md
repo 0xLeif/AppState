@@ -7,7 +7,8 @@ This guide provides best practices to help you use AppState efficiently and effe
 AppState is versatile and suitable for both shared and localized state management. It's ideal for data that needs to be shared across multiple components, persist across views or user sessions, or be managed at the component level. However, overuse can lead to unnecessary complexity.
 
 ### Recommendation:
-- Use AppState for critical application-wide data and shared state, but avoid using it for small, localized data that doesn't need to persist or be accessed across different components.
+- Use AppState for data that truly needs to be application-wide, shared across distant components, or requires AppState's specific persistence/synchronization features.
+- For state that is local to a single SwiftUI view or a close hierarchy of views, prefer SwiftUI's built-in tools like `@State`, `@StateObject`, `@ObservedObject`, or `@EnvironmentObject`.
 
 ## 2. Maintain a Clean AppState
 
@@ -45,8 +46,9 @@ The `@Constant` feature lets you define read-only constants that can be shared a
 For larger applications, consider breaking your AppState into smaller, more manageable modules. Each module can have its own state and dependencies, which are then composed into the overall AppState. This can make your AppState easier to understand, test, and maintain.
 
 ### Recommendation:
-- Divide AppState into logical modules to manage state and dependencies at a more granular level.
-- Compose modules into the main AppState to maintain modularity and separation of concerns.
+- Organize your `Application` extensions into separate Swift files or even separate Swift modules, grouped by feature or domain. This naturally modularizes the definitions.
+- When defining states or dependencies using factory methods like `state(initial:feature:id:)`, utilize the `feature` parameter to provide a namespace, e.g., `state(initial: 0, feature: "UserProfile", id: "score")`. This helps in organizing and preventing ID collisions if manual IDs are used.
+- Avoid creating multiple instances of `Application`. Stick to extending and using the shared singleton (`Application.shared`).
 
 ## 7. Leverage Just-In-Time Creation
 

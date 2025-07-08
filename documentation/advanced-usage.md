@@ -72,7 +72,11 @@ private extension Application {
 }
 ```
 
-While this approach is valid for sharing state and dependencies across the application, it is not advised because it relies on manually managing IDs. This can lead to potential conflicts and bugs if IDs are not managed correctly. This behavior is more of a side effect of how the IDs work in AppState, rather than a recommended practice.
+While this approach is valid for sharing state and dependencies across the application by reusing the same string `id`, it is generally discouraged. It relies on manually managing these string IDs, which can lead to:
+- Accidental ID collisions if the same ID is used for different intended states/dependencies.
+- Difficulty in tracking where a state/dependency is defined versus accessed.
+- Reduced code clarity and maintainability.
+The `initial` value provided in subsequent definitions with the same ID will be ignored if the state/dependency has already been initialized by its first access. This behavior is more of a side effect of how the ID-based caching works in AppState, rather than a recommended primary pattern for defining shared data. Prefer defining states and dependencies as unique computed properties in `Application` extensions (which automatically generate unique internal IDs if no explicit `id` is provided to the factory method).
 
 ### 3.2 Restricted State and Dependency Access
 

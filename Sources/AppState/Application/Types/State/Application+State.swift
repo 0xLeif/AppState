@@ -23,6 +23,9 @@ extension Application {
         /// A private backing storage for the value.
         private var _value: Value
 
+        /// The initial value of the state.
+        private let initial: Value
+
         /// The current state value.
         @MainActor
         public var value: Value {
@@ -85,12 +88,20 @@ extension Application {
          */
         init(
             type: StateType,
-            initial value: Value,
+            initial: @autoclosure () -> Value,
             scope: Scope
         ) {
             self.type = type
-            self._value = value
+            let initialValue = initial()
+            self._value = initialValue
+            self.initial = initialValue
             self.scope = scope
+        }
+
+        /// Resets the value to the initial value.
+        @MainActor
+        public mutating func reset() {
+            value = initial
         }
 
         @MainActor
