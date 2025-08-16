@@ -23,7 +23,7 @@ extension Application {
     var counter: State<Int> { state(initial: 0) }
 }
 
-// To reset:
+// Somewhere in your code
 Application.reset(\.counter)
 ```
 
