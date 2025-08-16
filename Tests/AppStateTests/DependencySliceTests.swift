@@ -50,7 +50,7 @@ final class DependencySliceTests: XCTestCase {
     override func tearDown() async throws {
         let applicationDescription = Application.description
 
-        Application.logger.debug("DependencySliceTests \(applicationDescription)")
+        Application.dependency(\.logger).debug("DependencySliceTests \(applicationDescription)")
     }
 
     @MainActor

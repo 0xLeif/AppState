@@ -57,7 +57,7 @@ final class FileStateTests: XCTestCase {
     override func tearDown() async throws {
         let applicationDescription = Application.description
 
-        Application.logger.debug("FileStateTests \(applicationDescription)")
+        Application.dependency(\.logger).debug("FileStateTests \(applicationDescription)")
 
         try? Application.dependency(\.fileManager).removeItem(atPath: "./AppStateTests")
     }
@@ -79,7 +79,7 @@ final class FileStateTests: XCTestCase {
         XCTAssertEqual(storedValue.count, 1)
         XCTAssertEqual(storedValue.storedString, "Hello")
 
-        Application.logger.debug("FileStateTests \(Application.description)")
+        Application.dependency(\.logger).debug("FileStateTests \(Application.description)")
 
         storedValue.count = nil
         storedValue.storedString = nil

@@ -51,7 +51,7 @@ final class AppDependencyTests: XCTestCase {
     override func tearDown() async throws {
         let applicationDescription = Application.description
 
-        Application.logger.debug("AppDependencyTests \(applicationDescription)")
+        Application.dependency(\.logger).debug("AppDependencyTests \(applicationDescription)")
     }
 
     func testComposableDependencies() {

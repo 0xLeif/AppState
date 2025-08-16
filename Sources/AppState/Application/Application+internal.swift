@@ -75,7 +75,7 @@ extension Application {
         let debugMessage = message()
         let codeID = codeID(fileID: fileID, function: function, line: line, column: column)
 
-        logger.debug("\(debugMessage) (\(codeID))")
+        Application.dependency(\.logger).debug("\(debugMessage) (\(codeID))")
     }
 
     /// Internal log function.
@@ -92,7 +92,7 @@ extension Application {
 
         let codeID = codeID(fileID: fileID, function: function, line: line, column: column)
 
-        logger.error(
+        Application.dependency(\.logger).error(
             """
             \(message) Error: {
                 ❌ \(error)

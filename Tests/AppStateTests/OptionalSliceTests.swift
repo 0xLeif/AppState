@@ -62,7 +62,7 @@ final class OptionalSliceTests: XCTestCase {
     override func tearDown() async throws {
         let applicationDescription = Application.description
 
-        Application.logger.debug("AppStateTests \(applicationDescription)")
+        Application.dependency(\.logger).debug("AppStateTests \(applicationDescription)")
     }
 
     @MainActor

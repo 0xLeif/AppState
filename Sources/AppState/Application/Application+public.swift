@@ -143,13 +143,15 @@ public extension Application {
         _ line: Int = #line,
         _ column: Int = #column
     ) -> Value {
-        log(
-            debug: "🔗 Getting Dependency \(String(describing: keyPath))",
-            fileID: fileID,
-            function: function,
-            line: line,
-            column: column
-        )
+        if keyPath != \.logger {
+            log(
+                debug: "🔗 Getting Dependency \(String(describing: keyPath))",
+                fileID: fileID,
+                function: function,
+                line: line,
+                column: column
+            )
+        }
 
         return shared.value(keyPath: keyPath).value
     }

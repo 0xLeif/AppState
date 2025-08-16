@@ -57,7 +57,7 @@ final class SyncStateTests: XCTestCase {
     override func tearDown() async throws {
         let applicationDescription = Application.description
 
-        Application.logger.debug("SyncStateTests \(applicationDescription)")
+        Application.dependency(\.logger).debug("SyncStateTests \(applicationDescription)")
     }
 
     @MainActor
@@ -72,7 +72,7 @@ final class SyncStateTests: XCTestCase {
 
         XCTAssertEqual(syncValue.count, 1)
 
-        Application.logger.debug("SyncStateTests \(Application.description)")
+        Application.dependency(\.logger).debug("SyncStateTests \(Application.description)")
 
         syncValue.count = nil
 
