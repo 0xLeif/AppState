@@ -184,14 +184,14 @@ final class AppStateTests: XCTestCase {
     func testLoggingToggle() {
         // Assuming default is true from setUp
         XCTAssertTrue(Application.isLoggingEnabled)
-        Application.logger.debug("This should be logged from testLoggingToggle.")
+        Application.dependency(\.logger).debug("This should be logged from testLoggingToggle.")
 
         Application.logging(isEnabled: false)
         XCTAssertFalse(Application.isLoggingEnabled)
-        Application.logger.debug("This should NOT be logged from testLoggingToggle.") // This won't be asserted, just for manual check if needed
+        Application.dependency(\.logger).debug("This should NOT be logged from testLoggingToggle.") // This won't be asserted, just for manual check if needed
 
         Application.logging(isEnabled: true)
         XCTAssertTrue(Application.isLoggingEnabled)
-        Application.logger.debug("This should be logged again from testLoggingToggle.")
+        Application.dependency(\.logger).debug("This should be logged again from testLoggingToggle.")
     }
 }

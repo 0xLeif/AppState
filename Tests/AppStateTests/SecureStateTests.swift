@@ -36,7 +36,7 @@ final class SecureStateTests: XCTestCase {
     override func tearDown() async throws {
         let applicationDescription = Application.description
 
-        Application.logger.debug("SecureStateTests \(applicationDescription)")
+        Application.dependency(\.logger).debug("SecureStateTests \(applicationDescription)")
     }
 
     @MainActor
@@ -55,7 +55,7 @@ final class SecureStateTests: XCTestCase {
 
         XCTAssertNotEqual(secureValue.token, "QWERTY")
 
-        Application.logger.debug("SecureStateTests \(Application.description)")
+        Application.dependency(\.logger).debug("SecureStateTests \(Application.description)")
 
         secureValue.token = nil
 

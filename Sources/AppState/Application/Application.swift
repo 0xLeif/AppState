@@ -14,12 +14,14 @@ open class Application: NSObject {
 
     #if !os(Linux) && !os(Windows)
     /// Logger specifically for AppState
-    @MainActor
-    public static let logger: Logger = Logger(subsystem: "AppState", category: "Application")
+    public var logger: Dependency<Logger> {
+        dependency(Logger(subsystem: "AppState", category: "Application"))
+    }
     #else
     /// Logger specifically for AppState
-    @MainActor
-    public static var logger: ApplicationLogger = ApplicationLogger()
+    public var logger: Dependency<ApplicationLogger> {
+        dependency(ApplicationLogger())
+    }
     #endif
 
     @MainActor
@@ -97,6 +99,7 @@ open class Application: NSObject {
 
     /// Loads the default dependencies for use in Application.
     private func loadDefaultDependencies() {
+        load(dependency: \.logger)
         load(dependency: \.userDefaults)
         load(dependency: \.fileManager)
     }
