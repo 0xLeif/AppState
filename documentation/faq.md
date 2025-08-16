@@ -25,6 +25,7 @@ extension Application {
 
 // To reset:
 Application.reset(\.counter)
+```
 
 ## Can I use AppState with asynchronous tasks?
 
