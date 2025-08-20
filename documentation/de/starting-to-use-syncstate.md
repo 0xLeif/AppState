@@ -3,7 +3,7 @@ Um SyncState zu nutzen, müssen Sie zuerst die iCloud-Fähigkeiten und -Berechti
 ### Einrichten der iCloud-Fähigkeiten:
 
 1. Öffnen Sie Ihr Xcode-Projekt und passen Sie die Bundle-Identifikatoren für die macOS- und iOS-Ziele an Ihre eigenen an.
-2. Als Nächstes müssen Sie die iCloud-Fähigkeit zu Ihrem Projekt hinzufügen. Wählen Sie dazu Ihr Projekt im Projektnavigator aus und wählen Sie dann Ihr Ziel aus. Klicken Sie in der Tableiste oben im Editorbereich auf "Capabilities".
+2. Als Nächstes müssen Sie die iCloud-Fähigkeit zu Ihrem Projekt hinzufügen. Wählen Sie dazu Ihr Projekt im Projektnavigator aus und wählen Sie dann Ihr Ziel aus. Klicken Sie in der Tab-Leiste oben im Editorbereich auf "Capabilities".
 3. Aktivieren Sie im Bereich "Capabilities" iCloud, indem Sie auf den Schalter in der iCloud-Zeile klicken. Sie sollten sehen, wie sich der Schalter in die Ein-Position bewegt.
 4. Sobald Sie iCloud aktiviert haben, müssen Sie den Schlüssel-Wert-Speicher aktivieren. Dies können Sie tun, indem Sie das Kontrollkästchen "Key-Value storage" aktivieren.
 
