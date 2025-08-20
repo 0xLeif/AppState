@@ -199,14 +199,14 @@ struct SlicingView: View {
 - **Verwenden Sie `AppState` in SwiftUI-Ansichten**: Eigenschafts-Wrapper wie `@AppState`, `@StoredState`, `@FileState`, `@SecureState` und andere sind für die Verwendung im Geltungsbereich von SwiftUI-Ansichten konzipiert.
 - **Definieren Sie den Zustand in der Anwendungserweiterung**: Zentralisieren Sie die Zustandsverwaltung, indem Sie `Application` erweitern, um den Zustand und die Abhängigkeiten Ihrer App zu definieren.
 - **Reaktive Aktualisierungen**: SwiftUI aktualisiert Ansichten automatisch, wenn sich der Zustand ändert, sodass Sie die Benutzeroberfläche nicht manuell aktualisieren müssen.
-- **[Leitfaden zu bewährten Praktiken](./best-practices.md)**: Für eine detaillierte Aufschlüsselung der bewährten Praktiken bei der Verwendung von AppState.
+- **[Leitfaden zu bewährten Praktiken](best-practices.md)**: Für eine detaillierte Aufschlüsselung der bewährten Praktiken bei der Verwendung von AppState.
 
 ## Nächste Schritte
 
 Nachdem Sie sich mit der grundlegenden Verwendung vertraut gemacht haben, können Sie sich mit fortgeschritteneren Themen befassen:
 
-- Erkunden Sie die Verwendung von **FileState** zum dauerhaften Speichern großer Datenmengen in Dateien im [FileState-Verwendungsleitfaden](./usage-filestate.md).
-- Erfahren Sie mehr über **Konstanten** und wie Sie sie für unveränderliche Werte im Zustand Ihrer App verwenden können, im [Konstanten-Verwendungsleitfaden](./usage-constant.md).
-- Untersuchen Sie, wie **Dependency** in AppState verwendet wird, um gemeinsam genutzte Dienste zu verarbeiten, und sehen Sie sich Beispiele im [Zustandsabhängigkeits-Verwendungsleitfaden](./usage-state-dependency.md) an.
-- Tauchen Sie tiefer in fortgeschrittene **SwiftUI**-Techniken wie die Verwendung von `ObservedDependency` zur Verwaltung beobachtbarer Abhängigkeiten in Ansichten im [ObservedDependency-Verwendungsleitfaden](./usage-observeddependency.md) ein.
-- Informationen zu fortgeschritteneren Verwendungstechniken wie der Just-in-Time-Erstellung und dem Vorabladen von Abhängigkeiten finden Sie im [Leitfaden zur erweiterten Verwendung](./advanced-usage.md).
+- Erkunden Sie die Verwendung von **FileState** zum dauerhaften Speichern großer Datenmengen in Dateien im [FileState-Verwendungsleitfaden](usage-filestate.md).
+- Erfahren Sie mehr über **Konstanten** und wie Sie sie für unveränderliche Werte im Zustand Ihrer App verwenden können, im [Konstanten-Verwendungsleitfaden](usage-constant.md).
+- Untersuchen Sie, wie **Dependency** in AppState verwendet wird, um gemeinsam genutzte Dienste zu verarbeiten, und sehen Sie sich Beispiele im [Zustandsabhängigkeits-Verwendungsleitfaden](usage-state-dependency.md) an.
+- Tauchen Sie tiefer in fortgeschrittene **SwiftUI**-Techniken wie die Verwendung von `ObservedDependency` zur Verwaltung beobachtbarer Abhängigkeiten in Ansichten im [ObservedDependency-Verwendungsleitfaden](usage-observeddependency.md) ein.
+- Informationen zu fortgeschritteneren Verwendungstechniken wie der Just-in-Time-Erstellung und dem Vorabladen von Abhängigkeiten finden Sie im [Leitfaden zur erweiterten Verwendung](advanced-usage.md).

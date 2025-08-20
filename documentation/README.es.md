@@ -38,9 +38,9 @@
 
 ## Empezando
 
-Para integrar **AppState** en su proyecto de Swift, necesitará usar el Swift Package Manager. Siga la [Guía de Instalación](documentation/es/installation.md) para obtener instrucciones detalladas sobre cómo configurar **AppState**.
+Para integrar **AppState** en su proyecto de Swift, necesitará usar el Swift Package Manager. Siga la [Guía de Instalación](es/installation.md) para obtener instrucciones detalladas sobre cómo configurar **AppState**.
 
-Después de la instalación, consulte la [Descripción General del Uso](documentation/es/usage-overview.md) para una introducción rápida sobre cómo gestionar el estado e inyectar dependencias en su proyecto.
+Después de la instalación, consulte la [Descripción General del Uso](es/usage-overview.md) para una introducción rápida sobre cómo gestionar el estado e inyectar dependencias en su proyecto.
 
 ## Ejemplo Rápido
 
@@ -74,28 +74,28 @@ Este fragmento demuestra cómo definir un valor de estado в una extensión de `
 
 Aquí hay un desglose detallado de la documentación de **AppState**:
 
-- [Guía de Instalación](documentation/es/installation.md): Cómo agregar **AppState** a su proyecto usando Swift Package Manager.
-- [Descripción General del Uso](documentation/es/usage-overview.md): Una descripción general de las características clave con implementaciones de ejemplo.
+- [Guía de Instalación](es/installation.md): Cómo agregar **AppState** a su proyecto usando Swift Package Manager.
+- [Descripción General del Uso](es/usage-overview.md): Una descripción general de las características clave con implementaciones de ejemplo.
 
 ### Guías de Uso Detalladas:
 
-- [Gestión de Estado y Dependencias](documentation/es/usage-state-dependency.md): Centralice el estado e inyecte dependencias en toda su aplicación.
-- [Slicing de Estado](documentation/es/usage-slice.md): Acceda y modifique partes específicas del estado.
-- [Guía de Uso de StoredState](documentation/es/usage-storedstate.md): Cómo persistir datos ligeros usando `StoredState`.
-- [Guía de Uso de FileState](documentation/es/usage-filestate.md): Aprenda a persistir grandes cantidades de datos de forma segura en el disco.
-- [Uso de SecureState con Llavero](documentation/es/usage-securestate.md): Almacene datos sensibles de forma segura usando el Llavero.
-- [Sincronización con iCloud usando SyncState](documentation/es/usage-syncstate.md): Mantenga el estado sincronizado en todos los dispositivos usando iCloud.
-- [Preguntas Frecuentes](documentation/es/faq.md): Respuestas a preguntas comunes al usar **AppState**.
-- [Guía de Uso de Constantes](documentation/es/usage-constant.md): Acceda a valores de solo lectura de su estado.
-- [Guía de Uso de ObservedDependency](documentation/es/usage-observeddependency.md): Trabaje con dependencias de `ObservableObject` en sus vistas.
-- [Uso Avanzado](documentation/es/advanced-usage.md): Técnicas como la creación justo a tiempo y la precarga de dependencias.
-- [Mejores Prácticas](documentation/es/best-practices.md): Consejos para estructurar el estado de su aplicación de manera efectiva.
-- [Consideraciones sobre la Migración](documentation/es/migration-considerations.md): Orientación al actualizar modelos persistentes.
+- [Gestión de Estado y Dependencias](es/usage-state-dependency.md): Centralice el estado e inyecte dependencias en toda su aplicación.
+- [Slicing de Estado](es/usage-slice.md): Acceda y modifique partes específicas del estado.
+- [Guía de Uso de StoredState](es/usage-storedstate.md): Cómo persistir datos ligeros usando `StoredState`.
+- [Guía de Uso de FileState](es/usage-filestate.md): Aprenda a persistir grandes cantidades de datos de forma segura en el disco.
+- [Uso de SecureState con Llavero](es/usage-securestate.md): Almacene datos sensibles de forma segura usando el Llavero.
+- [Sincronización con iCloud usando SyncState](es/usage-syncstate.md): Mantenga el estado sincronizado en todos los dispositivos usando iCloud.
+- [Preguntas Frecuentes](es/faq.md): Respuestas a preguntas comunes al usar **AppState**.
+- [Guía de Uso de Constantes](es/usage-constant.md): Acceda a valores de solo lectura de su estado.
+- [Guía de Uso de ObservedDependency](es/usage-observeddependency.md): Trabaje con dependencias de `ObservableObject` en sus vistas.
+- [Uso Avanzado](es/advanced-usage.md): Técnicas como la creación justo a tiempo y la precarga de dependencias.
+- [Mejores Prácticas](es/best-practices.md): Consejos para estructurar el estado de su aplicación de manera efectiva.
+- [Consideraciones sobre la Migración](es/migration-considerations.md): Orientación al actualizar modelos persistentes.
 
 ## Contribuciones
 
-¡Aceptamos contribuciones! Consulte nuestra [Guía de Contribuciones](documentation/es/contributing.md) para saber cómo participar.
+¡Aceptamos contribuciones! Consulte nuestra [Guía de Contribuciones](es/contributing.md) para saber cómo participar.
 
 ## Próximos Pasos
 
-Con **AppState** instalado, puede comenzar a explorar sus características clave consultando la [Descripción General del Uso](documentation/es/usage-overview.md) y guías más detalladas. ¡Comience a gestionar el estado y las dependencias de manera efectiva en sus proyectos de Swift! Para técnicas de uso más avanzadas, como la creación Justo a Tiempo y la precarga de dependencias, consulte la [Guía de Uso Avanzado](documentation/es/advanced-usage.md). También puede revisar las guías de [Constantes](documentation/es/usage-constant.md) y [ObservedDependency](documentation/es/usage-observeddependency.md) para características adicionales.
+Con **AppState** instalado, puede comenzar a explorar sus características clave consultando la [Descripción General del Uso](es/usage-overview.md) y guías más detalladas. ¡Comience a gestionar el estado y las dependencias de manera efectiva en sus proyectos de Swift! Para técnicas de uso más avanzadas, como la creación Justo a Tiempo y la precarga de dependencias, consulte la [Guía de Uso Avanzado](es/advanced-usage.md). También puede revisar las guías de [Constantes](es/usage-constant.md) y [ObservedDependency](es/usage-observeddependency.md) para características adicionales.

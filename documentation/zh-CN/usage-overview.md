@@ -199,14 +199,14 @@ struct SlicingView: View {
 - **在 SwiftUI 视图中使用 `AppState`**：`@AppState`、`@StoredState`、`@FileState`、`@SecureState` 等属性包装器设计用于 SwiftUI 视图的范围内。
 - **在 Application 扩展中定义状态**：通过扩展 `Application` 来定义应用程序的状态和依赖项，从而集中管理状态。
 - **反应式更新**：当状态更改时，SwiftUI 会自动更新视图，因此您无需手动刷新 UI。
-- **[最佳实践指南](./best-practices.md)**：有关使用 AppState 时的最佳实践的详细分类。
+- **[最佳实践指南](best-practices.md)**：有关使用 AppState 时的最佳实践的详细分类。
 
 ## 后续步骤
 
 熟悉基本用法后，您可以探索更高级的主题：
 
-- 在[FileState 用法指南](./usage-filestate.md)中探索使用 **FileState** 将大量数据持久化到文件中。
-- 在[常量用法指南](./usage-constant.md)中了解 **常量** 以及如何在应用程序状态中使用它们来表示不可变值。
-- 在[状态依赖用法指南](./usage-state-dependency.md)中研究 **Dependency** 如何在 AppState 中用于处理共享服务，并查看示例。
-- 在[ObservedDependency 用法指南](./usage-observeddependency.md)中更深入地研究 **高级 SwiftUI** 技术，例如使用 `ObservedDependency` 在视图中管理可观察的依赖项。
-- 有关更高级的用法技术，例如即时创建和预加载依赖项，请参阅[高级用法指南](./advanced-usage.md)。
+- 在[FileState 用法指南](usage-filestate.md)中探索使用 **FileState** 将大量数据持久化到文件中。
+- 在[常量用法指南](usage-constant.md)中了解 **常量** 以及如何在应用程序状态中使用它们来表示不可变值。
+- 在[状态依赖用法指南](usage-state-dependency.md)中研究 **Dependency** 如何在 AppState 中用于处理共享服务，并查看示例。
+- 在[ObservedDependency 用法指南](usage-observeddependency.md)中更深入地研究 **高级 SwiftUI** 技术，例如使用 `ObservedDependency` 在视图中管理可观察的依赖项。
+- 有关更高级的用法技术，例如即时创建和预加载依赖项，请参阅[高级用法指南](advanced-usage.md)。

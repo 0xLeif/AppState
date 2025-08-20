@@ -38,9 +38,9 @@
 
 ## Pour Commencer
 
-Pour intégrer **AppState** dans votre projet Swift, vous devrez utiliser le Swift Package Manager. Suivez le [Guide d'Installation](documentation/fr/installation.md) pour des instructions détaillées sur la configuration de **AppState**.
+Pour intégrer **AppState** dans votre projet Swift, vous devrez utiliser le Swift Package Manager. Suivez le [Guide d'Installation](fr/installation.md) pour des instructions détaillées sur la configuration de **AppState**.
 
-Après l'installation, consultez l'[Aperçu de l'Utilisation](documentation/fr/usage-overview.md) pour une introduction rapide sur la manière de gérer l'état et d'injecter des dépendances dans votre projet.
+Après l'installation, consultez l'[Aperçu de l'Utilisation](fr/usage-overview.md) pour une introduction rapide sur la manière de gérer l'état et d'injecter des dépendances dans votre projet.
 
 ## Exemple Rapide
 
@@ -74,28 +74,28 @@ Cet extrait montre comment définir une valeur d'état dans une extension `Appli
 
 Voici une ventilation détaillée de la documentation de **AppState** :
 
-- [Guide d'Installation](documentation/fr/installation.md) : Comment ajouter **AppState** à votre projet à l'aide du Swift Package Manager.
-- [Aperçu de l'Utilisation](documentation/fr/usage-overview.md) : Un aperçu des fonctionnalités clés avec des exemples d'implémentation.
+- [Guide d'Installation](fr/installation.md) : Comment ajouter **AppState** à votre projet à l'aide du Swift Package Manager.
+- [Aperçu de l'Utilisation](fr/usage-overview.md) : Un aperçu des fonctionnalités clés avec des exemples d'implémentation.
 
 ### Guides d'Utilisation Détaillés :
 
-- [Gestion de l'État et des Dépendances](documentation/fr/usage-state-dependency.md) : Centralisez l'état et injectez des dépendances dans toute votre application.
-- [Découpage de l'État (Slicing)](documentation/fr/usage-slice.md) : Accédez et modifiez des parties spécifiques de l'état.
-- [Guide d'Utilisation de StoredState](documentation/fr/usage-storedstate.md) : Comment persister des données légères à l'aide de `StoredState`.
-- [Guide d'Utilisation de FileState](documentation/fr/usage-filestate.md) : Apprenez à persister de plus grandes quantités de données en toute sécurité sur le disque.
-- [Utilisation de SecureState avec le Trousseau](documentation/fr/usage-securestate.md) : Stockez les données sensibles en toute sécurité à l'aide du Trousseau.
-- [Synchronisation iCloud avec SyncState](documentation/fr/usage-syncstate.md) : Maintenez l'état synchronisé sur tous les appareils à l'aide d'iCloud.
-- [FAQ](documentation/fr/faq.md) : Réponses aux questions courantes lors de l'utilisation de **AppState**.
-- [Guide d'Utilisation des Constantes](documentation/fr/usage-constant.md) : Accédez à des valeurs en lecture seule de votre état.
-- [Guide d'Utilisation de ObservedDependency](documentation/fr/usage-observeddependency.md) : Travaillez avec des dépendances `ObservableObject` dans vos vues.
-- [Utilisation Avancée](documentation/fr/advanced-usage.md) : Techniques telles que la création juste à temps et le préchargement des dépendances.
-- [Meilleures Pratiques](documentation/fr/best-practices.md) : Conseils pour structurer efficacement l'état de votre application.
-- [Considérations sur la Migration](documentation/fr/migration-considerations.md) : Guide pour la mise à jour des modèles persistants.
+- [Gestion de l'État et des Dépendances](fr/usage-state-dependency.md) : Centralisez l'état et injectez des dépendances dans toute votre application.
+- [Découpage de l'État (Slicing)](fr/usage-slice.md) : Accédez et modifiez des parties spécifiques de l'état.
+- [Guide d'Utilisation de StoredState](fr/usage-storedstate.md) : Comment persister des données légères à l'aide de `StoredState`.
+- [Guide d'Utilisation de FileState](fr/usage-filestate.md) : Apprenez à persister de plus grandes quantités de données en toute sécurité sur le disque.
+- [Utilisation de SecureState avec le Trousseau](fr/usage-securestate.md) : Stockez les données sensibles en toute sécurité à l'aide du Trousseau.
+- [Synchronisation iCloud avec SyncState](fr/usage-syncstate.md) : Maintenez l'état synchronisé sur tous les appareils à l'aide d'iCloud.
+- [FAQ](fr/faq.md) : Réponses aux questions courantes lors de l'utilisation de **AppState**.
+- [Guide d'Utilisation des Constantes](fr/usage-constant.md) : Accédez à des valeurs en lecture seule de votre état.
+- [Guide d'Utilisation de ObservedDependency](fr/usage-observeddependency.md) : Travaillez avec des dépendances `ObservableObject` dans vos vues.
+- [Utilisation Avancée](fr/advanced-usage.md) : Techniques telles que la création juste à temps et le préchargement des dépendances.
+- [Meilleures Pratiques](fr/best-practices.md) : Conseils pour structurer efficacement l'état de votre application.
+- [Considérations sur la Migration](fr/migration-considerations.md) : Guide pour la mise à jour des modèles persistants.
 
 ## Contributions
 
-Nous accueillons les contributions ! Veuillez consulter notre [Guide de Contribution](documentation/fr/contributing.md) pour savoir comment vous impliquer.
+Nous accueillons les contributions ! Veuillez consulter notre [Guide de Contribution](fr/contributing.md) pour savoir comment vous impliquer.
 
 ## Prochaines Étapes
 
-Une fois **AppState** installé, vous pouvez commencer à explorer ses fonctionnalités clés en consultant l'[Aperçu de l'Utilisation](documentation/fr/usage-overview.md) et des guides plus détaillés. Commencez à gérer efficacement l'état et les dépendances dans vos projets Swift ! Pour des techniques d'utilisation plus avancées, comme la création Juste-à-Temps et le préchargement des dépendances, consultez le [Guide d'Utilisation Avancée](documentation/fr/advanced-usage.md). Vous pouvez également consulter les guides [Constant](documentation/fr/usage-constant.md) et [ObservedDependency](documentation/fr/usage-observeddependency.md) pour des fonctionnalités supplémentaires.
+Une fois **AppState** installé, vous pouvez commencer à explorer ses fonctionnalités clés en consultant l'[Aperçu de l'Utilisation](fr/usage-overview.md) et des guides plus détaillés. Commencez à gérer efficacement l'état et les dépendances dans vos projets Swift ! Pour des techniques d'utilisation plus avancées, comme la création Juste-à-Temps et le préchargement des dépendances, consultez le [Guide d'Utilisation Avancée](fr/advanced-usage.md). Vous pouvez également consulter les guides [Constant](fr/usage-constant.md) et [ObservedDependency](fr/usage-observeddependency.md) pour des fonctionnalités supplémentaires.

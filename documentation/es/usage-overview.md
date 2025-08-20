@@ -199,14 +199,14 @@ struct SlicingView: View {
 - **Use `AppState` en Vistas de SwiftUI**: Los property wrappers como `@AppState`, `@StoredState`, `@FileState`, `@SecureState`, y otros están diseñados para ser utilizados dentro del alcance de las vistas de SwiftUI.
 - **Defina el Estado en la Extensión de Application**: Centralice la gestión del estado extendiendo `Application` para definir el estado y las dependencias de su aplicación.
 - **Actualizaciones Reactivas**: SwiftUI actualiza automáticamente las vistas cuando cambia el estado, por lo que no necesita actualizar manualmente la interfaz de usuario.
-- **[Guía de Mejores Prácticas](./best-practices.md)**: Para un desglose detallado de las mejores prácticas al usar AppState.
+- **[Guía de Mejores Prácticas](best-practices.md)**: Para un desglose detallado de las mejores prácticas al usar AppState.
 
 ## Próximos Pasos
 
 Después de familiarizarse con el uso básico, puede explorar temas más avanzados:
 
-- Explore el uso de **FileState** para persistir grandes cantidades de datos en archivos en la [Guía de Uso de FileState](./usage-filestate.md).
-- Aprenda sobre **Constantes** y cómo usarlas para valores inmutables en el estado de su aplicación en la [Guía de Uso de Constantes](./usage-constant.md).
-- Investigue cómo se usa **Dependency** en AppState para manejar servicios compartidos y vea ejemplos en la [Guía de Uso de Dependencia de Estado](./usage-state-dependency.md).
-- Profundice en técnicas avanzadas de **SwiftUI** como el uso de `ObservedDependency` para gestionar dependencias observables en las vistas en la [Guía de Uso de ObservedDependency](./usage-observeddependency.md).
-- Para técnicas de uso más avanzadas, como la creación Just-In-Time y la precarga de dependencias, consulte la [Guía de Uso Avanzado](./advanced-usage.md).
+- Explore el uso de **FileState** para persistir grandes cantidades de datos en archivos en la [Guía de Uso de FileState](usage-filestate.md).
+- Aprenda sobre **Constantes** y cómo usarlas para valores inmutables en el estado de su aplicación en la [Guía de Uso de Constantes](usage-constant.md).
+- Investigue cómo se usa **Dependency** en AppState para manejar servicios compartidos y vea ejemplos en la [Guía de Uso de Dependencia de Estado](usage-state-dependency.md).
+- Profundice en técnicas avanzadas de **SwiftUI** como el uso de `ObservedDependency` para gestionar dependencias observables en las vistas en la [Guía de Uso de ObservedDependency](usage-observeddependency.md).
+- Para técnicas de uso más avanzadas, como la creación Just-In-Time y la precarga de dependencias, consulte la [Guía de Uso Avanzado](advanced-usage.md).
