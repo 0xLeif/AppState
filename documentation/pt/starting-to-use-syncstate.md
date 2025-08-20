@@ -10,7 +10,7 @@ Para utilizar o SyncState, você primeiro precisará configurar os recursos e di
 ### Atualizando os direitos:
 
 1. Agora você precisará atualizar seu arquivo de direitos. Abra o arquivo de direitos para o seu destino.
-2. Certifique-se de que o valor do Repositório de Valor-Chave do iCloud corresponda ao seu ID de repositório de valor-chave exclusivo. Seu ID exclusivo deve seguir o formato `$(TeamIdentifierPrefix)<seu_ID_de_repositório_de_valor-chave>`. O valor padrão deve ser algo como, `$(TeamIdentifierPrefix)$(CFBundleIdentifier)`. Isso é bom para aplicativos de plataforma única, mas se seu aplicativo estiver em vários sistemas operacionais da Apple, é importante que as partes do ID do repositório de valor-chave sejam as mesmas para ambos os destinos.
+2. Certifique-se de que o valor do Repositório de Valor-Chave do iCloud corresponda ao seu ID de repositório de valor-chave exclusivo. Seu ID exclusivo deve seguir o formato `$(TeamIdentifierPrefix)<seu ID de repositório de valor-chave>`. O valor padrão deve ser algo como, `$(TeamIdentifierPrefix)$(CFBundleIdentifier)`. Isso é bom para aplicativos de plataforma única, mas se seu aplicativo estiver em vários sistemas operacionais da Apple, é importante que as partes do ID do repositório de valor-chave sejam as mesmas para ambos os destinos.
 
 ### Configurando os dispositivos:
 
