@@ -31,8 +31,8 @@ struct Settings: Codable {
     // पुराने संस्करणों के लिए कस्टम डीकोडिंग तर्क
     init(from decoder: Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
-        self.text = try container.decode(String.self, forKey: .text)
         self.isDarkMode = try container.decode(Bool.self, forKey: .isDarkMode)
+        self.text = try container.decode(String.self, forKey: .text)
         self.version = (try? container.decode(Int.self, forKey: .version)) ?? 1 // पुराने डेटा के लिए डिफ़ॉल्ट
     }
 }
