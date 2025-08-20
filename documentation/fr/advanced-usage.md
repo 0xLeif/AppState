@@ -178,4 +178,4 @@ AppState fournit un système plus puissant et flexible pour la gestion de l'éta
 En utilisant ces techniques avancées, telles que la création juste à temps, le préchargement, la gestion de l'état et des dépendances, et en comprenant les différences entre AppState et l'Environnement de SwiftUI, vous pouvez créer des applications efficaces et économes en ressources avec **AppState**.
 
 ---
-Ceci a été généré à l'aide de Jules, des erreurs peuvent survenir. Veuillez faire une Pull Request avec les corrections qui devraient être apportées si vous êtes un locuteur natif.
+Ceci a été généré à l'aide de [Jules](https://jules.google), des erreurs peuvent survenir. Veuillez faire une Pull Request avec les corrections qui devraient être apportées si vous êtes un locuteur natif.

@@ -156,4 +156,4 @@ struct SyncStateExampleApp: App {
 `SyncState` 提供了一种通过 iCloud 在设备之间同步少量应用程序状态的强大方法。它非常适合确保用户偏好和其他关键数据在登录到同一 iCloud 帐户的所有设备上保持一致。对于更高级的用例，请探索 **AppState** 的其他功能，例如 [SecureState](usage-securestate.md) 和 [FileState](usage-filestate.md)。
 
 ---
-这是使用 Jules 生成的，可能会出现错误。如果您是母语人士，请提出包含任何应有修复的拉取请求。
+这是使用 [Jules](https://jules.google) 生成的，可能会出现错误。如果您是母语人士，请提出包含任何应有修复的拉取请求。

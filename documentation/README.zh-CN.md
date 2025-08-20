@@ -101,4 +101,4 @@ struct ContentView: View {
 安装 **AppState** 后，您可以通过查看[用法概述](zh-CN/usage-overview.md)和更详细的指南来开始探索其主要功能。开始在您的 Swift 项目中有效地管理状态和依赖项！有关更高级的用法技术，如即时创建和预加载依赖项，请参阅[高级用法指南](zh-CN/advanced-usage.md)。您还可以查看[常量](zh-CN/usage-constant.md)和[ObservedDependency](zh-CN/usage-observeddependency.md)指南以了解其他功能。
 
 ---
-这是使用 Jules 生成的，可能会出现错误。如果您是母语人士，请提出包含任何应有修复的拉取请求。
+这是使用 [Jules](https://jules.google) 生成的，可能会出现错误。如果您是母语人士，请提出包含任何应有修复的拉取请求。

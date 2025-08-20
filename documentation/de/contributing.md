@@ -60,4 +60,4 @@ Indem Sie zu **AppState** beitragen, stimmen Sie zu, dass Ihre Beiträge unter d
 Ihre Beiträge werden sehr geschätzt und gewürdigt. Vielen Dank, dass Sie zur Verbesserung von **AppState** beitragen!
 
 ---
-Dies wurde mit Jules erstellt, es können Fehler auftreten. Bitte erstellen Sie einen Pull Request mit allen Korrekturen, die vorgenommen werden sollten, wenn Sie Muttersprachler sind.
+Dies wurde mit [Jules](https://jules.google) erstellt, es können Fehler auftreten. Bitte erstellen Sie einen Pull Request mit allen Korrekturen, die vorgenommen werden sollten, wenn Sie Muttersprachler sind.

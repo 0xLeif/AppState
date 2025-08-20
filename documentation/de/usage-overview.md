@@ -212,4 +212,4 @@ Nachdem Sie sich mit der grundlegenden Verwendung vertraut gemacht haben, könne
 - Informationen zu fortgeschritteneren Verwendungstechniken wie der Just-in-Time-Erstellung und dem Vorabladen von Abhängigkeiten finden Sie im [Leitfaden zur erweiterten Verwendung](advanced-usage.md).
 
 ---
-Dies wurde mit Jules erstellt, es können Fehler auftreten. Bitte erstellen Sie einen Pull Request mit allen Korrekturen, die vorgenommen werden sollten, wenn Sie Muttersprachler sind.
+Dies wurde mit [Jules](https://jules.google) erstellt, es können Fehler auftreten. Bitte erstellen Sie einen Pull Request mit allen Korrekturen, die vorgenommen werden sollten, wenn Sie Muttersprachler sind.

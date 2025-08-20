@@ -60,4 +60,4 @@ Al contribuir a **AppState**, usted acepta que sus contribuciones estarán licen
 Sus contribuciones son muy valoradas y apreciadas. ¡Gracias por ayudar a mejorar **AppState**!
 
 ---
-Esto fue generado usando Jules, pueden ocurrir errores. Por favor, haga un Pull Request con cualquier corrección que deba realizarse si es un hablante nativo.
+Esto fue generado usando [Jules](https://jules.google), pueden ocurrir errores. Por favor, haga un Pull Request con cualquier corrección que deba realizarse si es un hablante nativo.

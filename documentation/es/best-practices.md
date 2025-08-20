@@ -62,4 +62,4 @@ Los valores de AppState se crean justo a tiempo, lo que significa que se instanc
 Cada aplicación es única, por lo que estas mejores prácticas pueden no encajar en todas las situaciones. Siempre considere los requisitos específicos de su aplicación al decidir cómo usar AppState, y esfuércese por mantener su gestión de estado limpia, eficiente y bien probada.
 
 ---
-Esto fue generado usando Jules, pueden ocurrir errores. Por favor, haga un Pull Request con cualquier corrección que deba realizarse si es un hablante nativo.
+Esto fue generado usando [Jules](https://jules.google), pueden ocurrir errores. Por favor, haga un Pull Request con cualquier corrección que deba realizarse si es un hablante nativo.

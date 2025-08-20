@@ -156,4 +156,4 @@ Detaillierte Anweisungen zur Konfiguration von iCloud und zur Einrichtung von Sy
 `SyncState` bietet eine leistungsstarke Möglichkeit, kleine Mengen von Anwendungszuständen über Geräte hinweg über iCloud zu synchronisieren. Es ist ideal, um sicherzustellen, dass Benutzereinstellungen und andere wichtige Daten auf allen Geräten, die mit demselben iCloud-Konto angemeldet sind, konsistent bleiben. Für fortgeschrittenere Anwendungsfälle erkunden Sie andere Funktionen von **AppState**, wie [SecureState](usage-securestate.md) und [FileState](usage-filestate.md).
 
 ---
-Dies wurde mit Jules erstellt, es können Fehler auftreten. Bitte erstellen Sie einen Pull Request mit allen Korrekturen, die vorgenommen werden sollten, wenn Sie Muttersprachler sind.
+Dies wurde mit [Jules](https://jules.google) erstellt, es können Fehler auftreten. Bitte erstellen Sie einen Pull Request mit allen Korrekturen, die vorgenommen werden sollten, wenn Sie Muttersprachler sind.

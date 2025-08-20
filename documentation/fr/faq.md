@@ -40,4 +40,4 @@ Conservez tous vos états et dépendances dans des extensions de `Application`. 
 Vous pouvez utiliser AppState avec Combine en pontant les changements de `State` vers des publicateurs. Observez une valeur `State` et envoyez des mises à jour via un `PassthroughSubject` ou un autre publicateur Combine si nécessaire.
 
 ---
-Ceci a été généré à l'aide de Jules, des erreurs peuvent survenir. Veuillez faire une Pull Request avec les corrections qui devraient être apportées si vous êtes un locuteur natif.
+Ceci a été généré à l'aide de [Jules](https://jules.google), des erreurs peuvent survenir. Veuillez faire une Pull Request avec les corrections qui devraient être apportées si vous êtes un locuteur natif.

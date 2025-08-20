@@ -65,4 +65,4 @@ if let token = userToken {
 - **Lide com nulo**: Sempre lide com os casos em que o Keychain retorna `nil` quando nenhum valor está presente.
 
 ---
-Isso foi gerado usando Jules, erros podem acontecer. Por favor, faça um Pull Request com quaisquer correções que devam acontecer se você for um falante nativo.
+Isso foi gerado usando [Jules](https://jules.google), erros podem acontecer. Por favor, faça um Pull Request com quaisquer correções que devam acontecer se você for um falante nativo.

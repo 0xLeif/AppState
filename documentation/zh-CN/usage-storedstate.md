@@ -72,4 +72,4 @@ struct PreferencesView: View {
 **StoredState** 是使用 `UserDefaults` 持久化小块数据的简单有效的方法。它非常适合在应用程序启动之间保存偏好和其他小型设置，同时提供安全的访问和与 SwiftUI 的轻松集成。对于更复杂的持久化需求，请探索 **AppState** 的其他功能，例如 [FileState](usage-filestate.md) 或 [SyncState](usage-syncstate.md)。
 
 ---
-这是使用 Jules 生成的，可能会出现错误。如果您是母语人士，请提出包含任何应有修复的拉取请求。
+这是使用 [Jules](https://jules.google) 生成的，可能会出现错误。如果您是母语人士，请提出包含任何应有修复的拉取请求。

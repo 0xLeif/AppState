@@ -133,4 +133,4 @@ struct CombinedView: View {
 Com o **AppState**, você pode gerenciar o estado de toda a aplicação e injetar dependências compartilhadas diretamente em suas visualizações SwiftUI. Este padrão ajuda a manter sua aplicação modular e de fácil manutenção. Explore outras funcionalidades da biblioteca **AppState**, como [SecureState](usage-securestate.md) e [SyncState](usage-syncstate.md), para aprimorar ainda mais o gerenciamento de estado da sua aplicação.
 
 ---
-Isso foi gerado usando Jules, erros podem acontecer. Por favor, faça um Pull Request com quaisquer correções que devam acontecer se você for um falante nativo.
+Isso foi gerado usando [Jules](https://jules.google), erros podem acontecer. Por favor, faça um Pull Request com quaisquer correções que devam acontecer se você for um falante nativo.

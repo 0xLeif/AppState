@@ -84,4 +84,4 @@ import AppState
 Une fois AppState installé, vous pouvez passer à l'[Aperçu de l'utilisation](usage-overview.md) pour voir comment implémenter les fonctionnalités clés dans votre projet.
 
 ---
-Ceci a été généré à l'aide de Jules, des erreurs peuvent survenir. Veuillez faire une Pull Request avec les corrections qui devraient être apportées si vous êtes un locuteur natif.
+Ceci a été généré à l'aide de [Jules](https://jules.google), des erreurs peuvent survenir. Veuillez faire une Pull Request avec les corrections qui devraient être apportées si vous êtes un locuteur natif.

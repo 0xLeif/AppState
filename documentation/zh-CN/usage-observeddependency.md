@@ -132,4 +132,4 @@ struct ReactiveView: View {
 `ObservedDependency` 是在您的应用程序中管理可观察依赖项的强大工具。通过利用 Swift 的 `ObservableObject` 协议，它确保您的 SwiftUI 视图保持反应性并与服务或资源中的更改保持同步。
 
 ---
-这是使用 Jules 生成的，可能会出现错误。如果您是母语人士，请提出包含任何应有修复的拉取请求。
+这是使用 [Jules](https://jules.google) 生成的，可能会出现错误。如果您是母语人士，请提出包含任何应有修复的拉取请求。

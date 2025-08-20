@@ -212,4 +212,4 @@ Depois de se familiarizar com o uso básico, você pode explorar tópicos mais a
 - Para técnicas de uso mais avançadas, como criação Just-In-Time e pré-carregamento de dependências, consulte o [Guia de Uso Avançado](advanced-usage.md).
 
 ---
-Isso foi gerado usando Jules, erros podem acontecer. Por favor, faça um Pull Request com quaisquer correções que devam acontecer se você for um falante nativo.
+Isso foi gerado usando [Jules](https://jules.google), erros podem acontecer. Por favor, faça um Pull Request com quaisquer correções que devam acontecer se você for um falante nativo.

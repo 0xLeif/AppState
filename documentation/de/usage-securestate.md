@@ -65,4 +65,4 @@ if let token = userToken {
 - **Behandeln Sie nil**: Behandeln Sie immer Fälle, in denen der Schlüsselbund `nil` zurückgibt, wenn kein Wert vorhanden ist.
 
 ---
-Dies wurde mit Jules erstellt, es können Fehler auftreten. Bitte erstellen Sie einen Pull Request mit allen Korrekturen, die vorgenommen werden sollten, wenn Sie Muttersprachler sind.
+Dies wurde mit [Jules](https://jules.google) erstellt, es können Fehler auftreten. Bitte erstellen Sie einen Pull Request mit allen Korrekturen, die vorgenommen werden sollten, wenn Sie Muttersprachler sind.

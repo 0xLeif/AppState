@@ -78,4 +78,4 @@ struct Settings: Codable {
 Siempre pruebe su migración a fondo simulando la carga de datos antiguos con nuevas versiones de su modelo para asegurarse de que su aplicación se comporte como se espera.
 
 ---
-Esto fue generado usando Jules, pueden ocurrir errores. Por favor, haga un Pull Request con cualquier corrección que deba realizarse si es un hablante nativo.
+Esto fue generado usando [Jules](https://jules.google), pueden ocurrir errores. Por favor, haga un Pull Request con cualquier corrección que deba realizarse si es un hablante nativo.
