@@ -58,3 +58,6 @@ Ao contribuir para o **AppState**, você concorda que as suas contribuições se
 ## Obrigado!
 
 As suas contribuições são muito valorizadas e apreciadas. Obrigado por ajudar a melhorar o **AppState**!
+
+---
+Isso foi gerado usando [Jules](https://jules.google), erros podem acontecer. Por favor, faça um Pull Request com quaisquer correções que devam acontecer se você for um falante nativo.

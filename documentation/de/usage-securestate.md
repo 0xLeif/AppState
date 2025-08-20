@@ -63,3 +63,6 @@ if let token = userToken {
 - **Verwendung für kleine Daten**: Der Schlüsselbund sollte zum Speichern kleiner sensibler Informationen wie Token, Passwörter und Schlüssel verwendet werden.
 - **Vermeiden Sie große Datensätze**: Wenn Sie große Datensätze sicher speichern müssen, sollten Sie eine dateibasierte Verschlüsselung oder andere Methoden in Betracht ziehen, da der Schlüsselbund nicht für die Speicherung großer Datenmengen ausgelegt ist.
 - **Behandeln Sie nil**: Behandeln Sie immer Fälle, in denen der Schlüsselbund `nil` zurückgibt, wenn kein Wert vorhanden ist.
+
+---
+Dies wurde mit [Jules](https://jules.google) erstellt, es können Fehler auftreten. Bitte erstellen Sie einen Pull Request mit allen Korrekturen, die vorgenommen werden sollten, wenn Sie Muttersprachler sind.

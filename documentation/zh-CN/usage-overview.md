@@ -210,3 +210,6 @@ struct SlicingView: View {
 - 在[状态依赖用法指南](usage-state-dependency.md)中研究 **Dependency** 如何在 AppState 中用于处理共享服务，并查看示例。
 - 在[ObservedDependency 用法指南](usage-observeddependency.md)中更深入地研究 **高级 SwiftUI** 技术，例如使用 `ObservedDependency` 在视图中管理可观察的依赖项。
 - 有关更高级的用法技术，例如即时创建和预加载依赖项，请参阅[高级用法指南](advanced-usage.md)。
+
+---
+这是使用 [Jules](https://jules.google) 生成的，可能会出现错误。如果您是母语人士，请提出包含任何应有修复的拉取请求。

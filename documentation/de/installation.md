@@ -82,3 +82,6 @@ import AppState
 ## Nächste Schritte
 
 Nach der Installation von AppState können Sie zur [Verwendungsübersicht](usage-overview.md) übergehen, um zu sehen, wie Sie die wichtigsten Funktionen in Ihrem Projekt implementieren.
+
+---
+Dies wurde mit [Jules](https://jules.google) erstellt, es können Fehler auftreten. Bitte erstellen Sie einen Pull Request mit allen Korrekturen, die vorgenommen werden sollten, wenn Sie Muttersprachler sind.

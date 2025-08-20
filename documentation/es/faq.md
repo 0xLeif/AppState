@@ -38,3 +38,6 @@ Mantenga todos sus estados y dependencias en extensiones de `Application`. Esto 
 ## ¿Es AppState compatible con Combine?
 
 Puede usar AppState junto con Combine puenteando los cambios de `State` a publicadores. Observe un valor de `State` y envíe actualizaciones a través de un `PassthroughSubject` u otro publicador de Combine si es necesario.
+
+---
+Esto fue generado usando [Jules](https://jules.google), pueden ocurrir errores. Por favor, haga un Pull Request con cualquier corrección que deba realizarse si es un hablante nativo.

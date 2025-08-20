@@ -210,3 +210,6 @@ Nachdem Sie sich mit der grundlegenden Verwendung vertraut gemacht haben, könne
 - Untersuchen Sie, wie **Dependency** in AppState verwendet wird, um gemeinsam genutzte Dienste zu verarbeiten, und sehen Sie sich Beispiele im [Zustandsabhängigkeits-Verwendungsleitfaden](usage-state-dependency.md) an.
 - Tauchen Sie tiefer in fortgeschrittene **SwiftUI**-Techniken wie die Verwendung von `ObservedDependency` zur Verwaltung beobachtbarer Abhängigkeiten in Ansichten im [ObservedDependency-Verwendungsleitfaden](usage-observeddependency.md) ein.
 - Informationen zu fortgeschritteneren Verwendungstechniken wie der Just-in-Time-Erstellung und dem Vorabladen von Abhängigkeiten finden Sie im [Leitfaden zur erweiterten Verwendung](advanced-usage.md).
+
+---
+Dies wurde mit [Jules](https://jules.google) erstellt, es können Fehler auftreten. Bitte erstellen Sie einen Pull Request mit allen Korrekturen, die vorgenommen werden sollten, wenn Sie Muttersprachler sind.

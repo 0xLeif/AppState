@@ -63,3 +63,6 @@ if let token = userToken {
 - **Use para Dados Pequenos**: O Keychain deve ser usado para armazenar pequenas porções de informações confidenciais como tokens, senhas e chaves.
 - **Evite Grandes Conjuntos de Dados**: Se você precisar armazenar grandes conjuntos de dados com segurança, considere usar criptografia baseada em arquivos ou outros métodos, pois o Keychain não é projetado para armazenamento de grandes dados.
 - **Lide com nulo**: Sempre lide com os casos em que o Keychain retorna `nil` quando nenhum valor está presente.
+
+---
+Isso foi gerado usando [Jules](https://jules.google), erros podem acontecer. Por favor, faça um Pull Request com quaisquer correções que devam acontecer se você for um falante nativo.

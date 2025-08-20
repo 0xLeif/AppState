@@ -82,3 +82,6 @@ import AppState
 ## Próximos Passos
 
 Com o AppState instalado, você pode avançar para a [Visão Geral do Uso](usage-overview.md) para ver como implementar os principais recursos no seu projeto.
+
+---
+Isso foi gerado usando [Jules](https://jules.google), erros podem acontecer. Por favor, faça um Pull Request com quaisquer correções que devam acontecer se você for um falante nativo.

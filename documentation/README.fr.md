@@ -99,3 +99,6 @@ Nous accueillons les contributions ! Veuillez consulter notre [Guide de Contribu
 ## Prochaines Étapes
 
 Une fois **AppState** installé, vous pouvez commencer à explorer ses fonctionnalités clés en consultant l'[Aperçu de l'Utilisation](fr/usage-overview.md) et des guides plus détaillés. Commencez à gérer efficacement l'état et les dépendances dans vos projets Swift ! Pour des techniques d'utilisation plus avancées, comme la création Juste-à-Temps et le préchargement des dépendances, consultez le [Guide d'Utilisation Avancée](fr/advanced-usage.md). Vous pouvez également consulter les guides [Constant](fr/usage-constant.md) et [ObservedDependency](fr/usage-observeddependency.md) pour des fonctionnalités supplémentaires.
+
+---
+Ceci a été généré à l'aide de [Jules](https://jules.google), des erreurs peuvent survenir. Veuillez faire une Pull Request avec les corrections qui devraient être apportées si vous êtes un locuteur natif.

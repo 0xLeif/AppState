@@ -58,3 +58,6 @@ Indem Sie zu **AppState** beitragen, stimmen Sie zu, dass Ihre Beiträge unter d
 ## Vielen Dank!
 
 Ihre Beiträge werden sehr geschätzt und gewürdigt. Vielen Dank, dass Sie zur Verbesserung von **AppState** beitragen!
+
+---
+Dies wurde mit [Jules](https://jules.google) erstellt, es können Fehler auftreten. Bitte erstellen Sie einen Pull Request mit allen Korrekturen, die vorgenommen werden sollten, wenn Sie Muttersprachler sind.

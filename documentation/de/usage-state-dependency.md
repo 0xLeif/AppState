@@ -131,3 +131,6 @@ struct CombinedView: View {
 ## Fazit
 
 Mit **AppState** können Sie den anwendungsweiten Zustand verwalten und gemeinsam genutzte Abhängigkeiten direkt in Ihre SwiftUI-Ansichten injizieren. Dieses Muster hilft, Ihre App modular und wartbar zu halten. Entdecken Sie weitere Funktionen der **AppState**-Bibliothek wie [SecureState](usage-securestate.md) und [SyncState](usage-syncstate.md), um die Zustandsverwaltung Ihrer App weiter zu verbessern.
+
+---
+Dies wurde mit [Jules](https://jules.google) erstellt, es können Fehler auftreten. Bitte erstellen Sie einen Pull Request mit allen Korrekturen, die vorgenommen werden sollten, wenn Sie Muttersprachler sind.

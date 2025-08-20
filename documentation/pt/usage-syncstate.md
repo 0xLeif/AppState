@@ -154,3 +154,6 @@ Para obter instruções detalhadas sobre como configurar o iCloud e o SyncState 
 ## Conclusão
 
 `SyncState` fornece uma maneira poderosa de sincronizar pequenas quantidades de estado da aplicação em todos os dispositivos via iCloud. É ideal para garantir que as preferências do usuário e outros dados importantes permaneçam consistentes em todos os dispositivos conectados à mesma conta do iCloud. Para casos de uso mais avançados, explore outras funcionalidades do **AppState**, como [SecureState](usage-securestate.md) e [FileState](usage-filestate.md).
+
+---
+Isso foi gerado usando [Jules](https://jules.google), erros podem acontecer. Por favor, faça um Pull Request com quaisquer correções que devam acontecer se você for um falante nativo.

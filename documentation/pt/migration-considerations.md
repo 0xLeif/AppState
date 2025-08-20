@@ -76,3 +76,6 @@ struct Settings: Codable {
 
 ## 5. Testando a Migração
 Sempre teste sua migração completamente, simulando o carregamento de dados antigos com novas versões do seu modelo para garantir que seu aplicativo se comporte como esperado.
+
+---
+Isso foi gerado usando [Jules](https://jules.google), erros podem acontecer. Por favor, faça um Pull Request com quaisquer correções que devam acontecer se você for um falante nativo.

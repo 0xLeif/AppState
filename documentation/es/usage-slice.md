@@ -89,3 +89,6 @@ struct OptionalSlicingView: View {
 ## Conclusión
 
 `Slice` y `OptionalSlice` proporcionan formas poderosas de acceder y modificar partes específicas de su estado de una manera segura para hilos. Al aprovechar estos componentes, puede simplificar la gestión del estado en aplicaciones más complejas, asegurando que su IU se mantenga reactiva y actualizada.
+
+---
+Esto fue generado usando [Jules](https://jules.google), pueden ocurrir errores. Por favor, haga un Pull Request con cualquier corrección que deba realizarse si es un hablante nativo.
