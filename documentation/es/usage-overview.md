@@ -210,3 +210,6 @@ Después de familiarizarse con el uso básico, puede explorar temas más avanzad
 - Investigue cómo se usa **Dependency** en AppState para manejar servicios compartidos y vea ejemplos en la [Guía de Uso de Dependencia de Estado](usage-state-dependency.md).
 - Profundice en técnicas avanzadas de **SwiftUI** como el uso de `ObservedDependency` para gestionar dependencias observables en las vistas en la [Guía de Uso de ObservedDependency](usage-observeddependency.md).
 - Para técnicas de uso más avanzadas, como la creación Just-In-Time y la precarga de dependencias, consulte la [Guía de Uso Avanzado](advanced-usage.md).
+
+---
+Esto fue generado usando Jules, pueden ocurrir errores. Por favor, haga un Pull Request con cualquier corrección que deba realizarse si es un hablante nativo.

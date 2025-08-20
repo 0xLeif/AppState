@@ -176,3 +176,6 @@ AppState bietet ein leistungsfähigeres und flexibleres System zur Verwaltung vo
 ## Fazit
 
 Durch die Verwendung dieser fortschrittlichen Techniken wie Just-in-Time-Erstellung, Vorladen, Zustands- und Abhängigkeitsverwaltung und das Verständnis der Unterschiede zwischen AppState und der SwiftUI-Umgebung können Sie mit **AppState** effiziente und ressourcenbewusste Anwendungen erstellen.
+
+---
+Dies wurde mit Jules erstellt, es können Fehler auftreten. Bitte erstellen Sie einen Pull Request mit allen Korrekturen, die vorgenommen werden sollten, wenn Sie Muttersprachler sind.

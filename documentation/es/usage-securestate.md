@@ -63,3 +63,6 @@ if let token = userToken {
 - **Usar para Datos Pequeños**: El Llavero debe usarse para almacenar pequeñas piezas de información confidencial como tokens, contraseñas y claves.
 - **Evitar Grandes Conjuntos de Datos**: Si necesita almacenar grandes conjuntos de datos de forma segura, considere usar encriptación basada en archivos u otros métodos, ya que el Llavero no está diseñado para el almacenamiento de grandes datos.
 - **Manejar nil**: Siempre maneje los casos en que el Llavero devuelve `nil` cuando no hay ningún valor presente.
+
+---
+Esto fue generado usando Jules, pueden ocurrir errores. Por favor, haga un Pull Request con cualquier corrección que deba realizarse si es un hablante nativo.

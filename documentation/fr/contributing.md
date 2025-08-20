@@ -58,3 +58,6 @@ En contribuant à **AppState**, vous acceptez que vos contributions soient sous 
 ## Merci !
 
 Vos contributions sont très précieuses et appréciées. Merci d'aider à améliorer **AppState** !
+
+---
+Ceci a été généré à l'aide de Jules, des erreurs peuvent survenir. Veuillez faire une Pull Request avec les corrections qui devraient être apportées si vous êtes un locuteur natif.

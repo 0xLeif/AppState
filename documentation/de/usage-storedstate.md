@@ -64,9 +64,12 @@ Weitere Informationen finden Sie im [Leitfaden zu Migrationsüberlegungen](migra
 
 ## Bewährte Praktiken
 
-- **Verwendung für kleine Daten**: Speichern Sie leichtgewichtige, не sensible Daten, die über App-Starts hinweg erhalten bleiben müssen, wie z. B. Benutzereinstellungen.
+- **Verwendung für kleine Daten**: Speichern Sie leichtgewichtige, nicht sensible Daten, die über App-Starts hinweg erhalten bleiben müssen, wie z. B. Benutzereinstellungen.
 - **Berücksichtigen Sie Alternativen für größere Daten**: Wenn Sie große Datenmengen speichern müssen, sollten Sie stattdessen **FileState** verwenden.
 
 ## Fazit
 
 **StoredState** ist eine einfache und effiziente Möglichkeit, kleine Datenmengen mit `UserDefaults` beizubehalten. Es ist ideal zum Speichern von Einstellungen und anderen kleinen Konfigurationen über App-Starts hinweg und bietet gleichzeitig einen sicheren Zugriff und eine einfache Integration mit SwiftUI. Für komplexere Persistenzanforderungen erkunden Sie andere **AppState**-Funktionen wie [FileState](usage-filestate.md) oder [SyncState](usage-syncstate.md).
+
+---
+Dies wurde mit Jules erstellt, es können Fehler auftreten. Bitte erstellen Sie einen Pull Request mit allen Korrekturen, die vorgenommen werden sollten, wenn Sie Muttersprachler sind.

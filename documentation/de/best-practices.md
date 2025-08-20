@@ -60,3 +60,6 @@ AppState-Werte werden just-in-time erstellt, d. h. sie werden erst instanziiert,
 ## Fazit
 
 Jede Anwendung ist einzigartig, daher passen diese Best Practices möglicherweise nicht in jede Situation. Berücksichtigen Sie immer die spezifischen Anforderungen Ihrer Anwendung, wenn Sie entscheiden, wie Sie AppState verwenden, und bemühen Sie sich, Ihre Zustandsverwaltung sauber, effizient und gut getestet zu halten.
+
+---
+Dies wurde mit Jules erstellt, es können Fehler auftreten. Bitte erstellen Sie einen Pull Request mit allen Korrekturen, die vorgenommen werden sollten, wenn Sie Muttersprachler sind.

@@ -60,3 +60,6 @@ Os valores do AppState são criados just-in-time, o que significa que são insta
 ## Conclusão
 
 Cada aplicação é única, então estas melhores práticas podem não se adequar a todas as situações. Sempre considere os requisitos específicos de sua aplicação ao decidir como usar o AppState, e esforce-se para manter seu gerenciamento de estado limpo, eficiente e bem testado.
+
+---
+Isso foi gerado usando Jules, erros podem acontecer. Por favor, faça um Pull Request com quaisquer correções que devam acontecer se você for um falante nativo.

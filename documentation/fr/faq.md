@@ -1,6 +1,6 @@
 # Foire Aux Questions
 
-Cette courte FAQ répond aux questions courantes que les développeurs могут se poser lors de l'utilisation de **AppState**.
+Cette courte FAQ répond aux questions courantes que les développeurs peuvent se poser lors de l'utilisation de **AppState**.
 
 ## Comment réinitialiser une valeur d'état ?
 
@@ -38,3 +38,6 @@ Conservez tous vos états et dépendances dans des extensions de `Application`. 
 ## AppState est-il compatible avec Combine ?
 
 Vous pouvez utiliser AppState avec Combine en pontant les changements de `State` vers des publicateurs. Observez une valeur `State` et envoyez des mises à jour via un `PassthroughSubject` ou un autre publicateur Combine si nécessaire.
+
+---
+Ceci a été généré à l'aide de Jules, des erreurs peuvent survenir. Veuillez faire une Pull Request avec les corrections qui devraient être apportées si vous êtes un locuteur natif.

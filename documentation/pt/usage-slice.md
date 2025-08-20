@@ -89,3 +89,6 @@ struct OptionalSlicingView: View {
 ## Conclusão
 
 `Slice` e `OptionalSlice` fornecem maneiras poderosas de acessar e modificar partes específicas do seu estado de maneira segura para threads. Ao aproveitar esses componentes, você pode simplificar o gerenciamento de estado em aplicações mais complexas, garantindo que sua interface do usuário permaneça reativa e atualizada.
+
+---
+Isso foi gerado usando Jules, erros podem acontecer. Por favor, faça um Pull Request com quaisquer correções que devam acontecer se você for um falante nativo.

@@ -63,3 +63,6 @@ if let token = userToken {
 - **Utiliser pour de Petites Données** : Le Trousseau doit être utilisé pour stocker de petites informations sensibles comme des jetons, des mots de passe et des clés.
 - **Éviter les Grands Ensembles de Données** : Si vous devez stocker de grands ensembles de données de manière sécurisée, envisagez d'utiliser le chiffrement basé sur les fichiers ou d'autres méthodes, car le Trousseau n'est pas conçu pour le stockage de grandes quantités de données.
 - **Gérer nil** : Gérez toujours les cas où le Trousseau renvoie `nil` lorsqu'aucune valeur n'est présente.
+
+---
+Ceci a été généré à l'aide de Jules, des erreurs peuvent survenir. Veuillez faire une Pull Request avec les corrections qui devraient être apportées si vous êtes un locuteur natif.

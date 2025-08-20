@@ -99,3 +99,6 @@ Wir freuen uns über Beiträge! Bitte lesen Sie unsere [Anleitung für Mitwirken
 ## Nächste Schritte
 
 Nach der Installation von **AppState** können Sie die wichtigsten Funktionen erkunden, indem Sie sich die [Verwendungsübersicht](de/usage-overview.md) und detailliertere Anleitungen ansehen. Beginnen Sie mit der effektiven Verwaltung von Zustand und Abhängigkeiten in Ihren Swift-Projekten! Für fortgeschrittenere Verwendungstechniken wie die Just-In-Time-Erstellung und das Vorabladen von Abhängigkeiten siehe die [Anleitung zur erweiterten Verwendung](de/advanced-usage.md). Sie können auch die Anleitungen zu [Konstanten](de/usage-constant.md) und [ObservedDependency](de/usage-observeddependency.md) für zusätzliche Funktionen einsehen.
+
+---
+Dies wurde mit Jules erstellt, es können Fehler auftreten. Bitte erstellen Sie einen Pull Request mit allen Korrekturen, die vorgenommen werden sollten, wenn Sie Muttersprachler sind.

@@ -82,3 +82,6 @@ import AppState
 ## Próximos Pasos
 
 Con AppState instalado, puede pasar a la [Descripción General del Uso](usage-overview.md) para ver cómo implementar las características clave en su proyecto.
+
+---
+Esto fue generado usando Jules, pueden ocurrir errores. Por favor, haga un Pull Request con cualquier corrección que deba realizarse si es un hablante nativo.

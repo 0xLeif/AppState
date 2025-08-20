@@ -176,3 +176,6 @@ O AppState fornece um sistema mais poderoso e flexível para gerenciar o estado 
 ## Conclusão
 
 Ao usar essas técnicas avançadas, como criação just-in-time, pré-carregamento, gerenciamento de estados e dependências, e entender as diferenças entre o AppState e o Ambiente do SwiftUI, você pode construir aplicações eficientes e conscientes dos recursos com o **AppState**.
+
+---
+Isso foi gerado usando Jules, erros podem acontecer. Por favor, faça um Pull Request com quaisquer correções que devam acontecer se você for um falante nativo.

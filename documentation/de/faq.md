@@ -38,3 +38,6 @@ Bewahren Sie alle Ihre Zustände und Abhängigkeiten in `Application`-Erweiterun
 ## Ist AppState mit Combine kompatibel?
 
 Sie können AppState zusammen mit Combine verwenden, indem Sie `State`-Änderungen an Publisher überbrücken. Beobachten Sie einen `State`-Wert und senden Sie bei Bedarf Aktualisierungen über einen `PassthroughSubject` oder einen anderen Combine-Publisher.
+
+---
+Dies wurde mit Jules erstellt, es können Fehler auftreten. Bitte erstellen Sie einen Pull Request mit allen Korrekturen, die vorgenommen werden sollten, wenn Sie Muttersprachler sind.

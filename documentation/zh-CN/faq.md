@@ -38,3 +38,6 @@ Application.reset(\.counter)
 ## AppState 与 Combine 兼容吗？
 
 您可以通过将 `State` 的更改桥接到发布者来将 AppState 与 Combine 一起使用。观察一个 `State` 值，并在需要时通过 `PassthroughSubject` 或其他 Combine 发布者发送更新。
+
+---
+这是使用 Jules 生成的，可能会出现错误。如果您是母语人士，请提出包含任何应有修复的拉取请求。

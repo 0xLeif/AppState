@@ -82,3 +82,6 @@ struct ExampleView: View {
 ## Fazit
 
 `Constant` und `OptionalConstant` bieten eine effiziente Möglichkeit, auf bestimmte Teile des Zustands Ihrer App schreibgeschützt zuzugreifen. Sie stellen sicher, dass Werte, die andernfalls veränderbar sein könnten, bei Zugriff innerhalb einer Ansicht als unveränderlich behandelt werden, was Sicherheit und Klarheit in Ihrem Code gewährleistet.
+
+---
+Dies wurde mit Jules erstellt, es können Fehler auftreten. Bitte erstellen Sie einen Pull Request mit allen Korrekturen, die vorgenommen werden sollten, wenn Sie Muttersprachler sind.
