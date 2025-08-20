@@ -84,4 +84,4 @@ struct ExampleView: View {
 `Constant` e `OptionalConstant` fornecem uma maneira eficiente de acessar partes específicas do estado da sua aplicação de forma somente leitura. Eles garantem que valores que, de outra forma, poderiam ser mutáveis, sejam tratados como imutáveis quando acessados dentro de uma visualização, garantindo segurança e clareza no seu código.
 
 ---
-Isso foi gerado usando [Jules](https://jules.google), erros podem acontecer. Por favor, faça um Pull Request com quaisquer correções que devam acontecer se você for um falante nativo.
+Esta tradução foi gerada automaticamente e pode conter erros. Se você é um falante nativo, agradecemos suas contribuições com correções por meio de um Pull Request.

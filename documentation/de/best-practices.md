@@ -26,9 +26,9 @@ Stellen Sie wie bei anderen Aspekten Ihrer Anwendung sicher, dass Ihr AppState g
 - Verwenden Sie XCTest oder ähnliche Frameworks, um das Verhalten und die Interaktionen von AppState zu testen.
 - Mocken oder stubben Sie Abhängigkeiten, um sicherzustellen, dass AppState-Tests isoliert und zuverlässig sind.
 
-## 4. Verwenden Sie die Slice-Funktion mit Bedacht
+## 4. Verwenden Sie das Slice-Feature mit Bedacht
 
-Die `Slice`-Funktion ermöglicht es Ihnen, auf bestimmte Teile des Zustands eines AppState zuzugreifen, was für die Handhabung großer und komplexer Zustandsstrukturen nützlich ist. Verwenden Sie diese Funktion jedoch mit Bedacht, um einen sauberen und gut organisierten AppState beizubehalten und unnötige Slices zu vermeiden, die die Zustandsbehandlung fragmentieren.
+Das `Slice`-Feature ermöglicht es Ihnen, auf bestimmte Teile des Zustands eines AppState zuzugreifen, was für die Handhabung großer und komplexer Zustandsstrukturen nützlich ist. Verwenden Sie diese Funktion jedoch mit Bedacht, um einen sauberen und gut organisierten AppState beizubehalten und unnötige Slices zu vermeiden, die die Zustandsbehandlung fragmentieren.
 
 ### Empfehlung:
 - Verwenden Sie `Slice` nur für große oder verschachtelte Zustände, bei denen der Zugriff auf einzelne Komponenten erforderlich ist.
@@ -62,4 +62,4 @@ AppState-Werte werden just-in-time erstellt, d. h. sie werden erst instanziiert,
 Jede Anwendung ist einzigartig, daher passen diese Best Practices möglicherweise nicht in jede Situation. Berücksichtigen Sie immer die spezifischen Anforderungen Ihrer Anwendung, wenn Sie entscheiden, wie Sie AppState verwenden, und bemühen Sie sich, Ihre Zustandsverwaltung sauber, effizient und gut getestet zu halten.
 
 ---
-Dies wurde mit [Jules](https://jules.google) erstellt, es können Fehler auftreten. Bitte erstellen Sie einen Pull Request mit allen Korrekturen, die vorgenommen werden sollten, wenn Sie Muttersprachler sind.
+Diese Übersetzung wurde automatisch generiert und kann Fehler enthalten. Wenn Sie Muttersprachler sind, freuen wir uns über Ihre Korrekturvorschläge per Pull Request.

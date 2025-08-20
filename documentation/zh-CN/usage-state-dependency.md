@@ -133,4 +133,4 @@ struct CombinedView: View {
 使用 **AppState**，您可以管理应用程序范围的状态，并将共享依赖项直接注入到您的 SwiftUI 视图中。这种模式有助于保持您的应用程序模块化和可维护性。探索 **AppState** 库的其他功能，例如 [SecureState](usage-securestate.md) 和 [SyncState](usage-syncstate.md)，以进一步增强您的应用程序的状态管理。
 
 ---
-这是使用 [Jules](https://jules.google) 生成的，可能会出现错误。如果您是母语人士，请提出包含任何应有修复的拉取请求。
+该译文由机器自动生成，可能存在错误。如果您是母语使用者，我们期待您通过 Pull Request 提出修改建议。

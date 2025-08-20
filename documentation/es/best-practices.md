@@ -26,9 +26,9 @@ Al igual que otros aspectos de su aplicación, asegúrese de que su AppState sea
 - Use XCTest o marcos similares para probar el comportamiento y las interacciones de AppState.
 - Simule o cree stubs de dependencias para asegurarse de que las pruebas de AppState sean aisladas y confiables.
 
-## 4. Use la Función de Slice con Sabiduría
+## 4. Use la característica Slice con sabiduría
 
-La función `Slice` le permite acceder a partes específicas del estado de un AppState, lo cual es útil para manejar estructuras de estado grandes y complejas. Sin embargo, use esta función con sabiduría para mantener un AppState limpio y bien organizado, evitando slices innecesarios que fragmenten el manejo del estado.
+La característica `Slice` le permite acceder a partes específicas del estado de un AppState, lo cual es útil para manejar estructuras de estado grandes y complejas. Sin embargo, use esta función con sabiduría para mantener un AppState limpio y bien organizado, evitando slices innecesarios que fragmenten el manejo del estado.
 
 ### Recomendación:
 - Solo use `Slice` para estados grandes o anidados donde sea necesario acceder a componentes individuales.
@@ -62,4 +62,4 @@ Los valores de AppState se crean justo a tiempo, lo que significa que se instanc
 Cada aplicación es única, por lo que estas mejores prácticas pueden no encajar en todas las situaciones. Siempre considere los requisitos específicos de su aplicación al decidir cómo usar AppState, y esfuércese por mantener su gestión de estado limpia, eficiente y bien probada.
 
 ---
-Esto fue generado usando [Jules](https://jules.google), pueden ocurrir errores. Por favor, haga un Pull Request con cualquier corrección que deba realizarse si es un hablante nativo.
+Esta traducción fue generada automáticamente y puede contener errores. Si eres un hablante nativo, te agradecemos que contribuyas con correcciones a través de un Pull Request.

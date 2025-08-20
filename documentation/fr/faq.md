@@ -15,7 +15,7 @@ extension Application {
 // Quelque part dans votre code
 Application.reset(storedState: \.hasCompletedOnboarding)
 ```
-Cela réinitialisera la valeur dans `UserDefaults` à `false`. Des fonctions `reset` similares existent pour `FileState`, `SyncState` et `SecureState`.
+Cela réinitialisera la valeur dans `UserDefaults` à `false`. Des fonctions `reset` similaires existent pour `FileState`, `SyncState` et `SecureState`.
 
 Pour un `State` non persistant, vous pouvez le réinitialiser de la même manière que les états persistants :
 ```swift
@@ -40,4 +40,4 @@ Conservez tous vos états et dépendances dans des extensions de `Application`. 
 Vous pouvez utiliser AppState avec Combine en pontant les changements de `State` vers des publicateurs. Observez une valeur `State` et envoyez des mises à jour via un `PassthroughSubject` ou un autre publicateur Combine si nécessaire.
 
 ---
-Ceci a été généré à l'aide de [Jules](https://jules.google), des erreurs peuvent survenir. Veuillez faire une Pull Request avec les corrections qui devraient être apportées si vous êtes un locuteur natif.
+Cette traduction a été générée automatiquement et peut contenir des erreurs. Si vous êtes un locuteur natif, nous vous serions reconnaissants de contribuer avec des corrections via une Pull Request.

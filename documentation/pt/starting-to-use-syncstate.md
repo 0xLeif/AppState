@@ -20,3 +20,6 @@ Além de configurar o projeto em si, você também precisa preparar os dispositi
 - Faça login em ambos os dispositivos usando a mesma conta do iCloud.
 
 Se você tiver alguma dúvida ou encontrar algum problema, sinta-se à vontade para entrar em contato ou enviar um problema.
+
+---
+Esta tradução foi gerada automaticamente e pode conter erros. Se você é um falante nativo, agradecemos suas contribuições com correções por meio de um Pull Request.

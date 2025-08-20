@@ -212,4 +212,4 @@ struct SlicingView: View {
 - 有关更高级的用法技术，例如即时创建和预加载依赖项，请参阅[高级用法指南](advanced-usage.md)。
 
 ---
-这是使用 [Jules](https://jules.google) 生成的，可能会出现错误。如果您是母语人士，请提出包含任何应有修复的拉取请求。
+该译文由机器自动生成，可能存在错误。如果您是母语使用者，我们期待您通过 Pull Request 提出修改建议。

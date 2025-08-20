@@ -81,4 +81,4 @@ SyncState verwendet `NSUbiquitousKeyValueStore`, das einige Einschränkungen auf
 Indem Sie iCloud ordnungsgemäß konfigurieren und die Einschränkungen von SyncState verstehen, können Sie dessen Leistungsfähigkeit nutzen, um Daten über Geräte hinweg zu synchronisieren. Stellen Sie sicher, dass Sie SyncState nur für kleine, kritische Daten verwenden, um potenzielle Probleme mit den iCloud-Speicherlimits zu vermeiden.
 
 ---
-Dies wurde mit [Jules](https://jules.google) erstellt, es können Fehler auftreten. Bitte erstellen Sie einen Pull Request mit allen Korrekturen, die vorgenommen werden sollten, wenn Sie Muttersprachler sind.
+Diese Übersetzung wurde automatisch generiert und kann Fehler enthalten. Wenn Sie Muttersprachler sind, freuen wir uns über Ihre Korrekturvorschläge per Pull Request.

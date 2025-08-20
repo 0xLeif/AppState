@@ -74,11 +74,11 @@ SyncState utiliza `NSUbiquitousKeyValueStore`, que tiene algunas limitaciones:
 ### Mejores Prácticas:
 
 - **Use SyncState para Datos Pequeños**: Asegúrese de que solo se sincronicen datos pequeños como las preferencias del usuario o la configuración usando SyncState.
-- **Maneje las Fallas de SyncState con Gracia**: Use valores predeterminados o mecanismos de manejo de errores para tener en cuenta los posibles retrasos o fallas en la sincronización.
+- **Maneje los fallos de SyncState de forma elegante**: Use valores predeterminados o mecanismos de manejo de errores para tener en cuenta los posibles retrasos o fallas en la sincronización.
 
 ## 4. Conclusión
 
 Al configurar correctamente iCloud y comprender las limitaciones de SyncState, puede aprovechar su poder para sincronizar datos entre dispositivos. Asegúrese de usar SyncState solo para fragmentos de datos pequeños y críticos para evitar posibles problemas con los límites de almacenamiento de iCloud.
 
 ---
-Esto fue generado usando [Jules](https://jules.google), pueden ocurrir errores. Por favor, haga un Pull Request con cualquier corrección que deba realizarse si es un hablante nativo.
+Esta traducción fue generada automáticamente y puede contener errores. Si eres un hablante nativo, te agradecemos que contribuyas con correcciones a través de un Pull Request.

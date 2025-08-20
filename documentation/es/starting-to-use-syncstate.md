@@ -10,7 +10,7 @@ Para utilizar SyncState, primero deberá configurar las capacidades y los derech
 ### Actualización de los derechos:
 
 1. Ahora deberá actualizar su archivo de derechos. Abra el archivo de derechos para su destino.
-2. Asegúrese de que el valor del Almacén de clave-valor de iCloud coincida con su ID de almacén de clave-valor único. Su ID único debe seguir el formato `$(TeamIdentifierPrefix)<your key-value store ID>`. El valor predeterminado debería ser algo así como `$(TeamIdentifierPrefix)$(CFBundleIdentifier)`. Esto está bien para aplicaciones de una sola plataforma, pero si su aplicación está en varios sistemas operativos de Apple, es importante que las partes de la ID del almacén de clave-valor sean las mesmas para ambos destinos.
+2. Asegúrese de que el valor del Almacén de clave-valor de iCloud coincida con su ID de almacén de clave-valor único. Su ID único debe seguir el formato `$(TeamIdentifierPrefix)<your key-value store ID>`. El valor predeterminado debería ser algo así como `$(TeamIdentifierPrefix)$(CFBundleIdentifier)`. Esto está bien para aplicaciones de una sola plataforma, pero si su aplicación está en varios sistemas operativos de Apple, es importante que las partes de la ID del almacén de clave-valor sean las mismas para ambos destinos.
 
 ### Configuración de los dispositivos:
 
@@ -19,4 +19,7 @@ Además de configurar el proyecto en sí, también debe preparar los dispositivo
 - Asegúrese de que iCloud Drive esté habilitado en los dispositivos iOS y macOS.
 - Inicie sesión en ambos dispositivos con la misma cuenta de iCloud.
 
-Si tiene alguna pregunta o tiene algún problema, no dude en comunicarse o enviar un problema.
+Si tiene alguna pregunta o encuentra algún problema, no dude en contactarnos o reportar un issue.
+
+---
+Esta traducción fue generada automáticamente y puede contener errores. Si eres un hablante nativo, te agradecemos que contribuyas con correcciones a través de un Pull Request.

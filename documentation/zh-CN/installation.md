@@ -84,4 +84,4 @@ import AppState
 安装 AppState 后，您可以转到[用法概述](usage-overview.md)以了解如何在您的项目中实现关键功能。
 
 ---
-这是使用 [Jules](https://jules.google) 生成的，可能会出现错误。如果您是母语人士，请提出包含任何应有修复的拉取请求。
+该译文由机器自动生成，可能存在错误。如果您是母语使用者，我们期待您通过 Pull Request 提出修改建议。

@@ -17,7 +17,7 @@
 
 ### Utilisation de Slice
 
-Dans cet exemple, nous utilisons `Slice` pour accéder et mettre à jour une partie específica de l'état — dans ce cas, le `username` d'un objet `User` plus complexe stocké dans l'état de l'application.
+Dans cet exemple, nous utilisons `Slice` pour accéder et mettre à jour une partie spécifique de l'état — dans ce cas, le `username` d'un objet `User` plus complexe stocké dans l'état de l'application.
 
 ```swift
 import AppState
@@ -91,4 +91,4 @@ struct OptionalSlicingView: View {
 `Slice` et `OptionalSlice` offrent des moyens puissants d'accéder et de modifier des parties spécifiques de votre état de manière thread-safe. En tirant parti de ces composants, vous pouvez simplifier la gestion de l'état dans des applications plus complexes, en veillant à ce que votre interface utilisateur reste réactive et à jour.
 
 ---
-Ceci a été généré à l'aide de [Jules](https://jules.google), des erreurs peuvent survenir. Veuillez faire une Pull Request avec les corrections qui devraient être apportées si vous êtes un locuteur natif.
+Cette traduction a été générée automatiquement et peut contenir des erreurs. Si vous êtes un locuteur natif, nous vous serions reconnaissants de contribuer avec des corrections via une Pull Request.

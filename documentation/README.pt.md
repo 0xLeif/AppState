@@ -101,4 +101,4 @@ Aceitamos contribuições! Por favor, confira nosso [Guia de Contribuição](pt/
 Com o **AppState** instalado, você pode começar a explorar seus principais recursos, consultando a [Visão Geral do Uso](pt/usage-overview.md) e guias mais detalhados. Comece a gerenciar o estado e as dependências de forma eficaz em seus projetos Swift! Para técnicas de uso mais avançadas, como criação Just-In-Time e pré-carregamento de dependências, consulte o [Guia de Uso Avançado](pt/advanced-usage.md). Você também pode revisar os guias [Constant](pt/usage-constant.md) e [ObservedDependency](pt/usage-observeddependency.md) para recursos adicionais.
 
 ---
-Isso foi gerado usando [Jules](https://jules.google), erros podem acontecer. Por favor, faça um Pull Request com quaisquer correções que devam acontecer se você for um falante nativo.
+Esta tradução foi gerada automaticamente e pode conter erros. Se você é um falante nativo, agradecemos suas contribuições com correções por meio de um Pull Request.
