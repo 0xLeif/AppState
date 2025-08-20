@@ -38,9 +38,9 @@
 
 ## 入门
 
-要将 **AppState** 集成到您的 Swift 项目中，您需要使用 Swift 包管理器。有关设置 **AppState** 的详细说明，请遵循[安装指南](documentation/installation.md)。
+要将 **AppState** 集成到您的 Swift 项目中，您需要使用 Swift 包管理器。有关设置 **AppState** 的详细说明，请遵循[安装指南](documentation/zh-CN/installation.md)。
 
-安装后，请参阅[用法概述](documentation/usage-overview.md)，快速了解如何管理状态和将依赖项注入到您的项目中。
+安装后，请参阅[用法概述](documentation/zh-CN/usage-overview.md)，快速了解如何管理状态和将依赖项注入到您的项目中。
 
 ## 快速示例
 
@@ -74,28 +74,28 @@ struct ContentView: View {
 
 以下是 **AppState** 文档的详细分类：
 
-- [安装指南](documentation/installation.md)：如何使用 Swift 包管理器将 **AppState** 添加到您的项目中。
-- [用法概述](documentation/usage-overview.md)：主要功能的概述及示例实现。
+- [安装指南](documentation/zh-CN/installation.md)：如何使用 Swift 包管理器将 **AppState** 添加到您的项目中。
+- [用法概述](documentation/zh-CN/usage-overview.md)：主要功能的概述及示例实现。
 
 ### 详细用法指南：
 
-- [状态和依赖管理](documentation/usage-state-dependency.md)：集中管理状态并在整个应用程序中注入依赖项。
-- [状态切片](documentation/usage-slice.md)：访问和修改状态的特定部分。
-- [StoredState 用法指南](documentation/usage-storedstate.md)：如何使用 `StoredState` 持久化轻量级数据。
-- [FileState 用法指南](documentation/usage-filestate.md)：了解如何安全地在磁盘上持久化大量数据。
-- [钥匙串 SecureState 用法](documentation/usage-securestate.md)：使用钥匙串安全地存储敏感数据。
-- [使用 SyncState 进行 iCloud 同步](documentation/usage-syncstate.md)：使用 iCloud 在设备之间保持状态同步。
-- [常见问题解答](documentation/faq.md)：使用 **AppState** 时常见问题的解答。
-- [常量用法指南](documentation/usage-constant.md)：从您的状态中访问只读值。
-- [ObservedDependency 用法指南](documentation/usage-observeddependency.md)：在您的视图中使用 `ObservableObject` 依赖项。
-- [高级用法](documentation/advanced-usage.md)：诸如即时创建和预加载依赖项等技术。
-- [最佳实践](documentation/best-practices.md)：有效构建应用程序状态的技巧。
-- [迁移注意事项](documentation/migration-considerations.md)：更新持久化模型时的指导。
+- [状态和依赖管理](documentation/zh-CN/usage-state-dependency.md)：集中管理状态并在整个应用程序中注入依赖项。
+- [状态切片](documentation/zh-CN/usage-slice.md)：访问和修改状态的特定部分。
+- [StoredState 用法指南](documentation/zh-CN/usage-storedstate.md)：如何使用 `StoredState` 持久化轻量级数据。
+- [FileState 用法指南](documentation/zh-CN/usage-filestate.md)：了解如何安全地在磁盘上持久化大量数据。
+- [钥匙串 SecureState 用法](documentation/zh-CN/usage-securestate.md)：使用钥匙串安全地存储敏感数据。
+- [使用 SyncState 进行 iCloud 同步](documentation/zh-CN/usage-syncstate.md)：使用 iCloud 在设备之间保持状态同步。
+- [常见问题解答](documentation/zh-CN/faq.md)：使用 **AppState** 时常见问题的解答。
+- [常量用法指南](documentation/zh-CN/usage-constant.md)：从您的状态中访问只读值。
+- [ObservedDependency 用法指南](documentation/zh-CN/usage-observeddependency.md)：在您的视图中使用 `ObservableObject` 依赖项。
+- [高级用法](documentation/zh-CN/advanced-usage.md)：诸如即时创建和预加载依赖项等技术。
+- [最佳实践](documentation/zh-CN/best-practices.md)：有效构建应用程序状态的技巧。
+- [迁移注意事项](documentation/zh-CN/migration-considerations.md)：更新持久化模型时的指导。
 
 ## 贡献
 
-我们欢迎贡献！请查看我们的[贡献指南](documentation/contributing.md)以了解如何参与。
+我们欢迎贡献！请查看我们的[贡献指南](documentation/zh-CN/contributing.md)以了解如何参与。
 
 ## 后续步骤
 
-安装 **AppState** 后，您可以通过查看[用法概述](documentation/usage-overview.md)和更详细的指南来开始探索其主要功能。开始在您的 Swift 项目中有效地管理状态和依赖项！有关更高级的用法技术，如即时创建和预加载依赖项，请参阅[高级用法指南](documentation/advanced-usage.md)。您还可以查看[常量](documentation/usage-constant.md)和[ObservedDependency](documentation/usage-observeddependency.md)指南以了解其他功能。
+安装 **AppState** 后，您可以通过查看[用法概述](documentation/zh-CN/usage-overview.md)和更详细的指南来开始探索其主要功能。开始在您的 Swift 项目中有效地管理状态和依赖项！有关更高级的用法技术，如即时创建和预加载依赖项，请参阅[高级用法指南](documentation/zh-CN/advanced-usage.md)。您还可以查看[常量](documentation/zh-CN/usage-constant.md)和[ObservedDependency](documentation/zh-CN/usage-observeddependency.md)指南以了解其他功能。

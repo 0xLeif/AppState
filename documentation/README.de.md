@@ -38,9 +38,9 @@
 
 ## Erste Schritte
 
-Um **AppState** in Ihr Swift-Projekt zu integrieren, müssen Sie den Swift Package Manager verwenden. Befolgen Sie die [Installationsanleitung](documentation/installation.md) für detaillierte Anweisungen zur Einrichtung von **AppState**.
+Um **AppState** in Ihr Swift-Projekt zu integrieren, müssen Sie den Swift Package Manager verwenden. Befolgen Sie die [Installationsanleitung](documentation/de/installation.md) für detaillierte Anweisungen zur Einrichtung von **AppState**.
 
-Nach der Installation finden Sie in der [Verwendungsübersicht](documentation/usage-overview.md) eine kurze Einführung in die Verwaltung des Zustands und die Injektion von Abhängigkeiten in Ihr Projekt.
+Nach der Installation finden Sie in der [Verwendungsübersicht](documentation/de/usage-overview.md) eine kurze Einführung in die Verwaltung des Zustands und die Injektion von Abhängigkeiten in Ihr Projekt.
 
 ## Schnelles Beispiel
 
@@ -74,28 +74,28 @@ Dieser Ausschnitt zeigt, wie man einen Zustandswert in einer `Application`-Erwei
 
 Hier ist eine detaillierte Aufschlüsselung der Dokumentation von **AppState**:
 
-- [Installationsanleitung](documentation/installation.md): So fügen Sie **AppState** mit dem Swift Package Manager zu Ihrem Projekt hinzu.
-- [Verwendungsübersicht](documentation/usage-overview.md): Eine Übersicht über die wichtigsten Funktionen mit Beispielimplementierungen.
+- [Installationsanleitung](documentation/de/installation.md): So fügen Sie **AppState** mit dem Swift Package Manager zu Ihrem Projekt hinzu.
+- [Verwendungsübersicht](documentation/de/usage-overview.md): Eine Übersicht über die wichtigsten Funktionen mit Beispielimplementierungen.
 
 ### Detaillierte Verwendungsanleitungen:
 
-- [Zustands- und Abhängigkeitsmanagement](documentation/usage-state-dependency.md): Zentralisieren Sie den Zustand und injizieren Sie Abhängigkeiten in Ihrer gesamten App.
-- [Zustand slicen](documentation/usage-slice.md): Greifen Sie auf bestimmte Teile des Zustands zu und ändern Sie sie.
-- [StoredState-Verwendungsanleitung](documentation/usage-storedstate.md): So persistieren Sie leichtgewichtige Daten mit `StoredState`.
-- [FileState-Verwendungsanleitung](documentation/usage-filestate.md): Erfahren Sie, wie Sie größere Datenmengen sicher auf der Festplatte persistieren.
-- [SecureState mit Schlüsselbund verwenden](documentation/usage-securestate.md): Speichern Sie sensible Daten sicher mit dem Schlüsselbund.
-- [iCloud-Synchronisierung mit SyncState](documentation/usage-syncstate.md): Halten Sie den Zustand über Geräte hinweg mit iCloud synchron.
-- [FAQ](documentation/faq.md): Antworten auf häufig gestellte Fragen zur Verwendung von **AppState**.
-- [Konstanten-Verwendungsanleitung](documentation/usage-constant.md): Greifen Sie auf schreibgeschützte Werte aus Ihrem Zustand zu.
-- [ObservedDependency-Verwendungsanleitung](documentation/usage-observeddependency.md): Arbeiten Sie mit `ObservableObject`-Abhängigkeiten in Ihren Ansichten.
-- [Erweiterte Verwendung](documentation/advanced-usage.md): Techniken wie Just-in-Time-Erstellung und Vorabladen von Abhängigkeiten.
-- [Beste Praktiken](documentation/best-practices.md): Tipps zur effektiven Strukturierung des Zustands Ihrer App.
-- [Überlegungen zur Migration](documentation/migration-considerations.md): Anleitung zur Aktualisierung persistierter Modelle.
+- [Zustands- und Abhängigkeitsmanagement](documentation/de/usage-state-dependency.md): Zentralisieren Sie den Zustand und injizieren Sie Abhängigkeiten in Ihrer gesamten App.
+- [Zustand slicen](documentation/de/usage-slice.md): Greifen Sie auf bestimmte Teile des Zustands zu und ändern Sie sie.
+- [StoredState-Verwendungsanleitung](documentation/de/usage-storedstate.md): So persistieren Sie leichtgewichtige Daten mit `StoredState`.
+- [FileState-Verwendungsanleitung](documentation/de/usage-filestate.md): Erfahren Sie, wie Sie größere Datenmengen sicher auf der Festplatte persistieren.
+- [SecureState mit Schlüsselbund verwenden](documentation/de/usage-securestate.md): Speichern Sie sensible Daten sicher mit dem Schlüsselbund.
+- [iCloud-Synchronisierung mit SyncState](documentation/de/usage-syncstate.md): Halten Sie den Zustand über Geräte hinweg mit iCloud synchron.
+- [FAQ](documentation/de/faq.md): Antworten auf häufig gestellte Fragen zur Verwendung von **AppState**.
+- [Konstanten-Verwendungsanleitung](documentation/de/usage-constant.md): Greifen Sie auf schreibgeschützte Werte aus Ihrem Zustand zu.
+- [ObservedDependency-Verwendungsanleitung](documentation/de/usage-observeddependency.md): Arbeiten Sie mit `ObservableObject`-Abhängigkeiten in Ihren Ansichten.
+- [Erweiterte Verwendung](documentation/de/advanced-usage.md): Techniken wie Just-in-Time-Erstellung und Vorabladen von Abhängigkeiten.
+- [Beste Praktiken](documentation/de/best-practices.md): Tipps zur effektiven Strukturierung des Zustands Ihrer App.
+- [Überlegungen zur Migration](documentation/de/migration-considerations.md): Anleitung zur Aktualisierung persistierter Modelle.
 
 ## Mitwirken
 
-Wir freuen uns über Beiträge! Bitte lesen Sie unsere [Anleitung für Mitwirkende](documentation/contributing.md), um zu erfahren, wie Sie sich beteiligen können.
+Wir freuen uns über Beiträge! Bitte lesen Sie unsere [Anleitung für Mitwirkende](documentation/de/contributing.md), um zu erfahren, wie Sie sich beteiligen können.
 
 ## Nächste Schritte
 
-Nach der Installation von **AppState** können Sie die wichtigsten Funktionen erkunden, indem Sie sich die [Verwendungsübersicht](documentation/usage-overview.md) und detailliertere Anleitungen ansehen. Beginnen Sie mit der effektiven Verwaltung von Zustand und Abhängigkeiten in Ihren Swift-Projekten! Für fortgeschrittenere Verwendungstechniken wie die Just-In-Time-Erstellung und das Vorabladen von Abhängigkeiten siehe die [Anleitung zur erweiterten Verwendung](documentation/advanced-usage.md). Sie können auch die Anleitungen zu [Konstanten](documentation/usage-constant.md) und [ObservedDependency](documentation/usage-observeddependency.md) für zusätzliche Funktionen einsehen.
+Nach der Installation von **AppState** können Sie die wichtigsten Funktionen erkunden, indem Sie sich die [Verwendungsübersicht](documentation/de/usage-overview.md) und detailliertere Anleitungen ansehen. Beginnen Sie mit der effektiven Verwaltung von Zustand und Abhängigkeiten in Ihren Swift-Projekten! Für fortgeschrittenere Verwendungstechniken wie die Just-In-Time-Erstellung und das Vorabladen von Abhängigkeiten siehe die [Anleitung zur erweiterten Verwendung](documentation/de/advanced-usage.md). Sie können auch die Anleitungen zu [Konstanten](documentation/de/usage-constant.md) und [ObservedDependency](documentation/de/usage-observeddependency.md) für zusätzliche Funktionen einsehen.

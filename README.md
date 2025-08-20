@@ -6,6 +6,8 @@
 [![License](https://img.shields.io/github/license/0xLeif/AppState)](https://github.com/0xLeif/AppState/blob/main/LICENSE)
 [![Version](https://img.shields.io/github/v/release/0xLeif/AppState)](https://github.com/0xLeif/AppState/releases)
 
+Read this in other languages: [Simplified Chinese](documentation/README.zh-CN.md) | [Spanish](documentation/README.es.md) | [French](documentation/README.fr.md) | [Hindi](documentation/README.hi.md) | [Portuguese](documentation/README.pt.md) | [Russian](documentation/README.ru.md) | [German](documentation/README.de.md)
+
 **AppState** is a Swift 6 library designed to simplify the management of application state in a thread-safe, type-safe, and SwiftUI-friendly way. It provides a set of tools to centralize and synchronize state across your application, as well as inject dependencies into various parts of your app.
 
 ## Requirements
