@@ -10,7 +10,7 @@ Pour utiliser SyncState, vous devrez d'abord configurer les fonctionnalités et 
 ### Mise à jour des autorisations :
 
 1. Vous devrez maintenant mettre à jour votre fichier d'autorisations. Ouvrez le fichier d'autorisations de votre cible.
-2. Assurez-vous que la valeur du magasin clé-valeur iCloud correspond à votre ID de magasin clé-valeur unique. Votre ID unique doit respecter le format `$(TeamIdentifierPrefix)<votre_ID_de_magasin_clé-valeur>`. La valeur par défaut doit être quelque chose comme `$(TeamIdentifierPrefix)$(CFBundleIdentifier)`. C'est très bien pour les applications à plate-forme unique, mais si votre application se trouve sur plusieurs systèmes d'exploitation Apple, il est important que les parties de l'ID du magasin clé-valeur soient les mêmes pour les deux cibles.
+2. Assurez-vous que la valeur du magasin clé-valeur iCloud correspond à votre ID de magasin clé-valeur unique. Votre ID unique doit respecter le format `$(TeamIdentifierPrefix)<votre ID de magasin clé-valeur>`. La valeur par défaut doit être quelque chose comme `$(TeamIdentifierPrefix)$(CFBundleIdentifier)`. C'est très bien pour les applications à plate-forme unique, mais si votre application se trouve sur plusieurs systèmes d'exploitation Apple, il est important que les parties de l'ID du magasin clé-valeur soient les mêmes pour les deux cibles.
 
 ### Configuration des appareils :
 
