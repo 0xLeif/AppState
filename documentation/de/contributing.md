@@ -22,7 +22,7 @@ Neue Ideen sind willkommen! Wenn Sie eine Funktion haben, die Sie gerne in **App
 - Wie Sie denken, dass die Funktion funktionieren sollte.
 - Jeder zusätzliche Kontext oder Beispiele, die helfen würden, Ihre Idee zu veranschaulichen.
 
-### 3. Pull-Anfragen einreichen
+### 3. Pull Requests einreichen
 
 Wenn Sie Code zu **AppState** beitragen möchten, befolgen Sie diese Schritte:
 
@@ -60,4 +60,4 @@ Indem Sie zu **AppState** beitragen, stimmen Sie zu, dass Ihre Beiträge unter d
 Ihre Beiträge werden sehr geschätzt und gewürdigt. Vielen Dank, dass Sie zur Verbesserung von **AppState** beitragen!
 
 ---
-Dies wurde mit [Jules](https://jules.google) erstellt, es können Fehler auftreten. Bitte erstellen Sie einen Pull Request mit allen Korrekturen, die vorgenommen werden sollten, wenn Sie Muttersprachler sind.
+Diese Übersetzung wurde automatisch generiert und kann Fehler enthalten. Wenn Sie Muttersprachler sind, freuen wir uns über Ihre Korrekturvorschläge per Pull Request.

@@ -72,4 +72,4 @@ Weitere Informationen finden Sie im [Leitfaden zu Migrationsüberlegungen](migra
 **StoredState** ist eine einfache und effiziente Möglichkeit, kleine Datenmengen mit `UserDefaults` beizubehalten. Es ist ideal zum Speichern von Einstellungen und anderen kleinen Konfigurationen über App-Starts hinweg und bietet gleichzeitig einen sicheren Zugriff und eine einfache Integration mit SwiftUI. Für komplexere Persistenzanforderungen erkunden Sie andere **AppState**-Funktionen wie [FileState](usage-filestate.md) oder [SyncState](usage-syncstate.md).
 
 ---
-Dies wurde mit [Jules](https://jules.google) erstellt, es können Fehler auftreten. Bitte erstellen Sie einen Pull Request mit allen Korrekturen, die vorgenommen werden sollten, wenn Sie Muttersprachler sind.
+Diese Übersetzung wurde automatisch generiert und kann Fehler enthalten. Wenn Sie Muttersprachler sind, freuen wir uns über Ihre Korrekturvorschläge per Pull Request.

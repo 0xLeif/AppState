@@ -40,4 +40,4 @@ Mantenha todos os seus estados e dependências em extensões de `Application`. I
 Você pode usar o AppState junto com o Combine, fazendo a ponte entre as alterações de `State` e os publishers. Observe um valor de `State` e envie atualizações através de um `PassthroughSubject` ou outro publisher do Combine, se necessário.
 
 ---
-Isso foi gerado usando [Jules](https://jules.google), erros podem acontecer. Por favor, faça um Pull Request com quaisquer correções que devam acontecer se você for um falante nativo.
+Esta tradução foi gerada automaticamente e pode conter erros. Se você é um falante nativo, agradecemos suas contribuições com correções por meio de um Pull Request.

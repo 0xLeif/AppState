@@ -61,8 +61,8 @@ struct Settings: Codable {
     init(from decoder: Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
         self.version = try container.decode(Int.self, forKey: .version)
-        self.isDarkMode = try container.decode(Bool.self, forKey: .isDarkMode)
         self.text = try container.decode(String.self, forKey: .text)
+        self.isDarkMode = try container.decode(Bool.self, forKey: .isDarkMode)
 
         // यदि किसी पुराने संस्करण से माइग्रेट कर रहे हैं, तो यहाँ आवश्यक परिवर्तन लागू करें
         if version < 2 {
@@ -78,4 +78,4 @@ struct Settings: Codable {
 हमेशा अपने प्रवासन का अच्छी तरह से परीक्षण करें, अपने मॉडल के नए संस्करणों के साथ पुराने डेटा को लोड करने का अनुकरण करके यह सुनिश्चित करने के लिए कि आपका ऐप अपेक्षा के अनुरूप व्यवहार करता है।
 
 ---
-यह [जूल्स](https://jules.google) का उपयोग करके उत्पन्न किया गया था, गलतियाँ हो सकती हैं। कृपया किसी भी सुधार के साथ एक पुल अनुरोध करें जो आपके मूल वक्ता होने पर होना चाहिए।
+यह अनुवाद स्वचालित रूप से उत्पन्न किया गया था और इसमें त्रुटियाँ हो सकती हैं। यदि आप एक देशी वक्ता हैं, तो हम एक पुल अनुरोध के माध्यम से सुधारों में आपके योगदान की सराहना करेंगे।

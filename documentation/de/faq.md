@@ -40,4 +40,4 @@ Bewahren Sie alle Ihre Zustände und Abhängigkeiten in `Application`-Erweiterun
 Sie können AppState zusammen mit Combine verwenden, indem Sie `State`-Änderungen an Publisher überbrücken. Beobachten Sie einen `State`-Wert und senden Sie bei Bedarf Aktualisierungen über einen `PassthroughSubject` oder einen anderen Combine-Publisher.
 
 ---
-Dies wurde mit [Jules](https://jules.google) erstellt, es können Fehler auftreten. Bitte erstellen Sie einen Pull Request mit allen Korrekturen, die vorgenommen werden sollten, wenn Sie Muttersprachler sind.
+Diese Übersetzung wurde automatisch generiert und kann Fehler enthalten. Wenn Sie Muttersprachler sind, freuen wir uns über Ihre Korrekturvorschläge per Pull Request.

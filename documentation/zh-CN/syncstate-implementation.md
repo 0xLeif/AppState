@@ -81,4 +81,4 @@ SyncState 使用 `NSUbiquitousKeyValueStore`，它有一些限制：
 通过正确配置 iCloud 并了解 SyncState 的限制，您可以利用其功能来跨设备同步数据。确保您仅将 SyncState 用于小的、关键的数据片段，以避免 iCloud 存储限制的潜在问题。
 
 ---
-这是使用 [Jules](https://jules.google) 生成的，可能会出现错误。如果您是母语人士，请提出包含任何应有修复的拉取请求。
+该译文由机器自动生成，可能存在错误。如果您是母语使用者，我们期待您通过 Pull Request 提出修改建议。

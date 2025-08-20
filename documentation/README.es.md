@@ -101,4 +101,4 @@ Aquí hay un desglose detallado de la documentación de **AppState**:
 Con **AppState** instalado, puede comenzar a explorar sus características clave consultando la [Descripción General del Uso](es/usage-overview.md) y guías más detalladas. ¡Comience a gestionar el estado y las dependencias de manera efectiva en sus proyectos de Swift! Para técnicas de uso más avanzadas, como la creación Justo a Tiempo y la precarga de dependencias, consulte la [Guía de Uso Avanzado](es/advanced-usage.md). También puede revisar las guías de [Constantes](es/usage-constant.md) y [ObservedDependency](es/usage-observeddependency.md) para características adicionales.
 
 ---
-Esto fue generado usando [Jules](https://jules.google), pueden ocurrir errores. Por favor, haga un Pull Request con cualquier corrección que deba realizarse si es un hablante nativo.
+Esta traducción fue generada automáticamente y puede contener errores. Si eres un hablante nativo, te agradecemos que contribuyas con correcciones a través de un Pull Request.

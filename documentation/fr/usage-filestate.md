@@ -85,7 +85,7 @@ Pour en savoir plus sur la gestion des migrations et éviter les problèmes pote
 ## Meilleures Pratiques
 
 - **Utiliser pour les Données Volumineuses ou Complexes** : Si vous stockez des données volumineuses ou des objets complexes, `FileState` est préférable à `StoredState`.
-- **Accès Thread-Safe** : Comme les autres composants de **AppState**, `FileState` garantit que les données sont accessibles en toute sécurité même lorsque plusieurs tâches interactúan avec les données stockées.
+- **Accès Thread-Safe** : Comme les autres composants de **AppState**, `FileState` garantit que les données sont accessibles en toute sécurité même lorsque plusieurs tâches interagissent avec les données stockées.
 - **Combiner avec Codable** : Lorsque vous travaillez avec des types de données personnalisés, assurez-vous qu'ils sont conformes à `Codable` pour simplifier l'encodage et le décodage vers et depuis le système de fichiers.
 
 ## Conclusion
@@ -93,4 +93,4 @@ Pour en savoir plus sur la gestion des migrations et éviter les problèmes pote
 `FileState` est un outil puissant pour gérer les données persistantes dans votre application, vous permettant de stocker et de récupérer des objets plus volumineux ou plus complexes de manière thread-safe et persistante. Il fonctionne de manière transparente avec le protocole `Codable` de Swift, garantissant que vos données peuvent être facilement sérialisées et désérialisées pour un stockage à long terme.
 
 ---
-Ceci a été généré à l'aide de [Jules](https://jules.google), des erreurs peuvent survenir. Veuillez faire une Pull Request avec les corrections qui devraient être apportées si vous êtes un locuteur natif.
+Cette traduction a été générée automatiquement et peut contenir des erreurs. Si vous êtes un locuteur natif, nous vous serions reconnaissants de contribuer avec des corrections via une Pull Request.

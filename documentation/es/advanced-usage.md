@@ -156,7 +156,7 @@ El Entorno de SwiftUI es un mecanismo incorporado que le permite pasar datos com
 
 ### 4.2 AppState
 
-AppState proporciona un sistema más potente y flexible para gestionar el estado en toda la aplicación, сon capacidades de seguridad de hilos, persistencia e inyección de dependencias.
+AppState proporciona un sistema más potente y flexible para gestionar el estado en toda la aplicación, con capacidades de seguridad de hilos, persistencia e inyección de dependencias.
 
 **Fortalezas:**
 - Gestión de estado centralizada, accesible en toda la aplicación, no solo en jerarquías de vistas específicas.
@@ -178,4 +178,4 @@ AppState proporciona un sistema más potente y flexible para gestionar el estado
 Al utilizar estas técnicas avanzadas, como la creación justo a tiempo, la precarga, la gestión de estados y dependencias, y la comprensión de las diferencias entre AppState y el Entorno de SwiftUI, puede crear aplicaciones eficientes y conscientes de los recursos con **AppState**.
 
 ---
-Esto fue generado usando [Jules](https://jules.google), pueden ocurrir errores. Por favor, haga un Pull Request con cualquier corrección que deba realizarse si es un hablante nativo.
+Esta traducción fue generada automáticamente y puede contener errores. Si eres un hablante nativo, te agradecemos que contribuyas con correcciones a través de un Pull Request.

@@ -20,3 +20,6 @@ Zusätzlich zur Konfiguration des Projekts selbst müssen Sie auch die Geräte v
 - Melden Sie sich auf beiden Geräten mit demselben iCloud-Konto an.
 
 Wenn Sie Fragen haben oder auf Probleme stoßen, können Sie sich gerne an uns wenden oder ein Problem melden.
+
+---
+Diese Übersetzung wurde automatisch generiert und kann Fehler enthalten. Wenn Sie Muttersprachler sind, freuen wir uns über Ihre Korrekturvorschläge per Pull Request.

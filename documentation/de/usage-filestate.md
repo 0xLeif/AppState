@@ -93,4 +93,4 @@ Weitere Informationen zur Verwaltung von Migrationen und zur Vermeidung potenzie
 `FileState` ist ein leistungsstarkes Werkzeug für den Umgang mit persistenten Daten in Ihrer App, mit dem Sie größere oder komplexere Objekte auf threadsichere und persistente Weise speichern und abrufen können. Es arbeitet nahtlos mit dem `Codable`-Protokoll von Swift zusammen und stellt sicher, dass Ihre Daten für die langfristige Speicherung einfach serialisiert und deserialisiert werden können.
 
 ---
-Dies wurde mit [Jules](https://jules.google) erstellt, es können Fehler auftreten. Bitte erstellen Sie einen Pull Request mit allen Korrekturen, die vorgenommen werden sollten, wenn Sie Muttersprachler sind.
+Diese Übersetzung wurde automatisch generiert und kann Fehler enthalten. Wenn Sie Muttersprachler sind, freuen wir uns über Ihre Korrekturvorschläge per Pull Request.

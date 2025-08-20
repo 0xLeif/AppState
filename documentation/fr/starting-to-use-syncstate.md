@@ -20,3 +20,6 @@ En plus de configurer le projet lui-même, vous devez également préparer les a
 - Connectez-vous aux deux appareils avec le même compte iCloud.
 
 Si vous avez des questions ou rencontrez des problèmes, n'hésitez pas à nous contacter ou à soumettre un problème.
+
+---
+Cette traduction a été générée automatiquement et peut contenir des erreurs. Si vous êtes un locuteur natif, nous vous serions reconnaissants de contribuer avec des corrections via une Pull Request.

@@ -61,15 +61,15 @@ Ouvrez votre projet ou espace de travail Xcode.
 
 Dans la boîte de dialogue "Choose Package Repository", entrez l'URL suivante : `https://github.com/0xLeif/AppState.git`
 
-Puis cliquez sur "Next".
+Puis cliquez sur "Suivant".
 
 ### Étape 4 : Spécifiez la version
 
-Choisissez la version que vous souhaitez utiliser. Il est recommandé de sélectionner l'option "Up to Next Major Version" et de spécifier `2.0.0` comme limite inférieure. Puis cliquez sur "Next".
+Choisissez la version que vous souhaitez utiliser. Il est recommandé de sélectionner l'option "Up to Next Major Version" et de spécifier `2.0.0` comme limite inférieure. Puis cliquez sur "Suivant".
 
 ### Étape 5 : Ajoutez le package
 
-Xcode récupérera le package et vous présentera des options pour ajouter **AppState** à votre cible. Assurez-vous de sélectionner la bonne cible et cliquez sur "Finish".
+Xcode récupérera le package et vous présentera des options pour ajouter **AppState** à votre cible. Assurez-vous de sélectionner la bonne cible et cliquez sur "Terminer".
 
 ### Étape 6 : Importez `AppState` dans votre code
 
@@ -84,4 +84,4 @@ import AppState
 Une fois AppState installé, vous pouvez passer à l'[Aperçu de l'utilisation](usage-overview.md) pour voir comment implémenter les fonctionnalités clés dans votre projet.
 
 ---
-Ceci a été généré à l'aide de [Jules](https://jules.google), des erreurs peuvent survenir. Veuillez faire une Pull Request avec les corrections qui devraient être apportées si vous êtes un locuteur natif.
+Cette traduction a été générée automatiquement et peut contenir des erreurs. Si vous êtes un locuteur natif, nous vous serions reconnaissants de contribuer avec des corrections via une Pull Request.

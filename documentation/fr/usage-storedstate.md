@@ -72,4 +72,4 @@ Pour plus d'informations, consultez le [Guide des Considérations sur la Migrati
 **StoredState** est un moyen simple et efficace de persister de petites quantités de données à l'aide de `UserDefaults`. Il est idéal pour enregistrer les préférences et autres petits paramètres entre les lancements de l'application tout en offrant un accès sécurisé et une intégration facile avec SwiftUI. Pour des besoins de persistance plus complexes, explorez d'autres fonctionnalités de **AppState** comme [FileState](usage-filestate.md) ou [SyncState](usage-syncstate.md).
 
 ---
-Ceci a été généré à l'aide de [Jules](https://jules.google), des erreurs peuvent survenir. Veuillez faire une Pull Request avec les corrections qui devraient être apportées si vous êtes un locuteur natif.
+Cette traduction a été générée automatiquement et peut contenir des erreurs. Si vous êtes un locuteur natif, nous vous serions reconnaissants de contribuer avec des corrections via une Pull Request.
