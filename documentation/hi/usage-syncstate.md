@@ -122,7 +122,7 @@ struct SyncStateExampleApp: App {
 
 ### iCloud की-वैल्यू स्टोर सक्षम करना
 
-iCloud सिंक्रनाइज़ेशन को सक्षम करने के लिए, सुनिश्चित करें कि आप iCloud की-वैल्यू स्टोर क्षमता को सक्षम करने के लिए इस गाइड का पालन करते हैं: [SyncState का उपयोग शुरू करना](https://github.com/0xLeif/AppState/wiki/Starting-to-use-SyncState)।
+iCloud सिंकिंग सक्षम करने के लिए, सुनिश्चित करें कि आप iCloud कुंजी-मूल्य संग्रहण क्षमता को सक्षम करने के लिए इस गाइड का पालन करते हैं: [SyncState का उपयोग शुरू करना](starting-to-use-syncstate.md).
 
 ### SyncState: iCloud संग्रहण पर नोट्स
 

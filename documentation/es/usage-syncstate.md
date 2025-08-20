@@ -122,7 +122,7 @@ struct SyncStateExampleApp: App {
 
 ### Habilitar el Almacenamiento de Clave-Valor de iCloud
 
-Para habilitar la sincronización de iCloud, asegúrese de seguir esta guía para habilitar la capacidad de Almacenamiento de Clave-Valor de iCloud: [Comenzando a usar SyncState](https://github.com/0xLeif/AppState/wiki/Starting-to-use-SyncState).
+Para habilitar la sincronización de iCloud, asegúrese de seguir esta guía para habilitar la capacidad de almacenamiento de clave-valor de iCloud: [Comenzando a usar SyncState](starting-to-use-syncstate.md).
 
 ### SyncState: Notas sobre el Almacenamiento de iCloud
 

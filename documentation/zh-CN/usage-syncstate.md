@@ -122,7 +122,7 @@ struct SyncStateExampleApp: App {
 
 ### 启用 iCloud 键值存储
 
-要启用 iCloud 同步，请确保您按照本指南启用 iCloud 键值存储功能：[开始使用 SyncState](https://github.com/0xLeif/AppState/wiki/Starting-to-use-SyncState)。
+要启用 iCloud 同步，请确保您按照本指南启用 iCloud 键值存储功能：[开始使用 SyncState](starting-to-use-syncstate.md)。
 
 ### SyncState：关于 iCloud 存储的说明
 
