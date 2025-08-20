@@ -10,7 +10,7 @@ To utilize SyncState, you will first need to set up iCloud capabilities and enti
 ### Updating the Entitlements:
 
 1. You will now need to update your entitlements file. Open the entitlements file for your target.
-2. Make sure the iCloud Key-Value Store value matches your unique key-value store ID. Your unique ID should follow the format `$(TeamIdentifierPrefix)<your key-value_store ID>`. The default value should be something like, `$(TeamIdentifierPrefix)$(CFBundleIdentifier)`. This is fine for single platform apps, but if your app is on multiple Apple OSs, it’s important that the key-value store ID portions are the same for both targets.
+2. Make sure the iCloud Key-Value Store value matches your unique key-value store ID. Your unique ID should follow the format `$(TeamIdentifierPrefix)<your key-value store ID>`. The default value should be something like, `$(TeamIdentifierPrefix)$(CFBundleIdentifier)`. This is fine for single platform apps, but if your app is on multiple Apple OSs, it’s important that the key-value store ID portions are the same for both targets.
 
 ### Configuring the Devices:
 
