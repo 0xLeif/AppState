@@ -3,7 +3,7 @@ To utilize SyncState, you will first need to set up iCloud capabilities and enti
 ### Setting Up iCloud Capabilities:
 
 1. Open your Xcode project and adjust the Bundle Identifiers for both macOS and iOS targets to match your own.
-2. Next, you need to add the iCloud capability to your project. To do this, select your project in the Project Navigator, then select your target. In the tab bar at the top of the editor area, click on "Capabilities".
+2. Next, you need to add the iCloud capability to your project. To do this, select your project in the Project Navigator, then select your target. In the tab bar at the top of the editor area, click on "Signing & Capabilities".
 3. In the Capabilities pane, turn on iCloud by clicking the switch in the iCloud row. You should see the switch move to the On position.
 4. Once you have enabled iCloud, you need to enable Key-Value storage. You can do this by checking the "Key-Value storage" checkbox.
 
