@@ -16,7 +16,7 @@ Pour utiliser SyncState, vous devrez d'abord configurer les fonctionnalités et 
 
 En plus de configurer le projet lui-même, vous devez également préparer les appareils qui exécuteront le projet.
 
-- Assurez-vous qu'iCloud Drive est activé sur les appareils iOS и macOS.
+- Assurez-vous qu'iCloud Drive est activé sur les appareils iOS et macOS.
 - Connectez-vous aux deux appareils avec le même compte iCloud.
 
 Si vous avez des questions ou rencontrez des problèmes, n'hésitez pas à nous contacter ou à soumettre un problème.
