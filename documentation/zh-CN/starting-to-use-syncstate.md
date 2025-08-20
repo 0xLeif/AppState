@@ -3,14 +3,14 @@
 ### 设置 iCloud 功能：
 
 1. 打开您的 Xcode 项目并调整 macOS 和 iOS 目标的捆绑包标识符以匹配您自己的。
-2. 接下来，您需要将 iCloud 功能添加到您的项目中。为此，请在项目导航器中选择您的项目，然后选择您的目标。在编辑器区域顶部的选项卡栏中，单击“功能”。
+2. 接下来，您需要将 iCloud 功能添加到您的项目中。为此，请在项目导航器中选择您的项目，然后选择您的目标。在编辑器区域顶部的选项卡栏中，单击“Signing & Capabilities”。
 3. 在“功能”窗格中，通过单击 iCloud 行中的开关打开 iCloud。您应该会看到开关移动到“打开”位置。
 4. 启用 iCloud 后，您需要启用键值存储。您可以通过选中“键值存储”复选框来执行此操作。
 
 ### 更新权利：
 
 1. 您现在需要更新您的权利文件。打开您目标的功能文件。
-2. 确保 iCloud 键值存储值与您的唯一键值存储 ID 匹配。您的唯一 ID 应遵循 `$(TeamIdentifierPrefix)<您的键值存储 ID>` 的格式。默认值应类似于 `$(TeamIdentifierPrefix)$(CFBundleIdentifier)`。这对于单平台应用程序来说很好，但如果您的应用程序在多个 Apple 操作系统上，则键值存储 ID 部分对于两个目标都相同非常重要。
+2. 确保 iCloud 键值存储值与您的唯一键值存储 ID 匹配。您的唯一 ID 应遵循 `$(TeamIdentifierPrefix)<your key-value store ID>` 的格式。默认值应类似于 `$(TeamIdentifierPrefix)$(CFBundleIdentifier)`。这对于单平台应用程序来说很好，但如果您的应用程序在多个 Apple 操作系统上，则键值存储 ID 部分对于两个目标都相同非常重要。
 
 ### 配置设备：
 

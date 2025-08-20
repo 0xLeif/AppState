@@ -3,14 +3,14 @@ Pour utiliser SyncState, vous devrez d'abord configurer les fonctionnalités et 
 ### Configuration des fonctionnalités iCloud :
 
 1. Ouvrez votre projet Xcode et ajustez les identifiants de lot pour les cibles macOS et iOS afin qu'ils correspondent aux vôtres.
-2. Ensuite, vous devez ajouter la fonctionnalité iCloud à votre projet. Pour ce faire, sélectionnez votre projet dans le navigateur de projets, puis sélectionnez votre cible. Dans la barre d'onglets en haut de la zone de l'éditeur, cliquez sur « Capacités ».
+2. Ensuite, vous devez ajouter la fonctionnalité iCloud à votre projet. Pour ce faire, sélectionnez votre projet dans le navigateur de projets, puis sélectionnez votre cible. Dans la barre d'onglets en haut de la zone de l'éditeur, cliquez sur « Signing & Capabilities ».
 3. Dans le volet Capacités, activez iCloud en cliquant sur le commutateur de la ligne iCloud. Vous devriez voir le commutateur passer en position Activé.
 4. Une fois que vous avez activé iCloud, vous devez activer le stockage clé-valeur. Vous pouvez le faire en cochant la case « Stockage clé-valeur ».
 
 ### Mise à jour des autorisations :
 
 1. Vous devrez maintenant mettre à jour votre fichier d'autorisations. Ouvrez le fichier d'autorisations de votre cible.
-2. Assurez-vous que la valeur du magasin clé-valeur iCloud correspond à votre ID de magasin clé-valeur unique. Votre ID unique doit respecter le format `$(TeamIdentifierPrefix)<votre ID de magasin clé-valeur>`. La valeur par défaut doit être quelque chose comme `$(TeamIdentifierPrefix)$(CFBundleIdentifier)`. C'est très bien pour les applications à plate-forme unique, mais si votre application se trouve sur plusieurs systèmes d'exploitation Apple, il est important que les parties de l'ID du magasin clé-valeur soient les mêmes pour les deux cibles.
+2. Assurez-vous que la valeur du magasin clé-valeur iCloud correspond à votre ID de magasin clé-valeur unique. Votre ID unique doit respecter le format `$(TeamIdentifierPrefix)<your key-value store ID>`. La valeur par défaut doit être quelque chose comme `$(TeamIdentifierPrefix)$(CFBundleIdentifier)`. C'est très bien pour les applications à plate-forme unique, mais si votre application se trouve sur plusieurs systèmes d'exploitation Apple, il est important que les parties de l'ID du magasin clé-valeur soient les mêmes pour les deux cibles.
 
 ### Configuration des appareils :
 
