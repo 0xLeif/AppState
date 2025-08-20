@@ -122,7 +122,7 @@ struct SyncStateExampleApp: App {
 
 ### Включение хранилища ключ-значение iCloud
 
-Чтобы включить синхронизацию iCloud, убедитесь, что вы следуете этому руководству, чтобы включить возможность хранилища ключ-значение iCloud: [Начало работы с SyncState](https://github.com/0xLeif/AppState/wiki/Starting-to-use-SyncState).
+Чтобы включить синхронизацию iCloud, убедитесь, что вы следуете этому руководству, чтобы включить возможность хранилища ключ-значение iCloud: [Начало работы с SyncState](starting-to-use-syncstate.md).
 
 ### SyncState: примечания по хранилищу iCloud
 

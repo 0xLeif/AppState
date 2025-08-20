@@ -122,7 +122,7 @@ struct SyncStateExampleApp: App {
 
 ### Activer le Magasin Clé-Valeur iCloud
 
-Pour activer la synchronisation iCloud, assurez-vous de suivre ce guide pour activer la capacité de Magasin Clé-Valeur iCloud : [Commencer à utiliser SyncState](https://github.com/0xLeif/AppState/wiki/Starting-to-use-SyncState).
+Pour activer la synchronisation iCloud, assurez-vous de suivre ce guide pour activer la fonctionnalité de stockage clé-valeur iCloud : [Démarrer avec SyncState](starting-to-use-syncstate.md).
 
 ### SyncState : Notes sur le Stockage iCloud
 

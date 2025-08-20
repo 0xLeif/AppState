@@ -122,7 +122,7 @@ struct SyncStateExampleApp: App {
 
 ### Aktivieren des iCloud-Schlüssel-Wert-Speichers
 
-Um die iCloud-Synchronisierung zu aktivieren, stellen Sie sicher, dass Sie dieser Anleitung folgen, um die Funktion des iCloud-Schlüssel-Wert-Speichers zu aktivieren: [Erste Schritte mit SyncState](https://github.com/0xLeif/AppState/wiki/Starting-to-use-SyncState).
+Um die iCloud-Synchronisierung zu aktivieren, stellen Sie sicher, dass Sie dieser Anleitung folgen, um die Funktion des iCloud-Schlüssel-Wert-Speichers zu aktivieren: [Erste Schritte mit SyncState](starting-to-use-syncstate.md).
 
 ### SyncState: Hinweise zum iCloud-Speicher
 
