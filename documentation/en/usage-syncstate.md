@@ -122,7 +122,7 @@ struct SyncStateExampleApp: App {
 
 ### Enabling iCloud Key-Value Store
 
-To enable iCloud syncing, make sure you follow this guide to enable the iCloud Key-Value Store capability: [Starting to use SyncState](https://github.com/0xLeif/AppState/wiki/Starting-to-use-SyncState).
+To enable iCloud syncing, make sure you follow this guide to enable the iCloud Key-Value Store capability: [Starting to use SyncState](starting-to-use-syncstate.md).
 
 ### SyncState: Notes on iCloud Storage
 
