@@ -11,11 +11,11 @@ jobs:
       - uses: actions/checkout@v4
 
       # ① Install Swift for Windows
-      - name: Set up Swift 6.1
+      - name: Set up Swift 6.2
         uses: compnerd/gha-setup-swift@main
         with:
-          branch: swift-6.1-release   # release branch
-          tag:    6.1-RELEASE         # exact toolchain tag
+          branch: swift-6.2-release   # release branch
+          tag:    6.2-RELEASE         # exact toolchain tag
 
       # ② Build & test
       - run: swift --version          # sanity-check
