@@ -27,9 +27,6 @@ open class Application: NSObject {
     @MainActor
     static var isLoggingEnabled: Bool = false
 
-    /// A recursive lock to ensure thread-safe access to shared resources within the Application instance.
-    let lock: NSRecursiveLock
-
     /// The underlying cache used to store all state and dependency values.
     let cache: Cache<String, Any>
 
@@ -51,7 +48,6 @@ open class Application: NSObject {
     public required init(
         setup: (Application) -> Void = { _ in }
     ) {
-        lock = NSRecursiveLock()
         cache = Cache()
 
         super.init()

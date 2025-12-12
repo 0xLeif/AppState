@@ -101,13 +101,11 @@ extension Application {
         )
     }
 
-    /// Returns value for the provided keyPath. This method is thread safe
+    /// Returns value for the provided keyPath. Thread safety is provided by Cache's internal Mutex.
     ///
     /// - Parameter keyPath: KeyPath of the value to be fetched
     func value<Value>(keyPath: KeyPath<Application, Value>) -> Value {
-        lock.lock(); defer { lock.unlock() }
-
-        return self[keyPath: keyPath]
+        self[keyPath: keyPath]
     }
 
     /**

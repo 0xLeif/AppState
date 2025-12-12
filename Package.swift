@@ -5,11 +5,11 @@ import PackageDescription
 let package = Package(
     name: "AppState",
     platforms: [
-        .iOS(.v15),
-        .watchOS(.v8),
-        .macOS(.v11),
-        .tvOS(.v15),
-        .visionOS(.v1)
+        .iOS(.v18),
+        .watchOS(.v11),
+        .macOS(.v15),
+        .tvOS(.v18),
+        .visionOS(.v2)
     ],
     products: [
         .library(
@@ -18,7 +18,7 @@ let package = Package(
         )
     ],
     dependencies: [
-        .package(url: "https://github.com/0xLeif/Cache", from: "2.0.0"),
+        .package(url: "https://github.com/0xLeif/Cache", branch: "leif/mutex"),
         .package(url: "https://github.com/apple/swift-docc-plugin", from: "1.4.0")
     ],
     targets: [
@@ -26,11 +26,19 @@ let package = Package(
             name: "AppState",
             dependencies: [
                 "Cache"
+            ],
+            swiftSettings: [
+                .swiftLanguageMode(.v6),
+                .enableExperimentalFeature("StrictConcurrency")
             ]
         ),
         .testTarget(
             name: "AppStateTests",
-            dependencies: ["AppState"]
+            dependencies: ["AppState"],
+            swiftSettings: [
+                .swiftLanguageMode(.v6),
+                .enableExperimentalFeature("StrictConcurrency")
+            ]
         )
     ]
 )

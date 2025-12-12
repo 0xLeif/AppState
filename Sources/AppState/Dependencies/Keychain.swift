@@ -1,6 +1,7 @@
 #if !os(Linux) && !os(Windows)
 import Cache
 import Foundation
+import Synchronization
 
 /**
  A `Keychain` class that adopts the `Cacheable` protocol.
@@ -25,23 +26,19 @@ public final class Keychain: Sendable {
     public typealias Key = String
     public typealias Value = String
     
-    private let lock: NSLock
-    @MainActor
-    private var keys: Set<Key>
-    
+    private let keys: Mutex<Set<Key>>
+
     /// Default initializer
     public init() {
-        self.lock = NSLock()
-        self.keys = []
+        self.keys = Mutex([])
     }
-    
+
     /**
      Initialize with a predefined set of keys.
      - Parameter keys: The predefined set of keys.
      */
     public init(keys: Set<Key>) {
-        self.lock = NSLock()
-        self.keys = keys
+        self.keys = Mutex(keys)
     }
 
     /**
@@ -57,19 +54,16 @@ public final class Keychain: Sendable {
             kSecReturnData: true,
             kSecMatchLimit: kSecMatchLimitOne
         ]
-        
+
         var dataTypeRef: AnyObject?
-        
-        lock.lock()
         let status: OSStatus = SecItemCopyMatching(query as CFDictionary, &dataTypeRef)
-        lock.unlock()
-        
+
         guard
             status == noErr,
             let data = dataTypeRef as? Data,
             let output = String(data: data, encoding: .utf8) as? Output
         else { return nil }
-        
+
         return output
     }
 
@@ -113,9 +107,7 @@ public final class Keychain: Sendable {
             SecItemAdd(addQuery as CFDictionary, nil)
         }
 
-        Task { @MainActor in
-            keys.insert(key)
-        }
+        _ = keys.withLock { $0.insert(key) }
     }
 
     /**
@@ -127,10 +119,9 @@ public final class Keychain: Sendable {
             kSecClass: kSecClassGenericPassword,
             kSecAttrAccount: key
         ]
-        
-        lock.lock()
+
         SecItemDelete(query as CFDictionary)
-        lock.unlock()
+        _ = keys.withLock { $0.remove(key) }
     }
 
     /**
@@ -174,21 +165,16 @@ public final class Keychain: Sendable {
      - Parameter ofType: The type of the values expected.
      - Returns: A dictionary with keys and their associated values.
      */
-    @MainActor
     public func values<Output>(ofType: Output.Type) -> [Key: Output] {
-        let storedKeys: [Key]
+        let storedKeys = keys.withLock { Array($0) }
         var values: [Key: Output] = [:]
-        
-        lock.lock()
-        storedKeys = Array(keys)
-        lock.unlock()
-        
+
         for key in storedKeys {
             if let value = get(key, as: Output.self) {
                 values[key] = value
             }
         }
-        
+
         return values
     }
 }
@@ -217,7 +203,6 @@ public extension Keychain {
      Returns all keys and their string values currently in the keychain.
      - Returns: A dictionary with keys and their corresponding string values.
      */
-    @MainActor
     func values() -> [Key: String] {
         values(ofType: String.self)
     }

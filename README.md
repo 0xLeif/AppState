@@ -72,6 +72,25 @@ struct ContentView: View {
 
 This snippet demonstrates defining a state value in an `Application` extension and using the `@AppState` property wrapper to bind it inside a view.
 
+## Examples
+
+Explore our comprehensive [Examples](Examples/) folder with 31 example projects:
+
+| Category | Examples | Description |
+|----------|----------|-------------|
+| **Focused** | 2 | Production-quality apps (SyncNotes, MultiPlatformTracker) |
+| **Moderate** | 4 | Feature-focused apps (TodoCloud, SettingsKit, DataDashboard, SecureVault) |
+| **Lightweight** | 25 | Single-concept examples covering all AppState features |
+
+### Featured Examples
+
+- **[SyncNotes](Examples/Focused/SyncNotes/)** - Note-taking with iCloud sync across devices
+- **[MultiPlatformTracker](Examples/Focused/MultiPlatformTracker/)** - Habit tracker for iOS/macOS/watchOS
+- **[TodoCloud](Examples/Moderate/TodoCloud/)** - Progressive persistence (memory → local → cloud)
+- **[SecureVault](Examples/Moderate/SecureVault/)** - Password manager with Keychain storage
+
+See [Examples/README.md](Examples/README.md) for the full list with descriptions.
+
 ## Documentation
 
 Here’s a detailed breakdown of **AppState**'s documentation:
