@@ -16,6 +16,11 @@ fileprivate extension Application {
     }
 }
 
+/// Tests for high-volume operations and true concurrent access.
+///
+/// Note: State/Dependency tests use `@MainActor` because the Application API requires it.
+/// These tests verify stability under high-volume sequential operations, not parallel execution.
+/// Keychain tests are truly concurrent as Keychain methods are nonisolated and Mutex-protected.
 final class ConcurrencyStressTests: XCTestCase {
     override func setUp() async throws {
         try await super.setUp()
@@ -24,7 +29,7 @@ final class ConcurrencyStressTests: XCTestCase {
             Application.reset(\.stressCounter)
             Application.reset(\.stressString)
             Application.reset(\.stressArray)
-            Application.logging(isEnabled: false) // Disable logging for stress tests
+            Application.logging(isEnabled: false)
         }
     }
 
@@ -38,15 +43,16 @@ final class ConcurrencyStressTests: XCTestCase {
         try await super.tearDown()
     }
 
-    // MARK: - Concurrent State Read/Write
+    // MARK: - High-Volume MainActor Operations
+    // These tests verify stability under many sequential operations on MainActor.
+    // They are NOT true concurrency tests since @MainActor serializes execution.
 
-    /// Tests concurrent reads and writes to state don't cause crashes or data races.
+    /// Tests high-volume reads and writes to state are stable.
     @MainActor
-    func testConcurrentStateReadWrite() async {
+    func testHighVolumeStateReadWrite() async {
         let iterations = 500
 
         await withTaskGroup(of: Void.self) { group in
-            // Writers
             for i in 0..<iterations {
                 group.addTask { @MainActor in
                     var state = Application.state(\.stressString)
@@ -54,7 +60,6 @@ final class ConcurrencyStressTests: XCTestCase {
                 }
             }
 
-            // Readers
             for _ in 0..<iterations {
                 group.addTask { @MainActor in
                     let state = Application.state(\.stressString)
@@ -63,17 +68,13 @@ final class ConcurrencyStressTests: XCTestCase {
             }
         }
 
-        // Verify state is accessible and has a valid value
         let finalState = Application.state(\.stressString)
         XCTAssertTrue(finalState.value.starts(with: "value-") || finalState.value == "initial")
     }
 
-    // MARK: - High Contention Counter Updates
-
-    /// Tests that concurrent increments complete without losing updates.
-    /// Note: This tests Cache's Mutex under contention, not atomic increments.
+    /// Tests high-volume counter updates complete without crashes.
     @MainActor
-    func testHighContentionStateUpdates() async {
+    func testHighVolumeStateUpdates() async {
         let iterations = 100
         var completedWrites = 0
 
@@ -92,19 +93,14 @@ final class ConcurrencyStressTests: XCTestCase {
             }
         }
 
-        // All tasks should complete without crashing
         XCTAssertEqual(completedWrites, iterations)
-
-        // Final value should be positive (exact count may vary due to race conditions in read-modify-write)
         let finalState = Application.state(\.stressCounter)
         XCTAssertGreaterThan(finalState.value, 0)
     }
 
-    // MARK: - Concurrent Array Modifications
-
-    /// Tests concurrent array appends don't corrupt data structure.
+    /// Tests high-volume array modifications don't corrupt data.
     @MainActor
-    func testConcurrentArrayModifications() async {
+    func testHighVolumeArrayModifications() async {
         let iterations = 200
 
         await withTaskGroup(of: Void.self) { group in
@@ -118,28 +114,23 @@ final class ConcurrencyStressTests: XCTestCase {
             }
         }
 
-        // Array should contain some elements (exact count may vary due to concurrent read-modify-write)
         let finalState = Application.state(\.stressArray)
         XCTAssertGreaterThan(finalState.value.count, 0)
 
-        // All elements should be valid integers in expected range
         for element in finalState.value {
             XCTAssertTrue(element >= 0 && element < iterations)
         }
     }
 
-    // MARK: - Concurrent Dependency Access
-
-    /// Tests that dependencies remain stable under concurrent access.
+    /// Tests high-volume dependency access is stable.
     @MainActor
-    func testConcurrentDependencyAccess() async {
+    func testHighVolumeDependencyAccess() async {
         let iterations = 500
         var accessCount = 0
 
         await withTaskGroup(of: Bool.self) { group in
             for _ in 0..<iterations {
                 group.addTask { @MainActor in
-                    // Access built-in dependencies concurrently
                     _ = Application.dependency(\.logger)
                     _ = Application.dependency(\.userDefaults)
                     _ = Application.dependency(\.fileManager)
@@ -155,11 +146,9 @@ final class ConcurrencyStressTests: XCTestCase {
         XCTAssertEqual(accessCount, iterations)
     }
 
-    // MARK: - Mixed Operations Stress Test
-
-    /// Tests a realistic mix of operations under concurrent load.
+    /// Tests mixed operations under high volume.
     @MainActor
-    func testMixedOperationsStress() async {
+    func testHighVolumeMixedOperations() async {
         let iterations = 300
 
         await withTaskGroup(of: Void.self) { group in
@@ -167,18 +156,14 @@ final class ConcurrencyStressTests: XCTestCase {
                 group.addTask { @MainActor in
                     switch i % 4 {
                     case 0:
-                        // Read state
                         let state = Application.state(\.stressCounter)
                         _ = state.value
                     case 1:
-                        // Write state
                         var state = Application.state(\.stressCounter)
                         state.value = i
                     case 2:
-                        // Access dependency
                         _ = Application.dependency(\.logger)
                     case 3:
-                        // Read and write
                         var state = Application.state(\.stressString)
                         let current = state.value
                         state.value = current + "-\(i)"
@@ -189,31 +174,53 @@ final class ConcurrencyStressTests: XCTestCase {
             }
         }
 
-        // Verify no crash and state is accessible
         let counterState = Application.state(\.stressCounter)
         let stringState = Application.state(\.stressString)
         _ = counterState.value
         _ = stringState.value
     }
 
-    #if !os(Linux) && !os(Windows)
-    // MARK: - Keychain Concurrent Access
+    /// Tests rapid state reset operations are stable.
+    @MainActor
+    func testHighVolumeStateReset() async {
+        let iterations = 200
 
-    /// Tests Keychain Mutex handles concurrent operations correctly.
+        await withTaskGroup(of: Void.self) { group in
+            for i in 0..<iterations {
+                group.addTask { @MainActor in
+                    if i % 2 == 0 {
+                        var state = Application.state(\.stressCounter)
+                        state.value = i
+                    } else {
+                        Application.reset(\.stressCounter)
+                    }
+                }
+            }
+        }
+
+        let finalState = Application.state(\.stressCounter)
+        XCTAssertTrue(finalState.value >= 0)
+    }
+
+    #if !os(Linux) && !os(Windows)
+    // MARK: - True Concurrent Access (Keychain)
+    // These tests ARE truly concurrent - Keychain methods are nonisolated and Mutex-protected.
+
+    /// Tests Keychain Mutex handles true concurrent operations correctly.
     @MainActor
     func testKeychainConcurrentAccess() async {
         let keychain = Keychain()
         let iterations = 100
 
         await withTaskGroup(of: Void.self) { group in
-            // Concurrent writes
+            // Concurrent writes - truly parallel, no @MainActor
             for i in 0..<iterations {
                 group.addTask {
                     keychain.set(value: "value-\(i)", forKey: "stress-key-\(i % 10)")
                 }
             }
 
-            // Concurrent reads
+            // Concurrent reads - truly parallel, no @MainActor
             for i in 0..<iterations {
                 group.addTask {
                     _ = keychain.get("stress-key-\(i % 10)")
@@ -233,21 +240,21 @@ final class ConcurrencyStressTests: XCTestCase {
         keychain.remove("stress-final")
     }
 
-    /// Tests Keychain values() under concurrent modifications.
+    /// Tests Keychain values() under true concurrent modifications.
     @MainActor
-    func testKeychainValuesConcurrent() async {
+    func testKeychainConcurrentValues() async {
         let keychain = Keychain()
         let iterations = 50
 
         await withTaskGroup(of: Void.self) { group in
-            // Writers
+            // Writers - truly parallel
             for i in 0..<iterations {
                 group.addTask {
                     keychain.set(value: "v\(i)", forKey: "concurrent-\(i)")
                 }
             }
 
-            // Readers calling values()
+            // Readers - truly parallel
             for _ in 0..<iterations {
                 group.addTask {
                     _ = keychain.values()
@@ -261,29 +268,4 @@ final class ConcurrencyStressTests: XCTestCase {
         }
     }
     #endif
-
-    // MARK: - Rapid State Reset
-
-    /// Tests that rapid reset operations don't cause issues.
-    @MainActor
-    func testRapidStateReset() async {
-        let iterations = 200
-
-        await withTaskGroup(of: Void.self) { group in
-            for i in 0..<iterations {
-                group.addTask { @MainActor in
-                    if i % 2 == 0 {
-                        var state = Application.state(\.stressCounter)
-                        state.value = i
-                    } else {
-                        Application.reset(\.stressCounter)
-                    }
-                }
-            }
-        }
-
-        // State should be accessible after rapid resets
-        let finalState = Application.state(\.stressCounter)
-        XCTAssertTrue(finalState.value >= 0)
-    }
 }

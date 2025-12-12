@@ -12,13 +12,13 @@ Read this in other languages: [French](documentation/README.fr.md) | [German](do
 
 ## Requirements
 
-- **iOS**: 15.0+
-- **watchOS**: 8.0+
-- **macOS**: 11.0+
-- **tvOS**: 15.0+
-- **visionOS**: 1.0+
-- **Swift**: 6.0+
-- **Xcode**: 16.0+
+- **iOS**: 18.0+
+- **watchOS**: 11.0+
+- **macOS**: 15.0+
+- **tvOS**: 18.0+
+- **visionOS**: 2.0+
+- **Swift**: 6.2+
+- **Xcode**: 16.2+
   
 **Non-Apple Platform Support**: Linux & Windows
 
@@ -71,25 +71,6 @@ struct ContentView: View {
 ```
 
 This snippet demonstrates defining a state value in an `Application` extension and using the `@AppState` property wrapper to bind it inside a view.
-
-## Examples
-
-Explore our comprehensive [Examples](Examples/) folder with 31 example projects:
-
-| Category | Examples | Description |
-|----------|----------|-------------|
-| **Focused** | 2 | Production-quality apps (SyncNotes, MultiPlatformTracker) |
-| **Moderate** | 4 | Feature-focused apps (TodoCloud, SettingsKit, DataDashboard, SecureVault) |
-| **Lightweight** | 25 | Single-concept examples covering all AppState features |
-
-### Featured Examples
-
-- **[SyncNotes](Examples/Focused/SyncNotes/)** - Note-taking with iCloud sync across devices
-- **[MultiPlatformTracker](Examples/Focused/MultiPlatformTracker/)** - Habit tracker for iOS/macOS/watchOS
-- **[TodoCloud](Examples/Moderate/TodoCloud/)** - Progressive persistence (memory → local → cloud)
-- **[SecureVault](Examples/Moderate/SecureVault/)** - Password manager with Keychain storage
-
-See [Examples/README.md](Examples/README.md) for the full list with descriptions.
 
 ## Documentation
 
