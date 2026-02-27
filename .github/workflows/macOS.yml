@@ -3,6 +3,8 @@ name: macOS
 on:
   push:
     branches: ["**"]
+  pull_request:
+    branches: ["main"]
 
 jobs:
   build:
@@ -15,7 +17,7 @@ jobs:
       uses: swift-actions/setup-swift@v2
       with: 
         swift-version: '6.1.0'
-    - uses: actions/checkout@v3
+    - uses: actions/checkout@v4
     - name: Build
       run: swift build -v
     - name: Run tests
