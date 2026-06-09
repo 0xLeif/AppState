@@ -5,10 +5,10 @@ import PackageDescription
 let package = Package(
     name: "AppState",
     platforms: [
-        .iOS(.v15),
-        .watchOS(.v8),
-        .macOS(.v11),
-        .tvOS(.v15),
+        .iOS(.v17),
+        .watchOS(.v10),
+        .macOS(.v14),
+        .tvOS(.v17),
         .visionOS(.v1)
     ],
     products: [
@@ -32,5 +32,6 @@ let package = Package(
             name: "AppStateTests",
             dependencies: ["AppState"]
         )
-    ]
+    ],
+    swiftLanguageModes: [.v6]
 )

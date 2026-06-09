@@ -2,7 +2,6 @@
 import Foundation
 import SwiftData
 
-@available(iOS 17.0, macOS 14.0, tvOS 17.0, watchOS 10.0, visionOS 1.0, *)
 extension Application {
     /// `ModelState` exposes a collection of SwiftData `@Model` objects through the application's
     /// scope. It is backed by a `ModelContainer` dependency and reads/writes through that
@@ -163,7 +162,6 @@ extension Application {
 
 // MARK: - ModelState Functions
 
-@available(iOS 17.0, macOS 14.0, tvOS 17.0, watchOS 10.0, visionOS 1.0, *)
 public extension Application {
     /// Resets a `ModelState` instance, deleting every model it manages.
     ///

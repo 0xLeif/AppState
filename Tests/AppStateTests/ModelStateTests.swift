@@ -7,7 +7,6 @@ import SwiftUI
 import XCTest
 @testable import AppState
 
-@available(iOS 17.0, macOS 14.0, tvOS 17.0, watchOS 10.0, visionOS 1.0, *)
 @Model
 final class TestItem {
     var title: String
@@ -19,7 +18,6 @@ final class TestItem {
     }
 }
 
-@available(iOS 17.0, macOS 14.0, tvOS 17.0, watchOS 10.0, visionOS 1.0, *)
 fileprivate extension Application {
     var modelContainer: Dependency<ModelContainer> {
         modelContainer(
@@ -45,13 +43,11 @@ fileprivate extension Application {
     }
 }
 
-@available(iOS 17.0, macOS 14.0, tvOS 17.0, watchOS 10.0, visionOS 1.0, *)
 @MainActor
 fileprivate struct ExampleModelValue {
     @ModelState(\.items) var items
 }
 
-@available(iOS 17.0, macOS 14.0, tvOS 17.0, watchOS 10.0, visionOS 1.0, *)
 @MainActor
 fileprivate class ExampleModelViewModel {
     @ModelState(\.items) var items
@@ -62,11 +58,9 @@ fileprivate class ExampleModelViewModel {
 }
 
 #if !os(Linux) && !os(Windows)
-@available(iOS 17.0, macOS 14.0, tvOS 17.0, watchOS 10.0, visionOS 1.0, *)
 extension ExampleModelViewModel: ObservableObject { }
 #endif
 
-@available(iOS 17.0, macOS 14.0, tvOS 17.0, watchOS 10.0, visionOS 1.0, *)
 final class ModelStateTests: XCTestCase {
     @MainActor
     override func setUp() async throws {

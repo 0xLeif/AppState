@@ -15,7 +15,6 @@ import SwiftUI
 /// - Note: Mutations made through `ModelState` are not automatically broadcast to SwiftUI. For
 ///   reactive views, use SwiftData's `@Query` together with the AppState-provided `ModelContainer`.
 ///   `ModelState` is best suited to view models, services, and other non-view code.
-@available(iOS 17.0, macOS 14.0, tvOS 17.0, watchOS 10.0, visionOS 1.0, *)
 @propertyWrapper public struct ModelState<Model: PersistentModel> {
     /// Holds the singleton instance of `Application`.
     @ObservedObject private var app: Application = Application.shared
@@ -107,6 +106,5 @@ import SwiftUI
     }
 }
 
-@available(iOS 17.0, macOS 14.0, tvOS 17.0, watchOS 10.0, visionOS 1.0, *)
 extension ModelState: DynamicProperty { }
 #endif

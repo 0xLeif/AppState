@@ -12,10 +12,10 @@ Read this in other languages: [French](documentation/README.fr.md) | [German](do
 
 ## Requirements
 
-- **iOS**: 15.0+
-- **watchOS**: 8.0+
-- **macOS**: 11.0+
-- **tvOS**: 15.0+
+- **iOS**: 17.0+
+- **watchOS**: 10.0+
+- **macOS**: 14.0+
+- **tvOS**: 17.0+
 - **visionOS**: 1.0+
 - **Swift**: 6.0+
 - **Xcode**: 16.0+
@@ -23,8 +23,6 @@ Read this in other languages: [French](documentation/README.fr.md) | [German](do
 **Non-Apple Platform Support**: Linux & Windows
 
 > 🍎 Features marked with this symbol are specific to Apple platforms, as they rely on Apple technologies such as iCloud and the Keychain.
-
-> Note: SwiftData features (`ModelState`) require iOS 17.0+ / macOS 14.0+ / tvOS 17.0+ / watchOS 10.0+ / visionOS 1.0+.
 
 ## Key Features
 
