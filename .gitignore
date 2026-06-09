@@ -1,6 +1,6 @@
 .DS_Store
 /.build
-Examples/SwiftDataExample/.build/
+.build/
 /Packages
 xcuserdata/
 DerivedData/
