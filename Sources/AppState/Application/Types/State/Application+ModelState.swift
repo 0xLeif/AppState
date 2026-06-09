@@ -3,27 +3,26 @@ import Foundation
 import SwiftData
 
 extension Application {
-    /// `ModelState` exposes a collection of SwiftData `@Model` objects through the application's
-    /// scope. It is backed by a `ModelContainer` dependency and reads/writes through that
-    /// container's `mainContext`.
+    /// `ModelState` exposes the SwiftData `@Model` objects matching a `FetchDescriptor` through the
+    /// application's scope. It is backed by a `ModelContainer` dependency and reads/writes through
+    /// that container's main-actor `ModelContext`.
     ///
-    /// Reading ``value`` performs a fetch using the supplied `FetchDescriptor`. Mutations are
-    /// persisted through the same `ModelContext`.
+    /// Unlike the other AppState state types, `ModelState` is **not** value-backed and does not store
+    /// anything in AppState's cache — SwiftData's `ModelContext` is the single source of truth.
+    /// Reading ``models`` performs a live fetch; mutate the store with ``insert(_:)``,
+    /// ``delete(_:)``, ``save()``, and ``deleteAll()``.
     ///
-    /// - Note: `ModelState` does not cache results in AppState's cache — SwiftData's
-    ///   `ModelContext` is the source of truth. Because mutations are not automatically broadcast
-    ///   to SwiftUI, prefer SwiftData's own `@Query` for reactive views and use `ModelState`
-    ///   (and the `@ModelState` property wrapper) from view models, services, and other
+    /// - Note: Mutations are not automatically broadcast to SwiftUI. For reactive views use
+    ///   SwiftData's own `@Query` together with the AppState-provided `ModelContainer`; reach for
+    ///   `ModelState` (and the `@ModelState` property wrapper) from view models, services, and other
     ///   non-view code that needs shared, dependency-injected access to your models.
-    public struct ModelState<Model: PersistentModel>: MutableApplicationState {
-        public typealias Value = [Model]
-
+    public struct ModelState<Model: PersistentModel> {
         public static var emoji: Character { "🗃️" }
 
         /// The `KeyPath` to the `ModelContainer` dependency that backs this state.
         let containerKeyPath: KeyPath<Application, Dependency<ModelContainer>>
 
-        /// A closure producing the `FetchDescriptor` used when reading ``value``.
+        /// A closure producing the `FetchDescriptor` used when reading ``models``.
         private let fetchDescriptor: () -> FetchDescriptor<Model>
 
         /// The scope in which this state exists.
@@ -37,37 +36,25 @@ extension Application {
 
         /// The models currently matching this state's `FetchDescriptor`.
         ///
-        /// - Getting performs a fetch against the backing `ModelContext`. On failure an empty
-        ///   array is returned and the error is logged.
-        /// - Setting inserts any models in the new value that are not yet persisted and saves the
-        ///   context. Existing models that are absent from the new value are **not** deleted; use
-        ///   ``delete(_:)`` or ``reset()`` for removal.
+        /// - Important: Reading this property performs a SwiftData **fetch on every access**. Do not
+        ///   read it repeatedly in a hot path or directly inside a SwiftUI `body`; capture it once, or
+        ///   use SwiftData's `@Query` for reactive views. On failure an empty array is returned and
+        ///   the error is logged.
         @MainActor
-        public var value: [Model] {
-            get {
-                do {
-                    return try context.fetch(fetchDescriptor())
-                } catch {
-                    log(
-                        error: error,
-                        message: "\(ModelState.emoji) ModelState Fetching",
-                        fileID: #fileID,
-                        function: #function,
-                        line: #line,
-                        column: #column
-                    )
+        public var models: [Model] {
+            do {
+                return try context.fetch(fetchDescriptor())
+            } catch {
+                log(
+                    error: error,
+                    message: "\(ModelState.emoji) ModelState Fetching",
+                    fileID: #fileID,
+                    function: #function,
+                    line: #line,
+                    column: #column
+                )
 
-                    return []
-                }
-            }
-            set {
-                let context = context
-
-                for model in newValue where model.modelContext == nil {
-                    context.insert(model)
-                }
-
-                save(context: context, action: "Saving")
+                return []
             }
         }
 
@@ -115,9 +102,13 @@ extension Application {
             save(context: context, action: "Saving")
         }
 
-        /// Resets the state by deleting every model matching this state's `FetchDescriptor` and saving.
+        /// Deletes **every** model matching this state's `FetchDescriptor` and saves.
+        ///
+        /// - Warning: This permanently removes the matching objects from the persistent store. It is a
+        ///   destructive operation; there is no `reset()`-style restoration of an initial value because
+        ///   the store itself is the source of truth.
         @MainActor
-        public mutating func reset() {
+        public func deleteAll() {
             let context = context
 
             do {
@@ -127,11 +118,11 @@ extension Application {
                     context.delete(model)
                 }
 
-                save(context: context, action: "Resetting")
+                save(context: context, action: "Deleting")
             } catch {
                 log(
                     error: error,
-                    message: "\(ModelState.emoji) ModelState Resetting",
+                    message: "\(ModelState.emoji) ModelState Deleting",
                     fileID: #fileID,
                     function: #function,
                     line: #line,
@@ -163,39 +154,12 @@ extension Application {
 // MARK: - ModelState Functions
 
 public extension Application {
-    /// Resets a `ModelState` instance, deleting every model it manages.
-    ///
-    /// - Parameters:
-    ///   - keyPath: The `KeyPath` of the `ModelState` to reset (e.g., `\.items`).
-    ///   - fileID: The identifier of the file in which this function is called. Defaults to `#fileID`.
-    ///   - function: The name of the declaration in which this function is called. Defaults to `#function`.
-    ///   - line: The line number on which this function is called. Defaults to `#line`.
-    ///   - column: The column number in which this function is called. Defaults to `#column`.
-    @MainActor
-    static func reset<Model>(
-        modelState keyPath: KeyPath<Application, ModelState<Model>>,
-        _ fileID: StaticString = #fileID,
-        _ function: StaticString = #function,
-        _ line: Int = #line,
-        _ column: Int = #column
-    ) {
-        log(
-            debug: "🗃️ Resetting ModelState \(String(describing: keyPath))",
-            fileID: fileID,
-            function: function,
-            line: line,
-            column: column
-        )
-
-        var modelState = shared.value(keyPath: keyPath)
-        modelState.reset()
-    }
-
     /**
      Retrieves a `ModelState<Model>` instance from the shared `Application` using its `KeyPath`.
 
      This function provides access to the `ModelState` management object itself, which is backed by
-     a SwiftData `ModelContainer`. You can use this to read its `value` or perform mutations.
+     a SwiftData `ModelContainer`. You can use it to read its `models` or perform mutations
+     (`insert`, `delete`, `save`, `deleteAll`).
 
      - Parameters:
        - keyPath: The `KeyPath` referencing the desired `ModelState` property (e.g., `\.items`).

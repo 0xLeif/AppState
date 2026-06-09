@@ -1,9 +1,6 @@
 #if canImport(SwiftData)
 import Foundation
 import SwiftData
-#if !os(Linux) && !os(Windows)
-import SwiftUI
-#endif
 import XCTest
 @testable import AppState
 
@@ -53,26 +50,22 @@ fileprivate class ExampleModelViewModel {
     @ModelState(\.items) var items
 
     func addItem(title: String, value: Int) {
-        items = [TestItem(title: title, value: value)]
+        $items.insert(TestItem(title: title, value: value))
     }
 }
-
-#if !os(Linux) && !os(Windows)
-extension ExampleModelViewModel: ObservableObject { }
-#endif
 
 final class ModelStateTests: XCTestCase {
     @MainActor
     override func setUp() async throws {
         Application.logging(isEnabled: true)
 
-        Application.reset(modelState: \.items)
-        XCTAssertTrue(Application.modelState(\.items).value.isEmpty)
+        Application.modelState(\.items).deleteAll()
+        XCTAssertTrue(Application.modelState(\.items).models.isEmpty)
     }
 
     @MainActor
     override func tearDown() async throws {
-        Application.reset(modelState: \.items)
+        Application.modelState(\.items).deleteAll()
 
         let applicationDescription = Application.description
 
@@ -101,25 +94,25 @@ final class ModelStateTests: XCTestCase {
     func testInsertAndFetchThroughApplication() async {
         let state = Application.modelState(\.items)
 
-        XCTAssertTrue(state.value.isEmpty)
+        XCTAssertTrue(state.models.isEmpty)
 
         state.insert(TestItem(title: "First", value: 1))
         state.insert(TestItem(title: "Second", value: 2))
 
-        let values = state.value
+        let models = state.models
 
-        XCTAssertEqual(values.count, 2)
-        XCTAssertTrue(values.contains { $0.title == "First" && $0.value == 1 })
-        XCTAssertTrue(values.contains { $0.title == "Second" && $0.value == 2 })
+        XCTAssertEqual(models.count, 2)
+        XCTAssertTrue(models.contains { $0.title == "First" && $0.value == 1 })
+        XCTAssertTrue(models.contains { $0.title == "Second" && $0.value == 2 })
     }
 
     @MainActor
-    func testPropertyWrapperInsertViaValueSetter() async {
+    func testPropertyWrapperReadAndProjectedInsert() async {
         let example = ExampleModelValue()
 
         XCTAssertTrue(example.items.isEmpty)
 
-        example.items = [TestItem(title: "Wrapped", value: 7)]
+        example.$items.insert(TestItem(title: "Wrapped", value: 7))
 
         XCTAssertEqual(example.items.count, 1)
         XCTAssertEqual(example.items.first?.title, "Wrapped")
@@ -134,7 +127,7 @@ final class ModelStateTests: XCTestCase {
         XCTAssertEqual(viewModel.items.count, 2)
         XCTAssertTrue(viewModel.items.contains { $0.title == "ViewModel" && $0.value == 9 })
 
-        XCTAssertEqual(Application.modelState(\.items).value.count, 2)
+        XCTAssertEqual(Application.modelState(\.items).models.count, 2)
     }
 
     @MainActor
@@ -157,26 +150,26 @@ final class ModelStateTests: XCTestCase {
         second.value = 99
         example.$items.save()
 
-        XCTAssertEqual(Application.modelState(\.items).value.first?.value, 99)
+        XCTAssertEqual(Application.modelState(\.items).models.first?.value, 99)
     }
 
     @MainActor
-    func testReset() async {
+    func testDeleteAll() async {
         let state = Application.modelState(\.items)
 
         state.insert(TestItem(title: "One", value: 1))
         state.insert(TestItem(title: "Two", value: 2))
         state.insert(TestItem(title: "Three", value: 3))
 
-        XCTAssertEqual(state.value.count, 3)
+        XCTAssertEqual(state.models.count, 3)
 
-        Application.reset(modelState: \.items)
+        state.deleteAll()
 
-        XCTAssertTrue(Application.modelState(\.items).value.isEmpty)
+        XCTAssertTrue(Application.modelState(\.items).models.isEmpty)
     }
 
     @MainActor
-    func testFetchDescriptorPredicate() async {
+    func testFetchDescriptorSorting() async {
         let items = Application.modelState(\.items)
 
         items.insert(TestItem(title: "C", value: 30))
@@ -184,11 +177,11 @@ final class ModelStateTests: XCTestCase {
         items.insert(TestItem(title: "B", value: 20))
 
         let sorted = Application.modelState(\.sortedItems)
-        let sortedValues = sorted.value
+        let sortedModels = sorted.models
 
-        XCTAssertEqual(sortedValues.count, 3)
-        XCTAssertEqual(sortedValues.map(\.value), [10, 20, 30])
-        XCTAssertEqual(sortedValues.map(\.title), ["A", "B", "C"])
+        XCTAssertEqual(sortedModels.count, 3)
+        XCTAssertEqual(sortedModels.map(\.value), [10, 20, 30])
+        XCTAssertEqual(sortedModels.map(\.title), ["A", "B", "C"])
     }
 }
 #endif

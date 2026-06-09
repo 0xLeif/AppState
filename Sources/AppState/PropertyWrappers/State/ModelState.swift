@@ -1,16 +1,15 @@
 #if canImport(SwiftData)
-import Combine
 import SwiftData
 import SwiftUI
 
-/// `ModelState` is a property wrapper that exposes a collection of SwiftData `@Model` objects from
-/// the `Application`'s scope. The models are read from and written to a `ModelContainer` dependency.
+/// `ModelState` is a property wrapper that exposes the SwiftData `@Model` objects matching a
+/// `FetchDescriptor` from the `Application`'s scope. The models are read from and written to a
+/// `ModelContainer` dependency.
 ///
-/// Reading the wrapped value performs a fetch using the state's `FetchDescriptor`. Assigning to the
-/// wrapped value inserts any new (not yet persisted) models and saves the backing context. For
-/// explicit control over inserts and deletes, use the projected value, which exposes the underlying
-/// ``Application/ModelState`` and its ``Application/ModelState/insert(_:)``,
-/// ``Application/ModelState/delete(_:)``, and ``Application/ModelState/save()`` methods.
+/// The wrapped value is **read-only** and performs a live fetch on access. Mutate the store through
+/// the projected value, which exposes the underlying ``Application/ModelState`` and its
+/// ``Application/ModelState/insert(_:)``, ``Application/ModelState/delete(_:)``,
+/// ``Application/ModelState/save()``, and ``Application/ModelState/deleteAll()`` operations.
 ///
 /// - Note: Mutations made through `ModelState` are not automatically broadcast to SwiftUI. For
 ///   reactive views, use SwiftData's `@Query` together with the AppState-provided `ModelContainer`.
@@ -29,34 +28,23 @@ import SwiftUI
     private let column: Int
 
     /// The models currently matching this state's `FetchDescriptor`.
+    ///
+    /// Reading this performs a live SwiftData fetch. To mutate the store, use the projected value
+    /// (`$model.insert(_:)`, `$model.delete(_:)`, `$model.save()`, `$model.deleteAll()`).
     @MainActor
     public var wrappedValue: [Model] {
-        get {
-            app.registerObservation()
+        app.registerObservation()
 
-            return Application.modelState(
-                keyPath,
-                fileID,
-                function,
-                line,
-                column
-            ).value
-        }
-        nonmutating set {
-            Application.log(
-                debug: "🗃️ Setting ModelState \(String(describing: keyPath))",
-                fileID: fileID,
-                function: function,
-                line: line,
-                column: column
-            )
-
-            var state = app.value(keyPath: keyPath)
-            state.value = newValue
-        }
+        return Application.modelState(
+            keyPath,
+            fileID,
+            function,
+            line,
+            column
+        ).models
     }
 
-    /// The underlying ``Application/ModelState``, exposing `insert`, `delete`, and `save`.
+    /// The underlying ``Application/ModelState``, exposing `insert`, `delete`, `save`, and `deleteAll`.
     @MainActor
     public var projectedValue: Application.ModelState<Model> {
         Application.modelState(
@@ -86,26 +74,6 @@ import SwiftUI
         self.function = function
         self.line = line
         self.column = column
-    }
-
-    /// A property wrapper's synthetic storage property. This is just for SwiftUI to mutate the `wrappedValue` and send event through `objectWillChange` publisher when the `wrappedValue` changes
-    @MainActor
-    public static subscript<OuterSelf: ObservableObject>(
-        _enclosingInstance observed: OuterSelf,
-        wrapped wrappedKeyPath: ReferenceWritableKeyPath<OuterSelf, [Model]>,
-        storage storageKeyPath: ReferenceWritableKeyPath<OuterSelf, Self>
-    ) -> [Model] {
-        get {
-            observed[keyPath: storageKeyPath].wrappedValue
-        }
-        set {
-            guard
-                let publisher = observed.objectWillChange as? ObservableObjectPublisher
-            else { return }
-
-            publisher.send()
-            observed[keyPath: storageKeyPath].wrappedValue = newValue
-        }
     }
 }
 

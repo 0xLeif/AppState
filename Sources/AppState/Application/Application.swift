@@ -42,7 +42,8 @@ open class Application: NSObject {
     /// State and dependency values live in the untracked ``cache``. Reading this anchor (via
     /// ``registerObservation()``) registers the current Observation tracking scope — e.g. a SwiftUI
     /// view body — as dependent on AppState, and mutating it (via ``notifyChange()``) tells those
-    /// observers to update.
+    /// observers to update. It is main-actor isolated so the read and the mutation never race.
+    @MainActor
     private var changeAnchor: Int = 0
 
     #if !os(Linux) && !os(Windows)
@@ -80,6 +81,11 @@ open class Application: NSObject {
     /// Registers the current Observation tracking scope (such as a SwiftUI view body) as dependent on
     /// AppState. The property wrappers call this when reading their value so that SwiftUI views update
     /// when the underlying state or dependencies change.
+    ///
+    /// The discarded read of ``changeAnchor`` is intentional and load-bearing: the synthesized
+    /// `@Observable` getter calls the observation registrar's `access`, which is what records the
+    /// dependency. Do not remove it.
+    @MainActor
     func registerObservation() {
         _ = changeAnchor
     }
@@ -89,6 +95,7 @@ open class Application: NSObject {
     /// AppState's own setters call this automatically. Call it yourself when you mutate state outside
     /// of those setters — for example from a `didChangeExternally(notification:)` override that reacts
     /// to incoming iCloud changes.
+    @MainActor
     public func notifyChange() {
         changeAnchor &+= 1
     }
@@ -144,7 +151,11 @@ open class Application: NSObject {
             object.objectWillChange.sink(
                 receiveCompletion: { _ in },
                 receiveValue: { [weak self] _ in
-                    self?.notifyChange()
+                    // The cache only mutates on the main actor (every AppState setter is
+                    // `@MainActor`), so its change notification is delivered there as well.
+                    MainActor.assumeIsolated {
+                        self?.notifyChange()
+                    }
                 }
             )
         )

@@ -12,9 +12,15 @@ public extension Application {
     /// ```swift
     /// extension Application {
     ///     var modelContainer: Dependency<ModelContainer> {
-    ///         dependency(
-    ///             try! ModelContainer(for: Item.self)
-    ///         )
+    ///         dependency(makeModelContainer())
+    ///     }
+    /// }
+    ///
+    /// private func makeModelContainer() -> ModelContainer {
+    ///     do {
+    ///         return try ModelContainer(for: Item.self)
+    ///     } catch {
+    ///         fatalError("Failed to create the ModelContainer: \(error)")
     ///     }
     /// }
     /// ```
@@ -63,9 +69,15 @@ public extension Application {
     /// ```swift
     /// extension Application {
     ///     var modelContainer: Dependency<ModelContainer> {
-    ///         modelContainer(
-    ///             try! ModelContainer(for: Item.self)
-    ///         )
+    ///         modelContainer(makeModelContainer())
+    ///     }
+    /// }
+    ///
+    /// private func makeModelContainer() -> ModelContainer {
+    ///     do {
+    ///         return try ModelContainer(for: Item.self)
+    ///     } catch {
+    ///         fatalError("Failed to create the ModelContainer: \(error)")
     ///     }
     /// }
     /// ```

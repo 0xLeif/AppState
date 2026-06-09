@@ -79,8 +79,8 @@ struct SwiftDataExample {
         print("== SwiftData + AppState example ==")
 
         // Start from a clean slate so repeated runs are deterministic.
-        Application.reset(modelState: \.todos)
-        precondition(Application.modelState(\.todos).value.isEmpty, "Expected an empty store at start")
+        Application.modelState(\.todos).deleteAll()
+        precondition(Application.modelState(\.todos).models.isEmpty, "Expected an empty store at start")
 
         // 1. Insert via the property-wrapper projected value (view-model style).
         let store = TodoStore()
@@ -88,19 +88,19 @@ struct SwiftDataExample {
         print("After store.add: \(store.todos.count) todo(s)")
         precondition(store.todos.count == 1, "Expected 1 todo after store.add")
 
-        // 2. Insert by assigning the wrapped value directly. Assignment inserts any
-        //    not-yet-persisted models; it does NOT delete absent ones.
-        store.todos = [TodoItem(title: "Walk the dog"), TodoItem(title: "Write code")]
-        print("After assigning two more: \(store.todos.count) todo(s)")
-        precondition(store.todos.count == 3, "Expected 3 todos after assignment")
+        // 2. Insert more through the view model (its projected-value `insert`).
+        store.add("Walk the dog")
+        store.add("Write code")
+        print("After two more inserts: \(store.todos.count) todo(s)")
+        precondition(store.todos.count == 3, "Expected 3 todos")
 
         // 3. Insert directly through the application-level `ModelState`.
         Application.modelState(\.todos).insert(TodoItem(title: "Read a book"))
-        print("After Application.modelState insert: \(Application.modelState(\.todos).value.count) todo(s)")
-        precondition(Application.modelState(\.todos).value.count == 4, "Expected 4 todos")
+        print("After Application.modelState insert: \(Application.modelState(\.todos).models.count) todo(s)")
+        precondition(Application.modelState(\.todos).models.count == 4, "Expected 4 todos")
 
         // Fetch & print the current todos.
-        let current = Application.modelState(\.todos).value
+        let current = Application.modelState(\.todos).models
         print("Current todos:")
         for todo in current {
             print("  - [\(todo.isDone ? "x" : " ")] \(todo.title)")
@@ -112,25 +112,25 @@ struct SwiftDataExample {
             Application.modelState(\.todos).save()
             print("Marked \"\(first.title)\" as done and saved")
         }
-        let doneCount = Application.modelState(\.todos).value.filter(\.isDone).count
+        let doneCount = Application.modelState(\.todos).models.filter(\.isDone).count
         precondition(doneCount == 1, "Expected exactly 1 completed todo")
 
         // 5. Delete one todo.
-        if let toDelete = Application.modelState(\.todos).value.last {
+        if let toDelete = Application.modelState(\.todos).models.last {
             Application.modelState(\.todos).delete(toDelete)
             print("Deleted \"\(toDelete.title)\"")
         }
-        let remaining = Application.modelState(\.todos).value
+        let remaining = Application.modelState(\.todos).models
         print("Remaining todos:")
         for todo in remaining {
             print("  - [\(todo.isDone ? "x" : " ")] \(todo.title)")
         }
         precondition(remaining.count == 3, "Expected 3 todos after deletion")
 
-        // 6. Reset clears every model managed by the state.
-        Application.reset(modelState: \.todos)
-        precondition(Application.modelState(\.todos).value.isEmpty, "Expected an empty store after reset")
-        print("Store reset; \(Application.modelState(\.todos).value.count) todo(s) remaining")
+        // 6. deleteAll() removes every model managed by the state.
+        Application.modelState(\.todos).deleteAll()
+        precondition(Application.modelState(\.todos).models.isEmpty, "Expected an empty store after deleteAll")
+        print("Store cleared; \(Application.modelState(\.todos).models.count) todo(s) remaining")
 
         print("== Example completed successfully ==")
         exit(0)

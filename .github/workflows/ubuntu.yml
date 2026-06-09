@@ -20,6 +20,10 @@ jobs:
           swift-version: '6.1.0'
       - uses: actions/checkout@v4
       - name: Build for release
-        run: swift build -v -c release -Xswiftc -warnings-as-errors
+        run: swift build -v -c release
+        env:
+          APPSTATE_STRICT: "1"
       - name: Test
-        run: swift test -v -Xswiftc -warnings-as-errors
+        run: swift test -v
+        env:
+          APPSTATE_STRICT: "1"

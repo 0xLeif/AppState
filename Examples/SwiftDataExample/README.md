@@ -11,12 +11,11 @@ and read/write that collection from both application-level call sites and the
 - Registering an in-memory `ModelContainer` as an AppState dependency:
   `Application.modelContainer`.
 - Exposing a `ModelState<TodoItem>` collection: `Application.todos`.
-- Inserting models three different ways:
+- Inserting models two ways:
   - the `@ModelState` projected value: `$todos.insert(...)`
-  - assigning the wrapped value: `todos = [...]`
   - the application-level state: `Application.modelState(\.todos).insert(...)`
-- Fetching (`Application.modelState(\.todos).value`), updating + `save()`,
-  `delete(_:)`, and clearing everything with `Application.reset(modelState: \.todos)`.
+- Reading the models (`Application.modelState(\.todos).models`), updating + `save()`,
+  `delete(_:)`, and clearing everything with `Application.modelState(\.todos).deleteAll()`.
 - Using `@ModelState` from a view-model-style `ObservableObject` (`TodoStore`).
 
 Every step asserts the expected count with `precondition(...)`, so `swift run`

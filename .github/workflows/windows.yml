@@ -21,5 +21,11 @@ jobs:
 
       # ② Build & test
       - run: swift --version          # sanity-check
-      - run: swift build -Xswiftc -warnings-as-errors
-      - run: swift test -Xswiftc -warnings-as-errors
+      - name: Build
+        run: swift build
+        env:
+          APPSTATE_STRICT: "1"
+      - name: Test
+        run: swift test
+        env:
+          APPSTATE_STRICT: "1"
