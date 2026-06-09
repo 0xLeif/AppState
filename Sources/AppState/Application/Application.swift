@@ -99,7 +99,16 @@ open class Application: NSObject {
     /// AppState's own setters call this automatically. Call it yourself when you mutate state outside
     /// of those setters — for example from a `didChangeExternally(notification:)` override that reacts
     /// to incoming iCloud changes. See ``changeAnchor`` for the thread-safety invariant.
+    ///
+    /// - Important: This must be called on the main thread. SwiftUI tracks `changeAnchor` from view
+    ///   bodies, so publishing a change from a background thread both races the mutation and trips the
+    ///   "Publishing changes from background threads is not supported" runtime warning. `Application` is
+    ///   not `Sendable`, so the change cannot be hopped to the main thread on the caller's behalf — the
+    ///   invariant is instead asserted here so off-main misuse surfaces in debug and CI. `Application`'s
+    ///   setters and the `@MainActor` `didChangeExternally(notification:)` override already satisfy it.
     public func notifyChange() {
+        assert(Thread.isMainThread, "Application.notifyChange() must be called on the main thread.")
+
         changeAnchor &+= 1
     }
 

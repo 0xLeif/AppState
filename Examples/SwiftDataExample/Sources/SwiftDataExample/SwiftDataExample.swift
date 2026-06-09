@@ -29,17 +29,27 @@ extension Application {
     /// Using `isStoredInMemoryOnly: true` keeps the example deterministic and side-effect free,
     /// so `swift run` can double as a smoke test in CI.
     var modelContainer: Dependency<ModelContainer> {
-        modelContainer(
-            try! ModelContainer(
-                for: TodoItem.self,
-                configurations: ModelConfiguration(isStoredInMemoryOnly: true)
-            )
-        )
+        modelContainer(makeInMemoryTodoContainer())
     }
 
     /// The shared collection of `TodoItem`s, backed by the `modelContainer` dependency.
     var todos: ModelState<TodoItem> {
         modelState(container: \.modelContainer)
+    }
+}
+
+/// Builds the example's in-memory `ModelContainer`.
+///
+/// `ModelContainer` initialization can throw; rather than force-`try`, failure here is a programmer
+/// error in the example's configuration, so it traps with a descriptive message.
+private func makeInMemoryTodoContainer() -> ModelContainer {
+    do {
+        return try ModelContainer(
+            for: TodoItem.self,
+            configurations: ModelConfiguration(isStoredInMemoryOnly: true)
+        )
+    } catch {
+        fatalError("Failed to create the in-memory ModelContainer: \(error)")
     }
 }
 

@@ -112,12 +112,7 @@ extension Application {
             let context = context
 
             do {
-                let models = try context.fetch(fetchDescriptor())
-
-                for model in models {
-                    context.delete(model)
-                }
-
+                try context.delete(model: Model.self, where: fetchDescriptor().predicate)
                 save(context: context, action: "Deleting")
             } catch {
                 log(

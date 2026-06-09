@@ -97,7 +97,7 @@ public extension Application {
         _ column: Int = #column
     ) -> Dependency<ModelContainer> {
         dependency(
-            container(),
+            container,
             id: Application.codeID(
                 fileID: fileID,
                 function: function,
