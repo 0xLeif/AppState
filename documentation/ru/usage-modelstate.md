@@ -8,7 +8,7 @@
 
 - **Модели с внедрением зависимостей**: зарегистрируйте общий `ModelContainer` один раз и получайте доступ к его моделям в любом месте вашего приложения.
 - **`ModelContext` на главном акторе**: получайте `mainContext` контейнера из любого кода, включая модели представлений и службы, не имеющие доступа к `@Environment` SwiftUI.
-- **Удобство CRUD**: читайте, вставляйте, удаляйте, сохраняйте и сбрасывайте модели SwiftData через небольшой, узконаправленный API.
+- **Удобство CRUD**: читайте, вставляйте, удаляйте, сохраняйте и удаляйте все модели SwiftData через небольшой, узконаправленный API.
 - **SwiftData как источник истины**: `ModelState` не кэширует результаты в кэше AppState — `ModelContext` SwiftData остается единственным источником истины.
 
 ## Требования и доступность
@@ -25,17 +25,23 @@
 
 ## Регистрация зависимости ModelContainer
 
-`ModelContainer` из SwiftData соответствует `Sendable`, поэтому его можно хранить как обычную `Dependency` AppState. Определите его в расширении `Application` с помощью удобного метода `modelContainer(_:)`, который регистрирует контейнер с автоматически сгенерированным идентификатором и вычисляет автозамыкание только один раз:
+`ModelContainer` из SwiftData соответствует `Sendable`, поэтому его можно хранить как обычную `Dependency` AppState. Определите его в расширении `Application` с помощью удобного метода `modelContainer(_:)`, который регистрирует контейнер с автоматически сгенерированным идентификатором и вычисляет автозамыкание только один раз. Создавайте контейнер через вспомогательную функцию, которая явно обрабатывает ошибки, вместо принудительного `try!`:
 
 ```swift
 import AppState
 import SwiftData
 
+private func makeModelContainer() -> ModelContainer {
+    do {
+        return try ModelContainer(for: Item.self)
+    } catch {
+        fatalError("Failed to create the ModelContainer: \(error)")
+    }
+}
+
 extension Application {
     var modelContainer: Dependency<ModelContainer> {
-        modelContainer(
-            try! ModelContainer(for: Item.self)
-        )
+        modelContainer(makeModelContainer())
     }
 }
 ```
@@ -83,7 +89,7 @@ extension Application {
 
 ## Обертка свойства @ModelState
 
-Обертка свойства `@ModelState` предоставляет коллекцию моделей из области видимости `Application`:
+Обертка свойства `@ModelState` предоставляет коллекцию моделей из области видимости `Application` только для чтения. Изменяйте данные через проецируемое значение (`$items`):
 
 ```swift
 import AppState
@@ -94,14 +100,15 @@ final class ItemsViewModel: ObservableObject {
     @ModelState(\.items) var items: [Item]
 
     func addItem(title: String) {
-        // Присваивание вставляет новые (еще не сохраненные) модели и сохраняет их.
-        items = items + [Item(title: title)]
+        $items.insert(Item(title: title))
     }
 }
 ```
 
-- **Чтение** обернутого значения выполняет выборку с использованием `FetchDescriptor` состояния.
-- **Присваивание** обернутому значению вставляет все модели из нового значения, которые еще не сохранены, и сохраняет поддерживающий контекст. Существующие модели, отсутствующие в новом значении, **не** удаляются — для удаления используйте `delete(_:)` или `reset()`.
+- **Чтение** обернутого значения выполняет выборку с использованием `FetchDescriptor` состояния. Обернутое значение — это `[Model]` только для чтения; присваивать ему нельзя.
+- **Изменение** выполняется через проецируемое значение: `$items.insert(...)`, `$items.delete(...)`, `$items.save()` и `$items.deleteAll()`.
+
+> ⚠️ Чтение обернутого значения выполняет «живую» выборку SwiftData при **каждом** чтении. Избегайте повторного чтения в горячих путях — вместо этого сохраняйте результат в локальной переменной.
 
 ### CRUD через проецируемое значение
 
@@ -135,8 +142,8 @@ final class ItemsViewModel: ObservableObject {
 func loadAndAppend() {
     let state = Application.modelState(\.items)
 
-    // Чтение текущих моделей (выполняет выборку).
-    let current = state.value
+    // Чтение текущих моделей (выполняет выборку при каждом доступе).
+    let current = state.models
 
     // При необходимости получите прямой доступ к поддерживающему ModelContext.
     let context = state.context
@@ -148,20 +155,23 @@ func loadAndAppend() {
 }
 ```
 
+> ⚠️ `models` выполняет «живую» выборку SwiftData при **каждом** чтении. Когда результат нужно использовать более одного раза, сохраняйте его в локальной переменной, а не читайте повторно.
+
 Возвращаемый `ModelState` предоставляет:
 
-- `value`: модели, в данный момент соответствующие `FetchDescriptor` состояния (чтение выполняет выборку; запись вставляет новые модели и сохраняет).
+- `models`: свойство **только для чтения**, возвращающее модели, в данный момент соответствующие `FetchDescriptor` состояния. Каждое чтение выполняет новую выборку; сеттера нет.
 - `context`: поддерживающий `ModelContext` на главном акторе.
 - `insert(_:)`: вставляет модель и сохраняет.
 - `delete(_:)`: удаляет модель и сохраняет.
 - `save()`: сохраняет все ожидающие изменения в контексте.
+- `deleteAll()`: удаляет каждую модель, соответствующую `FetchDescriptor` состояния, и сохраняет.
 
-## Сброс
+## Удаление всех моделей
 
-Чтобы удалить каждую модель, управляемую `ModelState`, используйте `Application.reset(modelState:)`:
+Чтобы удалить каждую модель, управляемую `ModelState`, используйте `deleteAll()`:
 
 ```swift
-Application.reset(modelState: \.items)
+Application.modelState(\.items).deleteAll()
 ```
 
 Это выбирает каждую модель, соответствующую `FetchDescriptor` состояния, удаляет ее и сохраняет контекст.
@@ -200,7 +210,7 @@ Application.reset(modelState: \.items)
 
 - **Используйте `ModelState` / `@ModelState` для моделей представлений, служб и другого кода, не относящегося к представлениям**, которому нужен общий доступ к вашим моделям с внедрением зависимостей. Это идеально подходит там, где `@Environment` и `@Query` SwiftUI недоступны, или где вы хотите выполнять операции над моделями вне кода представлений.
 
-Также обратите внимание, что сеттер `value` вставляет только еще не сохраненные модели — он не удаляет модели, отсутствующие в новом значении. Для удаления моделей используйте `delete(_:)` или `reset(modelState:)`.
+Также обратите внимание, что коллекция моделей доступна только для чтения — присваивать ей нельзя. Для изменения базового хранилища используйте `insert(_:)`, `delete(_:)` или `deleteAll()`.
 
 ## Сквозной пример
 
@@ -224,11 +234,17 @@ final class TodoItem {
 }
 
 // 2. Зарегистрируйте общий ModelContainer и ModelState в Application.
+private func makeModelContainer() -> ModelContainer {
+    do {
+        return try ModelContainer(for: TodoItem.self)
+    } catch {
+        fatalError("Failed to create the ModelContainer: \(error)")
+    }
+}
+
 extension Application {
     var modelContainer: Dependency<ModelContainer> {
-        modelContainer(
-            try! ModelContainer(for: TodoItem.self)
-        )
+        modelContainer(makeModelContainer())
     }
 
     var todoItems: ModelState<TodoItem> {
@@ -261,7 +277,7 @@ final class TodoListViewModel: ObservableObject {
     }
 
     func clearAll() {
-        Application.reset(modelState: \.todoItems)
+        Application.modelState(\.todoItems).deleteAll()
     }
 }
 ```
@@ -272,7 +288,7 @@ final class TodoListViewModel: ObservableObject {
 
 - **Реактивные представления используют `@Query`**: зарезервируйте `@Query` SwiftData для представлений, которым необходимо обновляться автоматически, и используйте с ними общий `ModelContainer`, предоставляемый AppState.
 - **Код, не относящийся к представлениям, использует `ModelState`**: используйте `@ModelState` и `Application.modelState` в моделях представлений, службах и фоновой логике, которым нужен общий доступ к моделям.
-- **Явные удаления**: помните, что присваивание `value` только вставляет; для удаления моделей используйте `delete(_:)` или `reset(modelState:)`.
+- **Явные удаления**: помните, что коллекция моделей доступна только для чтения; для удаления моделей используйте `delete(_:)` или `deleteAll()`.
 - **Один общий контейнер**: зарегистрируйте единственную зависимость `ModelContainer` и ссылайтесь на нее из ваших состояний модели и окружения SwiftUI, чтобы все читали и записывали в одно и то же хранилище.
 
 ## Заключение

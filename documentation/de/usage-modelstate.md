@@ -8,7 +8,7 @@
 
 - **Per Dependency Injection bereitgestellte Modelle**: Registrieren Sie einen gemeinsam genutzten `ModelContainer` einmal und greifen Sie überall in Ihrer App auf seine Modelle zu.
 - **Main-Actor-`ModelContext`**: Rufen Sie den `mainContext` des Containers aus beliebigem Code ab, einschließlich View-Modellen und Diensten, die keinen Zugriff auf SwiftUIs `@Environment` haben.
-- **CRUD-Komfort**: Lesen, einfügen, löschen, speichern und zurücksetzen Sie SwiftData-Modelle über eine kleine, fokussierte API.
+- **CRUD-Komfort**: Lesen, einfügen, löschen, speichern und alle löschen Sie SwiftData-Modelle über eine kleine, fokussierte API.
 - **SwiftData als Quelle der Wahrheit**: `ModelState` speichert Ergebnisse nicht im Cache von AppState zwischen – der `ModelContext` von SwiftData bleibt die einzige Quelle der Wahrheit.
 
 ## Anforderungen & Verfügbarkeit
@@ -25,17 +25,23 @@ Auf Plattformen oder Betriebssystemversionen, auf denen SwiftData nicht verfügb
 
 ## Registrieren der ModelContainer-Abhängigkeit
 
-Der `ModelContainer` von SwiftData ist `Sendable` und kann daher als reguläre AppState-`Dependency` gespeichert werden. Definieren Sie eine in einer `Application`-Erweiterung mithilfe des Komforts `modelContainer(_:)`, der den Container mit einer automatisch generierten Kennung registriert und die Autoclosure nur einmal auswertet:
+Der `ModelContainer` von SwiftData ist `Sendable` und kann daher als reguläre AppState-`Dependency` gespeichert werden. Definieren Sie eine in einer `Application`-Erweiterung mithilfe des Komforts `modelContainer(_:)`, der den Container mit einer automatisch generierten Kennung registriert und die Autoclosure nur einmal auswertet. Erstellen Sie den Container über eine Hilfsfunktion, die Fehler explizit behandelt, anstatt ein erzwungenes `try!` zu verwenden:
 
 ```swift
 import AppState
 import SwiftData
 
+private func makeModelContainer() -> ModelContainer {
+    do {
+        return try ModelContainer(for: Item.self)
+    } catch {
+        fatalError("Failed to create the ModelContainer: \(error)")
+    }
+}
+
 extension Application {
     var modelContainer: Dependency<ModelContainer> {
-        modelContainer(
-            try! ModelContainer(for: Item.self)
-        )
+        modelContainer(makeModelContainer())
     }
 }
 ```
@@ -83,7 +89,7 @@ extension Application {
 
 ## Der @ModelState-Property-Wrapper
 
-Der `@ModelState`-Property-Wrapper stellt eine Sammlung von Modellen aus dem Geltungsbereich der `Application` bereit:
+Der `@ModelState`-Property-Wrapper stellt eine Sammlung von Modellen aus dem Geltungsbereich der `Application` bereit. Der umschlossene Wert ist ein schreibgeschütztes `[Model]`; eine Zuweisung ist nicht möglich. Verwenden Sie zum Ändern den projizierten Wert:
 
 ```swift
 import AppState
@@ -94,14 +100,13 @@ final class ItemsViewModel: ObservableObject {
     @ModelState(\.items) var items: [Item]
 
     func addItem(title: String) {
-        // Die Zuweisung fügt neue (noch nicht persistierte) Modelle ein und speichert.
-        items = items + [Item(title: title)]
+        $items.insert(Item(title: title))
     }
 }
 ```
 
 - **Das Lesen** des umschlossenen Werts führt einen Abruf mit dem `FetchDescriptor` des Zustands durch.
-- **Das Zuweisen** zum umschlossenen Wert fügt alle Modelle im neuen Wert ein, die noch nicht persistiert sind, und speichert den zugrunde liegenden Kontext. Vorhandene Modelle, die im neuen Wert fehlen, werden **nicht** gelöscht – verwenden Sie `delete(_:)` oder `reset()` zum Entfernen.
+- Der umschlossene Wert ist **schreibgeschützt**. Verwenden Sie zum Ändern den projizierten Wert: `$items.insert(...)`, `$items.delete(...)`, `$items.save()` und `$items.deleteAll()`.
 
 ### CRUD über den projizierten Wert
 
@@ -123,6 +128,10 @@ final class ItemsViewModel: ObservableObject {
     func persistPendingChanges() {
         $items.save()
     }
+
+    func removeAll() {
+        $items.deleteAll()
+    }
 }
 ```
 
@@ -136,7 +145,7 @@ func loadAndAppend() {
     let state = Application.modelState(\.items)
 
     // Aktuelle Modelle lesen (führt einen Abruf durch).
-    let current = state.value
+    let current = state.models
 
     // Bei Bedarf direkt auf den zugrunde liegenden ModelContext zugreifen.
     let context = state.context
@@ -148,23 +157,26 @@ func loadAndAppend() {
 }
 ```
 
+> ⚠️ `models` ist **schreibgeschützt** und führt bei **jedem** Lesezugriff einen Live-Abruf aus SwiftData durch. Speichern Sie das Ergebnis in einer lokalen Variablen, wenn Sie es mehrfach verwenden, um wiederholte Abrufe zu vermeiden.
+
 Der zurückgegebene `ModelState` stellt Folgendes bereit:
 
-- `value`: die Modelle, die derzeit dem `FetchDescriptor` des Zustands entsprechen (beim Abrufen wird abgerufen; beim Festlegen werden neue Modelle eingefügt und gespeichert).
+- `models`: eine **schreibgeschützte** Eigenschaft mit den Modellen, die derzeit dem `FetchDescriptor` des Zustands entsprechen. Bei jedem Lesezugriff wird ein Live-Abruf aus SwiftData durchgeführt; es gibt **keinen** Setter.
 - `context`: der zugrunde liegende Main-Actor-`ModelContext`.
 - `insert(_:)`: fügt ein Modell ein und speichert.
 - `delete(_:)`: löscht ein Modell und speichert.
 - `save()`: persistiert alle ausstehenden Änderungen im Kontext.
+- `deleteAll()`: löscht jedes Modell, das dem `FetchDescriptor` des Zustands entspricht, und speichert den Kontext.
 
-## Zurücksetzen
+## Alle löschen
 
-Um jedes von einem `ModelState` verwaltete Modell zu löschen, verwenden Sie `Application.reset(modelState:)`:
+Um jedes von einem `ModelState` verwaltete Modell zu löschen, verwenden Sie `deleteAll()`:
 
 ```swift
-Application.reset(modelState: \.items)
+Application.modelState(\.items).deleteAll()
 ```
 
-Dies ruft jedes Modell ab, das dem `FetchDescriptor` des Zustands entspricht, löscht es und speichert den Kontext.
+Dies ruft jedes Modell ab, das dem `FetchDescriptor` des Zustands entspricht, löscht es und speichert den Kontext. (`deleteAll()` ersetzt das frühere `reset()`; `Application.reset(modelState:)` wurde entfernt.)
 
 ## Wann ModelState vs. SwiftData @Query verwenden
 
@@ -200,7 +212,7 @@ Dies ruft jedes Modell ab, das dem `FetchDescriptor` des Zustands entspricht, l�
 
 - **Verwenden Sie `ModelState` / `@ModelState` für View-Modelle, Dienste und anderen Nicht-View-Code**, der gemeinsamen, per Dependency Injection bereitgestellten Zugriff auf Ihre Modelle benötigt. Es ist ideal dort, wo SwiftUIs `@Environment` und `@Query` nicht verfügbar sind oder wo Sie Modelloperationen außerhalb von View-Code durchführen möchten.
 
-Beachten Sie außerdem, dass der `value`-Setter nur noch nicht persistierte Modelle einfügt – er löscht keine Modelle, die im neuen Wert fehlen. Verwenden Sie `delete(_:)` oder `reset(modelState:)`, um Modelle zu entfernen.
+Beachten Sie außerdem, dass `models` **schreibgeschützt** ist; eine Zuweisung ist nicht möglich. Verwenden Sie `insert(_:)`, `delete(_:)` oder `deleteAll()`, um Modelle hinzuzufügen oder zu entfernen.
 
 ## End-to-End-Beispiel
 
@@ -224,11 +236,17 @@ final class TodoItem {
 }
 
 // 2. Den gemeinsam genutzten ModelContainer und einen ModelState auf Application registrieren.
+private func makeModelContainer() -> ModelContainer {
+    do {
+        return try ModelContainer(for: TodoItem.self)
+    } catch {
+        fatalError("Failed to create the ModelContainer: \(error)")
+    }
+}
+
 extension Application {
     var modelContainer: Dependency<ModelContainer> {
-        modelContainer(
-            try! ModelContainer(for: TodoItem.self)
-        )
+        modelContainer(makeModelContainer())
     }
 
     var todoItems: ModelState<TodoItem> {
@@ -261,7 +279,7 @@ final class TodoListViewModel: ObservableObject {
     }
 
     func clearAll() {
-        Application.reset(modelState: \.todoItems)
+        $todoItems.deleteAll()
     }
 }
 ```
@@ -272,7 +290,7 @@ Für eine reaktive Liste, die an dieselben Daten gebunden ist, steuern Sie die A
 
 - **Reaktive Ansichten verwenden `@Query`**: Reservieren Sie SwiftDatas `@Query` für Ansichten, die sich automatisch aktualisieren müssen, und teilen Sie den von AppState bereitgestellten `ModelContainer` mit ihnen.
 - **Nicht-View-Code verwendet `ModelState`**: Verwenden Sie `@ModelState` und `Application.modelState` in View-Modellen, Diensten und Hintergrundlogik, die gemeinsamen Modellzugriff benötigen.
-- **Explizite Löschungen**: Denken Sie daran, dass die Zuweisung zu `value` nur einfügt; verwenden Sie `delete(_:)` oder `reset(modelState:)`, um Modelle zu entfernen.
+- **Explizite Löschungen**: Denken Sie daran, dass `models` schreibgeschützt ist; verwenden Sie `insert(_:)` zum Hinzufügen und `delete(_:)` oder `deleteAll()` zum Entfernen von Modellen.
 - **Ein gemeinsam genutzter Container**: Registrieren Sie eine einzelne `ModelContainer`-Abhängigkeit und referenzieren Sie sie aus Ihren Modellzuständen und der SwiftUI-Umgebung, damit alles aus demselben Speicher liest und in ihn schreibt.
 
 ## Fazit

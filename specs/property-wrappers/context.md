@@ -9,7 +9,7 @@ Property wrappers are how AppState is actually used day-to-day. The `Application
 ## Related Modules
 
 - `application` — owns the `Application` singleton, the `Cache`, `MutableApplicationState`, and the `state`/`storedState`/`fileState`/`syncState`/`secureState`/`modelState`/`dependency`/`slice`/`dependencySlice` resolvers plus `registerObservation()` / `notifyChange()` that every wrapper calls.
-- `swiftdata` — defines the SwiftData `ModelContainer` dependency and `Application.ModelState` that `@ModelState` projects (`insert`/`delete`/`save`, `FetchDescriptor`).
+- `swiftdata` — defines the SwiftData `ModelContainer` dependency and `Application.ModelState` that `@ModelState` projects (`insert`/`delete`/`save`/`deleteAll`, `FetchDescriptor`); the `@ModelState` wrapped value itself is a read-only `[Model]` live fetch.
 
 ## Design Decisions
 

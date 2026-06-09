@@ -53,7 +53,7 @@ This module exports property wrapper types rather than free functions. The wrapp
 | `@FileState<Value>` | `Value` | `Binding<Value>` | All | `FileManager`-backed; `Value: Codable & Sendable` |
 | `@SyncState<Value>` | `Value` | `Binding<Value>` | Apple only | iCloud `NSUbiquitousKeyValueStore`-backed; `Value: Codable & Sendable`; `@available(watchOS 9.0, *)` |
 | `@SecureState` | `String?` | `Binding<String?>` | Apple only | Keychain-backed |
-| `@ModelState<Model>` | `[Model]` | `Application.ModelState<Model>` | SwiftData (`canImport(SwiftData)`) | `Model: PersistentModel`; projected value exposes `insert`/`delete`/`save` |
+| `@ModelState<Model>` | `[Model]` (read-only) | `Application.ModelState<Model>` | SwiftData (`canImport(SwiftData)`) | `Model: PersistentModel`; wrapped value is read-only (live fetch); mutate via the projected value's `insert`/`delete`/`save`/`deleteAll` |
 
 #### Dependency wrappers
 
@@ -128,8 +128,8 @@ And writing `volume = 0.5` mutates only the `volume` sub-value of the backing Se
 ```
 Given `@ModelState(\.todos) var todos` backed by a SwiftData ModelContainer dependency
 When the view reads `todos`
-Then a FetchDescriptor fetch returns the matching [Todo]
-And `$todos.insert(newTodo)` / `$todos.delete(todo)` / `$todos.save()` mutate the backing context
+Then a FetchDescriptor fetch returns the matching [Todo] (the wrapped value is read-only; it cannot be assigned)
+And `$todos.insert(newTodo)` / `$todos.delete(todo)` / `$todos.save()` / `$todos.deleteAll()` mutate the backing context via the projected value
 And (note) these mutations are not auto-broadcast to SwiftUI; use @Query for reactive views
 ```
 
@@ -154,7 +154,7 @@ And the value is written through to Application
 | Keychain unavailable / missing entitlement | `@SecureState` accessed without Keychain access | `Application` returns the initial value; error logged (handled in the `application` module) |
 | iCloud unavailable | `@SyncState` accessed without iCloud capability | Falls back to the local value |
 | Decode failure | `@StoredState` / `@FileState` data cannot be decoded | Returns the initial value; error logged |
-| SwiftData fetch/save failure | `@ModelState` read or `insert`/`delete`/`save` fails | Surfaced by `Application.ModelState`; see the `swiftdata` spec |
+| SwiftData fetch/save failure | `@ModelState` read or `insert`/`delete`/`save`/`deleteAll` fails | Surfaced by `Application.ModelState`; see the `swiftdata` spec |
 | `nil` parent in optional slice | `@OptionalSlice` whose backing `Value?` is `nil` | Getter returns `nil`; setter is a no-op against the missing parent |
 | Non-`ObservableObjectPublisher` host | Enclosing-instance subscript set on a host without an `ObservableObjectPublisher` | Write is skipped (guard returns) |
 
@@ -172,3 +172,4 @@ And the value is written through to Application
 |---------|------|---------|
 | 1 | 2026-04-21 | Initial spec |
 | 2 | 2026-06-09 | Author full spec; Observation-based reactivity; add `@ModelState` |
+| 2 | 2026-06-09 | `@ModelState` wrapped value is read-only `[Model]` (live fetch); mutate via the projected value's `insert`/`delete`/`save`/`deleteAll` (no wrapped-value assignment) |

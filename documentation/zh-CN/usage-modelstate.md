@@ -8,7 +8,7 @@
 
 - **依赖注入式模型**：注册一次共享的 `ModelContainer`，即可在应用程序中的任何位置访问其模型。
 - **主 Actor 的 `ModelContext`**：从任何代码中获取容器的 `mainContext`，包括无法访问 SwiftUI `@Environment` 的视图模型和服务。
-- **便捷的 CRUD**：通过一个小巧、专注的 API 读取、插入、删除、保存和重置 SwiftData 模型。
+- **便捷的 CRUD**：通过一个小巧、专注的 API 读取、插入、删除、保存以及删除全部 SwiftData 模型。
 - **以 SwiftData 作为唯一数据源**：`ModelState` 不会将结果缓存在 AppState 的缓存中——SwiftData 的 `ModelContext` 仍然是唯一的数据源。
 
 ## 要求与可用性
@@ -25,17 +25,23 @@ SwiftData 功能要求的平台版本高于 AppState 的基础要求。所有 `M
 
 ## 注册 ModelContainer 依赖项
 
-SwiftData 的 `ModelContainer` 是 `Sendable` 的，因此可以作为常规的 AppState `Dependency` 存储。使用 `modelContainer(_:)` 便捷方法在 `Application` 扩展上定义一个容器，该方法会使用自动生成的标识符注册容器，并且只对 autoclosure 求值一次：
+SwiftData 的 `ModelContainer` 是 `Sendable` 的，因此可以作为常规的 AppState `Dependency` 存储。使用 `modelContainer(_:)` 便捷方法在 `Application` 扩展上定义一个容器，该方法会使用自动生成的标识符注册容器，并且只对 autoclosure 求值一次。请通过一个显式处理失败的辅助函数来构建容器，而不是使用 force-try：
 
 ```swift
 import AppState
 import SwiftData
 
+private func makeModelContainer() -> ModelContainer {
+    do {
+        return try ModelContainer(for: Item.self)
+    } catch {
+        fatalError("Failed to create the ModelContainer: \(error)")
+    }
+}
+
 extension Application {
     var modelContainer: Dependency<ModelContainer> {
-        modelContainer(
-            try! ModelContainer(for: Item.self)
-        )
+        modelContainer(makeModelContainer())
     }
 }
 ```
@@ -83,7 +89,7 @@ extension Application {
 
 ## @ModelState 属性包装器
 
-`@ModelState` 属性包装器从 `Application` 的范围中公开一组模型：
+`@ModelState` 属性包装器从 `Application` 的范围中公开一组**只读**的模型集合。请通过投影值（`$items`）进行修改：
 
 ```swift
 import AppState
@@ -94,14 +100,15 @@ final class ItemsViewModel: ObservableObject {
     @ModelState(\.items) var items: [Item]
 
     func addItem(title: String) {
-        // 赋值会插入新的（尚未持久化的）模型并保存。
-        items = items + [Item(title: title)]
+        $items.insert(Item(title: title))
     }
 }
 ```
 
-- **读取**被包装的值会使用该状态的 `FetchDescriptor` 执行一次提取。
-- **赋值**给被包装的值会插入新值中尚未持久化的所有模型，并保存支撑上下文。新值中不存在的现有模型**不会**被删除——请使用 `delete(_:)` 或 `reset()` 来移除。
+- **读取**被包装的值会使用该状态的 `FetchDescriptor` 执行一次提取。被包装的值是只读的 `[Model]`——您无法对其进行赋值。
+- **修改**通过投影值完成：`$items.insert(...)`、`$items.delete(...)`、`$items.save()` 以及 `$items.deleteAll()`。
+
+> ⚠️ 读取被包装的值会在**每次**读取时执行一次实时的 SwiftData 提取。请避免在热点路径中反复读取它——请将结果捕获到一个局部变量中。
 
 ### 通过投影值进行 CRUD
 
@@ -135,8 +142,8 @@ final class ItemsViewModel: ObservableObject {
 func loadAndAppend() {
     let state = Application.modelState(\.items)
 
-    // 读取当前模型（执行一次提取）。
-    let current = state.value
+    // 读取当前模型（每次访问都会执行一次提取）。
+    let current = state.models
 
     // 如果需要，可直接访问支撑的 ModelContext。
     let context = state.context
@@ -148,20 +155,23 @@ func loadAndAppend() {
 }
 ```
 
+> ⚠️ `models` 会在**每次**读取时执行一次实时的 SwiftData 提取。当您需要多次使用结果时，请将其捕获到一个局部变量中，而不要反复读取它。
+
 返回的 `ModelState` 公开了：
 
-- `value`：当前匹配该状态 `FetchDescriptor` 的模型（读取时会提取；设置时会插入新模型并保存）。
+- `models`：一个**只读**属性，返回当前匹配该状态 `FetchDescriptor` 的模型。每次读取都会执行一次全新的提取；它没有 setter。
 - `context`：支撑的主 Actor `ModelContext`。
 - `insert(_:)`：插入一个模型并保存。
 - `delete(_:)`：删除一个模型并保存。
 - `save()`：持久化上下文中任何待处理的更改。
+- `deleteAll()`：删除所有匹配该状态 `FetchDescriptor` 的模型并保存。
 
-## 重置
+## 删除全部模型
 
-要删除由某个 `ModelState` 管理的所有模型，请使用 `Application.reset(modelState:)`：
+要删除由某个 `ModelState` 管理的所有模型，请使用 `deleteAll()`：
 
 ```swift
-Application.reset(modelState: \.items)
+Application.modelState(\.items).deleteAll()
 ```
 
 这会提取所有匹配该状态 `FetchDescriptor` 的模型，将其删除，并保存上下文。
@@ -200,7 +210,7 @@ Application.reset(modelState: \.items)
 
 - **对视图模型、服务以及其他非视图代码使用 `ModelState` / `@ModelState`**，这些代码需要共享的、依赖注入式的模型访问。它非常适合 SwiftUI 的 `@Environment` 和 `@Query` 不可用的场景，或者您希望在视图代码之外执行模型操作的场景。
 
-另请注意，`value` 设置器只会插入尚未持久化的模型——它不会删除新值中不存在的模型。请使用 `delete(_:)` 或 `reset(modelState:)` 来移除模型。
+另请注意，模型集合是只读的——您无法对其进行赋值。请使用 `insert(_:)`、`delete(_:)` 或 `deleteAll()` 来修改底层存储。
 
 ## 端到端示例
 
@@ -224,11 +234,17 @@ final class TodoItem {
 }
 
 // 2. 在 Application 上注册共享的 ModelContainer 和一个 ModelState。
+private func makeModelContainer() -> ModelContainer {
+    do {
+        return try ModelContainer(for: TodoItem.self)
+    } catch {
+        fatalError("Failed to create the ModelContainer: \(error)")
+    }
+}
+
 extension Application {
     var modelContainer: Dependency<ModelContainer> {
-        modelContainer(
-            try! ModelContainer(for: TodoItem.self)
-        )
+        modelContainer(makeModelContainer())
     }
 
     var todoItems: ModelState<TodoItem> {
@@ -261,7 +277,7 @@ final class TodoListViewModel: ObservableObject {
     }
 
     func clearAll() {
-        Application.reset(modelState: \.todoItems)
+        $todoItems.deleteAll()
     }
 }
 ```
@@ -272,7 +288,7 @@ final class TodoListViewModel: ObservableObject {
 
 - **响应式视图使用 `@Query`**：将 SwiftData 的 `@Query` 保留给需要自动更新的视图，并与它们共享 AppState 提供的 `ModelContainer`。
 - **非视图代码使用 `ModelState`**：在需要共享模型访问的视图模型、服务和后台逻辑中使用 `@ModelState` 和 `Application.modelState`。
-- **显式删除**：请记住，赋值给 `value` 只会插入；请使用 `delete(_:)` 或 `reset(modelState:)` 来移除模型。
+- **显式删除**：请记住，模型集合是只读的，无法赋值；请使用 `insert(_:)`、`delete(_:)` 或 `deleteAll()` 来修改模型。
 - **一个共享容器**：注册单个 `ModelContainer` 依赖项，并从您的模型状态和 SwiftUI 环境中引用它，以便所有内容读取和写入同一个存储。
 
 ## 结论

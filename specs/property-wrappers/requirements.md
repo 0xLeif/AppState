@@ -9,7 +9,7 @@ spec: property-wrappers.spec.md
 - As a developer, I want persisted variants (`@StoredState`, `@FileState`, `@SyncState`, `@SecureState`) that behave like `@AppState` but write through to `UserDefaults`, the file system, iCloud, or the Keychain.
 - As a developer, I want to slice a sub-value of a larger state (`@Slice`, `@OptionalSlice`) or expose it read-only (`@Constant`, `@OptionalConstant`).
 - As a developer, I want to resolve injected dependencies (`@AppDependency`, `@ObservedDependency`) and slice them (`@DependencySlice`, `@DependencyConstant`).
-- As a developer, I want to read and mutate SwiftData models from non-view code via `@ModelState`, with `insert`/`delete`/`save` on its projected value.
+- As a developer, I want to read (read-only) and mutate SwiftData models from non-view code via `@ModelState`, with `insert`/`delete`/`save`/`deleteAll` on its projected value (the wrapped value cannot be assigned).
 - As a developer, I want these wrappers to work inside an `ObservableObject` view model and drive its `objectWillChange`.
 
 ## Acceptance Criteria

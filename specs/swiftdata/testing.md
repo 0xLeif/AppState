@@ -9,13 +9,13 @@ spec: swiftdata.spec.md
 `ModelStateTests` (`Tests/AppStateTests/ModelStateTests.swift`), using an in-memory `ModelContainer` (`ModelConfiguration(isStoredInMemoryOnly: true)`) over a `TestItem` `@Model`:
 
 - `testModelContextDependency` — `Application.modelContext(\.modelContainer)` returns the same context across calls; direct insert/save/fetch through that context round-trips.
-- `testInsertAndFetchThroughApplication` — `Application.modelState(\.items)` starts empty, and `insert(_:)` followed by reading `value` returns the persisted models.
-- `testPropertyWrapperInsertViaValueSetter` — assigning to a `@ModelState` wrapped value inserts and saves; reads reflect models inserted elsewhere; works from both a value type and an `ObservableObject` view model.
+- `testInsertAndFetchThroughApplication` — `Application.modelState(\.items)` starts empty, and `insert(_:)` followed by reading `models` returns the persisted models.
+- `testPropertyWrapperReadAndProjectedInsert` — reading a `@ModelState` wrapped value reflects models inserted elsewhere, and `$items.insert(_:)` inserts and saves; works from both a value type and an `ObservableObject` view model.
 - `testProjectedValueCRUD` — `$items.insert`, `$items.delete`, and `$items.save` perform create/delete/update through the projected `ModelState`.
-- `testReset` — after inserting several models, `Application.reset(modelState: \.items)` empties the state.
-- `testFetchDescriptorPredicate` — a `ModelState` configured with a sorting `FetchDescriptor` returns models in ascending order.
+- `testDeleteAll` — after inserting several models, `$items.deleteAll()` empties the state.
+- `testFetchDescriptorSorting` — a `ModelState` configured with a sorting `FetchDescriptor` returns models in ascending order.
 
-`setUp`/`tearDown` reset `\.items` and assert the state is empty, keeping each test isolated against the shared in-memory store.
+`setUp`/`tearDown` call `deleteAll()` on `\.items` and assert the state is empty, keeping each test isolated against the shared in-memory store.
 
 ### Integration Tests
 

@@ -8,7 +8,7 @@
 
 - **Dependency-Injected Models**: Register a shared `ModelContainer` once and access its models anywhere in your app.
 - **Main-Actor `ModelContext`**: Retrieve the container's `mainContext` from any code, including view models and services that have no access to SwiftUI's `@Environment`.
-- **CRUD Convenience**: Read, insert, delete, save, and reset SwiftData models through a small, focused API.
+- **CRUD Convenience**: Read, insert, delete, save, and delete-all SwiftData models through a small, focused API.
 - **SwiftData as the Source of Truth**: `ModelState` does not cache results in AppState's cache — SwiftData's `ModelContext` remains the single source of truth.
 
 ## Requirements & Availability
@@ -25,17 +25,23 @@ On platforms or OS versions where SwiftData is unavailable, these APIs are not c
 
 ## Registering the ModelContainer Dependency
 
-SwiftData's `ModelContainer` is `Sendable`, so it can be stored as a regular AppState `Dependency`. Define one on an `Application` extension using the `modelContainer(_:)` convenience, which registers the container with an automatically generated identifier and evaluates the autoclosure only once:
+SwiftData's `ModelContainer` is `Sendable`, so it can be stored as a regular AppState `Dependency`. Define one on an `Application` extension using the `modelContainer(_:)` convenience, which registers the container with an automatically generated identifier and evaluates the autoclosure only once. Build the container through a helper that handles failures explicitly rather than force-trying:
 
 ```swift
 import AppState
 import SwiftData
 
+private func makeModelContainer() -> ModelContainer {
+    do {
+        return try ModelContainer(for: Item.self)
+    } catch {
+        fatalError("Failed to create the ModelContainer: \(error)")
+    }
+}
+
 extension Application {
     var modelContainer: Dependency<ModelContainer> {
-        modelContainer(
-            try! ModelContainer(for: Item.self)
-        )
+        modelContainer(makeModelContainer())
     }
 }
 ```
@@ -83,7 +89,7 @@ extension Application {
 
 ## The @ModelState Property Wrapper
 
-The `@ModelState` property wrapper exposes a collection of models from the `Application`'s scope:
+The `@ModelState` property wrapper exposes a read-only collection of models from the `Application`'s scope. Mutate through the projected value (`$items`):
 
 ```swift
 import AppState
@@ -94,14 +100,15 @@ final class ItemsViewModel: ObservableObject {
     @ModelState(\.items) var items: [Item]
 
     func addItem(title: String) {
-        // Assigning inserts new (not-yet-persisted) models and saves.
-        items = items + [Item(title: title)]
+        $items.insert(Item(title: title))
     }
 }
 ```
 
-- **Reading** the wrapped value performs a fetch using the state's `FetchDescriptor`.
-- **Assigning** to the wrapped value inserts any models in the new value that are not yet persisted and saves the backing context. Existing models that are absent from the new value are **not** deleted — use `delete(_:)` or `reset()` for removal.
+- **Reading** the wrapped value performs a fetch using the state's `FetchDescriptor`. The wrapped value is a read-only `[Model]` — you cannot assign to it.
+- **Mutating** is done through the projected value: `$items.insert(...)`, `$items.delete(...)`, `$items.save()`, and `$items.deleteAll()`.
+
+> ⚠️ Reading the wrapped value performs a live SwiftData fetch on **every** read. Avoid reading it repeatedly in hot paths — capture the result in a local instead.
 
 ### CRUD via the Projected Value
 
@@ -135,8 +142,8 @@ You can also work with the `ModelState` directly through the `Application` type,
 func loadAndAppend() {
     let state = Application.modelState(\.items)
 
-    // Read the current models (performs a fetch).
-    let current = state.value
+    // Read the current models (performs a fetch on every access).
+    let current = state.models
 
     // Access the backing ModelContext directly if needed.
     let context = state.context
@@ -148,20 +155,23 @@ func loadAndAppend() {
 }
 ```
 
+> ⚠️ `models` performs a live SwiftData fetch on **every** read. Capture it in a local when you need to use the result more than once instead of reading it repeatedly.
+
 The returned `ModelState` exposes:
 
-- `value`: the models currently matching the state's `FetchDescriptor` (getting fetches; setting inserts new models and saves).
+- `models`: a **read-only** property returning the models currently matching the state's `FetchDescriptor`. Every read performs a fresh fetch; there is no setter.
 - `context`: the backing main-actor `ModelContext`.
 - `insert(_:)`: inserts a model and saves.
 - `delete(_:)`: deletes a model and saves.
 - `save()`: persists any pending changes in the context.
+- `deleteAll()`: deletes every model matching the state's `FetchDescriptor` and saves.
 
-## Resetting
+## Deleting All Models
 
-To delete every model managed by a `ModelState`, use `Application.reset(modelState:)`:
+To delete every model managed by a `ModelState`, use `deleteAll()`:
 
 ```swift
-Application.reset(modelState: \.items)
+Application.modelState(\.items).deleteAll()
 ```
 
 This fetches every model matching the state's `FetchDescriptor`, deletes it, and saves the context.
@@ -200,7 +210,7 @@ Mutations made through `ModelState` and `@ModelState` are **not** automatically 
 
 - **Use `ModelState` / `@ModelState` for view models, services, and other non-view code** that needs shared, dependency-injected access to your models. It is ideal where SwiftUI's `@Environment` and `@Query` are not available, or where you want to perform model operations outside of view code.
 
-Also note that the `value` setter only inserts not-yet-persisted models — it does not delete models that are absent from the new value. Use `delete(_:)` or `reset(modelState:)` to remove models.
+Also note that the models collection is read-only — you cannot assign to it. Use `insert(_:)`, `delete(_:)`, or `deleteAll()` to mutate the underlying store.
 
 ## End-to-End Example
 
@@ -224,11 +234,17 @@ final class TodoItem {
 }
 
 // 2. Register the shared ModelContainer and a ModelState on Application.
+private func makeModelContainer() -> ModelContainer {
+    do {
+        return try ModelContainer(for: TodoItem.self)
+    } catch {
+        fatalError("Failed to create the ModelContainer: \(error)")
+    }
+}
+
 extension Application {
     var modelContainer: Dependency<ModelContainer> {
-        modelContainer(
-            try! ModelContainer(for: TodoItem.self)
-        )
+        modelContainer(makeModelContainer())
     }
 
     var todoItems: ModelState<TodoItem> {
@@ -261,7 +277,7 @@ final class TodoListViewModel: ObservableObject {
     }
 
     func clearAll() {
-        Application.reset(modelState: \.todoItems)
+        $todoItems.deleteAll()
     }
 }
 ```
@@ -272,7 +288,7 @@ For a reactive list bound to the same data, drive the view with SwiftData's `@Qu
 
 - **Reactive Views Use `@Query`**: Reserve SwiftData's `@Query` for views that need to update automatically, and share the AppState-provided `ModelContainer` with them.
 - **Non-View Code Uses `ModelState`**: Use `@ModelState` and `Application.modelState` in view models, services, and background logic that need shared model access.
-- **Explicit Deletes**: Remember that assigning to `value` only inserts; use `delete(_:)` or `reset(modelState:)` to remove models.
+- **Explicit Mutation**: The models collection is read-only; use `insert(_:)`, `delete(_:)`, or `deleteAll()` to change the underlying store.
 - **One Shared Container**: Register a single `ModelContainer` dependency and reference it from your model states and SwiftUI environment so everything reads and writes the same store.
 
 ## Conclusion

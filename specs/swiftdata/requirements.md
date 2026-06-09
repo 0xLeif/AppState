@@ -6,15 +6,15 @@ spec: swiftdata.spec.md
 
 - As a developer, I want to register a SwiftData `ModelContainer` as an AppState dependency and resolve its `ModelContext` anywhere, including in view models and services.
 - As a developer, I want to define a collection of `@Model` objects once on an `Application` extension and access it by key path through `@ModelState`.
-- As a developer, I want to insert, delete, fetch, save, and reset persisted models through a simple, dependency-injected API.
+- As a developer, I want to insert, delete, fetch, save, and delete-all persisted models through a simple, dependency-injected API.
 - As a developer, I want a custom `FetchDescriptor` (filtering/sorting) to shape what a `ModelState` exposes.
 
 ## Acceptance Criteria
 
 - `Application.modelContext(\.container)` returns the backing container's `mainContext`, and repeated calls return the same context.
-- Reading `ModelState.value` performs a live fetch using the state's `FetchDescriptor`; an empty result returns `[]`.
-- `insert(_:)`, `delete(_:)`, `save()`, and assigning `value` persist through the container's `mainContext`.
-- `Application.reset(modelState:)` deletes every model matching the `FetchDescriptor` and saves, after which `value` is empty.
+- Reading `ModelState.models` performs a live fetch using the state's `FetchDescriptor`; an empty result returns `[]`. `models` is read-only.
+- `insert(_:)`, `delete(_:)`, and `save()` persist through the container's `mainContext`.
+- `ModelState.deleteAll()` deletes every model matching the `FetchDescriptor` and saves, after which `models` is empty.
 - A `ModelState` configured with a sorting `FetchDescriptor` returns models in the specified order.
 
 ## Constraints
@@ -27,4 +27,4 @@ spec: swiftdata.spec.md
 
 - Automatic broadcasting of model mutations to SwiftUI (use SwiftData's `@Query` for reactive views).
 - Caching of fetched model values in AppState's `Cache` (the `ModelContext` is the source of truth).
-- Deleting models absent from an assigned `value` array (the setter only inserts new models; use `delete(_:)`/`reset()`).
+- Assigning to `ModelState.models` or the `@ModelState` wrapped value (both are read-only; mutate via `insert(_:)`/`delete(_:)`/`deleteAll()`).

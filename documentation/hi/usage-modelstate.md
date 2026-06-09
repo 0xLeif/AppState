@@ -8,7 +8,7 @@
 
 - **निर्भरता-इंजेक्टेड मॉडल**: एक साझा `ModelContainer` को एक बार पंजीकृत करें और अपने ऐप में कहीं भी इसके मॉडलों तक पहुँचें।
 - **मुख्य-अभिनेता `ModelContext`**: किसी भी कोड से कंटेनर का `mainContext` पुनर्प्राप्त करें, जिसमें वे व्यू मॉडल और सेवाएँ शामिल हैं जिनकी SwiftUI के `@Environment` तक कोई पहुँच नहीं है।
-- **CRUD सुविधा**: एक छोटे, केंद्रित API के माध्यम से SwiftData मॉडलों को पढ़ें, सम्मिलित करें, हटाएँ, सहेजें और रीसेट करें।
+- **CRUD सुविधा**: एक छोटे, केंद्रित API के माध्यम से SwiftData मॉडलों को पढ़ें, सम्मिलित करें, हटाएँ, सहेजें और सभी को हटाएँ।
 - **सत्य के स्रोत के रूप में SwiftData**: `ModelState` AppState के कैश में परिणामों को कैश नहीं करता है — SwiftData का `ModelContext` एकमात्र सत्य का स्रोत बना रहता है।
 
 ## आवश्यकताएँ और उपलब्धता
@@ -25,17 +25,23 @@ SwiftData सुविधाओं के लिए AppState की आधार
 
 ## ModelContainer निर्भरता को पंजीकृत करना
 
-SwiftData का `ModelContainer` `Sendable` है, इसलिए इसे एक सामान्य AppState `Dependency` के रूप में संग्रहीत किया जा सकता है। `modelContainer(_:)` सुविधा का उपयोग करके एक `Application` एक्सटेंशन पर एक परिभाषित करें, जो कंटेनर को एक स्वचालित रूप से उत्पन्न पहचानकर्ता के साथ पंजीकृत करता है और ऑटोक्लोज़र का मूल्यांकन केवल एक बार करता है:
+SwiftData का `ModelContainer` `Sendable` है, इसलिए इसे एक सामान्य AppState `Dependency` के रूप में संग्रहीत किया जा सकता है। `modelContainer(_:)` सुविधा का उपयोग करके एक `Application` एक्सटेंशन पर एक परिभाषित करें, जो कंटेनर को एक स्वचालित रूप से उत्पन्न पहचानकर्ता के साथ पंजीकृत करता है और ऑटोक्लोज़र का मूल्यांकन केवल एक बार करता है। कंटेनर को एक हेल्पर के माध्यम से बनाएँ जो `try!` के बजाय विफलताओं को स्पष्ट रूप से संभालता है:
 
 ```swift
 import AppState
 import SwiftData
 
+private func makeModelContainer() -> ModelContainer {
+    do {
+        return try ModelContainer(for: Item.self)
+    } catch {
+        fatalError("Failed to create the ModelContainer: \(error)")
+    }
+}
+
 extension Application {
     var modelContainer: Dependency<ModelContainer> {
-        modelContainer(
-            try! ModelContainer(for: Item.self)
-        )
+        modelContainer(makeModelContainer())
     }
 }
 ```
@@ -83,7 +89,7 @@ extension Application {
 
 ## @ModelState प्रॉपर्टी रैपर
 
-`@ModelState` प्रॉपर्टी रैपर `Application` के दायरे से मॉडलों के एक संग्रह को उजागर करता है:
+`@ModelState` प्रॉपर्टी रैपर `Application` के दायरे से मॉडलों के एक केवल-पढ़ने योग्य संग्रह को उजागर करता है। प्रोजेक्टेड मान (`$items`) के माध्यम से बदलाव करें:
 
 ```swift
 import AppState
@@ -94,14 +100,15 @@ final class ItemsViewModel: ObservableObject {
     @ModelState(\.items) var items: [Item]
 
     func addItem(title: String) {
-        // असाइन करने से नए (अभी तक संग्रहीत नहीं किए गए) मॉडल सम्मिलित होते हैं और सहेजे जाते हैं।
-        items = items + [Item(title: title)]
+        $items.insert(Item(title: title))
     }
 }
 ```
 
-- रैप किए गए मान को **पढ़ना** स्थिति के `FetchDescriptor` का उपयोग करके एक फ़ेच करता है।
-- रैप किए गए मान को **असाइन करना** नए मान में उन किसी भी मॉडल को सम्मिलित करता है जो अभी तक संग्रहीत नहीं हैं और समर्थक संदर्भ को सहेजता है। नए मान से अनुपस्थित मौजूदा मॉडल **नहीं** हटाए जाते हैं — हटाने के लिए `delete(_:)` या `reset()` का उपयोग करें।
+- रैप किए गए मान को **पढ़ना** स्थिति के `FetchDescriptor` का उपयोग करके एक फ़ेच करता है। रैप किया गया मान एक केवल-पढ़ने योग्य `[Model]` है — आप इसे असाइन नहीं कर सकते।
+- **बदलाव** प्रोजेक्टेड मान के माध्यम से किए जाते हैं: `$items.insert(...)`, `$items.delete(...)`, `$items.save()`, और `$items.deleteAll()`।
+
+> ⚠️ रैप किए गए मान को पढ़ना **हर** बार पढ़ने पर एक लाइव SwiftData फ़ेच करता है। हॉट पाथ में इसे बार-बार पढ़ने से बचें — इसके बजाय परिणाम को एक स्थानीय चर में कैप्चर करें।
 
 ### प्रोजेक्टेड मान के माध्यम से CRUD
 
@@ -135,8 +142,8 @@ final class ItemsViewModel: ObservableObject {
 func loadAndAppend() {
     let state = Application.modelState(\.items)
 
-    // वर्तमान मॉडल पढ़ें (एक फ़ेच करता है)।
-    let current = state.value
+    // वर्तमान मॉडल पढ़ें (हर पहुँच पर एक फ़ेच करता है)।
+    let current = state.models
 
     // यदि आवश्यक हो तो सीधे समर्थक ModelContext तक पहुँचें।
     let context = state.context
@@ -148,20 +155,23 @@ func loadAndAppend() {
 }
 ```
 
+> ⚠️ `models` **हर** बार पढ़ने पर एक लाइव SwiftData फ़ेच करता है। जब आपको परिणाम का एक से अधिक बार उपयोग करना हो, तो इसे बार-बार पढ़ने के बजाय एक स्थानीय चर में कैप्चर करें।
+
 लौटाया गया `ModelState` उजागर करता है:
 
-- `value`: वर्तमान में स्थिति के `FetchDescriptor` से मेल खाने वाले मॉडल (प्राप्त करना फ़ेच करता है; सेट करना नए मॉडल सम्मिलित करता है और सहेजता है)।
+- `models`: एक **केवल-पढ़ने योग्य** प्रॉपर्टी जो वर्तमान में स्थिति के `FetchDescriptor` से मेल खाने वाले मॉडल लौटाती है। हर पठन एक नया फ़ेच करता है; कोई सेटर नहीं है।
 - `context`: समर्थक मुख्य-अभिनेता `ModelContext`।
 - `insert(_:)`: एक मॉडल सम्मिलित करता है और सहेजता है।
 - `delete(_:)`: एक मॉडल हटाता है और सहेजता है।
 - `save()`: संदर्भ में किसी भी लंबित परिवर्तन को संग्रहीत करता है।
+- `deleteAll()`: स्थिति के `FetchDescriptor` से मेल खाने वाले हर मॉडल को हटाता है और सहेजता है।
 
-## रीसेट करना
+## सभी मॉडल हटाना
 
-किसी `ModelState` द्वारा प्रबंधित हर मॉडल को हटाने के लिए, `Application.reset(modelState:)` का उपयोग करें:
+किसी `ModelState` द्वारा प्रबंधित हर मॉडल को हटाने के लिए, `deleteAll()` का उपयोग करें:
 
 ```swift
-Application.reset(modelState: \.items)
+Application.modelState(\.items).deleteAll()
 ```
 
 यह स्थिति के `FetchDescriptor` से मेल खाने वाले हर मॉडल को फ़ेच करता है, उसे हटाता है और संदर्भ को सहेजता है।
@@ -200,7 +210,7 @@ Application.reset(modelState: \.items)
 
 - **व्यू मॉडल, सेवाओं और अन्य गैर-व्यू कोड के लिए `ModelState` / `@ModelState` का उपयोग करें** जिन्हें आपके मॉडलों तक साझा, निर्भरता-इंजेक्टेड पहुँच की आवश्यकता है। यह वहाँ आदर्श है जहाँ SwiftUI के `@Environment` और `@Query` उपलब्ध नहीं हैं, या जहाँ आप व्यू कोड के बाहर मॉडल संचालन करना चाहते हैं।
 
-यह भी ध्यान दें कि `value` सेटर केवल अभी तक संग्रहीत नहीं किए गए मॉडलों को सम्मिलित करता है — यह उन मॉडलों को नहीं हटाता है जो नए मान से अनुपस्थित हैं। मॉडल हटाने के लिए `delete(_:)` या `reset(modelState:)` का उपयोग करें।
+यह भी ध्यान दें कि रैप किया गया मान केवल-पढ़ने योग्य है और इसे असाइन नहीं किया जा सकता। मॉडलों को बदलने के लिए प्रोजेक्टेड मान का उपयोग करें: `$items.insert(...)`, `$items.delete(...)`, `$items.save()`, और `$items.deleteAll()`।
 
 ## एंड-टू-एंड उदाहरण
 
@@ -224,11 +234,17 @@ final class TodoItem {
 }
 
 // 2. Application पर साझा ModelContainer और एक ModelState पंजीकृत करें।
+private func makeModelContainer() -> ModelContainer {
+    do {
+        return try ModelContainer(for: TodoItem.self)
+    } catch {
+        fatalError("Failed to create the ModelContainer: \(error)")
+    }
+}
+
 extension Application {
     var modelContainer: Dependency<ModelContainer> {
-        modelContainer(
-            try! ModelContainer(for: TodoItem.self)
-        )
+        modelContainer(makeModelContainer())
     }
 
     var todoItems: ModelState<TodoItem> {
@@ -261,7 +277,7 @@ final class TodoListViewModel: ObservableObject {
     }
 
     func clearAll() {
-        Application.reset(modelState: \.todoItems)
+        $todoItems.deleteAll()
     }
 }
 ```
@@ -272,7 +288,7 @@ final class TodoListViewModel: ObservableObject {
 
 - **प्रतिक्रियाशील दृश्य `@Query` का उपयोग करते हैं**: SwiftData के `@Query` को उन दृश्यों के लिए आरक्षित रखें जिन्हें स्वचालित रूप से अपडेट होने की आवश्यकता है, और उनके साथ AppState द्वारा प्रदान किए गए `ModelContainer` को साझा करें।
 - **गैर-व्यू कोड `ModelState` का उपयोग करता है**: व्यू मॉडल, सेवाओं और पृष्ठभूमि तर्क में `@ModelState` और `Application.modelState` का उपयोग करें जिन्हें साझा मॉडल पहुँच की आवश्यकता है।
-- **स्पष्ट विलोपन**: याद रखें कि `value` को असाइन करना केवल सम्मिलित करता है; मॉडल हटाने के लिए `delete(_:)` या `reset(modelState:)` का उपयोग करें।
+- **स्पष्ट विलोपन**: याद रखें कि रैप किया गया मान केवल-पढ़ने योग्य है; मॉडल हटाने के लिए `$items.delete(_:)` या `$items.deleteAll()` का उपयोग करें।
 - **एक साझा कंटेनर**: एक ही `ModelContainer` निर्भरता पंजीकृत करें और इसे अपनी मॉडल स्थितियों और SwiftUI वातावरण से संदर्भित करें ताकि सब कुछ एक ही स्टोर को पढ़े और लिखे।
 
 ## निष्कर्ष
