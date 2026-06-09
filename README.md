@@ -89,6 +89,7 @@ Here’s a detailed breakdown of **AppState**'s documentation:
 - 🍎 [ModelState Usage Guide](documentation/en/usage-modelstate.md): Manage SwiftData `@Model` objects through a shared `ModelContainer`.
 - [Keychain SecureState Usage](documentation/en/usage-securestate.md): Store sensitive data securely using the Keychain.
 - [iCloud Syncing with SyncState](documentation/en/usage-syncstate.md): Keep state synchronized across devices using iCloud.
+- [Upgrading to AppState 3.0](documentation/en/upgrade-to-v3.md): Breaking changes and how to migrate from the 2.x release line.
 - [FAQ](documentation/en/faq.md): Answers to common questions when using **AppState**.
 - [Constant Usage Guide](documentation/en/usage-constant.md): Access read-only values from your state.
 - [ObservedDependency Usage Guide](documentation/en/usage-observeddependency.md): Work with `ObservableObject` dependencies in your views.
