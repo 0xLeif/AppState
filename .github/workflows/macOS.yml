@@ -19,11 +19,11 @@ jobs:
         swift-version: '6.1.0'
     - uses: actions/checkout@v4
     - name: Build
-      run: swift build -v
+      run: swift build -v -Xswiftc -warnings-as-errors
     - name: Run tests
-      run: swift test -v
+      run: swift test -v -Xswiftc -warnings-as-errors
     - name: Build SwiftData example
-      run: swift build -v
+      run: swift build -v -Xswiftc -warnings-as-errors
       working-directory: Examples/SwiftDataExample
     - name: Run SwiftData example
       run: swift run
