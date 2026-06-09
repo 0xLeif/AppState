@@ -123,6 +123,38 @@ struct LargeDataView: View {
 }
 ```
 
+## ModelState
+
+🍎 `ModelState` gère les objets SwiftData `@Model` à travers AppState en injectant un `ModelContainer` partagé. Il est destiné aux modèles de vue, aux services et à tout autre code hors-vue ; pour les vues réactives, utilisez le `@Query` de SwiftData avec le `ModelContainer` fourni par AppState. Les fonctionnalités de SwiftData nécessitent iOS 17+ / macOS 14+.
+
+### Exemple
+
+```swift
+import AppState
+import SwiftData
+
+extension Application {
+    var modelContainer: Dependency<ModelContainer> {
+        modelContainer(try! ModelContainer(for: Item.self))
+    }
+
+    var items: ModelState<Item> {
+        modelState(container: \.modelContainer)
+    }
+}
+
+@MainActor
+final class ItemsViewModel: ObservableObject {
+    @ModelState(\.items) var items: [Item]
+
+    func add(_ item: Item) {
+        $items.insert(item)
+    }
+}
+```
+
+Pour plus de détails, consultez le [Guide d'Utilisation de ModelState](usage-modelstate.md).
+
 ## SecureState
 
 `SecureState` stocke les données sensibles de manière sécurisée dans le Trousseau.
@@ -206,6 +238,7 @@ struct SlicingView: View {
 Après vous être familiarisé avec l'utilisation de base, vous pouvez explorer des sujets plus avancés :
 
 - Explorez l'utilisation de **FileState** pour persister de grandes quantités de données dans des fichiers dans le [Guide d'Utilisation de FileState](usage-filestate.md).
+- 🍎 Apprenez à gérer les modèles **SwiftData** à travers AppState dans le [Guide d'Utilisation de ModelState](usage-modelstate.md).
 - Apprenez-en davantage sur les **Constantes** et comment les utiliser pour des valeurs immuables dans l'état de votre application dans le [Guide d'Utilisation des Constantes](usage-constant.md).
 - Examinez comment **Dependency** est utilisé dans AppState pour gérer les services partagés, et consultez des exemples dans le [Guide d'Utilisation de la Dépendance d'État](usage-state-dependency.md).
 - Approfondissez les techniques avancées de **SwiftUI** comme l'utilisation de `ObservedDependency` pour gérer les dépendances observables dans les vues dans le [Guide d'Utilisation de ObservedDependency](usage-observeddependency.md).

@@ -123,6 +123,38 @@ struct LargeDataView: View {
 }
 ```
 
+## ModelState
+
+🍎 `ModelState` gerencia objetos `@Model` do SwiftData através do AppState, injetando um `ModelContainer` compartilhado. Ele é destinado a view models, serviços e outro código fora de visualizações; para visualizações reativas, use o `@Query` do SwiftData junto com o `ModelContainer` fornecido pelo AppState. Os recursos do SwiftData exigem iOS 17+ / macOS 14+.
+
+### Exemplo
+
+```swift
+import AppState
+import SwiftData
+
+extension Application {
+    var modelContainer: Dependency<ModelContainer> {
+        modelContainer(try! ModelContainer(for: Item.self))
+    }
+
+    var items: ModelState<Item> {
+        modelState(container: \.modelContainer)
+    }
+}
+
+@MainActor
+final class ItemsViewModel: ObservableObject {
+    @ModelState(\.items) var items: [Item]
+
+    func add(_ item: Item) {
+        $items.insert(item)
+    }
+}
+```
+
+Para mais detalhes, consulte o [Guia de Uso do ModelState](usage-modelstate.md).
+
 ## SecureState
 
 `SecureState` armazena dados sensíveis de forma segura no Keychain.
@@ -206,6 +238,7 @@ struct SlicingView: View {
 Depois de se familiarizar com o uso básico, você pode explorar tópicos mais avançados:
 
 - Explore o uso de **FileState** para persistir grandes quantidades de dados em arquivos no [Guia de Uso do FileState](usage-filestate.md).
+- 🍎 Aprenda como gerenciar modelos do **SwiftData** através do AppState no [Guia de Uso do ModelState](usage-modelstate.md).
 - Aprenda sobre **Constantes** e como usá-las para valores imutáveis no estado da sua aplicação no [Guia de Uso de Constantes](usage-constant.md).
 - Investigue como a **Dependência** é usada no AppState para lidar com serviços compartilhados e veja exemplos no [Guia de Uso de Dependência de Estado](usage-state-dependency.md).
 - Aprofunde-se em técnicas avançadas de **SwiftUI**, como o uso de `ObservedDependency` para gerenciar dependências observáveis em visualizações, no [Guia de Uso de ObservedDependency](usage-observeddependency.md).

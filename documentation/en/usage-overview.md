@@ -123,6 +123,38 @@ struct LargeDataView: View {
 }
 ```
 
+## ModelState
+
+🍎 `ModelState` manages SwiftData `@Model` objects through AppState by injecting a shared `ModelContainer`. It is intended for view models, services, and other non-view code; for reactive views, use SwiftData's `@Query` together with the AppState-provided `ModelContainer`. SwiftData features require iOS 17+ / macOS 14+.
+
+### Example
+
+```swift
+import AppState
+import SwiftData
+
+extension Application {
+    var modelContainer: Dependency<ModelContainer> {
+        modelContainer(try! ModelContainer(for: Item.self))
+    }
+
+    var items: ModelState<Item> {
+        modelState(container: \.modelContainer)
+    }
+}
+
+@MainActor
+final class ItemsViewModel: ObservableObject {
+    @ModelState(\.items) var items: [Item]
+
+    func add(_ item: Item) {
+        $items.insert(item)
+    }
+}
+```
+
+For more details, see the [ModelState Usage Guide](usage-modelstate.md).
+
 ## SecureState
 
 `SecureState` stores sensitive data securely in the Keychain.
@@ -206,6 +238,7 @@ struct SlicingView: View {
 After familiarizing yourself with the basic usage, you can explore more advanced topics:
 
 - Explore using **FileState** for persisting large amounts of data to files in the [FileState Usage Guide](usage-filestate.md).
+- 🍎 Learn how to manage **SwiftData** models through AppState in the [ModelState Usage Guide](usage-modelstate.md).
 - Learn about **Constants** and how to use them for immutable values in your app's state in the [Constant Usage Guide](usage-constant.md).
 - Investigate how **Dependency** is used in AppState to handle shared services, and see examples in the [State Dependency Usage Guide](usage-state-dependency.md).
 - Delve deeper into **Advanced SwiftUI** techniques like using `ObservedDependency` for managing observable dependencies in views in the [ObservedDependency Usage Guide](usage-observeddependency.md).

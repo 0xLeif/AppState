@@ -1,0 +1,15 @@
+# fledge.toml — project task definitions
+# Docs: https://github.com/CorvidLabs/fledge#task-runner
+# Detected project type: swift
+
+[tasks]
+build = "swift build"
+test = "swift test"
+# Treat warnings as errors to enforce strict Swift 6 cleanliness (mirrors CI).
+lint = "swift build -Xswiftc -warnings-as-errors && swift test -Xswiftc -warnings-as-errors"
+# Build and run the SwiftData example as a smoke test (Apple platforms only).
+example = "swift run --package-path Examples/SwiftDataExample"
+
+[lanes.ci]
+description = "Run the full CI pipeline (strict warnings, tests, example smoke test)"
+steps = ["lint", "example"]

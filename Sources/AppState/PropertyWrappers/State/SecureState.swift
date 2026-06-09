@@ -9,8 +9,9 @@ import SwiftUI
  As a `DynamicProperty`, SwiftUI will update the owning view whenever the value changes.
  */
 @propertyWrapper public struct SecureState: DynamicProperty {
-    /// Holds the singleton instance of `Application`.
-    @ObservedObject private var app: Application = Application.shared
+    /// The shared `Application` instance backing this state.
+    @MainActor
+    private var app: Application { Application.shared }
 
     /// Path for accessing `SecureState` from Application.
     private let keyPath: KeyPath<Application, Application.SecureState>
@@ -29,7 +30,9 @@ import SwiftUI
     @MainActor
     public var wrappedValue: String? {
         get {
-            Application.secureState(
+            app.registerObservation()
+
+            return Application.secureState(
                 keyPath,
                 fileID,
                 function,

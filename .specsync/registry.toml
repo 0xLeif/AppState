@@ -1,0 +1,7 @@
+[registry]
+name = "AppState"
+
+[specs]
+application = "specs/application/application.spec.md"
+property-wrappers = "specs/property-wrappers/property-wrappers.spec.md"
+swiftdata = "specs/swiftdata/swiftdata.spec.md"

@@ -1,0 +1,12 @@
+# spec-sync v4 configuration
+# Docs: https://github.com/CorvidLabs/spec-sync
+
+specs_dir = "specs"
+source_dirs = ["Sources"]
+exclude_dirs = []
+exclude_patterns = []
+required_sections = ["Purpose", "Public API", "Invariants", "Behavioral Examples", "Error Cases", "Dependencies", "Change Log"]
+enforcement = "strict"
+
+[lifecycle]
+track_history = false

@@ -123,6 +123,38 @@ struct LargeDataView: View {
 }
 ```
 
+## ModelState
+
+🍎 `ModelState` управляет объектами SwiftData `@Model` через AppState, внедряя общий `ModelContainer`. Он предназначен для моделей представлений, служб и другого кода, не относящегося к представлениям; для реактивных представлений используйте `@Query` SwiftData вместе с предоставляемым AppState `ModelContainer`. Функции SwiftData требуют iOS 17+ / macOS 14+.
+
+### Пример
+
+```swift
+import AppState
+import SwiftData
+
+extension Application {
+    var modelContainer: Dependency<ModelContainer> {
+        modelContainer(try! ModelContainer(for: Item.self))
+    }
+
+    var items: ModelState<Item> {
+        modelState(container: \.modelContainer)
+    }
+}
+
+@MainActor
+final class ItemsViewModel: ObservableObject {
+    @ModelState(\.items) var items: [Item]
+
+    func add(_ item: Item) {
+        $items.insert(item)
+    }
+}
+```
+
+Для получения дополнительных сведений см. [Руководство по использованию ModelState](usage-modelstate.md).
+
 ## SecureState
 
 `SecureState` надежно хранит конфиденциальные данные в связке ключей.
@@ -206,6 +238,7 @@ struct SlicingView: View {
 После ознакомления с основами использования вы можете изучить более сложные темы:
 
 - Изучите использование **FileState** для сохранения больших объемов данных в файлы в [Руководстве по использованию FileState](usage-filestate.md).
+- 🍎 Узнайте, как управлять моделями **SwiftData** через AppState, в [Руководстве по использованию ModelState](usage-modelstate.md).
 - Узнайте о **константах** и о том, как их использовать для неизменяемых значений в состоянии вашего приложения, в [Руководстве по использованию констант](usage-constant.md).
 - Узнайте, как **Dependency** используется в AppState для обработки общих служб, и посмотрите примеры в [Руководстве по использованию зависимостей состояния](usage-state-dependency.md).
 - Углубитесь в более сложные методы **SwiftUI**, такие как использование `ObservedDependency` для управления наблюдаемыми зависимостями в представлениях, в [Руководстве по использованию ObservedDependency](usage-observeddependency.md).
