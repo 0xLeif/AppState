@@ -139,7 +139,7 @@ open class Application: NSObject {
     /// - Parameter object: The ObservableObject to observe
     private func consume<Object: ObservableObject>(
         object: Object
-    ) where ObjectWillChangePublisher == ObservableObjectPublisher {
+    ) {
         bag.insert(
             object.objectWillChange.sink(
                 receiveCompletion: { _ in },
