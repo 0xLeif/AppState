@@ -40,6 +40,13 @@ macro instead of conforming to `ObservableObject`.
 SwiftUI views and views update as before. View models that conform to
 `ObservableObject` and host these wrappers are still supported.
 
+Why the change? AppState's observation has always been coarse: under the previous
+`ObservableObject` design, any change to the shared registry notified every
+observer. The move to `@Observable` keeps that behavior but adopts the modern,
+standard-library Observation framework (available on Linux and Windows too) and
+removes the `NSObject` + Combine `ObservableObject` coupling. Finer-grained,
+per-key observation is a possible future enhancement and is not part of 3.0.
+
 What changed:
 
 - `Application` no longer conforms to `ObservableObject`, so
