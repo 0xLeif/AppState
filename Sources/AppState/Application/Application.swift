@@ -42,8 +42,13 @@ open class Application: NSObject {
     /// State and dependency values live in the untracked ``cache``. Reading this anchor (via
     /// ``registerObservation()``) registers the current Observation tracking scope — e.g. a SwiftUI
     /// view body — as dependent on AppState, and mutating it (via ``notifyChange()``) tells those
-    /// observers to update. It is main-actor isolated so the read and the mutation never race.
-    @MainActor
+    /// observers to update.
+    ///
+    /// Thread-safety: every mutation funnels through ``notifyChange()``, which AppState only invokes
+    /// from its main-actor setters and from the cache observer below — and that observer fires
+    /// *synchronously* during those same main-actor cache mutations. Reads occur on the main actor
+    /// (SwiftUI bodies and the `@MainActor` property wrappers). The mutation itself is applied through
+    /// the synthesized `@Observable` registrar, which is `Sendable` and internally synchronized.
     private var changeAnchor: Int = 0
 
     #if !os(Linux) && !os(Windows)
@@ -85,7 +90,6 @@ open class Application: NSObject {
     /// The discarded read of ``changeAnchor`` is intentional and load-bearing: the synthesized
     /// `@Observable` getter calls the observation registrar's `access`, which is what records the
     /// dependency. Do not remove it.
-    @MainActor
     func registerObservation() {
         _ = changeAnchor
     }
@@ -94,8 +98,7 @@ open class Application: NSObject {
     ///
     /// AppState's own setters call this automatically. Call it yourself when you mutate state outside
     /// of those setters — for example from a `didChangeExternally(notification:)` override that reacts
-    /// to incoming iCloud changes.
-    @MainActor
+    /// to incoming iCloud changes. See ``changeAnchor`` for the thread-safety invariant.
     public func notifyChange() {
         changeAnchor &+= 1
     }
@@ -151,11 +154,7 @@ open class Application: NSObject {
             object.objectWillChange.sink(
                 receiveCompletion: { _ in },
                 receiveValue: { [weak self] _ in
-                    // The cache only mutates on the main actor (every AppState setter is
-                    // `@MainActor`), so its change notification is delivered there as well.
-                    MainActor.assumeIsolated {
-                        self?.notifyChange()
-                    }
+                    self?.notifyChange()
                 }
             )
         )
