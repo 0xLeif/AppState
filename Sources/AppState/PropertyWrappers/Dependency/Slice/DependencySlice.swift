@@ -4,7 +4,7 @@ import SwiftUI
 
 /// A property wrapper that provides access to a specific part of the AppState's dependencies.
 @propertyWrapper public struct DependencySlice<Value: Sendable, SliceValue: Sendable> {
-    /// The shared `Application` instance backing this state.
+    /// The shared `Application` instance backing this dependency.
     @MainActor
     private var app: Application { Application.shared }
 

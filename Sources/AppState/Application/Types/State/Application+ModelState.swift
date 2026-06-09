@@ -48,7 +48,7 @@ extension Application {
                 do {
                     return try context.fetch(fetchDescriptor())
                 } catch {
-                    Application.log(
+                    log(
                         error: error,
                         message: "\(ModelState.emoji) ModelState Fetching",
                         fileID: #fileID,
@@ -129,7 +129,7 @@ extension Application {
 
                 save(context: context, action: "Resetting")
             } catch {
-                Application.log(
+                log(
                     error: error,
                     message: "\(ModelState.emoji) ModelState Resetting",
                     fileID: #fileID,
@@ -147,7 +147,7 @@ extension Application {
             do {
                 try context.save()
             } catch {
-                Application.log(
+                log(
                     error: error,
                     message: "\(ModelState.emoji) ModelState \(action)",
                     fileID: #fileID,
