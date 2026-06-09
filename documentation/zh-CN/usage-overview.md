@@ -123,6 +123,38 @@ struct LargeDataView: View {
 }
 ```
 
+## ModelState
+
+🍎 `ModelState` 通过注入共享的 `ModelContainer`，借助 AppState 管理 SwiftData 的 `@Model` 对象。它适用于视图模型、服务以及其他非视图代码；对于响应式视图，请将 SwiftData 的 `@Query` 与 AppState 提供的 `ModelContainer` 一起使用。SwiftData 功能要求 iOS 17+ / macOS 14+。
+
+### 示例
+
+```swift
+import AppState
+import SwiftData
+
+extension Application {
+    var modelContainer: Dependency<ModelContainer> {
+        modelContainer(try! ModelContainer(for: Item.self))
+    }
+
+    var items: ModelState<Item> {
+        modelState(container: \.modelContainer)
+    }
+}
+
+@MainActor
+final class ItemsViewModel: ObservableObject {
+    @ModelState(\.items) var items: [Item]
+
+    func add(_ item: Item) {
+        $items.insert(item)
+    }
+}
+```
+
+有关更多详细信息，请参阅 [ModelState 用法指南](usage-modelstate.md)。
+
 ## SecureState
 
 `SecureState` 将敏感数据安全地存储在钥匙串中。
@@ -206,6 +238,7 @@ struct SlicingView: View {
 熟悉基本用法后，您可以探索更高级的主题：
 
 - 在[FileState 用法指南](usage-filestate.md)中探索使用 **FileState** 将大量数据持久化到文件中。
+- 🍎 在[ModelState 用法指南](usage-modelstate.md)中了解如何通过 AppState 管理 **SwiftData** 模型。
 - 在[常量用法指南](usage-constant.md)中了解 **常量** 以及如何在应用程序状态中使用它们来表示不可变值。
 - 在[状态依赖用法指南](usage-state-dependency.md)中研究 **Dependency** 如何在 AppState 中用于处理共享服务，并查看示例。
 - 在[ObservedDependency 用法指南](usage-observeddependency.md)中更深入地研究 **高级 SwiftUI** 技术，例如使用 `ObservedDependency` 在视图中管理可观察的依赖项。

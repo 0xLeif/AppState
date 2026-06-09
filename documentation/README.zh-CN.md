@@ -10,10 +10,10 @@
 
 ## 要求
 
-- **iOS**: 15.0+
-- **watchOS**: 8.0+
-- **macOS**: 11.0+
-- **tvOS**: 15.0+
+- **iOS**: 17.0+
+- **watchOS**: 10.0+
+- **macOS**: 14.0+
+- **tvOS**: 17.0+
 - **visionOS**: 1.0+
 - **Swift**: 6.0+
 - **Xcode**: 16.0+
@@ -29,6 +29,7 @@
 - **State**：集中式状态管理，允许您封装和广播整个应用程序的更改。
 - **StoredState**：使用 `UserDefaults` 的持久状态，非常适合在应用程序启动之间保存少量数据。
 - **FileState**：使用 `FileManager` 存储的持久状态，用于在磁盘上安全地存储大量数据。
+- 🍎 **SwiftData (ModelState)**：通过注入共享的 `ModelContainer` 并使用 `ModelState` 读取/写入模型，借助 AppState 管理 SwiftData 的 `@Model` 对象。
 - 🍎 **SyncState**：使用 iCloud 在多个设备之间同步状态，确保用户偏好和设置的一致性。
 - 🍎 **SecureState**：使用钥匙串安全地存储敏感数据，保护用户信息（如令牌或密码）。
 - **依赖管理**：在整个应用程序中注入网络服务或数据库客户端等依赖项，以实现更好的模块化和测试。
@@ -83,8 +84,10 @@ struct ContentView: View {
 - [状态切片](zh-CN/usage-slice.md)：访问和修改状态的特定部分。
 - [StoredState 用法指南](zh-CN/usage-storedstate.md)：如何使用 `StoredState` 持久化轻量级数据。
 - [FileState 用法指南](zh-CN/usage-filestate.md)：了解如何安全地在磁盘上持久化大量数据。
+- 🍎 [ModelState 用法指南](zh-CN/usage-modelstate.md)：通过共享的 `ModelContainer` 管理 SwiftData 的 `@Model` 对象。
 - [钥匙串 SecureState 用法](zh-CN/usage-securestate.md)：使用钥匙串安全地存储敏感数据。
 - [使用 SyncState 进行 iCloud 同步](zh-CN/usage-syncstate.md)：使用 iCloud 在设备之间保持状态同步。
+- [升级到 AppState 3.0](zh-CN/upgrade-to-v3.md)：重大变更以及如何从 2.x 发布线迁移。
 - [常见问题解答](zh-CN/faq.md)：使用 **AppState** 时常见问题的解答。
 - [常量用法指南](zh-CN/usage-constant.md)：从您的状态中访问只读值。
 - [ObservedDependency 用法指南](zh-CN/usage-observeddependency.md)：在您的视图中使用 `ObservableObject` 依赖项。

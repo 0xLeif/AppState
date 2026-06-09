@@ -10,10 +10,10 @@
 
 ## Exigences
 
-- **iOS**: 15.0+
-- **watchOS**: 8.0+
-- **macOS**: 11.0+
-- **tvOS**: 15.0+
+- **iOS**: 17.0+
+- **watchOS**: 10.0+
+- **macOS**: 14.0+
+- **tvOS**: 17.0+
 - **visionOS**: 1.0+
 - **Swift**: 6.0+
 - **Xcode**: 16.0+
@@ -29,6 +29,7 @@
 - **State**: Gestion centralisée de l'état qui vous permet d'encapsuler et de diffuser les changements à travers l'application.
 - **StoredState**: État persistant utilisant `UserDefaults`, idéal pour sauvegarder de petites quantités de données entre les lancements de l'application.
 - **FileState**: État persistant stocké à l'aide de `FileManager`, utile pour stocker de plus grandes quantités de données en toute sécurité sur le disque.
+- 🍎 **SwiftData (ModelState)**: Gérez les objets SwiftData `@Model` à travers AppState en injectant un `ModelContainer` partagé et en lisant/écrivant les modèles avec `ModelState`.
 - 🍎 **SyncState**: Synchronisez l'état sur plusieurs appareils à l'aide d'iCloud, garantissant la cohérence des préférences et des paramètres de l'utilisateur.
 - 🍎 **SecureState**: Stockez les données sensibles en toute sécurité à l'aide du Trousseau, protégeant les informations de l'utilisateur telles que les jetons ou les mots de passe.
 - **Gestion des Dépendances**: Injectez des dépendances comme des services réseau ou des clients de base de données à travers votre application pour une meilleure modularité et des tests facilités.
@@ -83,8 +84,10 @@ Voici une ventilation détaillée de la documentation de **AppState** :
 - [Découpage de l'État (Slicing)](fr/usage-slice.md) : Accédez et modifiez des parties spécifiques de l'état.
 - [Guide d'Utilisation de StoredState](fr/usage-storedstate.md) : Comment persister des données légères à l'aide de `StoredState`.
 - [Guide d'Utilisation de FileState](fr/usage-filestate.md) : Apprenez à persister de plus grandes quantités de données en toute sécurité sur le disque.
+- 🍎 [Guide d'Utilisation de ModelState](fr/usage-modelstate.md) : Gérez les objets SwiftData `@Model` via un `ModelContainer` partagé.
 - [Utilisation de SecureState avec le Trousseau](fr/usage-securestate.md) : Stockez les données sensibles en toute sécurité à l'aide du Trousseau.
 - [Synchronisation iCloud avec SyncState](fr/usage-syncstate.md) : Maintenez l'état synchronisé sur tous les appareils à l'aide d'iCloud.
+- [Mise à Niveau vers AppState 3.0](fr/upgrade-to-v3.md) : Changements incompatibles et comment migrer depuis la ligne de version 2.x.
 - [FAQ](fr/faq.md) : Réponses aux questions courantes lors de l'utilisation de **AppState**.
 - [Guide d'Utilisation des Constantes](fr/usage-constant.md) : Accédez à des valeurs en lecture seule de votre état.
 - [Guide d'Utilisation de ObservedDependency](fr/usage-observeddependency.md) : Travaillez avec des dépendances `ObservableObject` dans vos vues.

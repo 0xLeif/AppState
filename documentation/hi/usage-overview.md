@@ -123,6 +123,38 @@ struct LargeDataView: View {
 }
 ```
 
+## ModelState
+
+🍎 `ModelState` एक साझा `ModelContainer` को इंजेक्ट करके AppState के माध्यम से SwiftData `@Model` ऑब्जेक्ट्स का प्रबंधन करता है। यह व्यू मॉडल, सेवाओं और अन्य गैर-व्यू कोड के लिए अभिप्रेत है; प्रतिक्रियाशील दृश्यों के लिए, AppState द्वारा प्रदान किए गए `ModelContainer` के साथ SwiftData के `@Query` का उपयोग करें। SwiftData सुविधाओं के लिए iOS 17+ / macOS 14+ की आवश्यकता होती है।
+
+### उदाहरण
+
+```swift
+import AppState
+import SwiftData
+
+extension Application {
+    var modelContainer: Dependency<ModelContainer> {
+        modelContainer(try! ModelContainer(for: Item.self))
+    }
+
+    var items: ModelState<Item> {
+        modelState(container: \.modelContainer)
+    }
+}
+
+@MainActor
+final class ItemsViewModel: ObservableObject {
+    @ModelState(\.items) var items: [Item]
+
+    func add(_ item: Item) {
+        $items.insert(item)
+    }
+}
+```
+
+अधिक विवरण के लिए, [ModelState उपयोग गाइड](usage-modelstate.md) देखें।
+
 ## SecureState
 
 `SecureState` संवेदनशील डेटा को किचेन में सुरक्षित रूप से संग्रहीत करता है।
@@ -206,6 +238,7 @@ struct SlicingView: View {
 बुनियादी उपयोग से परिचित होने के बाद, आप अधिक उन्नत विषयों का पता लगा सकते हैं:
 
 - [FileState उपयोग गाइड](usage-filestate.md) में फ़ाइलों में बड़ी मात्रा में डेटा को बनाए रखने के लिए **FileState** का उपयोग करने का अन्वेषण करें।
+- 🍎 [ModelState उपयोग गाइड](usage-modelstate.md) में AppState के माध्यम से **SwiftData** मॉडलों का प्रबंधन करना सीखें।
 - [स्थिरांक उपयोग गाइड](usage-constant.md) में **स्थिरांक** के बारे में जानें और अपने ऐप की स्थिति में अपरिवर्तनीय मानों के लिए उनका उपयोग कैसे करें।
 - [राज्य निर्भरता उपयोग गाइड](usage-state-dependency.md) में साझा सेवाओं को संभालने के लिए AppState में **निर्भरता** का उपयोग कैसे किया जाता है, इसकी जांच करें और उदाहरण देखें।
 - [देखे गए निर्भरता उपयोग गाइड](usage-observeddependency.md) में दृश्यों में अवलोकन योग्य निर्भरताओं के प्रबंधन के लिए `ObservedDependency` का उपयोग करने जैसी **उन्नत SwiftUI** तकनीकों में गहराई से उतरें।

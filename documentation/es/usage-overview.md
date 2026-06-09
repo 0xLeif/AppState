@@ -123,6 +123,38 @@ struct LargeDataView: View {
 }
 ```
 
+## ModelState
+
+🍎 `ModelState` gestiona objetos `@Model` de SwiftData a través de AppState inyectando un `ModelContainer` compartido. Está destinado a view models, servicios y otro código que no es de vista; para vistas reactivas, use el `@Query` de SwiftData junto con el `ModelContainer` proporcionado por AppState. Las características de SwiftData requieren iOS 17+ / macOS 14+.
+
+### Ejemplo
+
+```swift
+import AppState
+import SwiftData
+
+extension Application {
+    var modelContainer: Dependency<ModelContainer> {
+        modelContainer(try! ModelContainer(for: Item.self))
+    }
+
+    var items: ModelState<Item> {
+        modelState(container: \.modelContainer)
+    }
+}
+
+@MainActor
+final class ItemsViewModel: ObservableObject {
+    @ModelState(\.items) var items: [Item]
+
+    func add(_ item: Item) {
+        $items.insert(item)
+    }
+}
+```
+
+Para más detalles, consulte la [Guía de Uso de ModelState](usage-modelstate.md).
+
 ## SecureState
 
 `SecureState` almacena datos confidenciales de forma segura en el Llavero.
@@ -206,6 +238,7 @@ struct SlicingView: View {
 Después de familiarizarse con el uso básico, puede explorar temas más avanzados:
 
 - Explore el uso de **FileState** para persistir grandes cantidades de datos en archivos en la [Guía de Uso de FileState](usage-filestate.md).
+- 🍎 Aprenda a gestionar modelos de **SwiftData** a través de AppState en la [Guía de Uso de ModelState](usage-modelstate.md).
 - Aprenda sobre **Constantes** y cómo usarlas para valores inmutables en el estado de su aplicación en la [Guía de Uso de Constantes](usage-constant.md).
 - Investigue cómo se usa **Dependency** en AppState para manejar servicios compartidos y vea ejemplos en la [Guía de Uso de Dependencia de Estado](usage-state-dependency.md).
 - Profundice en técnicas avanzadas de **SwiftUI** como el uso de `ObservedDependency` para gestionar dependencias observables en las vistas en la [Guía de Uso de ObservedDependency](usage-observeddependency.md).

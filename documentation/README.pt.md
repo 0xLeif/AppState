@@ -10,10 +10,10 @@
 
 ## Requisitos
 
-- **iOS**: 15.0+
-- **watchOS**: 8.0+
-- **macOS**: 11.0+
-- **tvOS**: 15.0+
+- **iOS**: 17.0+
+- **watchOS**: 10.0+
+- **macOS**: 14.0+
+- **tvOS**: 17.0+
 - **visionOS**: 1.0+
 - **Swift**: 6.0+
 - **Xcode**: 16.0+
@@ -29,6 +29,7 @@
 - **State**: Gerenciamento de estado centralizado que permite encapsular e transmitir alterações em todo o aplicativo.
 - **StoredState**: Estado persistente usando `UserDefaults`, ideal para salvar pequenas quantidades de dados entre as inicializações do aplicativo.
 - **FileState**: Estado persistente armazenado usando `FileManager`, útil para armazenar grandes quantidades de dados com segurança no disco.
+- 🍎 **SwiftData (ModelState)**: Gerencie objetos `@Model` do SwiftData através do AppState, injetando um `ModelContainer` compartilhado e lendo/gravando modelos com `ModelState`.
 - 🍎 **SyncState**: Sincronize o estado em vários dispositivos usando o iCloud, garantindo a consistência nas preferências e configurações do usuário.
 - 🍎 **SecureState**: Armazene dados confidenciais com segurança usando o Keychain, protegendo informações do usuário, como tokens ou senhas.
 - **Gerenciamento de Dependências**: Injete dependências como serviços de rede ou clientes de banco de dados em todo o seu aplicativo para melhor modularidade e testes.
@@ -83,8 +84,10 @@ Aqui está um detalhamento da documentação do **AppState**:
 - [Fatiando o Estado](pt/usage-slice.md): Acesse e modifique partes específicas do estado.
 - [Guia de Uso do StoredState](pt/usage-storedstate.md): Como persistir dados leves usando `StoredState`.
 - [Guia de Uso do FileState](pt/usage-filestate.md): Aprenda a persistir grandes quantidades de dados com segurança no disco.
+- 🍎 [Guia de Uso do ModelState](pt/usage-modelstate.md): Gerencie objetos `@Model` do SwiftData através de um `ModelContainer` compartilhado.
 - [Uso do SecureState com Keychain](pt/usage-securestate.md): Armazene dados confidenciais com segurança usando o Keychain.
 - [Sincronização com iCloud com SyncState](pt/usage-syncstate.md): Mantenha o estado sincronizado em todos os dispositivos usando o iCloud.
+- [Atualizando para o AppState 3.0](pt/upgrade-to-v3.md): Alterações que quebram a compatibilidade e como migrar da linha de lançamento 2.x.
 - [FAQ](pt/faq.md): Respostas a perguntas comuns ao usar o **AppState**.
 - [Guia de Uso de Constantes](pt/usage-constant.md): Acesse valores somente leitura do seu estado.
 - [Guia de Uso de ObservedDependency](pt/usage-observeddependency.md): Trabalhe com dependências `ObservableObject` em suas visualizações.
