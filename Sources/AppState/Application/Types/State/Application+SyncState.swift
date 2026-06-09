@@ -20,7 +20,7 @@ extension Application {
     }
 
     /// The default `NSUbiquitousKeyValueStore` instance.
-    public var icloudStore: Dependency<UbiquitousKeyValueStoreManaging> {
+    public var icloudStore: Dependency<any UbiquitousKeyValueStoreManaging> {
         dependency {
             NotificationCenter.default.addObserver(
                 self,
@@ -52,7 +52,7 @@ extension Application {
     public struct SyncState<Value: Codable & Sendable>: MutableApplicationState {
         public static var emoji: Character { "☁️" }
 
-        @AppDependency(\.icloudStore) private var icloudStore: UbiquitousKeyValueStoreManaging
+        @AppDependency(\.icloudStore) private var icloudStore: any UbiquitousKeyValueStoreManaging
 
         /// The initial value of the state.
         private var initial: () -> Value

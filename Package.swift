@@ -26,6 +26,9 @@ let package = Package(
             name: "AppState",
             dependencies: [
                 "Cache"
+            ],
+            swiftSettings: [
+                .enableUpcomingFeature("ExistentialAny")
             ]
         ),
         .testTarget(
