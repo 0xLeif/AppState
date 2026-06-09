@@ -22,3 +22,9 @@ jobs:
       run: swift build -v
     - name: Run tests
       run: swift test -v
+    - name: Build SwiftData example
+      run: swift build -v
+      working-directory: Examples/SwiftDataExample
+    - name: Run SwiftData example
+      run: swift run
+      working-directory: Examples/SwiftDataExample

@@ -24,6 +24,8 @@ Read this in other languages: [French](documentation/README.fr.md) | [German](do
 
 > 🍎 Features marked with this symbol are specific to Apple platforms, as they rely on Apple technologies such as iCloud and the Keychain.
 
+> Note: SwiftData features (`ModelState`) require iOS 17.0+ / macOS 14.0+ / tvOS 17.0+ / watchOS 10.0+ / visionOS 1.0+.
+
 ## Key Features
 
 **AppState** includes several powerful features to help manage state and dependencies:
@@ -31,6 +33,7 @@ Read this in other languages: [French](documentation/README.fr.md) | [German](do
 - **State**: Centralized state management that allows you to encapsulate and broadcast changes across the app.
 - **StoredState**: Persistent state using `UserDefaults`, ideal for saving small amounts of data between app launches.
 - **FileState**: Persistent state stored using `FileManager`, useful for storing larger amounts of data securely on disk.
+- 🍎 **SwiftData (ModelState)**: Manage SwiftData `@Model` objects through AppState by injecting a shared `ModelContainer` and reading/writing models with `ModelState`.
 - 🍎 **SyncState**: Synchronize state across multiple devices using iCloud, ensuring consistency in user preferences and settings.
 - 🍎 **SecureState**: Store sensitive data securely using the Keychain, protecting user information such as tokens or passwords.
 - **Dependency Management**: Inject dependencies like network services or database clients across your app for better modularity and testing.
@@ -85,6 +88,7 @@ Here’s a detailed breakdown of **AppState**'s documentation:
 - [Slicing State](documentation/en/usage-slice.md): Access and modify specific parts of the state.
 - [StoredState Usage Guide](documentation/en/usage-storedstate.md): How to persist lightweight data using `StoredState`.
 - [FileState Usage Guide](documentation/en/usage-filestate.md): Learn how to persist larger amounts of data securely on disk.
+- 🍎 [ModelState Usage Guide](documentation/en/usage-modelstate.md): Manage SwiftData `@Model` objects through a shared `ModelContainer`.
 - [Keychain SecureState Usage](documentation/en/usage-securestate.md): Store sensitive data securely using the Keychain.
 - [iCloud Syncing with SyncState](documentation/en/usage-syncstate.md): Keep state synchronized across devices using iCloud.
 - [FAQ](documentation/en/faq.md): Answers to common questions when using **AppState**.
