@@ -1,18 +1,12 @@
 #if !os(Linux) && !os(Windows)
-import Combine
 import SwiftUI
 #endif
 
 /// A property wrapper that provides access to a specific part of the AppState's dependencies.
 @propertyWrapper public struct DependencySlice<Value: Sendable, SliceValue: Sendable> {
-    #if !os(Linux) && !os(Windows)
-    /// Holds the singleton instance of `Application`.
-    @ObservedObject private var app: Application = Application.shared
-    #else
-    /// Holds the singleton instance of `Application`.
+    /// The shared `Application` instance backing this state.
     @MainActor
-    private var app: Application = Application.shared
-    #endif
+    private var app: Application { Application.shared }
 
     /// Path for accessing `Dependency` from Application.
     private let dependencyKeyPath: KeyPath<Application, Application.Dependency<Value>>
@@ -30,7 +24,9 @@ import SwiftUI
     @MainActor
     public var wrappedValue: SliceValue {
         get {
-            Application.dependencySlice(
+            app.registerObservation()
+
+            return Application.dependencySlice(
                 dependencyKeyPath,
                 valueKeyPath,
                 fileID,
@@ -50,7 +46,7 @@ import SwiftUI
 
             var dependency = app.value(keyPath: dependencyKeyPath)
             #if !os(Linux) && !os(Windows)
-            Application.shared.objectWillChange.send()
+            Application.shared.notifyChange()
             #endif
             dependency.value[keyPath: valueKeyPath] = newValue
         }

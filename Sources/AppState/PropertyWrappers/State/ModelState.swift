@@ -16,8 +16,9 @@ import SwiftUI
 ///   reactive views, use SwiftData's `@Query` together with the AppState-provided `ModelContainer`.
 ///   `ModelState` is best suited to view models, services, and other non-view code.
 @propertyWrapper public struct ModelState<Model: PersistentModel> {
-    /// Holds the singleton instance of `Application`.
-    @ObservedObject private var app: Application = Application.shared
+    /// The shared `Application` instance backing this state.
+    @MainActor
+    private var app: Application { Application.shared }
 
     /// Path for accessing `ModelState` from Application.
     private let keyPath: KeyPath<Application, Application.ModelState<Model>>
@@ -31,7 +32,9 @@ import SwiftUI
     @MainActor
     public var wrappedValue: [Model] {
         get {
-            Application.modelState(
+            app.registerObservation()
+
+            return Application.modelState(
                 keyPath,
                 fileID,
                 function,

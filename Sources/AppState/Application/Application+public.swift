@@ -47,7 +47,7 @@ public extension Application {
 
              // Example updating all SyncState in SwiftUI Views.
              DispatchQueue.main.async {
-                 self.objectWillChange.send()
+                 self.notifyChange()
              }
          }
      }

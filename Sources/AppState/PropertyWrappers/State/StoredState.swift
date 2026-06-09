@@ -6,14 +6,9 @@ import SwiftUI
 
 /// `StoredState` is a property wrapper allowing SwiftUI views to subscribe to Application's state changes in a reactive way. State is stored using `UserDefaults`. Works similar to `State` and `Published`.
 @propertyWrapper public struct StoredState<Value: Codable & Sendable> {
-    #if !os(Linux) && !os(Windows)
-    /// Holds the singleton instance of `Application`.
-    @ObservedObject private var app: Application = Application.shared
-    #else
-    /// Holds the singleton instance of `Application`.
+    /// The shared `Application` instance backing this state.
     @MainActor
-    private var app: Application = Application.shared
-    #endif
+    private var app: Application { Application.shared }
 
     /// Path for accessing `StoredState` from Application.
     private let keyPath: KeyPath<Application, Application.StoredState<Value>>
@@ -27,7 +22,9 @@ import SwiftUI
     @MainActor
     public var wrappedValue: Value {
         get {
-            Application.storedState(
+            app.registerObservation()
+
+            return Application.storedState(
                 keyPath,
                 fileID,
                 function,

@@ -20,8 +20,9 @@ import SwiftUI
  */
 @available(watchOS 9.0, *)
 @propertyWrapper public struct SyncState<Value: Codable & Sendable>: DynamicProperty {
-    /// Holds the singleton instance of `Application`.
-    @ObservedObject private var app: Application = Application.shared
+    /// The shared `Application` instance backing this state.
+    @MainActor
+    private var app: Application { Application.shared }
 
     /// Path for accessing `SyncState` from Application.
     private let keyPath: KeyPath<Application, Application.SyncState<Value>>
@@ -35,7 +36,9 @@ import SwiftUI
     @MainActor
     public var wrappedValue: Value {
         get {
-            Application.syncState(
+            app.registerObservation()
+
+            return Application.syncState(
                 keyPath,
                 fileID,
                 function,

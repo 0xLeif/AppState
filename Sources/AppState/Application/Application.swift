@@ -1,4 +1,5 @@
 import Cache
+import Observation
 #if !os(Linux) && !os(Windows)
 import Combine
 import OSLog
@@ -7,6 +8,7 @@ import Foundation
 #endif
 
 /// `Application` is a class that can be observed for changes, keeping track of the states within the application.
+@Observable
 open class Application: NSObject {
     /// Singleton shared instance of `Application`
     @MainActor
@@ -28,13 +30,24 @@ open class Application: NSObject {
     static var isLoggingEnabled: Bool = false
 
     /// A recursive lock to ensure thread-safe access to shared resources within the Application instance.
+    @ObservationIgnored
     let lock: NSRecursiveLock
 
     /// The underlying cache used to store all state and dependency values.
+    @ObservationIgnored
     let cache: Cache<String, Any>
+
+    /// Observation anchor that bridges cache changes to the Observation framework.
+    ///
+    /// State and dependency values live in the untracked ``cache``. Reading this anchor (via
+    /// ``registerObservation()``) registers the current Observation tracking scope — e.g. a SwiftUI
+    /// view body — as dependent on AppState, and mutating it (via ``notifyChange()``) tells those
+    /// observers to update.
+    private var changeAnchor: Int = 0
 
     #if !os(Linux) && !os(Windows)
     /// A set to store cancellables for Combine subscriptions, ensuring they are properly managed and released.
+    @ObservationIgnored
     private var bag: Set<AnyCancellable> = Set()
 
     deinit { bag.removeAll() }
@@ -62,6 +75,22 @@ open class Application: NSObject {
         #if !os(Linux) && !os(Windows)
         consume(object: cache)
         #endif
+    }
+
+    /// Registers the current Observation tracking scope (such as a SwiftUI view body) as dependent on
+    /// AppState. The property wrappers call this when reading their value so that SwiftUI views update
+    /// when the underlying state or dependencies change.
+    func registerObservation() {
+        _ = changeAnchor
+    }
+
+    /// Notifies observers (such as SwiftUI views) that an AppState value changed.
+    ///
+    /// AppState's own setters call this automatically. Call it yourself when you mutate state outside
+    /// of those setters — for example from a `didChangeExternally(notification:)` override that reacts
+    /// to incoming iCloud changes.
+    public func notifyChange() {
+        changeAnchor &+= 1
     }
 
     #if !os(Linux) && !os(Windows)
@@ -115,7 +144,7 @@ open class Application: NSObject {
             object.objectWillChange.sink(
                 receiveCompletion: { _ in },
                 receiveValue: { [weak self] _ in
-                    self?.objectWillChange.send()
+                    self?.notifyChange()
                 }
             )
         )
@@ -123,9 +152,3 @@ open class Application: NSObject {
     #endif
 }
 
-#if !os(Linux) && !os(Windows)
-/// Conform `Application` to `ObservableObject` to allow SwiftUI views to subscribe to its changes.
-/// This enables the `@ObservedObject` property wrapper to work with `Application.shared` or custom instances,
-/// triggering view updates when `objectWillChange` is published.
-extension Application: ObservableObject { }
-#endif
