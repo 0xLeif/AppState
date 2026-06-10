@@ -27,8 +27,7 @@ let package = Package(
     ],
     dependencies: [
         .package(url: "https://github.com/0xLeif/Cache", from: "2.0.0"),
-        .package(url: "https://github.com/apple/swift-docc-plugin", from: "1.4.0"),
-        .package(url: "https://github.com/nalexn/ViewInspector", from: "0.10.0")
+        .package(url: "https://github.com/apple/swift-docc-plugin", from: "1.4.0")
     ],
     targets: [
         .target(
@@ -42,17 +41,7 @@ let package = Package(
         ),
         .testTarget(
             name: "AppStateTests",
-            dependencies: [
-                "AppState",
-                // ViewInspector depends on SwiftUI, which is unavailable on Linux/Windows. Limit it to
-                // Apple platforms so the cross-platform builds don't try to compile it. The SwiftUI
-                // view tests that use it are already guarded with `#if !os(Linux) && !os(Windows)`.
-                .product(
-                    name: "ViewInspector",
-                    package: "ViewInspector",
-                    condition: .when(platforms: [.iOS, .macOS, .tvOS, .watchOS, .visionOS])
-                )
-            ],
+            dependencies: ["AppState"],
             swiftSettings: strictSwiftSettings
         )
     ],
