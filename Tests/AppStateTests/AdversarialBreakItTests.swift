@@ -10,11 +10,15 @@
 // they cannot collide with other test files in this module.
 
 import Foundation
-#if !os(Linux) && !os(Windows)
-import SwiftUI
-#endif
 import XCTest
 @testable import AppState
+
+// This adversarial suite exercises Apple-only surface (Keychain, SecureState, SwiftData, Observation
+// bridging), so the whole file is scoped to Apple platforms. Linux/Windows still build the core
+// library and the cross-platform test suites.
+#if !os(Linux) && !os(Windows)
+import Observation
+import SwiftUI
 
 // MARK: - BreakIt Application extensions (unique ids)
 
@@ -1300,3 +1304,5 @@ final class BreakItExtraEdgeCaseTests: XCTestCase {
 //    The Task { @MainActor in keys.insert(key) } dispatch means keys.contains() can
 //    lag behind the actual keychain state until the next run loop turn.  Not tested here
 //    as values() is @MainActor but the window exists.
+
+#endif
