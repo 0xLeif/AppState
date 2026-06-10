@@ -8,16 +8,15 @@ import SwiftUI
 ///
 /// Each mutation (add/delete) writes through `NSUbiquitousKeyValueStore`
 /// and propagates to every device signed into the same iCloud account.
-@available(watchOS 9.0, *)
 public struct NotesView: View {
 
     // MARK: - State
 
     /// The cloud-synced notes list, bound two-way through AppState.
-    @SyncState(\.notes) private var notes: [Note]
+    @SyncState(\.notes) internal var notes: [Note]
 
-    /// The text the user has typed into the new-note field.
-    @SwiftUI.State private var draftText: String = ""
+    /// The draft text currently typed into the new-note input field.
+    @AppState(\.newNoteText) internal var newNoteText: String
 
     // MARK: - Initializers
 
@@ -46,13 +45,13 @@ public struct NotesView: View {
             #endif
             .safeAreaInset(edge: .bottom) {
                 HStack {
-                    TextField("New note…", text: $draftText)
+                    TextField("New note…", text: $newNoteText)
                         .textFieldStyle(.roundedBorder)
 
                     Button("Add") {
                         addNote()
                     }
-                    .disabled(draftText.trimmingCharacters(in: .whitespaces).isEmpty)
+                    .disabled(newNoteText.trimmingCharacters(in: .whitespaces).isEmpty)
                 }
                 .padding()
                 .background(.regularMaterial)
@@ -60,21 +59,25 @@ public struct NotesView: View {
         }
     }
 
-    // MARK: - Private Methods
+    // MARK: - Internal Methods
 
-    private func addNote() {
-        let trimmed = draftText.trimmingCharacters(in: .whitespaces)
+    /// Appends a new note from the current `newNoteText` draft, then clears the draft.
+    ///
+    /// Whitespace-only drafts are silently discarded. This method is `internal` so that
+    /// tests can invoke it directly to exercise the guard branch.
+    internal func addNote() {
+        let trimmed = newNoteText.trimmingCharacters(in: .whitespaces)
         guard !trimmed.isEmpty else { return }
         notes = notes + [Note(text: trimmed)]
-        draftText = ""
+        newNoteText = ""
     }
 }
 
 // MARK: - Array + Safe Removal
 
-private extension Array {
+extension Array {
     /// Returns a copy of the array with the elements at `offsets` removed.
-    func removing(at offsets: IndexSet) -> [Element] {
+    internal func removing(at offsets: IndexSet) -> [Element] {
         enumerated()
             .compactMap { offsets.contains($0.offset) ? nil : $0.element }
     }
@@ -82,7 +85,6 @@ private extension Array {
 
 // MARK: - Preview
 
-@available(watchOS 9.0, *)
 #Preview {
     NotesView()
 }

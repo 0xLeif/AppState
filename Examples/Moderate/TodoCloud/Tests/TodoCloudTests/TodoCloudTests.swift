@@ -8,7 +8,7 @@ import AppState
 ///
 /// Produces fixed `UUID` values from a pre-populated queue and a fixed `Date`
 /// so that assertions on `id` and `createdAt` are stable across test runs.
-fileprivate final class MockTodoService: TodoService, @unchecked Sendable {
+final class MockTodoService: TodoService, @unchecked Sendable {
 
     // MARK: - Properties
 
@@ -45,7 +45,7 @@ fileprivate final class MockTodoService: TodoService, @unchecked Sendable {
 ///
 /// Overriding `\.userDefaults` prevents `StoredState` (and the `SyncState` fallback)
 /// from ever touching `UserDefaults.standard` or persisting data to disk.
-fileprivate final class InMemoryUserDefaults: UserDefaultsManaging, @unchecked Sendable {
+final class InMemoryUserDefaults: UserDefaultsManaging, @unchecked Sendable {
 
     private var storage: [String: Any] = [:]
 
@@ -69,7 +69,7 @@ fileprivate final class InMemoryUserDefaults: UserDefaultsManaging, @unchecked S
 ///
 /// Overriding `\.icloudStore` prevents `SyncState` from ever touching
 /// `NSUbiquitousKeyValueStore` or iCloud.
-fileprivate final class InMemoryKeyValueStore: UbiquitousKeyValueStoreManaging, @unchecked Sendable {
+final class InMemoryKeyValueStore: UbiquitousKeyValueStoreManaging, @unchecked Sendable {
 
     private var storage: [String: Data] = [:]
 

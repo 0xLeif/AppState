@@ -101,7 +101,7 @@ public struct TodoListView: View {
 
 /// A single row in the todo list, displaying the title and a completion toggle.
 @available(iOS 18.0, macOS 15.0, watchOS 11.0, tvOS 18.0, visionOS 2.0, *)
-private struct TodoRowView: View {
+internal struct TodoRowView: View {
 
     // MARK: - Properties
 

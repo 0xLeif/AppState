@@ -148,7 +148,7 @@ public struct DashboardView: View {
 // MARK: - MetricCard
 
 /// A single-metric summary card displayed in the dashboard grid.
-private struct MetricCard: View {
+struct MetricCard: View {
 
     // MARK: - Properties
 
@@ -202,7 +202,7 @@ private struct MetricCard: View {
 // MARK: - PreviewMetricsService
 
 /// An instant-return metrics service for SwiftUI previews.
-private struct PreviewMetricsService: MetricsService {
+struct PreviewMetricsService: MetricsService {
     func fetchMetrics() async throws -> Metrics {
         Metrics(
             activeUsers: 999,

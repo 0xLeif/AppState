@@ -36,15 +36,26 @@ public struct VaultView: View {
 // MARK: - LoginView
 
 /// Collects a token from the user and stores it securely in the Keychain.
-private struct LoginView: View {
+struct LoginView: View {
 
     // MARK: - State
 
     @SecureState(\.authToken) private var authToken: String?
-    @State private var tokenInput: String = ""
-    @State private var errorMessage: String? = nil
+    @State var tokenInput: String
+    @State var errorMessage: String?
 
     private let authService = Application.dependency(\.authService)
+
+    // MARK: - Initializers
+
+    /// Creates a `LoginView` with an optional pre-populated token input.
+    ///
+    /// - Parameter tokenInput: The initial value for the token input field.
+    ///   Defaults to an empty string (standard sign-in presentation).
+    init(tokenInput: String = "", errorMessage: String? = nil) {
+        _tokenInput = State(wrappedValue: tokenInput)
+        _errorMessage = State(wrappedValue: errorMessage)
+    }
 
     // MARK: - Body
 
@@ -95,7 +106,7 @@ private struct LoginView: View {
 // MARK: - DashboardView
 
 /// Displays the stored token summary and lets the user sign out.
-private struct DashboardView: View {
+struct DashboardView: View {
 
     // MARK: - State
 

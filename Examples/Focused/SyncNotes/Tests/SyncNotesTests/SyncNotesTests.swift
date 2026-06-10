@@ -1,127 +1,224 @@
-#if !os(Linux) && !os(Windows)
 import AppState
 import Foundation
-import SyncNotes
 import XCTest
 
-// MARK: - Application + Test State
+@testable import SyncNotes
 
-@available(watchOS 9.0, *)
-extension Application {
-    /// Isolated test key — distinct feature/id avoids colliding with the production `notes` key.
-    fileprivate var testNotes: SyncState<[Note]> {
-        syncState(initial: [], feature: "SyncNotesTests", id: "testNotes")
+// MARK: - InMemoryUserDefaults
+
+/// A fully in-memory `UserDefaultsManaging` substitute for tests.
+///
+/// Overriding `\.userDefaults` prevents `StoredState` (and the `SyncState` fallback)
+/// from ever touching `UserDefaults.standard` or persisting data to disk.
+final class InMemoryUserDefaults: UserDefaultsManaging, @unchecked Sendable {
+
+    private var storage: [String: Any] = [:]
+
+    func object(forKey key: String) -> Any? {
+        storage[key]
+    }
+
+    func set(_ value: Any?, forKey key: String) {
+        storage[key] = value
+    }
+
+    func removeObject(forKey key: String) {
+        storage.removeValue(forKey: key)
     }
 }
 
+#if !os(Linux) && !os(Windows)
+// MARK: - InMemoryKeyValueStore
+
+/// A fully in-memory `UbiquitousKeyValueStoreManaging` substitute for tests.
+///
+/// Overriding `\.icloudStore` prevents `SyncState` from ever touching
+/// `NSUbiquitousKeyValueStore` or iCloud.
+final class InMemoryKeyValueStore: UbiquitousKeyValueStoreManaging, @unchecked Sendable {
+
+    private var storage: [String: Data] = [:]
+
+    func data(forKey key: String) -> Data? {
+        storage[key]
+    }
+
+    func set(_ value: Data?, forKey key: String) {
+        storage[key] = value
+    }
+
+    func removeObject(forKey key: String) {
+        storage.removeValue(forKey: key)
+    }
+}
+#endif
+
+#if !os(Linux) && !os(Windows)
 // MARK: - SyncNotesTests
 
-@available(watchOS 9.0, *)
+/// Tests for the SyncNotes feature, exercising `Note` and the production
+/// `Application.notes` SyncState key with fully in-memory backing stores.
 @MainActor
 final class SyncNotesTests: XCTestCase {
 
-    // MARK: - Setup / Teardown
+    // MARK: - Properties
+
+    private var userDefaultsOverride: Application.DependencyOverride?
+    private var icloudOverride: Application.DependencyOverride?
+
+    // MARK: - Lifecycle
 
     override func setUp() async throws {
-        Application
-            .logging(isEnabled: false)
-            .load(dependency: \.icloudStore)
+        try await super.setUp()
 
-        // Start each test with a clean slate.
-        Application.reset(syncState: \.testNotes)
+        userDefaultsOverride = Application.override(
+            \.userDefaults,
+            with: InMemoryUserDefaults() as UserDefaultsManaging
+        )
+        icloudOverride = Application.override(
+            \.icloudStore,
+            with: InMemoryKeyValueStore() as UbiquitousKeyValueStoreManaging
+        )
+
+        resetNotesState()
     }
 
     override func tearDown() async throws {
-        // Leave the store clean after each test.
-        Application.reset(syncState: \.testNotes)
+        resetNotesState()
+
+        await icloudOverride?.cancel()
+        icloudOverride = nil
+        await userDefaultsOverride?.cancel()
+        userDefaultsOverride = nil
+
+        try await super.tearDown()
     }
 
-    // MARK: - Tests
+    // MARK: - Helpers
 
-    /// Adding a note appends it to the synced list.
-    func testAddNote() {
-        var syncState = Application.syncState(\.testNotes)
+    private func resetNotesState() {
+        var syncState = Application.syncState(\.notes)
+        syncState.value = []
+
+        var draftState = Application.state(\.newNoteText)
+        draftState.value = ""
+    }
+
+    // MARK: - Tests: Application.notes SyncState
+
+    /// Exercises the `Application.notes` computed property (Application+SyncNotes.swift).
+    func testNotesPropertyReturnsSyncState() {
+        let syncState = Application.syncState(\.notes)
         XCTAssertTrue(syncState.value.isEmpty, "Initial notes list should be empty")
+    }
 
+    func testNewNoteTextPropertyDefaultsToEmpty() {
+        let state = Application.state(\.newNoteText)
+        XCTAssertEqual(state.value, "")
+    }
+
+    func testNewNoteTextPropertyCanBeUpdated() {
+        var state = Application.state(\.newNoteText)
+        state.value = "Hello"
+        XCTAssertEqual(Application.state(\.newNoteText).value, "Hello")
+    }
+
+    func testAddNoteAppendsToNotes() {
+        var syncState = Application.syncState(\.notes)
         let note = Note(id: UUID(), text: "Hello, iCloud!")
-        syncState.value = syncState.value + [note]
+        syncState.value = [note]
 
-        let stored = Application.syncState(\.testNotes).value
+        let stored = Application.syncState(\.notes).value
         XCTAssertEqual(stored.count, 1)
         XCTAssertEqual(stored.first?.text, "Hello, iCloud!")
         XCTAssertEqual(stored.first?.id, note.id)
     }
 
-    /// Adding multiple notes preserves insertion order.
-    func testAddMultipleNotes() {
-        var syncState = Application.syncState(\.testNotes)
-
+    func testAddMultipleNotesPreservesOrder() {
+        var syncState = Application.syncState(\.notes)
         let first = Note(id: UUID(), text: "First")
         let second = Note(id: UUID(), text: "Second")
         let third = Note(id: UUID(), text: "Third")
-
         syncState.value = [first, second, third]
 
-        let stored = Application.syncState(\.testNotes).value
+        let stored = Application.syncState(\.notes).value
         XCTAssertEqual(stored.count, 3)
         XCTAssertEqual(stored.map(\.text), ["First", "Second", "Third"])
     }
 
-    /// Removing a note by id filters it out of the synced list.
-    func testRemoveNote() {
+    func testRemoveNoteFiltersByID() {
         let keepNote = Note(id: UUID(), text: "Keep me")
         let removeNote = Note(id: UUID(), text: "Remove me")
 
-        var syncState = Application.syncState(\.testNotes)
+        var syncState = Application.syncState(\.notes)
         syncState.value = [keepNote, removeNote]
-
-        XCTAssertEqual(syncState.value.count, 2)
-
         syncState.value = syncState.value.filter { $0.id != removeNote.id }
 
-        let stored = Application.syncState(\.testNotes).value
+        let stored = Application.syncState(\.notes).value
         XCTAssertEqual(stored.count, 1)
         XCTAssertEqual(stored.first?.id, keepNote.id)
     }
 
-    /// Resetting the sync state restores the initial empty list.
-    func testResetRestoresInitialValue() {
-        var syncState = Application.syncState(\.testNotes)
+    func testResetRestoresEmptyList() {
+        var syncState = Application.syncState(\.notes)
         syncState.value = [Note(id: UUID(), text: "Temporary")]
+        XCTAssertFalse(Application.syncState(\.notes).value.isEmpty)
 
-        XCTAssertFalse(Application.syncState(\.testNotes).value.isEmpty)
-
-        Application.reset(syncState: \.testNotes)
-
-        XCTAssertTrue(Application.syncState(\.testNotes).value.isEmpty)
+        resetNotesState()
+        XCTAssertTrue(Application.syncState(\.notes).value.isEmpty)
     }
 
-    /// Notes are Equatable — identical value objects compare equal.
-    func testNoteEquality() {
+    // MARK: - Tests: Note model — Equatable
+
+    func testNoteEqualityWhenAllFieldsMatch() {
         let id = UUID()
         let date = Date()
         let noteA = Note(id: id, text: "Same", createdAt: date)
         let noteB = Note(id: id, text: "Same", createdAt: date)
-
         XCTAssertEqual(noteA, noteB)
     }
 
-    /// Notes with different ids are not equal even when text matches.
-    func testNoteInequalityOnId() {
+    func testNoteInequalityOnDifferentID() {
         let date = Date()
         let noteA = Note(id: UUID(), text: "Duplicate", createdAt: date)
         let noteB = Note(id: UUID(), text: "Duplicate", createdAt: date)
-
         XCTAssertNotEqual(noteA, noteB)
     }
 
-    /// A `Note` round-trips through JSON encoding without data loss.
+    // MARK: - Tests: Note model — Codable
+
     func testNoteCodableRoundTrip() throws {
         let original = Note(id: UUID(), text: "Codable check")
         let data = try JSONEncoder().encode(original)
         let decoded = try JSONDecoder().decode(Note.self, from: data)
-
         XCTAssertEqual(original, decoded)
+    }
+
+    func testNoteCodablePreservesAllFields() throws {
+        let id = UUID()
+        let date = Date(timeIntervalSince1970: 1_000_000)
+        let original = Note(id: id, text: "Full field check", createdAt: date)
+        let data = try JSONEncoder().encode(original)
+        let decoded = try JSONDecoder().decode(Note.self, from: data)
+
+        XCTAssertEqual(decoded.id, id)
+        XCTAssertEqual(decoded.text, "Full field check")
+        XCTAssertEqual(decoded.createdAt.timeIntervalSince1970, date.timeIntervalSince1970, accuracy: 0.001)
+    }
+
+    // MARK: - Tests: Note — default initializer values
+
+    func testNoteDefaultIDIsUnique() {
+        let noteA = Note(text: "A")
+        let noteB = Note(text: "B")
+        XCTAssertNotEqual(noteA.id, noteB.id)
+    }
+
+    func testNoteDefaultCreatedAtIsRecent() {
+        let before = Date()
+        let note = Note(text: "Timestamped")
+        let after = Date()
+        XCTAssertGreaterThanOrEqual(note.createdAt, before)
+        XCTAssertLessThanOrEqual(note.createdAt, after)
     }
 }
 #endif

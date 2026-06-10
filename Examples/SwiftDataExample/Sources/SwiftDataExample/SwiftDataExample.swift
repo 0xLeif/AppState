@@ -1,79 +1,9 @@
 import AppState
 import Foundation
+import SwiftDataExampleLib
 
 #if canImport(SwiftData)
 import SwiftData
-
-// MARK: - Model
-
-/// A simple SwiftData model persisted through an AppState-provided `ModelContainer`.
-///
-/// The package's deployment target is macOS 14 / iOS 17 (see `Package.swift`), so no `@available`
-/// annotations are needed here — SwiftData is unconditionally available.
-@Model
-final class TodoItem {
-    var title: String
-    var isDone: Bool
-
-    init(title: String, isDone: Bool = false) {
-        self.title = title
-        self.isDone = isDone
-    }
-}
-
-// MARK: - AppState wiring
-
-extension Application {
-    /// An in-memory `ModelContainer` registered as an AppState dependency.
-    ///
-    /// Using `isStoredInMemoryOnly: true` keeps the example deterministic and side-effect free,
-    /// so `swift run` can double as a smoke test in CI.
-    var modelContainer: Dependency<ModelContainer> {
-        modelContainer(makeInMemoryTodoContainer())
-    }
-
-    /// The shared collection of `TodoItem`s, backed by the `modelContainer` dependency.
-    var todos: ModelState<TodoItem> {
-        modelState(container: \.modelContainer)
-    }
-}
-
-/// Builds the example's in-memory `ModelContainer`.
-///
-/// `ModelContainer` initialization can throw; rather than force-`try`, failure here is a programmer
-/// error in the example's configuration, so it traps with a descriptive message.
-private func makeInMemoryTodoContainer() -> ModelContainer {
-    do {
-        return try ModelContainer(
-            for: TodoItem.self,
-            configurations: ModelConfiguration(isStoredInMemoryOnly: true)
-        )
-    } catch {
-        fatalError("Failed to create the in-memory ModelContainer: \(error)")
-    }
-}
-
-// MARK: - View model / service usage
-
-/// Demonstrates the `@ModelState` property wrapper from a view-model-style `ObservableObject`.
-///
-/// `@ModelState` is intended for view models, services, and other non-view code that needs
-/// shared, dependency-injected access to your models. For reactive SwiftUI views, prefer
-/// SwiftData's own `@Query` while sharing this same `ModelContainer` (see the README).
-@MainActor
-final class TodoStore: ObservableObject {
-    @ModelState(\.todos) var todos: [TodoItem]
-
-    /// Adds a todo via the projected value's explicit `insert(_:)`.
-    func add(_ title: String) {
-        $todos.insert(TodoItem(title: title))
-    }
-
-    /// Persists any pending changes via the projected value's `save()`.
-    func save() {
-        $todos.save()
-    }
-}
 
 // MARK: - Entry point
 

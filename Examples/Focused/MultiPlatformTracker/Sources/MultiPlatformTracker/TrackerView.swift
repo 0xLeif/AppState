@@ -40,7 +40,7 @@ public struct TrackerView: View {
 
             HStack(spacing: 16) {
                 Button {
-                    count -= 1 > 0 ? 1 : 0
+                    count -= 1
                     // Clamp via controller for parity with headless usage.
                     let controller = TrackerController()
                     if count < 0 { controller.reset() }

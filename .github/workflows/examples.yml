@@ -66,8 +66,8 @@ jobs:
       working-directory: Examples/Focused/MultiPlatformTracker
       run: swift test -v
 
-  build-swiftdata-example:
-    name: Build SwiftData Example
+  test-swiftdata-example:
+    name: Test SwiftData Example
     runs-on: macos-15
     steps:
     - uses: actions/checkout@v4
@@ -79,6 +79,6 @@ jobs:
       with:
         swift-version: '6.2'
 
-    - name: Build SwiftDataExample
+    - name: Test SwiftDataExample
       working-directory: Examples/SwiftDataExample
-      run: swift build -v
+      run: swift test -v

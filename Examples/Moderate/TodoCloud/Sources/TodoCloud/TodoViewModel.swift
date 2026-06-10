@@ -29,11 +29,7 @@ public final class TodoViewModel {
     /// it falls back to an in-memory `State<[Todo]>`.
     public var todos: [Todo] {
         #if !os(Linux) && !os(Windows)
-        if #available(watchOS 9.0, *) {
-            return Application.syncState(\.todos).value
-        } else {
-            return Application.state(\.fallbackTodos).value
-        }
+        return Application.syncState(\.todos).value
         #else
         return Application.state(\.fallbackTodos).value
         #endif
@@ -100,18 +96,16 @@ public final class TodoViewModel {
     /// whether the backing store is `SyncState` (Apple) or plain `State` (other).
     private func mutateTodos(_ transform: (inout [Todo]) -> Void) {
         #if !os(Linux) && !os(Windows)
-        if #available(watchOS 9.0, *) {
-            var syncState = Application.syncState(\.todos)
-            var current = syncState.value
-            transform(&current)
-            syncState.value = current
-            return
-        }
-        #endif
+        var syncState = Application.syncState(\.todos)
+        var current = syncState.value
+        transform(&current)
+        syncState.value = current
+        #else
         var appState = Application.state(\.fallbackTodos)
         var current = appState.value
         transform(&current)
         appState.value = current
+        #endif
     }
 }
 

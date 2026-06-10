@@ -6,8 +6,13 @@ import XCTest
 // MARK: - Mock Services
 
 /// A deterministic mock that returns a fixed `Metrics` snapshot immediately.
-private struct MockMetricsService: MetricsService {
+struct MockMetricsService: MetricsService {
+
+    // MARK: - Properties
+
     let stubbedMetrics: Metrics
+
+    // MARK: - Initializers
 
     init(stubbedMetrics: Metrics = Metrics(
         activeUsers: 42,
@@ -19,39 +24,66 @@ private struct MockMetricsService: MetricsService {
         self.stubbedMetrics = stubbedMetrics
     }
 
+    // MARK: - MetricsService
+
     func fetchMetrics() async throws -> Metrics {
         stubbedMetrics
     }
 }
 
 /// A mock that always throws a `MetricsServiceError.noData` error.
-private struct FailingMetricsService: MetricsService {
+struct FailingMetricsService: MetricsService {
+
+    // MARK: - MetricsService
+
     func fetchMetrics() async throws -> Metrics {
         throw MetricsServiceError.noData
     }
 }
 
 /// A mock that always throws a `MetricsServiceError.networkFailure` error.
-private struct NetworkFailingMetricsService: MetricsService {
+struct NetworkFailingMetricsService: MetricsService {
+
+    // MARK: - MetricsService
+
     func fetchMetrics() async throws -> Metrics {
         throw MetricsServiceError.networkFailure(underlying: "timeout")
     }
 }
 
+/// A mock that always throws a plain (non-`MetricsServiceError`) error,
+/// exercising the generic `catch` branch in `MetricsLoader.loadMetrics()`.
+struct GenericFailingMetricsService: MetricsService {
+
+    // MARK: - MetricsService
+
+    func fetchMetrics() async throws -> Metrics {
+        struct PlainError: Error, @unchecked Sendable {}
+        throw PlainError()
+    }
+}
+
 // MARK: - DataDashboardTests
 
+/// Unit tests for the DataDashboard feature, exercising `MetricsLoader`,
+/// `Metrics`, `MetricsServiceError`, and `LiveMetricsService` headlessly.
+///
+/// Each test uses `Application.override(\.metricsService, with:)` to inject a
+/// deterministic mock so no real network I/O occurs.
 @MainActor
 final class DataDashboardTests: XCTestCase {
 
-    // MARK: - Setup / Teardown
+    // MARK: - Lifecycle
 
     override func setUp() async throws {
+        try await super.setUp()
         Application.logging(isEnabled: false)
         resetDashboardState()
     }
 
     override func tearDown() async throws {
         resetDashboardState()
+        try await super.tearDown()
     }
 
     // MARK: - Helpers
@@ -67,7 +99,7 @@ final class DataDashboardTests: XCTestCase {
         errorState.value = nil
     }
 
-    // MARK: - Success Path Tests
+    // MARK: - Tests: Success Path
 
     /// Verifies that a successful fetch populates `currentMetrics` with the service's response.
     func testLoadMetrics_succeeds_updatesCurrentMetrics() async {
@@ -112,7 +144,7 @@ final class DataDashboardTests: XCTestCase {
         await override.cancel()
     }
 
-    // MARK: - Error Path Tests
+    // MARK: - Tests: Error Paths
 
     /// Verifies that a `.noData` service error populates `metricsLoadError` with a description.
     func testLoadMetrics_noDataError_setsLoadError() async {
@@ -152,6 +184,23 @@ final class DataDashboardTests: XCTestCase {
         await override.cancel()
     }
 
+    /// Verifies that a generic (non-`MetricsServiceError`) error also sets an error message,
+    /// exercising the fallback `catch` branch in `MetricsLoader.loadMetrics()`.
+    func testLoadMetrics_genericError_setsLoadError() async {
+        let override = Application.override(
+            \.metricsService,
+            with: GenericFailingMetricsService()
+        )
+
+        let loader = MetricsLoader()
+        await loader.loadMetrics()
+
+        let errorMessage = Application.state(\.metricsLoadError).value
+        XCTAssertNotNil(errorMessage)
+
+        await override.cancel()
+    }
+
     /// Verifies that `isLoadingMetrics` returns to `false` even after a service failure.
     func testLoadMetrics_onFailure_clearsLoadingFlag() async {
         let override = Application.override(
@@ -167,7 +216,7 @@ final class DataDashboardTests: XCTestCase {
         await override.cancel()
     }
 
-    // MARK: - Override Restoration Test
+    // MARK: - Tests: Override Restoration
 
     /// Verifies that cancelling a dependency override restores the original live service.
     func testOverride_whenCancelled_restoresOriginalService() async {
@@ -188,7 +237,7 @@ final class DataDashboardTests: XCTestCase {
         )
     }
 
-    // MARK: - Metrics Model Tests
+    // MARK: - Tests: Metrics Model
 
     /// Verifies `Metrics.empty` has the documented zero-value defaults.
     func testMetrics_empty_hasZeroDefaults() {
@@ -200,6 +249,19 @@ final class DataDashboardTests: XCTestCase {
         XCTAssertEqual(empty.systemHealth, 1.0, accuracy: 0.001)
     }
 
+    /// Verifies equality semantics for `Metrics`.
+    func testMetrics_equatableSemantics() {
+        let date = Date(timeIntervalSince1970: 0)
+        let a = Metrics(activeUsers: 1, revenueToday: 2.0, averageResponseTime: 3.0, systemHealth: 0.5, capturedAt: date)
+        let b = Metrics(activeUsers: 1, revenueToday: 2.0, averageResponseTime: 3.0, systemHealth: 0.5, capturedAt: date)
+        let c = Metrics(activeUsers: 99, revenueToday: 2.0, averageResponseTime: 3.0, systemHealth: 0.5, capturedAt: date)
+
+        XCTAssertEqual(a, b)
+        XCTAssertNotEqual(a, c)
+    }
+
+    // MARK: - Tests: MetricsServiceError
+
     /// Verifies `MetricsServiceError` descriptions contain meaningful text.
     func testMetricsServiceError_localizedDescriptions_areNonEmpty() {
         let noData = MetricsServiceError.noData
@@ -208,5 +270,41 @@ final class DataDashboardTests: XCTestCase {
         XCTAssertFalse(noData.localizedDescription.isEmpty)
         XCTAssertFalse(network.localizedDescription.isEmpty)
         XCTAssertTrue(network.localizedDescription.contains("DNS error"))
+    }
+
+    /// Verifies `MetricsServiceError.noData` error description matches expected copy.
+    func testMetricsServiceError_noData_errorDescription() {
+        let error = MetricsServiceError.noData
+
+        XCTAssertEqual(error.errorDescription, "The metrics service returned no data.")
+    }
+
+    /// Verifies `MetricsServiceError.networkFailure` error description embeds the cause.
+    func testMetricsServiceError_networkFailure_errorDescriptionEmbedsCause() {
+        let error = MetricsServiceError.networkFailure(underlying: "connection reset")
+
+        XCTAssertEqual(error.errorDescription, "Network failure: connection reset")
+    }
+
+    // MARK: - Tests: LiveMetricsService
+
+    /// Verifies that `LiveMetricsService.fetchMetrics()` returns a non-empty `Metrics` snapshot
+    /// with positive active users and health within the valid range.
+    func testLiveMetricsService_fetchMetrics_returnsValidSnapshot() async throws {
+        let service = LiveMetricsService()
+        let metrics = try await service.fetchMetrics()
+
+        XCTAssertGreaterThan(metrics.activeUsers, 0)
+        XCTAssertGreaterThan(metrics.revenueToday, 0)
+        XCTAssertGreaterThan(metrics.averageResponseTime, 0)
+        XCTAssertGreaterThan(metrics.systemHealth, 0)
+        XCTAssertLessThanOrEqual(metrics.systemHealth, 1.0)
+    }
+
+    /// Verifies that `LiveMetricsService` can be instantiated with the public initialiser.
+    func testLiveMetricsService_init() {
+        let service = LiveMetricsService()
+
+        XCTAssertNotNil(service)
     }
 }

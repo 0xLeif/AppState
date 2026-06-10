@@ -19,6 +19,7 @@ let package = Package(
     ],
     dependencies: [
         .package(path: "../../.."),
+        .package(url: "https://github.com/nalexn/ViewInspector", from: "0.10.0"),
     ],
     targets: [
         .target(
@@ -35,6 +36,7 @@ let package = Package(
             dependencies: [
                 "SyncNotes",
                 .product(name: "AppState", package: "AppState"),
+                .product(name: "ViewInspector", package: "ViewInspector"),
             ],
             swiftSettings: [
                 .enableExperimentalFeature("StrictConcurrency"),

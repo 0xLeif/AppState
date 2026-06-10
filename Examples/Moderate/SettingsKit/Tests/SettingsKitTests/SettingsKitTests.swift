@@ -4,29 +4,67 @@ import XCTest
 
 @testable import SettingsKit
 
-// MARK: - Application extensions used only in tests
+// MARK: - InMemoryUserDefaults
 
-extension Application {
-    /// A dedicated `StoredState` using a unique `id` so tests never collide
-    /// with production state or with each other.
-    fileprivate var testSettings: StoredState<Settings> {
-        storedState(initial: .default, feature: "SettingsKitTests", id: "testSettings")
+/// A fully in-memory `UserDefaultsManaging` substitute for tests.
+///
+/// Overriding `\.userDefaults` prevents `StoredState` from ever touching
+/// `UserDefaults.standard` or persisting data to disk.
+final class InMemoryUserDefaults: UserDefaultsManaging, @unchecked Sendable {
+
+    // MARK: - Properties
+
+    private var storage: [String: Any] = [:]
+
+    // MARK: - UserDefaultsManaging
+
+    func object(forKey key: String) -> Any? {
+        storage[key]
+    }
+
+    func set(_ value: Any?, forKey key: String) {
+        storage[key] = value
+    }
+
+    func removeObject(forKey key: String) {
+        storage.removeValue(forKey: key)
     }
 }
 
 // MARK: - SettingsKitTests
 
+/// Tests for the SettingsKit feature, exercising `Settings`, `Application+Settings`,
+/// and `StoredState` / `Slice` APIs headlessly.
+///
+/// Each test overrides `\.userDefaults` with a fresh in-memory store so that
+/// `StoredState` never touches `UserDefaults.standard`.
 @MainActor
 final class SettingsKitTests: XCTestCase {
+
+    // MARK: - Properties
+
+    private var userDefaultsOverride: Application.DependencyOverride?
+
     // MARK: - Lifecycle
 
     override func setUp() async throws {
-        // Always start from a clean slate by resetting to the factory default.
-        Application.reset(storedState: \.testSettings)
+        try await super.setUp()
+
+        userDefaultsOverride = Application.override(
+            \.userDefaults,
+            with: InMemoryUserDefaults() as UserDefaultsManaging
+        )
+
+        Application.reset(storedState: \.settings)
     }
 
     override func tearDown() async throws {
-        Application.reset(storedState: \.testSettings)
+        Application.reset(storedState: \.settings)
+
+        await userDefaultsOverride?.cancel()
+        userDefaultsOverride = nil
+
+        try await super.tearDown()
     }
 
     // MARK: - Settings model tests
@@ -51,31 +89,37 @@ final class SettingsKitTests: XCTestCase {
         XCTAssertNotEqual(first, second)
     }
 
+    // MARK: - Application+Settings coverage
+
+    func testApplicationSettingsReturnsStoredState() {
+        let stored = Application.storedState(\.settings)
+        XCTAssertEqual(stored.value, Settings.default)
+    }
+
     // MARK: - StoredState read/write tests
 
     func testStoredStateDefaultValue() {
-        let stored = Application.storedState(\.testSettings)
+        let stored = Application.storedState(\.settings)
         XCTAssertEqual(stored.value, Settings.default)
     }
 
     func testStoredStateWriteAndRead() {
-        var stored = Application.storedState(\.testSettings)
+        var stored = Application.storedState(\.settings)
         let updated = Settings(isDarkMode: true, fontSize: 20, notificationsEnabled: false, username: "Leif")
         stored.value = updated
 
-        let retrieved = Application.storedState(\.testSettings)
+        let retrieved = Application.storedState(\.settings)
         XCTAssertEqual(retrieved.value, updated)
     }
 
     func testStoredStateIndividualFieldMutation() {
-        var stored = Application.storedState(\.testSettings)
+        var stored = Application.storedState(\.settings)
         stored.value.isDarkMode = true
         stored.value.username = "TestUser"
 
-        let retrieved = Application.storedState(\.testSettings)
+        let retrieved = Application.storedState(\.settings)
         XCTAssertTrue(retrieved.value.isDarkMode)
         XCTAssertEqual(retrieved.value.username, "TestUser")
-        // Other fields should remain at their defaults.
         XCTAssertEqual(retrieved.value.fontSize, 16)
         XCTAssertTrue(retrieved.value.notificationsEnabled)
     }
@@ -83,102 +127,100 @@ final class SettingsKitTests: XCTestCase {
     // MARK: - Reset tests
 
     func testResetRestoresDefault() {
-        var stored = Application.storedState(\.testSettings)
+        var stored = Application.storedState(\.settings)
         stored.value = Settings(isDarkMode: true, fontSize: 24, notificationsEnabled: false, username: "Changed")
 
-        Application.reset(storedState: \.testSettings)
+        Application.reset(storedState: \.settings)
 
-        let afterReset = Application.storedState(\.testSettings)
+        let afterReset = Application.storedState(\.settings)
         XCTAssertEqual(afterReset.value, Settings.default)
     }
 
     func testResetIsIdempotent() {
-        Application.reset(storedState: \.testSettings)
-        Application.reset(storedState: \.testSettings)
-        let stored = Application.storedState(\.testSettings)
+        Application.reset(storedState: \.settings)
+        Application.reset(storedState: \.settings)
+        let stored = Application.storedState(\.settings)
         XCTAssertEqual(stored.value, Settings.default)
     }
 
     // MARK: - Slice tests
 
     func testWritableSliceIsDarkMode() {
-        var darkModeSlice = Application.slice(\.testSettings, \.isDarkMode)
+        var darkModeSlice = Application.slice(\.settings, \.isDarkMode)
         XCTAssertFalse(darkModeSlice.value)
 
         darkModeSlice.value = true
 
-        XCTAssertTrue(Application.slice(\.testSettings, \.isDarkMode).value)
-        XCTAssertTrue(Application.storedState(\.testSettings).value.isDarkMode)
+        XCTAssertTrue(Application.slice(\.settings, \.isDarkMode).value)
+        XCTAssertTrue(Application.storedState(\.settings).value.isDarkMode)
     }
 
     func testWritableSliceFontSize() {
-        var fontSizeSlice = Application.slice(\.testSettings, \.fontSize)
+        var fontSizeSlice = Application.slice(\.settings, \.fontSize)
         XCTAssertEqual(fontSizeSlice.value, 16)
 
         fontSizeSlice.value = 22
 
-        XCTAssertEqual(Application.slice(\.testSettings, \.fontSize).value, 22)
-        XCTAssertEqual(Application.storedState(\.testSettings).value.fontSize, 22)
+        XCTAssertEqual(Application.slice(\.settings, \.fontSize).value, 22)
+        XCTAssertEqual(Application.storedState(\.settings).value.fontSize, 22)
     }
 
     func testWritableSliceUsername() {
-        var usernameSlice = Application.slice(\.testSettings, \.username)
+        var usernameSlice = Application.slice(\.settings, \.username)
         XCTAssertEqual(usernameSlice.value, "Guest")
 
         usernameSlice.value = "0xLeif"
 
-        XCTAssertEqual(Application.slice(\.testSettings, \.username).value, "0xLeif")
-        XCTAssertEqual(Application.storedState(\.testSettings).value.username, "0xLeif")
+        XCTAssertEqual(Application.slice(\.settings, \.username).value, "0xLeif")
+        XCTAssertEqual(Application.storedState(\.settings).value.username, "0xLeif")
     }
 
     func testWritableSliceNotificationsEnabled() {
-        var notificationsSlice = Application.slice(\.testSettings, \.notificationsEnabled)
+        var notificationsSlice = Application.slice(\.settings, \.notificationsEnabled)
         XCTAssertTrue(notificationsSlice.value)
 
         notificationsSlice.value = false
 
-        XCTAssertFalse(Application.slice(\.testSettings, \.notificationsEnabled).value)
-        XCTAssertFalse(Application.storedState(\.testSettings).value.notificationsEnabled)
+        XCTAssertFalse(Application.slice(\.settings, \.notificationsEnabled).value)
+        XCTAssertFalse(Application.storedState(\.settings).value.notificationsEnabled)
     }
 
     func testMultipleSlicesAreIndependent() {
-        var isDarkModeSlice = Application.slice(\.testSettings, \.isDarkMode)
-        var fontSizeSlice = Application.slice(\.testSettings, \.fontSize)
+        var isDarkModeSlice = Application.slice(\.settings, \.isDarkMode)
+        var fontSizeSlice = Application.slice(\.settings, \.fontSize)
 
         isDarkModeSlice.value = true
         fontSizeSlice.value = 28
 
-        // Each slice reflects its own change without clobbering the other field.
-        XCTAssertTrue(Application.slice(\.testSettings, \.isDarkMode).value)
-        XCTAssertEqual(Application.slice(\.testSettings, \.fontSize).value, 28)
+        XCTAssertTrue(Application.slice(\.settings, \.isDarkMode).value)
+        XCTAssertEqual(Application.slice(\.settings, \.fontSize).value, 28)
 
-        let full = Application.storedState(\.testSettings).value
+        let full = Application.storedState(\.settings).value
         XCTAssertTrue(full.isDarkMode)
         XCTAssertEqual(full.fontSize, 28)
-        // Unchanged fields stay at defaults.
         XCTAssertTrue(full.notificationsEnabled)
         XCTAssertEqual(full.username, "Guest")
     }
 
-    // MARK: - UserDefaults persistence test
+    // MARK: - Settings custom init tests
 
-    func testUserDefaultsPersistence() {
-        // Write via StoredState.
-        var stored = Application.storedState(\.testSettings)
-        stored.value = Settings(isDarkMode: true, fontSize: 18, notificationsEnabled: false, username: "Persisted")
+    func testSettingsCustomInitAllFields() {
+        let settings = Settings(
+            isDarkMode: true,
+            fontSize: 20,
+            notificationsEnabled: false,
+            username: "Custom"
+        )
+        XCTAssertTrue(settings.isDarkMode)
+        XCTAssertEqual(settings.fontSize, 20)
+        XCTAssertFalse(settings.notificationsEnabled)
+        XCTAssertEqual(settings.username, "Custom")
+    }
 
-        // Verify the value is actually in UserDefaults under the expected key.
-        let key = "SettingsKitTests_testSettings"
-        if let data = UserDefaults.standard.data(forKey: key),
-            let decoded = try? JSONDecoder().decode(Settings.self, from: data)
-        {
-            XCTAssertEqual(decoded.username, "Persisted")
-        } else {
-            // The key format is internal to AppState (Scope.key = "\(feature)_\(id)").
-            // If the exact key name changes, at minimum confirm the value is readable
-            // back through the AppState API.
-            let roundTripped = Application.storedState(\.testSettings).value
-            XCTAssertEqual(roundTripped.username, "Persisted")
-        }
+    func testSettingsCodableRoundTrip() throws {
+        let original = Settings(isDarkMode: true, fontSize: 24, notificationsEnabled: false, username: "RoundTrip")
+        let data = try JSONEncoder().encode(original)
+        let decoded = try JSONDecoder().decode(Settings.self, from: data)
+        XCTAssertEqual(original, decoded)
     }
 }

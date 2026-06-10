@@ -2,6 +2,33 @@ import XCTest
 import AppState
 @testable import MultiPlatformTracker
 
+// MARK: - InMemoryUserDefaults
+
+/// A fully in-memory `UserDefaultsManaging` substitute for tests.
+///
+/// Overriding `\.userDefaults` prevents `StoredState` from ever touching
+/// `UserDefaults.standard` or persisting data to disk during test runs.
+final class InMemoryUserDefaults: UserDefaultsManaging, @unchecked Sendable {
+
+    // MARK: - Properties
+
+    private var storage: [String: Any] = [:]
+
+    // MARK: - UserDefaultsManaging
+
+    func object(forKey key: String) -> Any? {
+        storage[key]
+    }
+
+    func set(_ value: Any?, forKey key: String) {
+        storage[key] = value
+    }
+
+    func removeObject(forKey key: String) {
+        storage.removeValue(forKey: key)
+    }
+}
+
 // MARK: - MultiPlatformTrackerTests
 
 /// Tests for the platform-agnostic tracker state layer.
@@ -13,15 +40,25 @@ import AppState
 @MainActor
 final class MultiPlatformTrackerTests: XCTestCase {
 
+    // MARK: - Properties
+
+    private var userDefaultsOverride: Application.DependencyOverride?
+
     // MARK: - Lifecycle
 
     override func setUp() async throws {
         try await super.setUp()
+        userDefaultsOverride = Application.override(
+            \.userDefaults,
+            with: InMemoryUserDefaults() as UserDefaultsManaging
+        )
         Application.reset(storedState: \.trackerCount)
     }
 
     override func tearDown() async throws {
         Application.reset(storedState: \.trackerCount)
+        await userDefaultsOverride?.cancel()
+        userDefaultsOverride = nil
         try await super.tearDown()
     }
 

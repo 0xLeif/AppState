@@ -11,15 +11,46 @@ let package = Package(
         .watchOS(.v10),
         .visionOS(.v1)
     ],
+    products: [
+        .library(
+            name: "SwiftDataExampleLib",
+            targets: ["SwiftDataExampleLib"]
+        ),
+    ],
     dependencies: [
-        .package(name: "AppState", path: "../..")
+        .package(name: "AppState", path: "../.."),
+        .package(url: "https://github.com/nalexn/ViewInspector", from: "0.10.0"),
     ],
     targets: [
+        .target(
+            name: "SwiftDataExampleLib",
+            dependencies: [
+                .product(name: "AppState", package: "AppState"),
+            ],
+            swiftSettings: [
+                .enableExperimentalFeature("StrictConcurrency"),
+            ]
+        ),
         .executableTarget(
             name: "SwiftDataExample",
             dependencies: [
-                .product(name: "AppState", package: "AppState")
+                .product(name: "AppState", package: "AppState"),
+                "SwiftDataExampleLib",
+            ],
+            swiftSettings: [
+                .enableExperimentalFeature("StrictConcurrency"),
             ]
-        )
+        ),
+        .testTarget(
+            name: "SwiftDataExampleTests",
+            dependencies: [
+                "SwiftDataExampleLib",
+                .product(name: "AppState", package: "AppState"),
+                .product(name: "ViewInspector", package: "ViewInspector"),
+            ],
+            swiftSettings: [
+                .enableExperimentalFeature("StrictConcurrency"),
+            ]
+        ),
     ]
 )
