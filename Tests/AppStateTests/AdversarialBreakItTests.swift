@@ -681,16 +681,15 @@ final class BreakItEdgeDataTests: XCTestCase {
         let icloudOverride = Application.override(\.icloudStore, with: BreakItInMemoryICloudStore())
         defer { Task { await icloudOverride.cancel() } }
 
-        // Double.infinity cannot be JSON-encoded; the setter should catch the
-        // error and fall back to storedState rather than crashing.
+        // Seed a valid value first, then attempt a non-encodable one.
         var state = Application.syncState(\.breakItSyncDouble)
-        state.value = Double.infinity
+        state.value = 1.5
+        XCTAssertEqual(Application.syncState(\.breakItSyncDouble).value, 1.5)
 
-        // The storedState fallback still has the value even though iCloud
-        // encoding failed.  We only assert no crash here; the exact value
-        // returned depends on whether storedState was updated before the
-        // encode attempt.
-        _ = Application.syncState(\.breakItSyncDouble).value
+        // Double.infinity cannot be JSON-encoded. The setter encodes BEFORE committing, so the
+        // failed write must not poison the local fallback — the previous valid value is preserved.
+        state.value = Double.infinity
+        XCTAssertEqual(Application.syncState(\.breakItSyncDouble).value, 1.5)
     }
 
     @available(watchOS 9.0, *)

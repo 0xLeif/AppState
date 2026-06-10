@@ -86,10 +86,13 @@ extension Application {
                     storedState.reset()
                     icloudStore.removeObject(forKey: scope.key)
                 } else {
-                    storedState.value = newValue
-
                     do {
+                        // Encode first: only commit to the local fallback and iCloud once we have a
+                        // valid encoding. Otherwise a value that fails to encode would still poison
+                        // `storedState`, and the getter would read it back via the fallback even
+                        // though iCloud never received it.
                         let data = try JSONEncoder().encode(newValue)
+                        storedState.value = newValue
                         icloudStore.set(data, forKey: scope.key)
                     } catch {
                         Application.log(

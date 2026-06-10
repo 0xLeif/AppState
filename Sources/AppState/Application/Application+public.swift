@@ -469,6 +469,11 @@ public extension Application {
         _ line: Int = #line,
         _ column: Int = #column
     ) -> ApplicationState where ApplicationState.Value == Value {
+        // Register the current Observation tracking scope so that reads through this imperative
+        // accessor (not just through the `@AppState`/`@StoredState`/… property wrappers) drive
+        // SwiftUI/`withObservationTracking` updates. Outside a tracking scope this is a no-op.
+        shared.registerObservation()
+
         let appState = shared.value(keyPath: keyPath)
 
         log(

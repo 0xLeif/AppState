@@ -21,12 +21,15 @@ import Foundation
  let token = try keychain.resolve("token")
  ```
  */
-public final class Keychain: Sendable {
+/// - Note: `@unchecked Sendable` is justified because every access to the mutable ``keys`` index and
+///   to the underlying Keychain items is serialized through ``lock``.
+public final class Keychain: @unchecked Sendable {
     public typealias Key = String
     public typealias Value = String
-    
+
+    /// Serializes Keychain item operations and the in-memory ``keys`` index.
     private let lock: NSLock
-    @MainActor
+    /// In-memory index of known keys, used by ``values(ofType:)``. Guarded by ``lock``.
     private var keys: Set<Key>
     
     /// Default initializer
@@ -104,18 +107,21 @@ public final class Keychain: Sendable {
         let updateAttributes: [NSString: Any] = [
             kSecValueData: data
         ]
-        
+
+        // The update/add pair plus the index insert must be atomic: without the lock, two concurrent
+        // `set` calls for the same key can both see `errSecItemNotFound` and both attempt `SecItemAdd`.
+        lock.lock()
+        defer { lock.unlock() }
+
         let updateStatus = SecItemUpdate(query as CFDictionary, updateAttributes as CFDictionary)
-        
+
         if updateStatus == errSecItemNotFound {
             var addQuery = query
             addQuery[kSecValueData] = data
             SecItemAdd(addQuery as CFDictionary, nil)
         }
 
-        Task { @MainActor in
-            keys.insert(key)
-        }
+        keys.insert(key)
     }
 
     /**
@@ -129,8 +135,10 @@ public final class Keychain: Sendable {
         ]
         
         lock.lock()
+        defer { lock.unlock() }
+
         SecItemDelete(query as CFDictionary)
-        lock.unlock()
+        keys.remove(key)
     }
 
     /**
