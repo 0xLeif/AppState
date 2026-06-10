@@ -54,3 +54,27 @@ targets:
       - package: MultiPlatformTracker
       - package: SwiftDataExample
         product: SwiftDataExampleLib
+
+  AppStateDemoUITests:
+    type: bundle.ui-testing
+    platform: iOS
+    deploymentTarget: "18.0"
+    sources:
+      - UITests
+    settings:
+      base:
+        PRODUCT_BUNDLE_IDENTIFIER: com.corvidlabs.AppStateDemoUITests
+        TEST_TARGET_NAME: AppStateDemo
+        SWIFT_VERSION: "6.0"
+    dependencies:
+      - target: AppStateDemo
+
+schemes:
+  AppStateDemo:
+    build:
+      targets:
+        AppStateDemo: all
+        AppStateDemoUITests: [test]
+    test:
+      targets:
+        - AppStateDemoUITests
