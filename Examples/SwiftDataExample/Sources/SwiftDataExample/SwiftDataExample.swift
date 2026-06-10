@@ -9,10 +9,11 @@ import SwiftData
 
 @main
 struct SwiftDataExample {
-    /// `main()` is `@MainActor` because every `ModelState` / `ModelContext` operation is
-    /// bound to the main actor.
+    /// `main()` is `@MainActor` and `async` because every `ModelState` / `ModelContext`
+    /// operation is bound to the main actor, and step 8 uses `await` to call into
+    /// `BulkImporter` (a `@ModelActor` that runs off the main thread).
     @MainActor
-    static func main() {
+    static func main() async {
         Application.logging(isEnabled: true)
 
         print("== SwiftData Lab + AppState example ==\n")
@@ -98,6 +99,34 @@ struct SwiftDataExample {
         print("   V2 item in migrated container: \(fetched.map(\.title))")
         precondition(fetched.count == 1)
         precondition(fetched[0].priority == 4, "V2 priority field must be accessible")
+
+        // ── 8. BulkImporter: 5,000 items off the main actor ──────────────────────────────
+        print("\n8. BulkImporter: inserting 5,000 items off-main-actor…")
+
+        // Reset to a clean item state before the bulk exercise.
+        Application.modelState(\.allItems).deleteAll()
+        Application.modelState(\.todoLists).deleteAll()
+        precondition(Application.modelState(\.allItems).models.isEmpty, "Store must be empty before bulk import")
+
+        let bulkContainer = Application.dependency(\.labContainer)
+        let bulkImporter = BulkImporter(modelContainer: bulkContainer)
+
+        // Track progress: the callback runs on @ModelActor (off-main). We update the main actor
+        // via an explicit `await MainActor.run` hop to keep data-race safety.
+        nonisolated(unsafe) var lastProgress = 0
+
+        await bulkImporter.importItems(count: 5_000, batchSize: 500) { inserted in
+            // Callback executes on @ModelActor executor — hop to main actor to record progress.
+            await MainActor.run { lastProgress = inserted }
+        }
+
+        // After importItems returns, all 5,000 items are committed to the shared container.
+        // The main-actor mainContext must now reflect them.
+        let bulkCount = Application.modelState(\.allItems).models.count
+        print("   Last progress reported: \(lastProgress)")
+        print("   Main-context item count after bulk import: \(bulkCount)")
+        precondition(lastProgress == 5_000, "Progress must reach 5,000")
+        precondition(bulkCount == 5_000, "Main context must see all 5,000 inserted items")
 
         print("\n== Example completed successfully ==")
         exit(0)

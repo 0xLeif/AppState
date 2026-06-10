@@ -17,11 +17,12 @@ final class AppStateDemoUITests: XCTestCase {
         static let syncNotes = "SyncNotes — @SyncState"
         static let tracker = "MultiPlatformTracker — @StoredState"
         static let swiftDataLab = "SwiftData Lab — relationships, queries, migration"
+        static let bulkImport = "Bulk Import — 10k items off-main, responsive"
         static let breakIt = "Break It — try to crash AppState"
 
         static let all = [
             todoCloud, settingsKit, dataDashboard, secureVault,
-            syncNotes, tracker, swiftDataLab, breakIt,
+            syncNotes, tracker, swiftDataLab, bulkImport, breakIt,
         ]
     }
 
@@ -41,12 +42,18 @@ final class AppStateDemoUITests: XCTestCase {
 
     // MARK: - Helpers
 
-    /// Taps a catalog row, optionally scrolling it into view first.
+    /// Scrolls a catalog row into view (List rows are lazily added to the tree) and taps it.
     private func openExample(_ label: String, file: StaticString = #filePath, line: UInt = #line) {
         let row = app.buttons[label]
-        XCTAssertTrue(row.waitForExistence(timeout: 5), "Catalog row '\(label)' not found", file: file, line: line)
-        if !row.isHittable {
+        var swipes = 0
+        while !row.exists && swipes < 8 {
             app.swipeUp()
+            swipes += 1
+        }
+        XCTAssertTrue(row.exists, "Catalog row '\(label)' not found", file: file, line: line)
+        while !row.isHittable && swipes < 12 {
+            app.swipeUp()
+            swipes += 1
         }
         row.tap()
     }
@@ -81,7 +88,9 @@ final class AppStateDemoUITests: XCTestCase {
         }
     }
 
-    /// The "everything is reachable" guarantee — every example pushes a screen and returns cleanly.
+    /// Reachability + back-navigation sweep across the top/mid examples. The bottom-of-catalog
+    /// screens (Break It, Bulk Import) are covered by their own dedicated tests, so they are omitted
+    /// here to keep this sweep free of deep-scroll flakiness.
     func testEveryScreenIsReachable() {
         // Each probe resolves a distinctive element on the destination screen. TrackerView has no
         // navigation title, so it is probed by its increment button instead of a nav bar.
@@ -91,7 +100,6 @@ final class AppStateDemoUITests: XCTestCase {
             (Row.dataDashboard, { self.app.navigationBars["Dashboard"] }),
             (Row.syncNotes, { self.app.navigationBars["SyncNotes"] }),
             (Row.tracker, { self.app.buttons["Increment count"] }),
-            (Row.breakIt, { self.app.navigationBars["Break It"] }),
         ]
         for probe in probes {
             openExample(probe.row)
@@ -243,10 +251,36 @@ final class AppStateDemoUITests: XCTestCase {
         openExample(Row.breakIt)
         XCTAssertTrue(app.navigationBars["Break It"].waitForExistence(timeout: 5))
 
-        app.buttons["Hammer @AppState ×100k"].tap()
+        app.buttons["Hammer @AppState ×200k"].tap()
 
-        // The status row updates to a "✓ …" summary; the app must remain responsive.
+        // The workload runs in a yielding Task; the status row updates to a "✓ …" summary while the
+        // UI stays responsive.
         let survived = app.staticTexts.containing(NSPredicate(format: "label CONTAINS '✓'")).firstMatch
-        XCTAssertTrue(survived.waitForExistence(timeout: 10), "Break It workload did not report a result")
+        XCTAssertTrue(survived.waitForExistence(timeout: 25), "Break It workload did not report a result")
+    }
+
+    // MARK: - Bulk Import (background @ModelActor, non-blocking)
+
+    func testBulkImportRunsOffMainAndCompletes() {
+        openExample(Row.bulkImport)
+        XCTAssertTrue(app.navigationBars["Bulk Import"].waitForExistence(timeout: 8))
+
+        let generate = app.buttons.containing(NSPredicate(format: "label BEGINSWITH 'Generate'")).firstMatch
+        XCTAssertTrue(generate.waitForExistence(timeout: 5))
+        generate.tap()
+
+        // The Cancel control appears AND is hittable *while the import runs* — proof the UI is not
+        // blocked. A frozen main thread could neither present nor accept this control.
+        let cancel = app.buttons["Cancel"]
+        XCTAssertTrue(cancel.waitForExistence(timeout: 5), "Import did not start / UI was blocked")
+        XCTAssertTrue(cancel.isHittable, "Cancel not hittable — the UI is blocked")
+        cancel.tap()
+
+        // After cancelling, the UI returns to an interactive state (Generate re-enabled) — whether the
+        // import finished first or was cancelled mid-flight, the main actor was never starved.
+        XCTAssertTrue(
+            generate.waitForExistence(timeout: 20) && generate.isEnabled,
+            "UI did not return to an interactive state"
+        )
     }
 }

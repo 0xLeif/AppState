@@ -63,6 +63,9 @@ struct ExampleCatalogView: View {
                     NavigationLink("SwiftData Lab — relationships, queries, migration") {
                         SwiftDataLabView()
                     }
+                    NavigationLink("Bulk Import — 10k items off-main, responsive") {
+                        BulkImportView()
+                    }
                 }
                 #endif
 
