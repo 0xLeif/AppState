@@ -12,7 +12,9 @@ import SwiftData
 /// - `TodoItem` cross-references many `Tag`s (nullify on either side).
 /// - `Tag.name` is unique — duplicate inserts perform an upsert.
 public enum LabSchemaV1: VersionedSchema {
-    public static let versionIdentifier = Schema.Version(1, 0, 0)
+    // `Schema.Version` is not `Sendable` on older SDKs; this is an immutable constant, so opt out
+    // of the global-actor isolation check explicitly.
+    nonisolated(unsafe) public static let versionIdentifier = Schema.Version(1, 0, 0)
 
     public static var models: [any PersistentModel.Type] {
         [TodoList.self, TodoItem.self, Tag.self]

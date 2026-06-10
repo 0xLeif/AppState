@@ -15,7 +15,9 @@ import SwiftData
 /// (V1 → V2, handled automatically by SwiftData for added-optional/default-value columns) and
 /// demonstrates where a custom migration stage would be inserted.
 public enum LabSchemaV2: VersionedSchema {
-    public static let versionIdentifier = Schema.Version(2, 0, 0)
+    // `Schema.Version` is not `Sendable` on older SDKs; this is an immutable constant, so opt out
+    // of the global-actor isolation check explicitly.
+    nonisolated(unsafe) public static let versionIdentifier = Schema.Version(2, 0, 0)
 
     public static var models: [any PersistentModel.Type] {
         [TodoList.self, TodoItem.self, Tag.self]
@@ -113,7 +115,8 @@ public enum LabMigrationPlan: SchemaMigrationPlan {
     ///
     /// SwiftData automatically adds `priority` (default `0`) and `dueDate` (optional `nil`)
     /// to existing rows, so no custom `willMigrate`/`didMigrate` closure is needed.
-    private static let migrateV1toV2 = MigrationStage.lightweight(
+    // `MigrationStage` is not `Sendable` on older SDKs; this is an immutable constant.
+    nonisolated(unsafe) private static let migrateV1toV2 = MigrationStage.lightweight(
         fromVersion: LabSchemaV1.self,
         toVersion: LabSchemaV2.self
     )
