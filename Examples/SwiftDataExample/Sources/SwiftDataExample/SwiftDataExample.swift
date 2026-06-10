@@ -9,70 +9,97 @@ import SwiftData
 
 @main
 struct SwiftDataExample {
-    // `main()` is `@MainActor` because the backing `ModelContainer.mainContext` (and therefore
-    // every `ModelState` operation) is main-actor bound.
+    /// `main()` is `@MainActor` because every `ModelState` / `ModelContext` operation is
+    /// bound to the main actor.
     @MainActor
     static func main() {
-        // Surface AppState's internal logging so the run is easy to follow.
         Application.logging(isEnabled: true)
 
-        print("== SwiftData + AppState example ==")
+        print("== SwiftData Lab + AppState example ==\n")
 
-        // Start from a clean slate so repeated runs are deterministic.
-        Application.modelState(\.todos).deleteAll()
-        precondition(Application.modelState(\.todos).models.isEmpty, "Expected an empty store at start")
+        // ── Reset to a clean slate ────────────────────────────────────────────────────────
+        Application.modelState(\.allItems).deleteAll()
+        Application.modelState(\.allTags).deleteAll()
+        Application.modelState(\.todoLists).deleteAll()
+        precondition(Application.modelState(\.todoLists).models.isEmpty)
 
-        // 1. Insert via the property-wrapper projected value (view-model style).
-        let store = TodoStore()
-        store.add("Buy milk")
-        print("After store.add: \(store.todos.count) todo(s)")
-        precondition(store.todos.count == 1, "Expected 1 todo after store.add")
+        // ── 1. TodoList creation + relationship ──────────────────────────────────────────
+        print("1. Creating lists…")
+        let listStore = TodoListStore()
+        listStore.createList(titled: "Work")
+        listStore.createList(titled: "Personal")
+        precondition(listStore.lists.count == 2, "Expected 2 lists")
+        print("   \(listStore.lists.map(\.title))")
 
-        // 2. Insert more through the view model (its projected-value `insert`).
-        store.add("Walk the dog")
-        store.add("Write code")
-        print("After two more inserts: \(store.todos.count) todo(s)")
-        precondition(store.todos.count == 3, "Expected 3 todos")
-
-        // 3. Insert directly through the application-level `ModelState`.
-        Application.modelState(\.todos).insert(TodoItem(title: "Read a book"))
-        print("After Application.modelState insert: \(Application.modelState(\.todos).models.count) todo(s)")
-        precondition(Application.modelState(\.todos).models.count == 4, "Expected 4 todos")
-
-        // Fetch & print the current todos.
-        let current = Application.modelState(\.todos).models
-        print("Current todos:")
-        for todo in current {
-            print("  - [\(todo.isDone ? "x" : " ")] \(todo.title)")
+        guard let workList = listStore.lists.first(where: { $0.title == "Work" }) else {
+            fatalError("Work list not found")
         }
 
-        // 4. Mark one todo done and persist the change.
-        if let first = current.first {
-            first.isDone = true
-            Application.modelState(\.todos).save()
-            print("Marked \"\(first.title)\" as done and saved")
-        }
-        let doneCount = Application.modelState(\.todos).models.filter(\.isDone).count
-        precondition(doneCount == 1, "Expected exactly 1 completed todo")
+        // ── 2. Item insertion + priority/dueDate (V2 fields) ─────────────────────────────
+        print("\n2. Adding items to Work list…")
+        let itemStore = TodoItemStore(list: workList)
+        itemStore.addItem(titled: "Write unit tests", priority: 5)
+        itemStore.addItem(titled: "Review PR",        priority: 3, dueDate: Date(timeIntervalSinceNow: 86400))
+        itemStore.addItem(titled: "Update README",    priority: 1)
+        precondition(workList.items.count == 3, "Expected 3 items in Work list")
+        print("   Items: \(workList.items.map(\.title))")
 
-        // 5. Delete one todo.
-        if let toDelete = Application.modelState(\.todos).models.last {
-            Application.modelState(\.todos).delete(toDelete)
-            print("Deleted \"\(toDelete.title)\"")
+        // ── 3. Tag attachment + unique constraint (upsert) ───────────────────────────────
+        print("\n3. Attaching tags (including duplicate to trigger upsert)…")
+        guard let testItem = workList.items.first(where: { $0.title == "Write unit tests" }) else {
+            fatalError("Test item not found")
         }
-        let remaining = Application.modelState(\.todos).models
-        print("Remaining todos:")
-        for todo in remaining {
-            print("  - [\(todo.isDone ? "x" : " ")] \(todo.title)")
+        itemStore.attachTag(named: "swift", to: testItem)
+        itemStore.attachTag(named: "testing", to: testItem)
+
+        guard let prItem = workList.items.first(where: { $0.title == "Review PR" }) else {
+            fatalError("PR item not found")
         }
-        precondition(remaining.count == 3, "Expected 3 todos after deletion")
+        itemStore.attachTag(named: "swift", to: prItem)   // reuse existing "swift" tag
 
-        // 6. deleteAll() removes every model managed by the state.
-        Application.modelState(\.todos).deleteAll()
-        precondition(Application.modelState(\.todos).models.isEmpty, "Expected an empty store after deleteAll")
-        print("Store cleared; \(Application.modelState(\.todos).models.count) todo(s) remaining")
+        let allTags = Application.modelState(\.allTags).models
+        print("   Total unique tags: \(allTags.count) → \(allTags.map(\.name))")
+        precondition(allTags.count == 2, "Expected exactly 2 unique tags (upsert behaviour)")
 
-        print("== Example completed successfully ==")
+        // ── 4. Compound query: incomplete items with a given tag ─────────────────────────
+        print("\n4. Compound query: incomplete 'swift'-tagged items…")
+        let swiftIncomplete = itemStore.incompleteItems(taggedWith: "swift")
+        print("   Found \(swiftIncomplete.count) items: \(swiftIncomplete.map(\.title))")
+        precondition(swiftIncomplete.count == 2)
+
+        // ── 5. Toggle done, then re-run compound query ────────────────────────────────────
+        print("\n5. Marking '\(testItem.title)' done; re-running query…")
+        itemStore.toggleDone(testItem)
+        let swiftIncompleteAfter = itemStore.incompleteItems(taggedWith: "swift")
+        print("   Now \(swiftIncompleteAfter.count) incomplete 'swift' item(s)")
+        precondition(swiftIncompleteAfter.count == 1)
+
+        // ── 6. Cascade delete: deleting a list removes its items ─────────────────────────
+        print("\n6. Cascade-deleting Work list…")
+        let itemCountBefore = Application.modelState(\.allItems).models.count
+        print("   Items before delete: \(itemCountBefore)")
+        listStore.delete(workList)
+        let itemCountAfter = Application.modelState(\.allItems).models.count
+        print("   Items after delete: \(itemCountAfter)")
+        precondition(itemCountAfter == 0, "Cascade delete should have removed all items")
+
+        // Tags survive (nullify rule on TodoItem.tags)
+        let tagsAfter = Application.modelState(\.allTags).models.count
+        print("   Tags still present (nullify, not cascade): \(tagsAfter)")
+
+        // ── 7. Migration container smoke-test ────────────────────────────────────────────
+        print("\n7. Migration container smoke-test (V1→V2 with LabMigrationPlan)…")
+        let migratedContainer = makeInMemoryMigratedContainer()
+        let ctx = migratedContainer.mainContext
+        let v2Item = TodoItem(title: "Post-migration item", priority: 4, dueDate: Date())
+        ctx.insert(v2Item)
+        try? ctx.save()
+        let fetched = (try? ctx.fetch(FetchDescriptor<TodoItem>())) ?? []
+        print("   V2 item in migrated container: \(fetched.map(\.title))")
+        precondition(fetched.count == 1)
+        precondition(fetched[0].priority == 4, "V2 priority field must be accessible")
+
+        print("\n== Example completed successfully ==")
         exit(0)
     }
 }

@@ -7,3 +7,6 @@ DerivedData/
 .swiftpm/
 .netrc
 Package.resolved
+# xcodegen-generated demo project + derived data
+Examples/DemoApp/*.xcodeproj/
+Examples/DemoApp/.build-dd/
