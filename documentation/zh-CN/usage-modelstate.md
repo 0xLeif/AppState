@@ -148,6 +148,19 @@ func syncItems() {
 | `$items.save()` | 持久化待处理的更改 |
 | `$items.deleteAll()` | 删除所有匹配 `FetchDescriptor` 的模型并保存 |
 
+这些方法会记录并吞掉底层的任何 SwiftData 错误，从而让调用处保持简洁。当你需要暴露或从失败的写入中恢复时，请使用 `strict` 上对应的可抛出版本：
+
+```swift
+do {
+    try $items.strict.insert(item)
+    try $items.strict.save()
+} catch {
+    // 呈现错误、回滚、重试……
+}
+```
+
+`strict` 暴露了全部四个方法（`insert`、`delete`、`save`、`deleteAll`）的可抛出版本，它们基于同一个上下文 —— 当可以接受被记录的失败时，请选择宽松的 API；当调用方必须处理错误时，请使用 `strict`。
+
 ## 访问 ModelContext
 
 ```swift

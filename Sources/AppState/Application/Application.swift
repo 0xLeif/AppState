@@ -163,7 +163,19 @@ open class Application: NSObject {
             object.objectWillChange.sink(
                 receiveCompletion: { _ in },
                 receiveValue: { [weak self] _ in
-                    self?.notifyChange()
+                    // Deliver synchronously when already on main (preserving the synchronous
+                    // observation contract `withObservationTracking` relies on), and only hop to main
+                    // when a dependency publishes off-main — `notifyChange()` asserts main-thread and
+                    // mutates `changeAnchor`, which must never be touched off the main thread.
+                    if Thread.isMainThread {
+                        self?.notifyChange()
+                    } else {
+                        DispatchQueue.main.async {
+                            MainActor.assumeIsolated {
+                                Application.shared.notifyChange()
+                            }
+                        }
+                    }
                 }
             )
         )

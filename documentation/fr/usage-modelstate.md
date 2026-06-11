@@ -148,6 +148,19 @@ func syncItems() {
 | `$items.save()` | Persiste les changements en attente |
 | `$items.deleteAll()` | Supprime tous les modèles correspondant au `FetchDescriptor` et sauvegarde |
 
+Ces mutateurs journalisent et absorbent toute erreur SwiftData sous-jacente afin que les sites d'appel restent concis. Lorsque vous avez besoin de faire remonter ou de récupérer une écriture échouée, tournez-vous vers les variantes pouvant lever des erreurs disponibles sur `strict` :
+
+```swift
+do {
+    try $items.strict.insert(item)
+    try $items.strict.save()
+} catch {
+    // présenter l'erreur, annuler, réessayer…
+}
+```
+
+`strict` expose des versions pouvant lever des erreurs des quatre mutateurs (`insert`, `delete`, `save`, `deleteAll`) adossées au même contexte — choisissez l'API indulgente lorsqu'un échec journalisé est acceptable, et `strict` lorsque l'appelant doit le gérer.
+
 ## Accès au ModelContext
 
 ```swift

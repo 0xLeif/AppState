@@ -183,5 +183,37 @@ final class ModelStateTests: XCTestCase {
         XCTAssertEqual(sortedModels.map(\.value), [10, 20, 30])
         XCTAssertEqual(sortedModels.map(\.title), ["A", "B", "C"])
     }
+
+    // MARK: - Strict (throwing) API
+
+    @MainActor
+    func testStrictMutatorsPerformCRUD() throws {
+        let items = Application.modelState(\.items)
+
+        let first = TestItem(title: "first", value: 1)
+        try items.strict.insert(first)
+        try items.strict.insert(TestItem(title: "second", value: 2))
+        XCTAssertEqual(items.models.count, 2)
+
+        first.value = 99
+        try items.strict.save()
+        XCTAssertEqual(items.models.first(where: { $0.title == "first" })?.value, 99)
+
+        try items.strict.delete(first)
+        XCTAssertEqual(items.models.map(\.title), ["second"])
+
+        try items.strict.deleteAll()
+        XCTAssertTrue(items.models.isEmpty)
+    }
+
+    @MainActor
+    func testLenientAndStrictShareTheSameStore() throws {
+        let items = Application.modelState(\.items)
+
+        items.insert(TestItem(title: "lenient", value: 1))
+        try items.strict.insert(TestItem(title: "strict", value: 2))
+
+        XCTAssertEqual(Set(items.models.map(\.title)), ["lenient", "strict"])
+    }
 }
 #endif

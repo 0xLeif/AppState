@@ -148,6 +148,19 @@ func syncItems() {
 | `$items.save()` | Persists pending changes |
 | `$items.deleteAll()` | Deletes all models matching the `FetchDescriptor` and saves |
 
+These mutators log and swallow any underlying SwiftData error so call sites stay terse. When you need to surface or recover from a failed write, reach for the throwing counterparts on `strict`:
+
+```swift
+do {
+    try $items.strict.insert(item)
+    try $items.strict.save()
+} catch {
+    // present the error, roll back, retry…
+}
+```
+
+`strict` exposes throwing versions of all four mutators (`insert`, `delete`, `save`, `deleteAll`) backed by the same context — pick the lenient API when a logged failure is acceptable, and `strict` when the caller must handle it.
+
 ## Accessing the ModelContext
 
 ```swift

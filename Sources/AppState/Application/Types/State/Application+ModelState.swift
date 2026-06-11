@@ -76,44 +76,123 @@ extension Application {
             self.scope = scope
         }
 
+        // MARK: - Mutations (lenient)
+
         /// Inserts a model into the backing `ModelContext` and saves.
         ///
+        /// Failures are logged and swallowed. Use ``strict`` for a throwing variant.
         /// - Parameter model: The model to insert.
         @MainActor
         public func insert(_ model: Model) {
-            let context = context
-            context.insert(model)
-            save(context: context, action: "Inserting")
+            try? insertThrowing(model)
         }
 
         /// Deletes a model from the backing `ModelContext` and saves.
         ///
+        /// Failures are logged and swallowed. Use ``strict`` for a throwing variant.
         /// - Parameter model: The model to delete.
         @MainActor
         public func delete(_ model: Model) {
-            let context = context
-            context.delete(model)
-            save(context: context, action: "Deleting")
+            try? deleteThrowing(model)
         }
 
         /// Persists any pending changes in the backing `ModelContext`.
+        ///
+        /// Failures are logged and swallowed. Use ``strict`` for a throwing variant.
         @MainActor
         public func save() {
-            save(context: context, action: "Saving")
+            try? saveThrowing()
         }
 
         /// Deletes **every** model matching this state's `FetchDescriptor` and saves.
+        ///
+        /// Failures are logged and swallowed. Use ``strict`` for a throwing variant.
         ///
         /// - Warning: This permanently removes the matching objects from the persistent store. It is a
         ///   destructive operation; there is no `reset()`-style restoration of an initial value because
         ///   the store itself is the source of truth.
         @MainActor
         public func deleteAll() {
+            try? deleteAllThrowing()
+        }
+
+        // MARK: - Mutations (strict)
+
+        /// A strict, throwing view over this state's mutators.
+        ///
+        /// Where the lenient mutators (``insert(_:)``, ``delete(_:)``, ``save()``, ``deleteAll()``)
+        /// log and swallow SwiftData errors, the matching methods on `strict` propagate them so the
+        /// caller can surface or recover from a failed write.
+        ///
+        /// ```swift
+        /// try Application.modelState(\.items).strict.insert(item)
+        /// ```
+        @MainActor
+        public var strict: Strict {
+            Strict(state: self)
+        }
+
+        /// Throwing mutators for a ``ModelState``. Obtained via ``ModelState/strict``.
+        @MainActor
+        public struct Strict {
+            private let state: ModelState
+
+            fileprivate init(state: ModelState) {
+                self.state = state
+            }
+
+            /// Inserts a model and saves, throwing on failure.
+            /// - Parameter model: The model to insert.
+            public func insert(_ model: Model) throws {
+                try state.insertThrowing(model)
+            }
+
+            /// Deletes a model and saves, throwing on failure.
+            /// - Parameter model: The model to delete.
+            public func delete(_ model: Model) throws {
+                try state.deleteThrowing(model)
+            }
+
+            /// Persists any pending changes, throwing on failure.
+            public func save() throws {
+                try state.saveThrowing()
+            }
+
+            /// Deletes **every** matching model and saves, throwing on failure.
+            ///
+            /// - Warning: Destructive and irreversible — see ``ModelState/deleteAll()``.
+            public func deleteAll() throws {
+                try state.deleteAllThrowing()
+            }
+        }
+
+        // MARK: - Throwing core
+
+        @MainActor
+        private func insertThrowing(_ model: Model) throws {
+            let context = context
+            context.insert(model)
+            try persist(context: context, action: "Inserting")
+        }
+
+        @MainActor
+        private func deleteThrowing(_ model: Model) throws {
+            let context = context
+            context.delete(model)
+            try persist(context: context, action: "Deleting")
+        }
+
+        @MainActor
+        private func saveThrowing() throws {
+            try persist(context: context, action: "Saving")
+        }
+
+        @MainActor
+        private func deleteAllThrowing() throws {
             let context = context
 
             do {
                 try context.delete(model: Model.self, where: fetchDescriptor().predicate)
-                save(context: context, action: "Deleting")
             } catch {
                 log(
                     error: error,
@@ -123,11 +202,15 @@ extension Application {
                     line: #line,
                     column: #column
                 )
+                throw error
             }
+
+            try persist(context: context, action: "Deleting")
         }
 
+        /// Saves the context, logging and rethrowing any failure.
         @MainActor
-        private func save(context: ModelContext, action: String) {
+        private func persist(context: ModelContext, action: String) throws {
             guard context.hasChanges else { return }
 
             do {
@@ -141,6 +224,7 @@ extension Application {
                     line: #line,
                     column: #column
                 )
+                throw error
             }
         }
     }
