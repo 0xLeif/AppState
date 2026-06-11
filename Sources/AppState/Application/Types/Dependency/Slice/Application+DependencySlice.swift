@@ -35,7 +35,7 @@ extension Application.DependencySlice where SliceKeyPath == WritableKeyPath<Valu
         get { dependency.value[keyPath: keyPath] }
         set {
             #if !os(Linux) && !os(Windows)
-            Application.shared.objectWillChange.send()
+            Application.shared.notifyChange()
             #endif
             dependency.value[keyPath: keyPath] = newValue
         }

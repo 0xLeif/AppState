@@ -25,7 +25,7 @@ extension Application {
     var userToken: SecureState {
         secureState(id: "userToken")
     }
-
+    
     @MainActor
     var largeDataset: FileState<[String]> {
         fileState(initial: [], filename: "largeDataset")
@@ -48,8 +48,8 @@ struct ContentView: View {
 
     var body: some View {
         VStack {
-            Text("Bonjour, \(user.name)!")
-            Button("Se connecter") {
+            Text("Hello, \(user.name)!")
+            Button("Log in") {
                 user.isLoggedIn.toggle()
             }
         }
@@ -72,8 +72,8 @@ struct PreferencesView: View {
 
     var body: some View {
         VStack {
-            Text("Préférences : \(userPreferences)")
-            Button("Mettre à jour les préférences") {
+            Text("Preferences: \(userPreferences)")
+            Button("Update Preferences") {
                 userPreferences = "Updated Preferences"
             }
         }
@@ -96,7 +96,7 @@ struct SyncSettingsView: View {
 
     var body: some View {
         VStack {
-            Toggle("Mode Sombre", isOn: $isDarkModeEnabled)
+            Toggle("Dark Mode", isOn: $isDarkModeEnabled)
         }
     }
 }
@@ -123,6 +123,46 @@ struct LargeDataView: View {
 }
 ```
 
+## ModelState
+
+🍎 `ModelState` gère les objets SwiftData `@Model` à travers AppState en injectant un `ModelContainer` partagé. Il est destiné aux modèles de vue, aux services et à tout autre code hors-vue ; pour les vues réactives, utilisez le `@Query` de SwiftData avec le `ModelContainer` fourni par AppState. Les fonctionnalités de SwiftData nécessitent iOS 17+ / macOS 14+.
+
+### Exemple
+
+```swift
+import AppState
+import SwiftData
+
+private func makeItemContainer() -> ModelContainer {
+    do {
+        return try ModelContainer(for: Item.self)
+    } catch {
+        fatalError("Failed to create ModelContainer: \(error)")
+    }
+}
+
+extension Application {
+    var modelContainer: Dependency<ModelContainer> {
+        modelContainer(makeItemContainer())
+    }
+
+    var items: ModelState<Item> {
+        modelState(container: \.modelContainer)
+    }
+}
+
+@MainActor
+final class ItemsViewModel: ObservableObject {
+    @ModelState(\.items) var items: [Item]
+
+    func add(_ item: Item) {
+        $items.insert(item)
+    }
+}
+```
+
+Pour plus de détails, consultez le [Guide d'Utilisation de ModelState](usage-modelstate.md).
+
 ## SecureState
 
 `SecureState` stocke les données sensibles de manière sécurisée dans le Trousseau.
@@ -139,11 +179,11 @@ struct SecureView: View {
     var body: some View {
         VStack {
             if let token = userToken {
-                Text("Jeton utilisateur : \(token)")
+                Text("User token: \(token)")
             } else {
-                Text("Aucun jeton trouvé.")
+                Text("No token found.")
             }
-            Button("Définir le jeton") {
+            Button("Set Token") {
                 userToken = "secure_token_value"
             }
         }
@@ -165,7 +205,7 @@ struct ExampleView: View {
     @Constant(\.user, \.name) var name: String
 
     var body: some View {
-        Text("Nom d'utilisateur : \(name)")
+        Text("Username: \(name)")
     }
 }
 ```
@@ -185,8 +225,8 @@ struct SlicingView: View {
 
     var body: some View {
         VStack {
-            Text("Nom d'utilisateur : \(name)")
-            Button("Mettre à jour le nom d'utilisateur") {
+            Text("Username: \(name)")
+            Button("Update Username") {
                 name = "NewUsername"
             }
         }
@@ -206,6 +246,7 @@ struct SlicingView: View {
 Après vous être familiarisé avec l'utilisation de base, vous pouvez explorer des sujets plus avancés :
 
 - Explorez l'utilisation de **FileState** pour persister de grandes quantités de données dans des fichiers dans le [Guide d'Utilisation de FileState](usage-filestate.md).
+- 🍎 Apprenez à gérer les modèles **SwiftData** à travers AppState dans le [Guide d'Utilisation de ModelState](usage-modelstate.md).
 - Apprenez-en davantage sur les **Constantes** et comment les utiliser pour des valeurs immuables dans l'état de votre application dans le [Guide d'Utilisation des Constantes](usage-constant.md).
 - Examinez comment **Dependency** est utilisé dans AppState pour gérer les services partagés, et consultez des exemples dans le [Guide d'Utilisation de la Dépendance d'État](usage-state-dependency.md).
 - Approfondissez les techniques avancées de **SwiftUI** comme l'utilisation de `ObservedDependency` pour gérer les dépendances observables dans les vues dans le [Guide d'Utilisation de ObservedDependency](usage-observeddependency.md).

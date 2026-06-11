@@ -29,7 +29,7 @@ extension Application {
                 return storedValue
             }
             set {
-                shared.objectWillChange.send()
+                shared.notifyChange()
 
                 guard let newValue else {
                     return keychain.remove(scope.key)

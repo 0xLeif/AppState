@@ -5,14 +5,9 @@ import SwiftUI
 
 /// A property wrapper that provides access to a specific part of the AppState's state that is optional.
 @propertyWrapper public struct OptionalSlice<SlicedState: MutableApplicationState, Value, SliceValue> where SlicedState.Value == Value? {
-    #if !os(Linux) && !os(Windows)
-    /// Holds the singleton instance of `Application`.
-    @ObservedObject private var app: Application = Application.shared
-    #else
-    /// Holds the singleton instance of `Application`.
+    /// The shared `Application` instance backing this state.
     @MainActor
-    private var app: Application = Application.shared
-    #endif
+    private var app: Application { Application.shared }
 
     /// Path for accessing `State` from Application.
     private let stateKeyPath: KeyPath<Application, SlicedState>
@@ -33,6 +28,8 @@ import SwiftUI
     @MainActor
     public var wrappedValue: SliceValue? {
         get {
+            app.registerObservation()
+
             if let valueKeyPath {
                 return Application.slice(
                     stateKeyPath,

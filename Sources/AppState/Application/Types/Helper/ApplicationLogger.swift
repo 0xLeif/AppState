@@ -8,7 +8,7 @@ public struct ApplicationLogger: Sendable {
     }
 
     private var debugClosure: @Sendable (String) -> Void
-    private var errorClosure: @Sendable (Error, String?) -> Void
+    private var errorClosure: @Sendable (any Error, String?) -> Void
 
     /// Initializes the `ApplicationLogger` struct with custom behaviors for each closure.
     /// - Parameters:
@@ -18,7 +18,7 @@ public struct ApplicationLogger: Sendable {
     ///   - errorWithString: A closure for logging error messages as strings.
     public init(
         debug: @Sendable @escaping (String) -> Void = { print($0) },
-        error: @Sendable @escaping (Error, String?) -> Void = { error, message in
+        error: @Sendable @escaping (any Error, String?) -> Void = { error, message in
             if let message = message {
                 print("\(message) (Error: \(error.localizedDescription))")
             } else {
@@ -46,7 +46,7 @@ public struct ApplicationLogger: Sendable {
     /// - Parameters:
     ///   - error: The error that occurred.
     ///   - message: An optional custom message to accompany the error.
-    public func error(_ error: Error, _ message: String? = nil) {
+    public func error(_ error: any Error, _ message: String? = nil) {
         errorClosure(error, message)
     }
 

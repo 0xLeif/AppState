@@ -1,4 +1,5 @@
 import Cache
+import Observation
 #if !os(Linux) && !os(Windows)
 import Combine
 import OSLog
@@ -7,6 +8,7 @@ import Foundation
 #endif
 
 /// `Application` is a class that can be observed for changes, keeping track of the states within the application.
+@Observable
 open class Application: NSObject {
     /// Singleton shared instance of `Application`
     @MainActor
@@ -28,13 +30,30 @@ open class Application: NSObject {
     static var isLoggingEnabled: Bool = false
 
     /// A recursive lock to ensure thread-safe access to shared resources within the Application instance.
+    @ObservationIgnored
     let lock: NSRecursiveLock
 
     /// The underlying cache used to store all state and dependency values.
+    @ObservationIgnored
     let cache: Cache<String, Any>
+
+    /// Observation anchor that bridges cache changes to the Observation framework.
+    ///
+    /// State and dependency values live in the untracked ``cache``. Reading this anchor (via
+    /// ``registerObservation()``) registers the current Observation tracking scope — e.g. a SwiftUI
+    /// view body — as dependent on AppState, and mutating it (via ``notifyChange()``) tells those
+    /// observers to update.
+    ///
+    /// Thread-safety: every mutation funnels through ``notifyChange()``, which AppState only invokes
+    /// from its main-actor setters and from the cache observer below — and that observer fires
+    /// *synchronously* during those same main-actor cache mutations. Reads occur on the main actor
+    /// (SwiftUI bodies and the `@MainActor` property wrappers). The mutation itself is applied through
+    /// the synthesized `@Observable` registrar, which is `Sendable` and internally synchronized.
+    private var changeAnchor: Int = 0
 
     #if !os(Linux) && !os(Windows)
     /// A set to store cancellables for Combine subscriptions, ensuring they are properly managed and released.
+    @ObservationIgnored
     private var bag: Set<AnyCancellable> = Set()
 
     deinit { bag.removeAll() }
@@ -62,6 +81,35 @@ open class Application: NSObject {
         #if !os(Linux) && !os(Windows)
         consume(object: cache)
         #endif
+    }
+
+    /// Registers the current Observation tracking scope (such as a SwiftUI view body) as dependent on
+    /// AppState. The property wrappers call this when reading their value so that SwiftUI views update
+    /// when the underlying state or dependencies change.
+    ///
+    /// The discarded read of ``changeAnchor`` is intentional and load-bearing: the synthesized
+    /// `@Observable` getter calls the observation registrar's `access`, which is what records the
+    /// dependency. Do not remove it.
+    func registerObservation() {
+        _ = changeAnchor
+    }
+
+    /// Notifies observers (such as SwiftUI views) that an AppState value changed.
+    ///
+    /// AppState's own setters call this automatically. Call it yourself when you mutate state outside
+    /// of those setters — for example from a `didChangeExternally(notification:)` override that reacts
+    /// to incoming iCloud changes. See ``changeAnchor`` for the thread-safety invariant.
+    ///
+    /// - Important: This must be called on the main thread. SwiftUI tracks `changeAnchor` from view
+    ///   bodies, so publishing a change from a background thread both races the mutation and trips the
+    ///   "Publishing changes from background threads is not supported" runtime warning. `Application` is
+    ///   not `Sendable`, so the change cannot be hopped to the main thread on the caller's behalf — the
+    ///   invariant is instead asserted here so off-main misuse surfaces in debug and CI. `Application`'s
+    ///   setters and the `@MainActor` `didChangeExternally(notification:)` override already satisfy it.
+    public func notifyChange() {
+        assert(Thread.isMainThread, "Application.notifyChange() must be called on the main thread.")
+
+        changeAnchor &+= 1
     }
 
     #if !os(Linux) && !os(Windows)
@@ -110,12 +158,24 @@ open class Application: NSObject {
     /// - Parameter object: The ObservableObject to observe
     private func consume<Object: ObservableObject>(
         object: Object
-    ) where ObjectWillChangePublisher == ObservableObjectPublisher {
+    ) {
         bag.insert(
             object.objectWillChange.sink(
                 receiveCompletion: { _ in },
                 receiveValue: { [weak self] _ in
-                    self?.objectWillChange.send()
+                    // Deliver synchronously when already on main (preserving the synchronous
+                    // observation contract `withObservationTracking` relies on), and only hop to main
+                    // when a dependency publishes off-main — `notifyChange()` asserts main-thread and
+                    // mutates `changeAnchor`, which must never be touched off the main thread.
+                    if Thread.isMainThread {
+                        self?.notifyChange()
+                    } else {
+                        DispatchQueue.main.async {
+                            MainActor.assumeIsolated {
+                                Application.shared.notifyChange()
+                            }
+                        }
+                    }
                 }
             )
         )
@@ -123,9 +183,3 @@ open class Application: NSObject {
     #endif
 }
 
-#if !os(Linux) && !os(Windows)
-/// Conform `Application` to `ObservableObject` to allow SwiftUI views to subscribe to its changes.
-/// This enables the `@ObservedObject` property wrapper to work with `Application.shared` or custom instances,
-/// triggering view updates when `objectWillChange` is published.
-extension Application: ObservableObject { }
-#endif

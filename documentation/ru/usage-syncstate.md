@@ -57,7 +57,7 @@ class CustomApplication: Application {
         super.didChangeExternally(notification: notification)
 
         DispatchQueue.main.async {
-            self.objectWillChange.send()
+            self.notifyChange()
         }
     }
 }

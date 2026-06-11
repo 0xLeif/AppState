@@ -1,21 +1,22 @@
 #if !os(Linux) && !os(Windows)
 import Cache
 import Foundation
+import os
 
 /**
  A `Keychain` class that adopts the `Cacheable` protocol.
- 
+
  This class provides a secure method for storing and retrieving string key-value pairs. It leverages Apple's Keychain
  services for secure data storage ensuring that data saved using this `Keychain` class is encrypted and
  kept secure in the device's keychain. It provides methods for getting, setting, and removing values
  associated with a specific key. It also includes methods for throwing errors when specified key(s)
  do not exist and for returning all keys and their associated values.
- 
+
  Usage Example:
- 
+
  ```swift
  let keychain = Keychain()
- 
+
  keychain.set(value: "<TOKEN>", forKey: "token")
 
  let token = try keychain.resolve("token")
@@ -24,24 +25,28 @@ import Foundation
 public final class Keychain: Sendable {
     public typealias Key = String
     public typealias Value = String
-    
-    private let lock: NSLock
-    @MainActor
-    private var keys: Set<Key>
-    
+
+    /// Serializes Keychain *write* operations (`set`/`remove`) so multi-call sequences such as
+    /// `set`'s update-then-add are atomic. Reads are thread-safe at the system level and stay lock-free.
+    private let writeLock: NSLock
+    /// The in-memory index of known keys, used by ``values(ofType:)``. Guarded by its own lock so
+    /// `Keychain` is `Sendable` without an `@unchecked` escape; the critical sections are short and
+    /// never span a Keychain syscall.
+    private let index: OSAllocatedUnfairLock<Set<Key>>
+
     /// Default initializer
     public init() {
-        self.lock = NSLock()
-        self.keys = []
+        self.writeLock = NSLock()
+        self.index = OSAllocatedUnfairLock(initialState: [])
     }
-    
+
     /**
      Initialize with a predefined set of keys.
      - Parameter keys: The predefined set of keys.
      */
     public init(keys: Set<Key>) {
-        self.lock = NSLock()
-        self.keys = keys
+        self.writeLock = NSLock()
+        self.index = OSAllocatedUnfairLock(initialState: keys)
     }
 
     /**
@@ -57,19 +62,17 @@ public final class Keychain: Sendable {
             kSecReturnData: true,
             kSecMatchLimit: kSecMatchLimitOne
         ]
-        
+
+        // Reads are a single, system-serialized syscall — no AppState-level lock required.
         var dataTypeRef: AnyObject?
-        
-        lock.lock()
         let status: OSStatus = SecItemCopyMatching(query as CFDictionary, &dataTypeRef)
-        lock.unlock()
-        
+
         guard
             status == noErr,
             let data = dataTypeRef as? Data,
             let output = String(data: data, encoding: .utf8) as? Output
         else { return nil }
-        
+
         return output
     }
 
@@ -84,7 +87,7 @@ public final class Keychain: Sendable {
         guard let output = get(key, as: Output.self) else {
             throw MissingRequiredKeysError(keys: [key])
         }
-        
+
         return output
     }
 
@@ -95,27 +98,28 @@ public final class Keychain: Sendable {
      */
     public func set(value: String, forKey key: Key) {
         guard let data = value.data(using: .utf8) else { return }
-        
+
         let query: [NSString: Any] = [
             kSecClass: kSecClassGenericPassword,
             kSecAttrAccount: key,
         ]
-        
+
         let updateAttributes: [NSString: Any] = [
             kSecValueData: data
         ]
-        
+
+        // The update/add pair must be atomic: without serialization, two concurrent `set` calls for
+        // the same key can both see `errSecItemNotFound` and both attempt `SecItemAdd`.
+        writeLock.lock()
         let updateStatus = SecItemUpdate(query as CFDictionary, updateAttributes as CFDictionary)
-        
         if updateStatus == errSecItemNotFound {
             var addQuery = query
             addQuery[kSecValueData] = data
             SecItemAdd(addQuery as CFDictionary, nil)
         }
+        writeLock.unlock()
 
-        Task { @MainActor in
-            keys.insert(key)
-        }
+        index.withLock { keys in _ = keys.insert(key) }
     }
 
     /**
@@ -127,10 +131,12 @@ public final class Keychain: Sendable {
             kSecClass: kSecClassGenericPassword,
             kSecAttrAccount: key
         ]
-        
-        lock.lock()
+
+        writeLock.lock()
         SecItemDelete(query as CFDictionary)
-        lock.unlock()
+        writeLock.unlock()
+
+        index.withLock { keys in _ = keys.remove(key) }
     }
 
     /**
@@ -151,11 +157,11 @@ public final class Keychain: Sendable {
     public func require(keys: Set<Key>) throws -> Self {
         let missingKeys = keys
             .filter { contains($0) == false }
-        
+
         guard missingKeys.isEmpty else {
             throw MissingRequiredKeysError(keys: missingKeys)
         }
-        
+
         return self
     }
 
@@ -176,19 +182,17 @@ public final class Keychain: Sendable {
      */
     @MainActor
     public func values<Output>(ofType: Output.Type) -> [Key: Output] {
-        let storedKeys: [Key]
+        // Snapshot the index under its lock, then read each value lock-free. Capturing the snapshot
+        // first avoids holding the index lock across Keychain syscalls.
+        let storedKeys = index.withLock { Array($0) }
         var values: [Key: Output] = [:]
-        
-        lock.lock()
-        storedKeys = Array(keys)
-        lock.unlock()
-        
+
         for key in storedKeys {
             if let value = get(key, as: Output.self) {
                 values[key] = value
             }
         }
-        
+
         return values
     }
 }
@@ -202,7 +206,7 @@ public extension Keychain {
     func get(_ key: Key) -> String? {
         get(key, as: String.self)
     }
-    
+
     /**
      Retrieve a string value from the keychain for a given key and throws an error if the key is not found.
      - Parameter key: The key for the value.
@@ -212,7 +216,7 @@ public extension Keychain {
     func resolve(_ key: Key) throws -> String {
         try resolve(key, as: String.self)
     }
-    
+
     /**
      Returns all keys and their string values currently in the keychain.
      - Returns: A dictionary with keys and their corresponding string values.

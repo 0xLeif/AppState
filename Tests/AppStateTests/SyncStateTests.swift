@@ -80,7 +80,7 @@ final class SyncStateTests: XCTestCase {
     }
 
     @MainActor
-    func testFailEncodingSyncState() async{
+    func testFailEncodingSyncState() async {
         XCTAssertNotNil(Application.syncState(\.syncFailureValue).value)
 
         let syncValue = ExampleFailureSyncValue()
@@ -89,7 +89,9 @@ final class SyncStateTests: XCTestCase {
 
         syncValue.count = Double.infinity
 
-        XCTAssertEqual(syncValue.count, Double.infinity)
+        // `Double.infinity` cannot be JSON-encoded. The setter encodes before committing, so the
+        // failed write must NOT poison the local fallback — the previous valid value is preserved.
+        XCTAssertEqual(syncValue.count, -1)
     }
 
     @MainActor

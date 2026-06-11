@@ -3,7 +3,7 @@ extension Application {
     static var cacheDescription: String {
         shared.cache.allValues
             .map { key, value in
-                if let value = value as? Loggable {
+                if let value = value as? any Loggable {
                     "\t- \(value.logValue)"
                 } else {
                     "\t- \(value)"
@@ -81,7 +81,7 @@ extension Application {
     /// Internal log function.
     @MainActor
     static func log(
-        error: Error,
+        error: any Error,
         message: String,
         fileID: StaticString,
         function: StaticString,

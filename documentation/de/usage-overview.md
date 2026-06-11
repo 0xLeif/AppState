@@ -25,7 +25,7 @@ extension Application {
     var userToken: SecureState {
         secureState(id: "userToken")
     }
-
+    
     @MainActor
     var largeDataset: FileState<[String]> {
         fileState(initial: [], filename: "largeDataset")
@@ -48,8 +48,8 @@ struct ContentView: View {
 
     var body: some View {
         VStack {
-            Text("Hallo, \(user.name)!")
-            Button("Anmelden") {
+            Text("Hello, \(user.name)!")
+            Button("Log in") {
                 user.isLoggedIn.toggle()
             }
         }
@@ -72,8 +72,8 @@ struct PreferencesView: View {
 
     var body: some View {
         VStack {
-            Text("Einstellungen: \(userPreferences)")
-            Button("Einstellungen aktualisieren") {
+            Text("Preferences: \(userPreferences)")
+            Button("Update Preferences") {
                 userPreferences = "Updated Preferences"
             }
         }
@@ -96,7 +96,7 @@ struct SyncSettingsView: View {
 
     var body: some View {
         VStack {
-            Toggle("Dunkelmodus", isOn: $isDarkModeEnabled)
+            Toggle("Dark Mode", isOn: $isDarkModeEnabled)
         }
     }
 }
@@ -123,6 +123,46 @@ struct LargeDataView: View {
 }
 ```
 
+## ModelState
+
+🍎 `ModelState` verwaltet SwiftData-`@Model`-Objekte über AppState, indem ein gemeinsam genutzter `ModelContainer` injiziert wird. Es ist für View-Modelle, Dienste und anderen Nicht-View-Code gedacht; für reaktive Ansichten verwenden Sie SwiftDatas `@Query` zusammen mit dem von AppState bereitgestellten `ModelContainer`. SwiftData-Funktionen erfordern iOS 17+ / macOS 14+.
+
+### Beispiel
+
+```swift
+import AppState
+import SwiftData
+
+private func makeItemContainer() -> ModelContainer {
+    do {
+        return try ModelContainer(for: Item.self)
+    } catch {
+        fatalError("Failed to create ModelContainer: \(error)")
+    }
+}
+
+extension Application {
+    var modelContainer: Dependency<ModelContainer> {
+        modelContainer(makeItemContainer())
+    }
+
+    var items: ModelState<Item> {
+        modelState(container: \.modelContainer)
+    }
+}
+
+@MainActor
+final class ItemsViewModel: ObservableObject {
+    @ModelState(\.items) var items: [Item]
+
+    func add(_ item: Item) {
+        $items.insert(item)
+    }
+}
+```
+
+Weitere Details finden Sie im [ModelState-Verwendungsleitfaden](usage-modelstate.md).
+
 ## SecureState
 
 `SecureState` speichert vertrauliche Daten sicher im Schlüsselbund.
@@ -139,11 +179,11 @@ struct SecureView: View {
     var body: some View {
         VStack {
             if let token = userToken {
-                Text("Benutzertoken: \(token)")
+                Text("User token: \(token)")
             } else {
-                Text("Kein Token gefunden.")
+                Text("No token found.")
             }
-            Button("Token festlegen") {
+            Button("Set Token") {
                 userToken = "secure_token_value"
             }
         }
@@ -165,7 +205,7 @@ struct ExampleView: View {
     @Constant(\.user, \.name) var name: String
 
     var body: some View {
-        Text("Benutzername: \(name)")
+        Text("Username: \(name)")
     }
 }
 ```
@@ -185,8 +225,8 @@ struct SlicingView: View {
 
     var body: some View {
         VStack {
-            Text("Benutzername: \(name)")
-            Button("Benutzernamen aktualisieren") {
+            Text("Username: \(name)")
+            Button("Update Username") {
                 name = "NewUsername"
             }
         }
@@ -196,7 +236,7 @@ struct SlicingView: View {
 
 ## Bewährte Praktiken
 
-- **Verwenden Sie `AppState` in SwiftUI-Ansichten**: Eigenschafts-Wrapper wie `@AppState`, `@StoredState`, `@FileState`, `@SecureState` und andere sind für die Verwendung im Geltungsbereich von SwiftUI-Ansichten konzipiert.
+- **Verwenden Sie `AppState` in SwiftUI-Ansichten**: Property-Wrapper wie `@AppState`, `@StoredState`, `@FileState`, `@SecureState` und andere sind für die Verwendung im Geltungsbereich von SwiftUI-Ansichten konzipiert.
 - **Definieren Sie den Zustand in der Anwendungserweiterung**: Zentralisieren Sie die Zustandsverwaltung, indem Sie `Application` erweitern, um den Zustand und die Abhängigkeiten Ihrer App zu definieren.
 - **Reaktive Aktualisierungen**: SwiftUI aktualisiert Ansichten automatisch, wenn sich der Zustand ändert, sodass Sie die Benutzeroberfläche nicht manuell aktualisieren müssen.
 - **[Leitfaden zu bewährten Praktiken](best-practices.md)**: Für eine detaillierte Aufschlüsselung der bewährten Praktiken bei der Verwendung von AppState.
@@ -206,6 +246,7 @@ struct SlicingView: View {
 Nachdem Sie sich mit der grundlegenden Verwendung vertraut gemacht haben, können Sie sich mit fortgeschritteneren Themen befassen:
 
 - Erkunden Sie die Verwendung von **FileState** zum dauerhaften Speichern großer Datenmengen in Dateien im [FileState-Verwendungsleitfaden](usage-filestate.md).
+- 🍎 Erfahren Sie, wie Sie **SwiftData**-Modelle über AppState verwalten, im [ModelState-Verwendungsleitfaden](usage-modelstate.md).
 - Erfahren Sie mehr über **Konstanten** und wie Sie sie für unveränderliche Werte im Zustand Ihrer App verwenden können, im [Konstanten-Verwendungsleitfaden](usage-constant.md).
 - Untersuchen Sie, wie **Dependency** in AppState verwendet wird, um gemeinsam genutzte Dienste zu verarbeiten, und sehen Sie sich Beispiele im [Zustandsabhängigkeits-Verwendungsleitfaden](usage-state-dependency.md) an.
 - Tauchen Sie tiefer in fortgeschrittene **SwiftUI**-Techniken wie die Verwendung von `ObservedDependency` zur Verwaltung beobachtbarer Abhängigkeiten in Ansichten im [ObservedDependency-Verwendungsleitfaden](usage-observeddependency.md) ein.

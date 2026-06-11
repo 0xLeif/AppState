@@ -8,14 +8,14 @@
 
 Read this in other languages: [French](documentation/README.fr.md) | [German](documentation/README.de.md) | [Hindi](documentation/README.hi.md) | [Portuguese](documentation/README.pt.md) | [Russian](documentation/README.ru.md) | [Simplified Chinese](documentation/README.zh-CN.md) | [Spanish](documentation/README.es.md)
 
-**AppState** is a Swift 6 library designed to simplify the management of application state in a thread-safe, type-safe, and SwiftUI-friendly way. It provides a set of tools to centralize and synchronize state across your application, as well as inject dependencies into various parts of your app.
+**AppState** is a Swift 6 library for managing application state in a thread-safe, type-safe, and SwiftUI-friendly way. Centralize and synchronize state across your app; inject dependencies anywhere.
 
 ## Requirements
 
-- **iOS**: 15.0+
-- **watchOS**: 8.0+
-- **macOS**: 11.0+
-- **tvOS**: 15.0+
+- **iOS**: 17.0+
+- **watchOS**: 10.0+
+- **macOS**: 14.0+
+- **tvOS**: 17.0+
 - **visionOS**: 1.0+
 - **Swift**: 6.0+
 - **Xcode**: 16.0+
@@ -26,11 +26,12 @@ Read this in other languages: [French](documentation/README.fr.md) | [German](do
 
 ## Key Features
 
-**AppState** includes several powerful features to help manage state and dependencies:
+**AppState** includes:
 
 - **State**: Centralized state management that allows you to encapsulate and broadcast changes across the app.
 - **StoredState**: Persistent state using `UserDefaults`, ideal for saving small amounts of data between app launches.
 - **FileState**: Persistent state stored using `FileManager`, useful for storing larger amounts of data securely on disk.
+- 🍎 **SwiftData (ModelState)**: Manage SwiftData `@Model` objects through AppState by injecting a shared `ModelContainer` and reading/writing models with `ModelState`.
 - 🍎 **SyncState**: Synchronize state across multiple devices using iCloud, ensuring consistency in user preferences and settings.
 - 🍎 **SecureState**: Store sensitive data securely using the Keychain, protecting user information such as tokens or passwords.
 - **Dependency Management**: Inject dependencies like network services or database clients across your app for better modularity and testing.
@@ -40,13 +41,9 @@ Read this in other languages: [French](documentation/README.fr.md) | [German](do
 
 ## Getting Started
 
-To integrate **AppState** into your Swift project, you’ll need to use the Swift Package Manager. Follow the [Installation Guide](documentation/en/installation.md) for detailed instructions on setting up **AppState**.
-
-After installation, refer to the [Usage Overview](documentation/en/usage-overview.md) for a quick introduction on how to manage state and inject dependencies into your project.
+Add **AppState** via Swift Package Manager — see the [Installation Guide](documentation/en/installation.md). Then check the [Usage Overview](documentation/en/usage-overview.md) for a quick introduction.
 
 ## Quick Example
-
-Below is a minimal example showing how to define a piece of state and access it from a SwiftUI view:
 
 ```swift
 import AppState
@@ -70,8 +67,6 @@ struct ContentView: View {
 }
 ```
 
-This snippet demonstrates defining a state value in an `Application` extension and using the `@AppState` property wrapper to bind it inside a view.
-
 ## Documentation
 
 Here’s a detailed breakdown of **AppState**'s documentation:
@@ -85,8 +80,10 @@ Here’s a detailed breakdown of **AppState**'s documentation:
 - [Slicing State](documentation/en/usage-slice.md): Access and modify specific parts of the state.
 - [StoredState Usage Guide](documentation/en/usage-storedstate.md): How to persist lightweight data using `StoredState`.
 - [FileState Usage Guide](documentation/en/usage-filestate.md): Learn how to persist larger amounts of data securely on disk.
+- 🍎 [ModelState Usage Guide](documentation/en/usage-modelstate.md): Manage SwiftData `@Model` objects through a shared `ModelContainer`.
 - [Keychain SecureState Usage](documentation/en/usage-securestate.md): Store sensitive data securely using the Keychain.
 - [iCloud Syncing with SyncState](documentation/en/usage-syncstate.md): Keep state synchronized across devices using iCloud.
+- [Upgrading to AppState 3.0](documentation/en/upgrade-to-v3.md): Breaking changes and how to migrate from the 2.x release line.
 - [FAQ](documentation/en/faq.md): Answers to common questions when using **AppState**.
 - [Constant Usage Guide](documentation/en/usage-constant.md): Access read-only values from your state.
 - [ObservedDependency Usage Guide](documentation/en/usage-observeddependency.md): Work with `ObservableObject` dependencies in your views.
@@ -100,4 +97,4 @@ We welcome contributions! Please check out our [Contributing Guide](documentatio
 
 ## Next Steps
 
-With **AppState** installed, you can start exploring its key features by checking out the [Usage Overview](documentation/en/usage-overview.md) and more detailed guides. Get started with managing state and dependencies effectively in your Swift projects! For more advanced usage techniques, like Just-In-Time creation and preloading dependencies, see the [Advanced Usage Guide](documentation/en/advanced-usage.md). You can also review the [Constant](documentation/en/usage-constant.md) and [ObservedDependency](documentation/en/usage-observeddependency.md) guides for additional features.
+Start with the [Usage Overview](documentation/en/usage-overview.md). For Just-In-Time creation and preloading, see the [Advanced Usage Guide](documentation/en/advanced-usage.md). The [Constant](documentation/en/usage-constant.md) and [ObservedDependency](documentation/en/usage-observeddependency.md) guides cover additional features.

@@ -34,7 +34,7 @@ extension Application {
     }
 
     /// The shared `FileManager` instance.
-    public var fileManager: Dependency<FileManaging> {
+    public var fileManager: Dependency<any FileManaging> {
         dependency(SendableFileManager())
     }
 
@@ -42,7 +42,7 @@ extension Application {
     public struct FileState<Value: Codable & Sendable>: MutableApplicationState {
         public static var emoji: Character { "🗄️" }
 
-        @AppDependency(\.fileManager) private var fileManager: FileManaging
+        @AppDependency(\.fileManager) private var fileManager: any FileManaging
 
         /// The initial value of the state.
         private var initial: () -> Value

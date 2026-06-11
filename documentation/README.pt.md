@@ -6,14 +6,16 @@
 [![License](https://img.shields.io/github/license/0xLeif/AppState)](https://github.com/0xLeif/AppState/blob/main/LICENSE)
 [![Version](https://img.shields.io/github/v/release/0xLeif/AppState)](https://github.com/0xLeif/AppState/releases)
 
-**AppState** é uma biblioteca Swift 6 projetada para simplificar o gerenciamento do estado da aplicação de uma forma segura para threads, segura para tipos e amigável ao SwiftUI. Ele fornece um conjunto de ferramentas para centralizar e sincronizar o estado em toda a sua aplicação, bem como para injetar dependências em várias partes do seu aplicativo.
+Leia isto em outros idiomas: [Inglês](../README.md) | [Francês](README.fr.md) | [Alemão](README.de.md) | [Hindi](README.hi.md) | [Russo](README.ru.md) | [Chinês Simplificado](README.zh-CN.md) | [Espanhol](README.es.md)
+
+**AppState** é uma biblioteca Swift 6 para gerenciar o estado da aplicação de uma forma segura para threads, segura para tipos e amigável ao SwiftUI. Centralize e sincronize o estado em toda a sua aplicação; injete dependências em qualquer lugar.
 
 ## Requisitos
 
-- **iOS**: 15.0+
-- **watchOS**: 8.0+
-- **macOS**: 11.0+
-- **tvOS**: 15.0+
+- **iOS**: 17.0+
+- **watchOS**: 10.0+
+- **macOS**: 14.0+
+- **tvOS**: 17.0+
 - **visionOS**: 1.0+
 - **Swift**: 6.0+
 - **Xcode**: 16.0+
@@ -24,11 +26,12 @@
 
 ## Principais Recursos
 
-**AppState** inclui vários recursos poderosos para ajudar a gerenciar o estado e as dependências:
+**AppState** inclui:
 
 - **State**: Gerenciamento de estado centralizado que permite encapsular e transmitir alterações em todo o aplicativo.
 - **StoredState**: Estado persistente usando `UserDefaults`, ideal para salvar pequenas quantidades de dados entre as inicializações do aplicativo.
 - **FileState**: Estado persistente armazenado usando `FileManager`, útil para armazenar grandes quantidades de dados com segurança no disco.
+- 🍎 **SwiftData (ModelState)**: Gerencie objetos `@Model` do SwiftData através do AppState, injetando um `ModelContainer` compartilhado e lendo/gravando modelos com `ModelState`.
 - 🍎 **SyncState**: Sincronize o estado em vários dispositivos usando o iCloud, garantindo a consistência nas preferências e configurações do usuário.
 - 🍎 **SecureState**: Armazene dados confidenciais com segurança usando o Keychain, protegendo informações do usuário, como tokens ou senhas.
 - **Gerenciamento de Dependências**: Injete dependências como serviços de rede ou clientes de banco de dados em todo o seu aplicativo para melhor modularidade e testes.
@@ -38,13 +41,9 @@
 
 ## Começando
 
-Para integrar o **AppState** ao seu projeto Swift, você precisará usar o Swift Package Manager. Siga o [Guia de Instalação](pt/installation.md) para obter instruções detalhadas sobre como configurar o **AppState**.
-
-Após a instalação, consulte a [Visão Geral do Uso](pt/usage-overview.md) para uma introdução rápida sobre como gerenciar o estado e injetar dependências em seu projeto.
+Adicione o **AppState** via Swift Package Manager — consulte o [Guia de Instalação](pt/installation.md). Em seguida, confira a [Visão Geral do Uso](pt/usage-overview.md) para uma introdução rápida.
 
 ## Exemplo Rápido
-
-Abaixo está um exemplo mínimo mostrando como definir uma fatia de estado e acessá-la a partir de uma visualização SwiftUI:
 
 ```swift
 import AppState
@@ -61,14 +60,12 @@ struct ContentView: View {
 
     var body: some View {
         VStack {
-            Text("Contagem: \(counter)")
-            Button("Incrementar") { counter += 1 }
+            Text("Count: \(counter)")
+            Button("Increment") { counter += 1 }
         }
     }
 }
 ```
-
-Este trecho demonstra a definição de um valor de estado em uma extensão `Application` e o uso do property wrapper `@AppState` para vinculá-lo dentro de uma visualização.
 
 ## Documentação
 
@@ -83,8 +80,10 @@ Aqui está um detalhamento da documentação do **AppState**:
 - [Fatiando o Estado](pt/usage-slice.md): Acesse e modifique partes específicas do estado.
 - [Guia de Uso do StoredState](pt/usage-storedstate.md): Como persistir dados leves usando `StoredState`.
 - [Guia de Uso do FileState](pt/usage-filestate.md): Aprenda a persistir grandes quantidades de dados com segurança no disco.
+- 🍎 [Guia de Uso do ModelState](pt/usage-modelstate.md): Gerencie objetos `@Model` do SwiftData através de um `ModelContainer` compartilhado.
 - [Uso do SecureState com Keychain](pt/usage-securestate.md): Armazene dados confidenciais com segurança usando o Keychain.
 - [Sincronização com iCloud com SyncState](pt/usage-syncstate.md): Mantenha o estado sincronizado em todos os dispositivos usando o iCloud.
+- [Atualizando para o AppState 3.0](pt/upgrade-to-v3.md): Alterações que quebram a compatibilidade e como migrar da linha de lançamento 2.x.
 - [FAQ](pt/faq.md): Respostas a perguntas comuns ao usar o **AppState**.
 - [Guia de Uso de Constantes](pt/usage-constant.md): Acesse valores somente leitura do seu estado.
 - [Guia de Uso de ObservedDependency](pt/usage-observeddependency.md): Trabalhe com dependências `ObservableObject` em suas visualizações.
@@ -98,7 +97,7 @@ Aceitamos contribuições! Por favor, confira nosso [Guia de Contribuição](pt/
 
 ## Próximos Passos
 
-Com o **AppState** instalado, você pode começar a explorar seus principais recursos, consultando a [Visão Geral do Uso](pt/usage-overview.md) e guias mais detalhados. Comece a gerenciar o estado e as dependências de forma eficaz em seus projetos Swift! Para técnicas de uso mais avançadas, como criação Just-In-Time e pré-carregamento de dependências, consulte o [Guia de Uso Avançado](pt/advanced-usage.md). Você também pode revisar os guias [Constant](pt/usage-constant.md) e [ObservedDependency](pt/usage-observeddependency.md) para recursos adicionais.
+Comece com a [Visão Geral do Uso](pt/usage-overview.md). Para criação Just-In-Time e pré-carregamento, consulte o [Guia de Uso Avançado](pt/advanced-usage.md). Os guias [Constant](pt/usage-constant.md) e [ObservedDependency](pt/usage-observeddependency.md) cobrem recursos adicionais.
 
 ---
 Esta tradução foi gerada automaticamente e pode conter erros. Se você é um falante nativo, agradecemos suas contribuições com correções por meio de um Pull Request.

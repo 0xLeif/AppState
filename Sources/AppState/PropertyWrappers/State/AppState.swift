@@ -5,14 +5,9 @@ import SwiftUI
 
 /// `AppState` is a property wrapper allowing SwiftUI views to subscribe to Application's state changes in a reactive way. Works similar to `State` and `Published`.
 @propertyWrapper public struct AppState<Value, ApplicationState: MutableApplicationState> where ApplicationState.Value == Value {
-    #if !os(Linux) && !os(Windows)
-    /// Holds the singleton instance of `Application`.
-    @ObservedObject private var app: Application = Application.shared
-    #else
-    /// Holds the singleton instance of `Application`.
+    /// The shared `Application` instance backing this state.
     @MainActor
-    private var app: Application = Application.shared
-    #endif
+    private var app: Application { Application.shared }
 
     /// Path for accessing `State` from Application.
     private let keyPath: KeyPath<Application, ApplicationState>
@@ -26,6 +21,8 @@ import SwiftUI
     @MainActor
     public var wrappedValue: Value {
         get {
+            // `Application.state(_:)` registers the current Observation scope, so reading through it
+            // is enough — no separate `registerObservation()` call is needed here.
             Application.state(
                 keyPath,
                 fileID,

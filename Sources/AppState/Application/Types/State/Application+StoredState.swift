@@ -17,7 +17,7 @@ extension Application {
     }
 
     /// The shared `UserDefaults` instance.
-    public var userDefaults: Dependency<UserDefaultsManaging> {
+    public var userDefaults: Dependency<any UserDefaultsManaging> {
         dependency(SendableUserDefaults())
     }
 
@@ -25,7 +25,7 @@ extension Application {
     public struct StoredState<Value: Codable & Sendable>: MutableApplicationState {
         public static var emoji: Character { "💾" }
 
-        @AppDependency(\.userDefaults) private var userDefaults: UserDefaultsManaging
+        @AppDependency(\.userDefaults) private var userDefaults: any UserDefaultsManaging
 
         /// The initial value of the state.
         private var initial: () -> Value
