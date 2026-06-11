@@ -25,7 +25,7 @@ extension Application {
     var userToken: SecureState {
         secureState(id: "userToken")
     }
-
+    
     @MainActor
     var largeDataset: FileState<[String]> {
         fileState(initial: [], filename: "largeDataset")
@@ -48,8 +48,8 @@ struct ContentView: View {
 
     var body: some View {
         VStack {
-            Text("Hallo, \(user.name)!")
-            Button("Anmelden") {
+            Text("Hello, \(user.name)!")
+            Button("Log in") {
                 user.isLoggedIn.toggle()
             }
         }
@@ -72,8 +72,8 @@ struct PreferencesView: View {
 
     var body: some View {
         VStack {
-            Text("Einstellungen: \(userPreferences)")
-            Button("Einstellungen aktualisieren") {
+            Text("Preferences: \(userPreferences)")
+            Button("Update Preferences") {
                 userPreferences = "Updated Preferences"
             }
         }
@@ -96,7 +96,7 @@ struct SyncSettingsView: View {
 
     var body: some View {
         VStack {
-            Toggle("Dunkelmodus", isOn: $isDarkModeEnabled)
+            Toggle("Dark Mode", isOn: $isDarkModeEnabled)
         }
     }
 }
@@ -133,9 +133,17 @@ struct LargeDataView: View {
 import AppState
 import SwiftData
 
+private func makeItemContainer() -> ModelContainer {
+    do {
+        return try ModelContainer(for: Item.self)
+    } catch {
+        fatalError("Failed to create ModelContainer: \(error)")
+    }
+}
+
 extension Application {
     var modelContainer: Dependency<ModelContainer> {
-        modelContainer(try! ModelContainer(for: Item.self))
+        modelContainer(makeItemContainer())
     }
 
     var items: ModelState<Item> {
@@ -171,11 +179,11 @@ struct SecureView: View {
     var body: some View {
         VStack {
             if let token = userToken {
-                Text("Benutzertoken: \(token)")
+                Text("User token: \(token)")
             } else {
-                Text("Kein Token gefunden.")
+                Text("No token found.")
             }
-            Button("Token festlegen") {
+            Button("Set Token") {
                 userToken = "secure_token_value"
             }
         }
@@ -197,7 +205,7 @@ struct ExampleView: View {
     @Constant(\.user, \.name) var name: String
 
     var body: some View {
-        Text("Benutzername: \(name)")
+        Text("Username: \(name)")
     }
 }
 ```
@@ -217,8 +225,8 @@ struct SlicingView: View {
 
     var body: some View {
         VStack {
-            Text("Benutzername: \(name)")
-            Button("Benutzernamen aktualisieren") {
+            Text("Username: \(name)")
+            Button("Update Username") {
                 name = "NewUsername"
             }
         }
@@ -228,7 +236,7 @@ struct SlicingView: View {
 
 ## Bewährte Praktiken
 
-- **Verwenden Sie `AppState` in SwiftUI-Ansichten**: Eigenschafts-Wrapper wie `@AppState`, `@StoredState`, `@FileState`, `@SecureState` und andere sind für die Verwendung im Geltungsbereich von SwiftUI-Ansichten konzipiert.
+- **Verwenden Sie `AppState` in SwiftUI-Ansichten**: Property-Wrapper wie `@AppState`, `@StoredState`, `@FileState`, `@SecureState` und andere sind für die Verwendung im Geltungsbereich von SwiftUI-Ansichten konzipiert.
 - **Definieren Sie den Zustand in der Anwendungserweiterung**: Zentralisieren Sie die Zustandsverwaltung, indem Sie `Application` erweitern, um den Zustand und die Abhängigkeiten Ihrer App zu definieren.
 - **Reaktive Aktualisierungen**: SwiftUI aktualisiert Ansichten automatisch, wenn sich der Zustand ändert, sodass Sie die Benutzeroberfläche nicht manuell aktualisieren müssen.
 - **[Leitfaden zu bewährten Praktiken](best-practices.md)**: Für eine detaillierte Aufschlüsselung der bewährten Praktiken bei der Verwendung von AppState.

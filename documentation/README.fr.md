@@ -6,7 +6,7 @@
 [![License](https://img.shields.io/github/license/0xLeif/AppState)](https://github.com/0xLeif/AppState/blob/main/LICENSE)
 [![Version](https://img.shields.io/github/v/release/0xLeif/AppState)](https://github.com/0xLeif/AppState/releases)
 
-**AppState** est une bibliothèque Swift 6 conçue pour simplifier la gestion de l'état de l'application de manière thread-safe, type-safe et compatible avec SwiftUI. Elle fournit un ensemble d'outils pour centraliser et synchroniser l'état à travers votre application, ainsi que pour injecter des dépendances dans diverses parties de votre application.
+**AppState** est une bibliothèque Swift 6 pour gérer l'état de l'application de manière thread-safe, type-safe et compatible avec SwiftUI. Centralisez et synchronisez l'état à travers votre application ; injectez des dépendances n'importe où.
 
 ## Exigences
 
@@ -39,13 +39,9 @@
 
 ## Pour Commencer
 
-Pour intégrer **AppState** dans votre projet Swift, vous devrez utiliser le Swift Package Manager. Suivez le [Guide d'Installation](fr/installation.md) pour des instructions détaillées sur la configuration de **AppState**.
-
-Après l'installation, consultez l'[Aperçu de l'Utilisation](fr/usage-overview.md) pour une introduction rapide sur la manière de gérer l'état et d'injecter des dépendances dans votre projet.
+Ajoutez **AppState** via le Swift Package Manager — consultez le [Guide d'Installation](fr/installation.md). Consultez ensuite l'[Aperçu de l'Utilisation](fr/usage-overview.md) pour une introduction rapide.
 
 ## Exemple Rapide
-
-Voici un exemple minimal montrant comment définir une tranche d'état et y accéder depuis une vue SwiftUI :
 
 ```swift
 import AppState
@@ -62,14 +58,12 @@ struct ContentView: View {
 
     var body: some View {
         VStack {
-            Text("Compteur: \(counter)")
-            Button("Incrémenter") { counter += 1 }
+            Text("Count: \(counter)")
+            Button("Increment") { counter += 1 }
         }
     }
 }
 ```
-
-Cet extrait montre comment définir une valeur d'état dans une extension `Application` et utiliser le property wrapper `@AppState` pour la lier à l'intérieur d'une vue.
 
 ## Documentation
 

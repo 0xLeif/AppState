@@ -25,7 +25,7 @@ extension Application {
     var userToken: SecureState {
         secureState(id: "userToken")
     }
-
+    
     @MainActor
     var largeDataset: FileState<[String]> {
         fileState(initial: [], filename: "largeDataset")
@@ -48,8 +48,8 @@ struct ContentView: View {
 
     var body: some View {
         VStack {
-            Text("Bonjour, \(user.name)!")
-            Button("Se connecter") {
+            Text("Hello, \(user.name)!")
+            Button("Log in") {
                 user.isLoggedIn.toggle()
             }
         }
@@ -72,8 +72,8 @@ struct PreferencesView: View {
 
     var body: some View {
         VStack {
-            Text("Préférences : \(userPreferences)")
-            Button("Mettre à jour les préférences") {
+            Text("Preferences: \(userPreferences)")
+            Button("Update Preferences") {
                 userPreferences = "Updated Preferences"
             }
         }
@@ -96,7 +96,7 @@ struct SyncSettingsView: View {
 
     var body: some View {
         VStack {
-            Toggle("Mode Sombre", isOn: $isDarkModeEnabled)
+            Toggle("Dark Mode", isOn: $isDarkModeEnabled)
         }
     }
 }
@@ -133,9 +133,17 @@ struct LargeDataView: View {
 import AppState
 import SwiftData
 
+private func makeItemContainer() -> ModelContainer {
+    do {
+        return try ModelContainer(for: Item.self)
+    } catch {
+        fatalError("Failed to create ModelContainer: \(error)")
+    }
+}
+
 extension Application {
     var modelContainer: Dependency<ModelContainer> {
-        modelContainer(try! ModelContainer(for: Item.self))
+        modelContainer(makeItemContainer())
     }
 
     var items: ModelState<Item> {
@@ -171,11 +179,11 @@ struct SecureView: View {
     var body: some View {
         VStack {
             if let token = userToken {
-                Text("Jeton utilisateur : \(token)")
+                Text("User token: \(token)")
             } else {
-                Text("Aucun jeton trouvé.")
+                Text("No token found.")
             }
-            Button("Définir le jeton") {
+            Button("Set Token") {
                 userToken = "secure_token_value"
             }
         }
@@ -197,7 +205,7 @@ struct ExampleView: View {
     @Constant(\.user, \.name) var name: String
 
     var body: some View {
-        Text("Nom d'utilisateur : \(name)")
+        Text("Username: \(name)")
     }
 }
 ```
@@ -217,8 +225,8 @@ struct SlicingView: View {
 
     var body: some View {
         VStack {
-            Text("Nom d'utilisateur : \(name)")
-            Button("Mettre à jour le nom d'utilisateur") {
+            Text("Username: \(name)")
+            Button("Update Username") {
                 name = "NewUsername"
             }
         }

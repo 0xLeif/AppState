@@ -1,227 +1,17 @@
 # ModelState 用法
 
-🍎 `ModelState` 是 **AppState** 库的一个组件，允许您通过应用程序范围管理 SwiftData 的 `@Model` 对象。它将共享的 SwiftData `ModelContainer` 作为依赖项注入，并从该容器的 `ModelContext` 中读取和写入，从而为视图模型、服务以及其他非视图代码提供共享的、依赖注入式的模型访问。
+🍎 `ModelState` 让你通过 AppState 的依赖注入模型来管理 SwiftData 的 `@Model` 对象。只需注册一次共享的 `ModelContainer`；即可在任何地方 —— 视图模型、服务或其他非视图代码 —— 读写模型，而无需将 `ModelContext` 沿调用栈层层传递。
 
-> 🍎 `ModelState` 和 SwiftData 的 `ModelContainer` 依赖项是苹果平台特有的，因为它们依赖于苹果的 SwiftData 框架。
-
-## 主要功能
-
-- **依赖注入式模型**：注册一次共享的 `ModelContainer`，即可在应用程序中的任何位置访问其模型。
-- **主 Actor 的 `ModelContext`**：从任何代码中获取容器的 `mainContext`，包括无法访问 SwiftUI `@Environment` 的视图模型和服务。
-- **便捷的 CRUD**：通过一个小巧、专注的 API 读取、插入、删除、保存以及删除全部 SwiftData 模型。
-- **以 SwiftData 作为唯一数据源**：`ModelState` 不会将结果缓存在 AppState 的缓存中——SwiftData 的 `ModelContext` 仍然是唯一的数据源。
-
-## 要求与可用性
-
-SwiftData 功能要求的平台版本高于 AppState 的基础要求。所有 `ModelState` 和 `ModelContainer` API 都受 `#if canImport(SwiftData)` 以及以下可用性的限制：
-
-- **iOS**：17.0+
-- **macOS**：14.0+
-- **tvOS**：17.0+
-- **watchOS**：10.0+
-- **visionOS**：1.0+
-
-在 SwiftData 不可用的平台或操作系统版本上，这些 API 不会被编译进来。
-
-## 注册 ModelContainer 依赖项
-
-SwiftData 的 `ModelContainer` 是 `Sendable` 的，因此可以作为常规的 AppState `Dependency` 存储。使用 `modelContainer(_:)` 便捷方法在 `Application` 扩展上定义一个容器，该方法会使用自动生成的标识符注册容器，并且只对 autoclosure 求值一次。请通过一个显式处理失败的辅助函数来构建容器，而不是使用 force-try：
-
-```swift
-import AppState
-import SwiftData
-
-private func makeModelContainer() -> ModelContainer {
-    do {
-        return try ModelContainer(for: Item.self)
-    } catch {
-        fatalError("Failed to create the ModelContainer: \(error)")
-    }
-}
-
-extension Application {
-    var modelContainer: Dependency<ModelContainer> {
-        modelContainer(makeModelContainer())
-    }
-}
-```
-
-## 访问 ModelContext
-
-定义了 `ModelContainer` 依赖项后，您可以在应用程序中的任何位置访问共享的、绑定到主 Actor 的 `ModelContext`：
-
-```swift
-let context = Application.modelContext(\.modelContainer)
-```
-
-这会返回已解析的 `ModelContainer` 的 `mainContext`，因此整个应用程序共享同一个上下文。
-
-## 定义 ModelState
-
-通过扩展 `Application` 对象并将其指向支撑它的 `ModelContainer` 依赖项来定义 `ModelState`。在没有 `FetchDescriptor` 的情况下，该状态会匹配给定类型的所有模型：
-
-```swift
-import AppState
-import SwiftData
-
-extension Application {
-    var items: ModelState<Item> {
-        modelState(container: \.modelContainer)
-    }
-}
-```
-
-您还可以提供自定义的 `FetchDescriptor`（用于过滤或排序）和一个显式的 `id`：
-
-```swift
-extension Application {
-    var items: ModelState<Item> {
-        modelState(
-            container: \.modelContainer,
-            fetchDescriptor: FetchDescriptor<Item>(
-                sortBy: [SortDescriptor(\.title)]
-            ),
-            id: "items"
-        )
-    }
-}
-```
-
-## @ModelState 属性包装器
-
-`@ModelState` 属性包装器从 `Application` 的范围中公开一组**只读**的模型集合。请通过投影值（`$items`）进行修改：
-
-```swift
-import AppState
-import SwiftData
-
-@MainActor
-final class ItemsViewModel: ObservableObject {
-    @ModelState(\.items) var items: [Item]
-
-    func addItem(title: String) {
-        $items.insert(Item(title: title))
-    }
-}
-```
-
-- **读取**被包装的值会使用该状态的 `FetchDescriptor` 执行一次提取。被包装的值是只读的 `[Model]`——您无法对其进行赋值。
-- **修改**通过投影值完成：`$items.insert(...)`、`$items.delete(...)`、`$items.save()` 以及 `$items.deleteAll()`。
-
-> ⚠️ 读取被包装的值会在**每次**读取时执行一次实时的 SwiftData 提取。请避免在热点路径中反复读取它——请将结果捕获到一个局部变量中。
-
-### 通过投影值进行 CRUD
-
-投影值（`$items`）公开了底层的 `Application.ModelState<Item>`，让您可以显式控制插入、删除和保存：
-
-```swift
-@MainActor
-final class ItemsViewModel: ObservableObject {
-    @ModelState(\.items) var items: [Item]
-
-    func add(_ item: Item) {
-        $items.insert(item)
-    }
-
-    func remove(_ item: Item) {
-        $items.delete(item)
-    }
-
-    func persistPendingChanges() {
-        $items.save()
-    }
-}
-```
-
-## 通过 Application.modelState 读取和修改
-
-您也可以直接通过 `Application` 类型使用 `ModelState`，而无需属性包装器。这在服务和其他非视图代码中非常方便：
-
-```swift
-@MainActor
-func loadAndAppend() {
-    let state = Application.modelState(\.items)
-
-    // 读取当前模型（每次访问都会执行一次提取）。
-    let current = state.models
-
-    // 如果需要，可直接访问支撑的 ModelContext。
-    let context = state.context
-
-    // 插入、删除和保存。
-    state.insert(Item(title: "New item"))
-    state.delete(current.first!)
-    state.save()
-}
-```
-
-> ⚠️ `models` 会在**每次**读取时执行一次实时的 SwiftData 提取。当您需要多次使用结果时，请将其捕获到一个局部变量中，而不要反复读取它。
-
-返回的 `ModelState` 公开了：
-
-- `models`：一个**只读**属性，返回当前匹配该状态 `FetchDescriptor` 的模型。每次读取都会执行一次全新的提取；它没有 setter。
-- `context`：支撑的主 Actor `ModelContext`。
-- `insert(_:)`：插入一个模型并保存。
-- `delete(_:)`：删除一个模型并保存。
-- `save()`：持久化上下文中任何待处理的更改。
-- `deleteAll()`：删除所有匹配该状态 `FetchDescriptor` 的模型并保存。
-
-## 删除全部模型
-
-要删除由某个 `ModelState` 管理的所有模型，请使用 `deleteAll()`：
-
-```swift
-Application.modelState(\.items).deleteAll()
-```
-
-这会提取所有匹配该状态 `FetchDescriptor` 的模型，将其删除，并保存上下文。
-
-## 何时使用 ModelState 与 SwiftData @Query
-
-通过 `ModelState` 和 `@ModelState` 进行的修改**不会**自动广播到 SwiftUI。这是一个有意为之的设计选择：
-
-- **对响应式视图使用 SwiftData 自己的 `@Query`。** `@Query` 会观察 `ModelContext`，并在底层数据更改时自动刷新您的视图。将其与 AppState 提供的 `ModelContainer` 结合使用，以便您的视图和非视图代码共享同一个容器：
-
-  ```swift
-  import SwiftData
-  import SwiftUI
-
-  struct ItemsView: View {
-      @Query(sort: \Item.title) private var items: [Item]
-
-      var body: some View {
-          List(items) { item in
-              Text(item.title)
-          }
-      }
-  }
-
-  // 将共享容器注入 SwiftUI 环境。
-  @main
-  struct MyApp: App {
-      var body: some Scene {
-          WindowGroup {
-              ItemsView()
-          }
-          .modelContainer(Application.dependency(\.modelContainer))
-      }
-  }
-  ```
-
-- **对视图模型、服务以及其他非视图代码使用 `ModelState` / `@ModelState`**，这些代码需要共享的、依赖注入式的模型访问。它非常适合 SwiftUI 的 `@Environment` 和 `@Query` 不可用的场景，或者您希望在视图代码之外执行模型操作的场景。
-
-另请注意，模型集合是只读的——您无法对其进行赋值。请使用 `insert(_:)`、`delete(_:)` 或 `deleteAll()` 来修改底层存储。
+> 🍎 `ModelState` 需要支持 SwiftData 的苹果平台（iOS 17+、macOS 14+、tvOS 17+、watchOS 10+、visionOS 1+）。这些 API 在 Linux 和 Windows 上会被编译排除。
 
 ## 端到端示例
-
-以下示例展示了一个完整的流程：一个 `@Model`、用于注册容器和模型状态的 `Application` 扩展，以及一个使用 `@ModelState` 的视图模型。
 
 ```swift
 import AppState
 import SwiftData
 import SwiftUI
 
-// 1. 定义 SwiftData 模型。
+// 1. Define the model.
 @Model
 final class TodoItem {
     var title: String
@@ -233,12 +23,12 @@ final class TodoItem {
     }
 }
 
-// 2. 在 Application 上注册共享的 ModelContainer 和一个 ModelState。
+// 2. Register the shared container and a ModelState on Application.
 private func makeModelContainer() -> ModelContainer {
     do {
         return try ModelContainer(for: TodoItem.self)
     } catch {
-        fatalError("Failed to create the ModelContainer: \(error)")
+        fatalError("Failed to create ModelContainer: \(error)")
     }
 }
 
@@ -258,7 +48,7 @@ extension Application {
     }
 }
 
-// 3. 在视图模型中使用 @ModelState。
+// 3. Use @ModelState from a view model.
 @MainActor
 final class TodoListViewModel: ObservableObject {
     @ModelState(\.todoItems) var todoItems: [TodoItem]
@@ -282,18 +72,123 @@ final class TodoListViewModel: ObservableObject {
 }
 ```
 
-要将响应式列表绑定到相同的数据，请使用 SwiftData 的 `@Query` 驱动视图，同时将修改保留在视图模型中，如上文[何时使用 ModelState 与 SwiftData @Query](#何时使用-modelstate-与-swiftdata-query) 部分所示。
+## 注册 ModelContainer
 
-## 最佳实践
+`modelContainer(_:)` 使用自动生成的标识符注册容器，并且只对 autoclosure 求值一次。请在辅助函数中构建容器，而不是内联构建 —— 这能让失败更明确：
 
-- **响应式视图使用 `@Query`**：将 SwiftData 的 `@Query` 保留给需要自动更新的视图，并与它们共享 AppState 提供的 `ModelContainer`。
-- **非视图代码使用 `ModelState`**：在需要共享模型访问的视图模型、服务和后台逻辑中使用 `@ModelState` 和 `Application.modelState`。
-- **显式删除**：请记住，模型集合是只读的，无法赋值；请使用 `insert(_:)`、`delete(_:)` 或 `deleteAll()` 来修改模型。
-- **一个共享容器**：注册单个 `ModelContainer` 依赖项，并从您的模型状态和 SwiftUI 环境中引用它，以便所有内容读取和写入同一个存储。
+```swift
+extension Application {
+    var modelContainer: Dependency<ModelContainer> {
+        modelContainer(makeModelContainer())
+    }
+}
+```
 
-## 结论
+## 定义 ModelState
 
-`ModelState` 将 SwiftData 引入了 **AppState** 的依赖注入模型，让您可以在整个应用程序中共享单个 `ModelContainer`，并从视图模型和服务中操作 `@Model` 对象。对于响应式 UI，请将其与 SwiftData 的 `@Query` 和相同的共享容器配对使用。
+不提供 `FetchDescriptor` 时，该状态会匹配给定类型的所有模型：
+
+```swift
+extension Application {
+    var items: ModelState<Item> {
+        modelState(container: \.modelContainer)
+    }
+}
+```
+
+提供 `FetchDescriptor` 以进行筛选或排序：
+
+```swift
+extension Application {
+    var items: ModelState<Item> {
+        modelState(
+            container: \.modelContainer,
+            fetchDescriptor: FetchDescriptor<Item>(
+                sortBy: [SortDescriptor(\.title)]
+            ),
+            id: "items"
+        )
+    }
+}
+```
+
+## 读取与修改
+
+**通过 `@ModelState`** —— 读取被包装的值，通过 `$items` 进行修改：
+
+```swift
+@ModelState(\.items) var items: [Item]
+
+func add(_ item: Item) { $items.insert(item) }
+func remove(_ item: Item) { $items.delete(item) }
+func persist() { $items.save() }
+```
+
+**通过 `Application.modelState`** —— 在服务和非视图代码中很有用：
+
+```swift
+@MainActor
+func syncItems() {
+    let state = Application.modelState(\.items)
+    let current = state.models
+    state.insert(Item(title: "New"))
+    state.delete(current.first!)
+    state.save()
+}
+```
+
+> `models` 在每次读取时都会执行一次实时的 SwiftData 抓取。如果需要多次使用，请将结果捕获到局部变量中。
+
+### 投影值 API
+
+| 方法 | 行为 |
+| --- | --- |
+| `$items.insert(_:)` | 插入一个模型并保存 |
+| `$items.delete(_:)` | 删除一个模型并保存 |
+| `$items.save()` | 持久化待处理的更改 |
+| `$items.deleteAll()` | 删除所有匹配 `FetchDescriptor` 的模型并保存 |
+
+## 访问 ModelContext
+
+```swift
+let context = Application.modelContext(\.modelContainer)
+```
+
+返回已解析的 `ModelContainer` 的 `mainContext` —— 即所有读写操作所使用的同一个上下文。
+
+## ModelState 与 SwiftData @Query 的对比
+
+`ModelState` 的修改**不会**自动广播到 SwiftUI 视图。这是有意为之的设计。
+
+- **响应式视图** —— 使用 `@Query`。它直接观察 `ModelContext`，并在数据变化时刷新视图。请将 AppState 提供的容器与 SwiftUI 环境共享，使视图和非视图代码使用同一个存储：
+
+  ```swift
+  @main
+  struct MyApp: App {
+      var body: some Scene {
+          WindowGroup {
+              ItemsView()
+          }
+          .modelContainer(Application.dependency(\.modelContainer))
+      }
+  }
+
+  struct ItemsView: View {
+      @Query(sort: \Item.title) private var items: [Item]
+
+      var body: some View {
+          List(items) { Text($0.title) }
+      }
+  }
+  ```
+
+- **视图模型与服务** —— 使用 `@ModelState` / `Application.modelState`。当 `@Environment` 和 `@Query` 不可用，或需要在视图代码之外执行模型操作时，这是理想之选。
+
+## 注意事项
+
+- 所有读写都经由容器的 `mainContext` —— 请将使用保持在主 actor 上。
+- `ModelState` 不会在 AppState 自身的缓存中缓存结果。SwiftData 的 `ModelContext` 才是事实来源。
+- 注册单个 `ModelContainer` 依赖，并从所有 model state 和 SwiftUI 环境中引用它。
 
 ---
 该译文由机器自动生成，可能存在错误。如果您是母语使用者，我们期待您通过 Pull Request 提出修改建议。

@@ -6,7 +6,9 @@
 [![License](https://img.shields.io/github/license/0xLeif/AppState)](https://github.com/0xLeif/AppState/blob/main/LICENSE)
 [![Version](https://img.shields.io/github/v/release/0xLeif/AppState)](https://github.com/0xLeif/AppState/releases)
 
-**AppState** es una biblioteca de Swift 6 diseñada para simplificar la gestión del estado de la aplicación de una manera segura para hilos, segura para tipos y compatible con SwiftUI. Proporciona un conjunto de herramientas para centralizar y sincronizar el estado en toda su aplicación, así como para inyectar dependencias en diversas partes de su aplicación.
+Lea esto en otros idiomas: [Francés](README.fr.md) | [Alemán](README.de.md) | [Hindi](README.hi.md) | [Portugués](README.pt.md) | [Ruso](README.ru.md) | [Chino Simplificado](README.zh-CN.md) | [Español](README.es.md)
+
+**AppState** es una biblioteca de Swift 6 para gestionar el estado de la aplicación de una manera segura para hilos, segura para tipos y compatible con SwiftUI. Centralice y sincronice el estado en toda su aplicación; inyecte dependencias en cualquier lugar.
 
 ## Requisitos
 
@@ -24,7 +26,7 @@
 
 ## Características Clave
 
-**AppState** incluye varias características potentes para ayudar a gestionar el estado y las dependencias:
+**AppState** incluye:
 
 - **State**: Gestión centralizada del estado que le permite encapsular y transmitir cambios en toda la aplicación.
 - **StoredState**: Estado persistente utilizando `UserDefaults`, ideal para guardar pequeñas cantidades de datos entre lanzamientos de la aplicación.
@@ -39,13 +41,9 @@
 
 ## Empezando
 
-Para integrar **AppState** en su proyecto de Swift, necesitará usar el Swift Package Manager. Siga la [Guía de Instalación](es/installation.md) para obtener instrucciones detalladas sobre cómo configurar **AppState**.
-
-Después de la instalación, consulte la [Descripción General del Uso](es/usage-overview.md) para una introducción rápida sobre cómo gestionar el estado e inyectar dependencias en su proyecto.
+Agregue **AppState** mediante Swift Package Manager — consulte la [Guía de Instalación](es/installation.md). Luego revise la [Descripción General del Uso](es/usage-overview.md) para una introducción rápida.
 
 ## Ejemplo Rápido
-
-A continuación se muestra un ejemplo mínimo que muestra cómo definir una porción de estado y acceder a ella desde una vista de SwiftUI:
 
 ```swift
 import AppState
@@ -62,14 +60,12 @@ struct ContentView: View {
 
     var body: some View {
         VStack {
-            Text("Conteo: \(counter)")
-            Button("Incrementar") { counter += 1 }
+            Text("Count: \(counter)")
+            Button("Increment") { counter += 1 }
         }
     }
 }
 ```
-
-Este fragmento demuestra cómo definir un valor de estado en una extensión de `Application` y usar el property wrapper `@AppState` para enlazarlo dentro de una vista.
 
 ## Documentación
 
@@ -101,7 +97,7 @@ Aquí hay un desglose detallado de la documentación de **AppState**:
 
 ## Próximos Pasos
 
-Con **AppState** instalado, puede comenzar a explorar sus características clave consultando la [Descripción General del Uso](es/usage-overview.md) y guías más detalladas. ¡Comience a gestionar el estado y las dependencias de manera efectiva en sus proyectos de Swift! Para técnicas de uso más avanzadas, como la creación Justo a Tiempo y la precarga de dependencias, consulte la [Guía de Uso Avanzado](es/advanced-usage.md). También puede revisar las guías de [Constantes](es/usage-constant.md) y [ObservedDependency](es/usage-observeddependency.md) para características adicionales.
+Comience con la [Descripción General del Uso](es/usage-overview.md). Para la creación Justo a Tiempo y la precarga, consulte la [Guía de Uso Avanzado](es/advanced-usage.md). Las guías de [Constantes](es/usage-constant.md) y [ObservedDependency](es/usage-observeddependency.md) cubren características adicionales.
 
 ---
 Esta traducción fue generada automáticamente y puede contener errores. Si eres un hablante nativo, te agradecemos que contribuyas con correcciones a través de un Pull Request.

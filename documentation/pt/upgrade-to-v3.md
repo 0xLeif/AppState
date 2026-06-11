@@ -1,12 +1,17 @@
 # Atualizando para o AppState 3.0
 
-O AppState 3.0 moderniza a biblioteca em torno do Swift 6 e do framework
-Observation da Apple. Este guia cobre as alterações que quebram a compatibilidade e como se adaptar.
+O AppState 3.0 é construído em torno do Swift 6 e do framework Observation da Apple. Abaixo estão as alterações que quebram a compatibilidade e como se adaptar.
+
+## Visão geral das alterações que quebram a compatibilidade
+
+- **Versões mínimas de plataforma elevadas** — iOS 17, macOS 14, tvOS 17, watchOS 10
+- **Concorrência estrita do Swift 6** — `ExistentialAny` ativado; `any` explícito necessário em existenciais de protocolo
+- **`ObservableObject` removido** — `Application` usa `@Observable`; `objectWillChange` foi removido, substitua por `notifyChange()`
+- **Novo (aditivo): suporte a SwiftData** — `ModelState` / `@ModelState` para objetos `@Model`
+
+---
 
 ## 1. Requisitos de plataforma elevados
-
-Os alvos de implantação mínimos foram elevados para aproveitar as APIs modernas do
-Swift e do SwiftData/Observation:
 
 | Plataforma | 2.x | 3.0 |
 | --- | --- | --- |
@@ -18,38 +23,43 @@ Swift e do SwiftData/Observation:
 
 Linux e Windows continuam a ser suportados para o conjunto de recursos não-Apple.
 
-Se você precisar continuar a oferecer suporte a versões de SO mais antigas, permaneça na linha de lançamento 2.x.
+Permaneça na linha de lançamento 2.x se você precisar dar suporte a versões mais antigas do sistema operacional.
 
 ## 2. Swift 6 estrito
 
-O pacote agora fixa o modo de linguagem do Swift 6 (`swiftLanguageModes: [.v6]`) e o
-recurso futuro `ExistentialAny`, e a CI compila com avisos tratados como erros.
-Para a maioria dos aplicativos, isso não requer alterações. Se você implementou algum dos
-protocolos públicos do AppState (por exemplo, um `FileManaging`, `UserDefaultsManaging` ou
-`UbiquitousKeyValueStoreManaging` personalizado), pode ser necessário escrever tipos existenciais com um
-`any` explícito (por exemplo, `any FileManaging`).
+O pacote fixa o modo de linguagem do Swift 6 (`swiftLanguageModes: [.v6]`) e ativa o recurso futuro `ExistentialAny`. A CI compila com avisos tratados como erros.
+
+A maioria dos aplicativos não requer alterações. Se você implementou algum dos protocolos públicos do AppState — `FileManaging`, `UserDefaultsManaging` ou `UbiquitousKeyValueStoreManaging` — talvez precise escrever tipos existenciais com um `any` explícito:
+
+```swift
+// Before (2.x)
+var fileManager: FileManaging
+
+// After (3.0)
+var fileManager: any FileManaging
+```
 
 ## 3. Observation substitui ObservableObject
 
-`Application` agora usa o macro [`@Observable`](https://developer.apple.com/documentation/observation)
-em vez de se conformar a `ObservableObject`.
+`Application` agora usa [`@Observable`](https://developer.apple.com/documentation/observation) em vez de `ObservableObject`.
 
-**Nenhuma alteração é necessária para o uso típico.** Os property wrappers — `@AppState`,
-`@StoredState`, `@FileState`, `@SyncState`, `@SecureState`, `@Slice`,
-`@OptionalSlice`, `@DependencySlice` e `@ModelState` — continuam a funcionar dentro
-de visualizações SwiftUI e as visualizações são atualizadas como antes. View models que se conformam a
-`ObservableObject` e hospedam esses wrappers ainda são suportados.
+**Os property wrappers permanecem inalterados.** `@AppState`, `@StoredState`, `@FileState`, `@SyncState`, `@SecureState`, `@Slice`, `@OptionalSlice`, `@DependencySlice` e `@ModelState` continuam todos a funcionar dentro de visualizações SwiftUI. Os view models que se conformam a `ObservableObject` e hospedam esses wrappers ainda são suportados.
 
 O que mudou:
 
-- `Application` não se conforma mais a `ObservableObject`, então
-  `Application.shared.objectWillChange` não está mais disponível.
-- Um novo método, `Application.notifyChange()`, solicita que os observadores (visualizações SwiftUI)
-  sejam atualizados. Os próprios setters do AppState o chamam por você.
+- `Application.shared.objectWillChange` não existe mais.
+- `Application.notifyChange()` o substitui. Os próprios setters do AppState o chamam automaticamente.
+- Ler `Application.state(_:).value` diretamente agora participa do Observation — não apenas o wrapper `@AppState`. Isso significa que qualquer código (não apenas visualizações SwiftUI) pode observar alterações de estado:
 
-Se você criou uma subclasse de `Application` e acionou atualizações manualmente — por exemplo, a partir de uma
-sobrescrita de `didChangeExternally(notification:)` que reage a alterações recebidas do iCloud —
-substitua `objectWillChange.send()` por `notifyChange()`:
+  ```swift
+  withObservationTracking {
+      _ = Application.state(\.counter).value
+  } onChange: {
+      // runs when the value changes — no SwiftUI required
+  }
+  ```
+
+Se você criou uma subclasse de `Application` e chamou `objectWillChange.send()` manualmente (por exemplo, a partir de uma sobrescrita de `didChangeExternally`), substitua-a por `notifyChange()`:
 
 ```swift
 class CustomApplication: Application {
@@ -57,24 +67,17 @@ class CustomApplication: Application {
         super.didChangeExternally(notification: notification)
 
         DispatchQueue.main.async {
-            // Antes (2.x):
-            // self.objectWillChange.send()
-
-            // Depois (3.0):
             self.notifyChange()
         }
     }
 }
 ```
 
-> Nota: `@ObservedDependency` permanece inalterado. Ele ainda observa valores de dependência
-> que se conformam a `ObservableObject`.
+> `@ObservedDependency` permanece inalterado — ele ainda observa valores de dependência que se conformam a `ObservableObject`.
 
-## 4. Novo: Suporte ao SwiftData
+## 4. Novo: suporte a SwiftData
 
-O 3.0 adiciona integração de primeira classe com o SwiftData: injete um `ModelContainer` compartilhado como uma
-dependência e leia/grave objetos `@Model` através do `ModelState`. Consulte o
-[Guia de Uso do ModelState](usage-modelstate.md). Isso é aditivo e opcional.
+O 3.0 adiciona integração com SwiftData. Injete um `ModelContainer` compartilhado como uma dependência e leia/grave objetos `@Model` através do `ModelState`. Isso é aditivo e opcional — consulte o [Guia de Uso do ModelState](usage-modelstate.md).
 
 ---
 Esta tradução foi gerada automaticamente e pode conter erros. Se você é um falante nativo, agradecemos suas contribuições com correções por meio de um Pull Request.
