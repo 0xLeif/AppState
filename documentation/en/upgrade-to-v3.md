@@ -1,12 +1,17 @@
 # Upgrading to AppState 3.0
 
-AppState 3.0 modernizes the library around Swift 6 and Apple's Observation
-framework. This guide covers the breaking changes and how to adapt.
+AppState 3.0 is built around Swift 6 and Apple's Observation framework. Below are the breaking changes and how to adapt.
+
+## Breaking changes at a glance
+
+- **Platform minimums raised** — iOS 17, macOS 14, tvOS 17, watchOS 10
+- **Swift 6 strict concurrency** — `ExistentialAny` enabled; explicit `any` required on protocol existentials
+- **`ObservableObject` removed** — `Application` uses `@Observable`; `objectWillChange` is gone, replace with `notifyChange()`
+- **New (additive): SwiftData support** — `ModelState` / `@ModelState` for `@Model` objects
+
+---
 
 ## 1. Raised platform requirements
-
-The minimum deployment targets were raised to take advantage of modern Swift and
-SwiftData/Observation APIs:
 
 | Platform | 2.x | 3.0 |
 | --- | --- | --- |
@@ -18,45 +23,43 @@ SwiftData/Observation APIs:
 
 Linux and Windows continue to be supported for the non-Apple feature set.
 
-If you must continue to support older OS versions, stay on the 2.x release line.
+Stay on the 2.x release line if you need to support older OS versions.
 
 ## 2. Strict Swift 6
 
-The package now pins the Swift 6 language mode (`swiftLanguageModes: [.v6]`) and the
-`ExistentialAny` upcoming feature, and CI builds with warnings treated as errors.
-For most apps this requires no changes. If you implemented any of AppState's
-public protocols (for example a custom `FileManaging`, `UserDefaultsManaging`, or
-`UbiquitousKeyValueStoreManaging`), you may need to write existential types with an
-explicit `any` (e.g. `any FileManaging`).
+The package pins the Swift 6 language mode (`swiftLanguageModes: [.v6]`) and enables the `ExistentialAny` upcoming feature. CI builds with warnings as errors.
+
+Most apps require no changes. If you implemented any of AppState's public protocols — `FileManaging`, `UserDefaultsManaging`, or `UbiquitousKeyValueStoreManaging` — you may need to write existential types with an explicit `any`:
+
+```swift
+// Before (2.x)
+var fileManager: FileManaging
+
+// After (3.0)
+var fileManager: any FileManaging
+```
 
 ## 3. Observation replaces ObservableObject
 
-`Application` now uses the [`@Observable`](https://developer.apple.com/documentation/observation)
-macro instead of conforming to `ObservableObject`.
+`Application` now uses [`@Observable`](https://developer.apple.com/documentation/observation) instead of `ObservableObject`.
 
-**No change is required for typical usage.** The property wrappers — `@AppState`,
-`@StoredState`, `@FileState`, `@SyncState`, `@SecureState`, `@Slice`,
-`@OptionalSlice`, `@DependencySlice`, and `@ModelState` — continue to work inside
-SwiftUI views and views update as before. View models that conform to
-`ObservableObject` and host these wrappers are still supported.
-
-Why the change? AppState's observation has always been coarse: under the previous
-`ObservableObject` design, any change to the shared registry notified every
-observer. The move to `@Observable` keeps that behavior but adopts the modern,
-standard-library Observation framework (available on Linux and Windows too) and
-removes the `NSObject` + Combine `ObservableObject` coupling. Finer-grained,
-per-key observation is a possible future enhancement and is not part of 3.0.
+**Property wrappers are unchanged.** `@AppState`, `@StoredState`, `@FileState`, `@SyncState`, `@SecureState`, `@Slice`, `@OptionalSlice`, `@DependencySlice`, and `@ModelState` all continue to work inside SwiftUI views. View models that conform to `ObservableObject` and host these wrappers are still supported.
 
 What changed:
 
-- `Application` no longer conforms to `ObservableObject`, so
-  `Application.shared.objectWillChange` is no longer available.
-- A new method, `Application.notifyChange()`, asks observers (SwiftUI views) to
-  update. AppState's own setters call it for you.
+- `Application.shared.objectWillChange` no longer exists.
+- `Application.notifyChange()` replaces it. AppState's own setters call it automatically.
+- Reading `Application.state(_:).value` directly now participates in Observation — not just the `@AppState` wrapper. This means any code (not just SwiftUI views) can observe state changes:
 
-If you subclassed `Application` and triggered updates manually — for example from a
-`didChangeExternally(notification:)` override that reacts to incoming iCloud
-changes — replace `objectWillChange.send()` with `notifyChange()`:
+  ```swift
+  withObservationTracking {
+      _ = Application.state(\.counter).value
+  } onChange: {
+      // runs when the value changes — no SwiftUI required
+  }
+  ```
+
+If you subclassed `Application` and called `objectWillChange.send()` manually (e.g., from a `didChangeExternally` override), replace it with `notifyChange()`:
 
 ```swift
 class CustomApplication: Application {
@@ -64,21 +67,14 @@ class CustomApplication: Application {
         super.didChangeExternally(notification: notification)
 
         DispatchQueue.main.async {
-            // Before (2.x):
-            // self.objectWillChange.send()
-
-            // After (3.0):
             self.notifyChange()
         }
     }
 }
 ```
 
-> Note: `@ObservedDependency` is unchanged. It still observes dependency values
-> that conform to `ObservableObject`.
+> `@ObservedDependency` is unchanged — it still observes dependency values that conform to `ObservableObject`.
 
 ## 4. New: SwiftData support
 
-3.0 adds first-class SwiftData integration: inject a shared `ModelContainer` as a
-dependency and read/write `@Model` objects through `ModelState`. See the
-[ModelState Usage Guide](usage-modelstate.md). This is additive and optional.
+3.0 adds SwiftData integration. Inject a shared `ModelContainer` as a dependency and read/write `@Model` objects through `ModelState`. This is additive and optional — see the [ModelState Usage Guide](usage-modelstate.md).

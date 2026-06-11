@@ -133,9 +133,17 @@ struct LargeDataView: View {
 import AppState
 import SwiftData
 
+private func makeItemContainer() -> ModelContainer {
+    do {
+        return try ModelContainer(for: Item.self)
+    } catch {
+        fatalError("Failed to create ModelContainer: \(error)")
+    }
+}
+
 extension Application {
     var modelContainer: Dependency<ModelContainer> {
-        modelContainer(try! ModelContainer(for: Item.self))
+        modelContainer(makeItemContainer())
     }
 
     var items: ModelState<Item> {

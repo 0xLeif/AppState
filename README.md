@@ -8,7 +8,7 @@
 
 Read this in other languages: [French](documentation/README.fr.md) | [German](documentation/README.de.md) | [Hindi](documentation/README.hi.md) | [Portuguese](documentation/README.pt.md) | [Russian](documentation/README.ru.md) | [Simplified Chinese](documentation/README.zh-CN.md) | [Spanish](documentation/README.es.md)
 
-**AppState** is a Swift 6 library designed to simplify the management of application state in a thread-safe, type-safe, and SwiftUI-friendly way. It provides a set of tools to centralize and synchronize state across your application, as well as inject dependencies into various parts of your app.
+**AppState** is a Swift 6 library for managing application state in a thread-safe, type-safe, and SwiftUI-friendly way. Centralize and synchronize state across your app; inject dependencies anywhere.
 
 ## Requirements
 
@@ -26,7 +26,7 @@ Read this in other languages: [French](documentation/README.fr.md) | [German](do
 
 ## Key Features
 
-**AppState** includes several powerful features to help manage state and dependencies:
+**AppState** includes:
 
 - **State**: Centralized state management that allows you to encapsulate and broadcast changes across the app.
 - **StoredState**: Persistent state using `UserDefaults`, ideal for saving small amounts of data between app launches.
@@ -41,13 +41,9 @@ Read this in other languages: [French](documentation/README.fr.md) | [German](do
 
 ## Getting Started
 
-To integrate **AppState** into your Swift project, you’ll need to use the Swift Package Manager. Follow the [Installation Guide](documentation/en/installation.md) for detailed instructions on setting up **AppState**.
-
-After installation, refer to the [Usage Overview](documentation/en/usage-overview.md) for a quick introduction on how to manage state and inject dependencies into your project.
+Add **AppState** via Swift Package Manager — see the [Installation Guide](documentation/en/installation.md). Then check the [Usage Overview](documentation/en/usage-overview.md) for a quick introduction.
 
 ## Quick Example
-
-Below is a minimal example showing how to define a piece of state and access it from a SwiftUI view:
 
 ```swift
 import AppState
@@ -70,8 +66,6 @@ struct ContentView: View {
     }
 }
 ```
-
-This snippet demonstrates defining a state value in an `Application` extension and using the `@AppState` property wrapper to bind it inside a view.
 
 ## Documentation
 
@@ -103,4 +97,4 @@ We welcome contributions! Please check out our [Contributing Guide](documentatio
 
 ## Next Steps
 
-With **AppState** installed, you can start exploring its key features by checking out the [Usage Overview](documentation/en/usage-overview.md) and more detailed guides. Get started with managing state and dependencies effectively in your Swift projects! For more advanced usage techniques, like Just-In-Time creation and preloading dependencies, see the [Advanced Usage Guide](documentation/en/advanced-usage.md). You can also review the [Constant](documentation/en/usage-constant.md) and [ObservedDependency](documentation/en/usage-observeddependency.md) guides for additional features.
+Start with the [Usage Overview](documentation/en/usage-overview.md). For Just-In-Time creation and preloading, see the [Advanced Usage Guide](documentation/en/advanced-usage.md). The [Constant](documentation/en/usage-constant.md) and [ObservedDependency](documentation/en/usage-observeddependency.md) guides cover additional features.

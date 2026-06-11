@@ -21,9 +21,9 @@ import SwiftUI
     @MainActor
     public var wrappedValue: Value {
         get {
-            app.registerObservation()
-
-            return Application.state(
+            // `Application.state(_:)` registers the current Observation scope, so reading through it
+            // is enough — no separate `registerObservation()` call is needed here.
+            Application.state(
                 keyPath,
                 fileID,
                 function,
