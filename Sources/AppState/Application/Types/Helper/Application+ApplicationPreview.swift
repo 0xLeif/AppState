@@ -1,4 +1,4 @@
-#if !os(Linux) && !os(Windows)
+#if canImport(SwiftUI)
 import SwiftUI
 
 extension Application {

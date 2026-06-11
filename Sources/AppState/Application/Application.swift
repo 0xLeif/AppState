@@ -1,7 +1,9 @@
 import Cache
 import Observation
-#if !os(Linux) && !os(Windows)
+#if canImport(Combine)
 import Combine
+#endif
+#if canImport(OSLog)
 import OSLog
 #else
 import Foundation
@@ -14,7 +16,7 @@ open class Application: NSObject {
     @MainActor
     static var shared: Application = Application()
 
-    #if !os(Linux) && !os(Windows)
+    #if canImport(OSLog)
     /// Logger specifically for AppState
     public var logger: Dependency<Logger> {
         dependency(Logger(subsystem: "AppState", category: "Application"))
@@ -51,7 +53,7 @@ open class Application: NSObject {
     /// the synthesized `@Observable` registrar, which is `Sendable` and internally synchronized.
     private var changeAnchor: Int = 0
 
-    #if !os(Linux) && !os(Windows)
+    #if canImport(Combine)
     /// A set to store cancellables for Combine subscriptions, ensuring they are properly managed and released.
     @ObservationIgnored
     private var bag: Set<AnyCancellable> = Set()
@@ -77,10 +79,6 @@ open class Application: NSObject {
 
         setup(self)
         loadDefaultDependencies()
-
-        #if !os(Linux) && !os(Windows)
-        consume(object: cache)
-        #endif
     }
 
     /// Registers the current Observation tracking scope (such as a SwiftUI view body) as dependent on
@@ -112,7 +110,7 @@ open class Application: NSObject {
         changeAnchor &+= 1
     }
 
-    #if !os(Linux) && !os(Windows)
+    #if canImport(Combine)
     /**
      Called when the value of one or more keys in the local key-value store changed due to incoming data pushed from iCloud.
 
@@ -152,7 +150,7 @@ open class Application: NSObject {
         load(dependency: \.fileManager)
     }
 
-    #if !os(Linux) && !os(Windows)
+    #if canImport(Combine)
     /// Consumes changes in the provided ObservableObject and sends updates before the object will change.
     ///
     /// - Parameter object: The ObservableObject to observe

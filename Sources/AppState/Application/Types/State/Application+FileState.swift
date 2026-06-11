@@ -74,7 +74,7 @@ extension Application {
                             )
                         }
 
-                        #if (!os(Linux) && !os(Windows))
+                        #if canImport(ObjectiveC)
                         if NSClassFromString("XCTest") == nil {
                             Task {
                                 await MainActor.run {
@@ -149,6 +149,8 @@ extension Application {
                         )
                     }
                 }
+
+                shared.notifyChange()
             }
         }
 

@@ -26,6 +26,9 @@ let package = Package(
         )
     ],
     dependencies: [
+        // Bump to the Cache release that includes the WebAssembly + Linux collection-cast fixes
+        // (0xLeif/Cache#30) once it is tagged — that is what makes wasm builds and Linux
+        // collection-typed state fully correct end-to-end.
         .package(url: "https://github.com/0xLeif/Cache", from: "2.0.0"),
         .package(url: "https://github.com/apple/swift-docc-plugin", from: "1.4.0")
     ],

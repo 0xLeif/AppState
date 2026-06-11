@@ -82,6 +82,8 @@ extension Application {
                         userDefaults.set(newValue, forKey: scope.key)
                     }
                 }
+
+                shared.notifyChange()
             }
         }
 
