@@ -11,7 +11,7 @@ extension Application {
         }
 
         public static var emoji: Character {
-            #if !os(Linux) && !os(Windows)
+            #if canImport(OSLog)
             return "🔄"
             #else
             return "📦"
@@ -27,6 +27,21 @@ extension Application {
         private let initial: Value
 
         /// The current state value.
+        ///
+        /// - Note: **Issue #151 — Linux `_arrayForceCast` crash.**
+        ///   The `shared.cache.get(scope.key, as: State<Value>.self)` call below performs
+        ///   an `Any → State<Value>` dynamic cast inside `Dictionary+Cacheable.swift:18`
+        ///   (`self[key] as? Item`). On Linux, when `Value` is a collection type such as
+        ///   `[Element]`, the Swift runtime's `swift_dynamicCast` path invokes
+        ///   `_arrayForceCast` for the generic parameter, which crashes with a
+        ///   `swift_dynamicCastFailure`. This is a known Swift-on-Linux stdlib/runtime
+        ///   limitation (SR-4049 / swift#40956) affecting `as?` casts from `Any` to
+        ///   generic structs whose generic parameters are array types. A clean fix requires
+        ///   either: (a) replacing `Cache<String, Any>` with a type-index keyed store so
+        ///   `Any` is never the concrete container value type, or (b) filing a Cache library
+        ///   issue to store a type-erased wrapper that avoids the metatype dereference during
+        ///   cast. Until then, `State<[T]>` and `FileState<[T]?>` will crash on Linux when
+        ///   their value is read after being evicted from the in-memory cache.
         @MainActor
         public var value: Value {
             get {
@@ -47,7 +62,7 @@ extension Application {
                                 forKey: scope.key
                             )
                         }
-                        #if (!os(Linux) && !os(Windows))
+                        #if canImport(ObjectiveC)
                         if NSClassFromString("XCTest") == nil {
                             Task { @MainActor in
                                 setValue()
@@ -73,6 +88,7 @@ extension Application {
                     ),
                     forKey: scope.key
                 )
+                shared.notifyChange()
             }
         }
 

@@ -12,7 +12,7 @@
 
 ```swift
 dependencies: [
-    .package(url: "https://github.com/0xLeif/AppState.git", from: "2.2.0")
+    .package(url: "https://github.com/0xLeif/AppState.git", from: "3.0.0")
 ]
 ```
 
@@ -65,7 +65,7 @@ import AppState
 
 ### 步骤 4：指定版本
 
-选择您要使用的版本。建议选择“直到下一个主要版本”选项，并将 `2.0.0` 指定为下限。然后单击“下一步”。
+选择您要使用的版本。建议选择“直到下一个主要版本”选项，并将 `3.0.0` 指定为下限。然后单击“下一步”。
 
 ### 步骤 5：添加包
 

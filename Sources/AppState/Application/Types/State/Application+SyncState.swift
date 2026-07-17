@@ -105,6 +105,8 @@ extension Application {
                         )
                     }
                 }
+
+                shared.notifyChange()
             }
         }
 

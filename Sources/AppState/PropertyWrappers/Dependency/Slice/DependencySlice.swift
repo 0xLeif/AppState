@@ -1,4 +1,4 @@
-#if !os(Linux) && !os(Windows)
+#if canImport(Combine)
 import SwiftUI
 #endif
 
@@ -45,14 +45,12 @@ import SwiftUI
             )
 
             var dependency = app.value(keyPath: dependencyKeyPath)
-            #if !os(Linux) && !os(Windows)
             Application.shared.notifyChange()
-            #endif
             dependency.value[keyPath: valueKeyPath] = newValue
         }
     }
 
-    #if !os(Linux) && !os(Windows)
+    #if canImport(Combine)
     /// A binding to the `Dependency`'s value, which can be used with SwiftUI views.
     @MainActor
     public var projectedValue: Binding<SliceValue> {
@@ -96,6 +94,6 @@ import SwiftUI
     }
 }
 
-#if !os(Linux) && !os(Windows)
+#if canImport(Combine)
 extension DependencySlice: DynamicProperty { }
 #endif

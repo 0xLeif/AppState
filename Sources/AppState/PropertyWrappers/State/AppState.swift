@@ -1,4 +1,4 @@
-#if !os(Linux) && !os(Windows)
+#if canImport(Combine)
 import Combine
 import SwiftUI
 #endif
@@ -45,7 +45,7 @@ import SwiftUI
         }
     }
 
-    #if !os(Linux) && !os(Windows)
+    #if canImport(Combine)
     /// A binding to the `State`'s value, which can be used with SwiftUI views.
     @MainActor
     public var projectedValue: Binding<Value> {
@@ -76,7 +76,7 @@ import SwiftUI
         self.column = column
     }
 
-    #if !os(Linux) && !os(Windows)
+    #if canImport(Combine)
     /// A property wrapper's synthetic storage property. This is just for SwiftUI to mutate the `wrappedValue` and send event through `objectWillChange` publisher when the `wrappedValue` changes
     @MainActor
     public static subscript<OuterSelf: ObservableObject>(
@@ -99,6 +99,6 @@ import SwiftUI
     #endif
 }
 
-#if !os(Linux) && !os(Windows)
+#if canImport(Combine)
 extension AppState: DynamicProperty { }
 #endif

@@ -1,5 +1,5 @@
 import Foundation
-#if !os(Linux) && !os(Windows)
+#if canImport(SwiftUI)
 import SwiftUI
 #endif
 
@@ -387,7 +387,7 @@ public extension Application {
     }
 }
 
-#if !os(Linux) && !os(Windows)
+#if canImport(SwiftUI)
 // MARK: - SwiftUI Preview Dependency Functions
 
 public extension Application {

@@ -49,7 +49,7 @@ What changed:
 
 - `Application.shared.objectWillChange` no longer exists.
 - `Application.notifyChange()` replaces it. AppState's own setters call it automatically.
-- Reading `Application.state(_:).value` directly now participates in Observation — not just the `@AppState` wrapper. This means any code (not just SwiftUI views) can observe state changes:
+- Reading `Application.state(_:).value` directly now participates in Observation — not just the `@AppState` wrapper. This means any code (not just SwiftUI views) can observe state changes on **every platform where Observation runs** (Apple, Linux, Windows, and WebAssembly once your Cache pin includes the WASM-safe Cache release):
 
   ```swift
   withObservationTracking {

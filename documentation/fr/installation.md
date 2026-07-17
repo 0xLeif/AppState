@@ -12,7 +12,7 @@ Ajoutez **AppState** à la section `dependencies` de votre fichier `Package.swif
 
 ```swift
 dependencies: [
-    .package(url: "https://github.com/0xLeif/AppState.git", from: "2.2.0")
+    .package(url: "https://github.com/0xLeif/AppState.git", from: "3.0.0")
 ]
 ```
 
@@ -65,7 +65,7 @@ Puis cliquez sur "Suivant".
 
 ### Étape 4 : Spécifiez la version
 
-Choisissez la version que vous souhaitez utiliser. Il est recommandé de sélectionner l'option "Up to Next Major Version" et de spécifier `2.0.0` comme limite inférieure. Puis cliquez sur "Suivant".
+Choisissez la version que vous souhaitez utiliser. Il est recommandé de sélectionner l'option "Up to Next Major Version" et de spécifier `3.0.0` comme limite inférieure. Puis cliquez sur "Suivant".
 
 ### Étape 5 : Ajoutez le package
 

@@ -1,3 +1,6 @@
+// Apple-only fuller Observation bridge suite. See `CrossPlatformObservationTests` for the
+// Linux/Windows-discoverable delivery smoke tests, and the note atop `ObservationTests.swift`
+// for why synchronous `@MainActor` XCTest methods stay gated off those platforms.
 #if !os(Linux) && !os(Windows)
 import Foundation
 import Observation

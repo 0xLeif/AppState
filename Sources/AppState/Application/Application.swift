@@ -1,10 +1,8 @@
 import Cache
-import Observation
-#if !os(Linux) && !os(Windows)
-import Combine
-import OSLog
-#else
 import Foundation
+import Observation
+#if canImport(OSLog)
+import OSLog
 #endif
 
 /// `Application` is a class that can be observed for changes, keeping track of the states within the application.
@@ -14,7 +12,7 @@ open class Application: NSObject {
     @MainActor
     static var shared: Application = Application()
 
-    #if !os(Linux) && !os(Windows)
+    #if canImport(OSLog)
     /// Logger specifically for AppState
     public var logger: Dependency<Logger> {
         dependency(Logger(subsystem: "AppState", category: "Application"))
@@ -44,20 +42,15 @@ open class Application: NSObject {
     /// view body — as dependent on AppState, and mutating it (via ``notifyChange()``) tells those
     /// observers to update.
     ///
+    /// Delivery is cross-platform: every AppState mutation path calls ``notifyChange()`` directly.
+    /// There is no Combine/`ObservableObject` bridge involved in Observation delivery.
+    ///
     /// Thread-safety: every mutation funnels through ``notifyChange()``, which AppState only invokes
-    /// from its main-actor setters and from the cache observer below — and that observer fires
-    /// *synchronously* during those same main-actor cache mutations. Reads occur on the main actor
-    /// (SwiftUI bodies and the `@MainActor` property wrappers). The mutation itself is applied through
-    /// the synthesized `@Observable` registrar, which is `Sendable` and internally synchronized.
+    /// from its main-actor setters (and from `@MainActor` hooks such as
+    /// ``didChangeExternally(notification:)``). Reads occur on the main actor (SwiftUI bodies and the
+    /// `@MainActor` property wrappers). The mutation itself is applied through the synthesized
+    /// `@Observable` registrar, which is `Sendable` and internally synchronized.
     private var changeAnchor: Int = 0
-
-    #if !os(Linux) && !os(Windows)
-    /// A set to store cancellables for Combine subscriptions, ensuring they are properly managed and released.
-    @ObservationIgnored
-    private var bag: Set<AnyCancellable> = Set()
-
-    deinit { bag.removeAll() }
-    #endif
 
     /// Initializes a new instance of `Application`.
     ///
@@ -77,10 +70,6 @@ open class Application: NSObject {
 
         setup(self)
         loadDefaultDependencies()
-
-        #if !os(Linux) && !os(Windows)
-        consume(object: cache)
-        #endif
     }
 
     /// Registers the current Observation tracking scope (such as a SwiftUI view body) as dependent on
@@ -106,6 +95,10 @@ open class Application: NSObject {
     ///   not `Sendable`, so the change cannot be hopped to the main thread on the caller's behalf — the
     ///   invariant is instead asserted here so off-main misuse surfaces in debug and CI. `Application`'s
     ///   setters and the `@MainActor` `didChangeExternally(notification:)` override already satisfy it.
+    ///
+    ///   Callers must not wrap this in an unconditional `DispatchQueue.main.async` hop: asynchronous
+    ///   delivery would break the synchronous `withObservationTracking` contract that AppState and
+    ///   SwiftUI rely on when already on the main thread.
     public func notifyChange() {
         assert(Thread.isMainThread, "Application.notifyChange() must be called on the main thread.")
 
@@ -151,35 +144,4 @@ open class Application: NSObject {
         load(dependency: \.userDefaults)
         load(dependency: \.fileManager)
     }
-
-    #if !os(Linux) && !os(Windows)
-    /// Consumes changes in the provided ObservableObject and sends updates before the object will change.
-    ///
-    /// - Parameter object: The ObservableObject to observe
-    private func consume<Object: ObservableObject>(
-        object: Object
-    ) {
-        bag.insert(
-            object.objectWillChange.sink(
-                receiveCompletion: { _ in },
-                receiveValue: { [weak self] _ in
-                    // Deliver synchronously when already on main (preserving the synchronous
-                    // observation contract `withObservationTracking` relies on), and only hop to main
-                    // when a dependency publishes off-main — `notifyChange()` asserts main-thread and
-                    // mutates `changeAnchor`, which must never be touched off the main thread.
-                    if Thread.isMainThread {
-                        self?.notifyChange()
-                    } else {
-                        DispatchQueue.main.async {
-                            MainActor.assumeIsolated {
-                                Application.shared.notifyChange()
-                            }
-                        }
-                    }
-                }
-            )
-        )
-    }
-    #endif
 }
-
