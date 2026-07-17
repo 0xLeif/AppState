@@ -49,7 +49,8 @@ final class CrossPlatformObservationTests: XCTestCase {
 
         XCTAssertFalse(flag.didChange)
 
-        Application.state(\.crossPlatformObservationCounter).value = 1
+        var state = Application.state(\.crossPlatformObservationCounter)
+        state.value = 1
 
         XCTAssertTrue(
             flag.didChange,
