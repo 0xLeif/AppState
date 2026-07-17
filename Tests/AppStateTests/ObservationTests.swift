@@ -1,3 +1,7 @@
+// Apple-only fuller Observation suite (property-wrapper holders + sync `@MainActor` XCTest methods).
+// Cross-platform delivery is covered by `CrossPlatformObservationTests`, which uses async
+// `@MainActor` entry points so Linux/Windows XCTest can discover them. Synchronous `@MainActor`
+// test methods abort under swift-corelibs-xctest (force-cast of test thunks to `() -> ()`).
 #if !os(Linux) && !os(Windows)
 import Observation
 import XCTest

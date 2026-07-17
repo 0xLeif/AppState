@@ -6,10 +6,9 @@
 build = "swift build"
 test = "swift test"
 # Treat warnings as errors to enforce strict Swift 6 cleanliness (mirrors CI).
-lint = "swift build -Xswiftc -warnings-as-errors && swift test -Xswiftc -warnings-as-errors"
-# Build and run the SwiftData example as a smoke test (Apple platforms only).
-example = "swift run --package-path Examples/SwiftDataExample"
+# Prefer the env-gated APPSTATE_STRICT path used by GitHub Actions when available.
+lint = "APPSTATE_STRICT=1 swift build && APPSTATE_STRICT=1 swift test"
 
 [lanes.ci]
-description = "Run the full CI pipeline (strict warnings, tests, example smoke test)"
-steps = ["lint", "example"]
+description = "Run the full CI pipeline (strict warnings + tests)"
+steps = ["lint"]

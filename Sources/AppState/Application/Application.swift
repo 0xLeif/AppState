@@ -1,12 +1,8 @@
 import Cache
+import Foundation
 import Observation
-#if canImport(Combine)
-import Combine
-#endif
 #if canImport(OSLog)
 import OSLog
-#else
-import Foundation
 #endif
 
 /// `Application` is a class that can be observed for changes, keeping track of the states within the application.
@@ -46,20 +42,15 @@ open class Application: NSObject {
     /// view body — as dependent on AppState, and mutating it (via ``notifyChange()``) tells those
     /// observers to update.
     ///
+    /// Delivery is cross-platform: every AppState mutation path calls ``notifyChange()`` directly.
+    /// There is no Combine/`ObservableObject` bridge involved in Observation delivery.
+    ///
     /// Thread-safety: every mutation funnels through ``notifyChange()``, which AppState only invokes
-    /// from its main-actor setters and from the cache observer below — and that observer fires
-    /// *synchronously* during those same main-actor cache mutations. Reads occur on the main actor
-    /// (SwiftUI bodies and the `@MainActor` property wrappers). The mutation itself is applied through
-    /// the synthesized `@Observable` registrar, which is `Sendable` and internally synchronized.
+    /// from its main-actor setters (and from `@MainActor` hooks such as
+    /// ``didChangeExternally(notification:)``). Reads occur on the main actor (SwiftUI bodies and the
+    /// `@MainActor` property wrappers). The mutation itself is applied through the synthesized
+    /// `@Observable` registrar, which is `Sendable` and internally synchronized.
     private var changeAnchor: Int = 0
-
-    #if canImport(Combine)
-    /// A set to store cancellables for Combine subscriptions, ensuring they are properly managed and released.
-    @ObservationIgnored
-    private var bag: Set<AnyCancellable> = Set()
-
-    deinit { bag.removeAll() }
-    #endif
 
     /// Initializes a new instance of `Application`.
     ///
@@ -104,13 +95,17 @@ open class Application: NSObject {
     ///   not `Sendable`, so the change cannot be hopped to the main thread on the caller's behalf — the
     ///   invariant is instead asserted here so off-main misuse surfaces in debug and CI. `Application`'s
     ///   setters and the `@MainActor` `didChangeExternally(notification:)` override already satisfy it.
+    ///
+    ///   Callers must not wrap this in an unconditional `DispatchQueue.main.async` hop: asynchronous
+    ///   delivery would break the synchronous `withObservationTracking` contract that AppState and
+    ///   SwiftUI rely on when already on the main thread.
     public func notifyChange() {
         assert(Thread.isMainThread, "Application.notifyChange() must be called on the main thread.")
 
         changeAnchor &+= 1
     }
 
-    #if canImport(Combine)
+    #if !os(Linux) && !os(Windows)
     /**
      Called when the value of one or more keys in the local key-value store changed due to incoming data pushed from iCloud.
 
@@ -149,35 +144,4 @@ open class Application: NSObject {
         load(dependency: \.userDefaults)
         load(dependency: \.fileManager)
     }
-
-    #if canImport(Combine)
-    /// Consumes changes in the provided ObservableObject and sends updates before the object will change.
-    ///
-    /// - Parameter object: The ObservableObject to observe
-    private func consume<Object: ObservableObject>(
-        object: Object
-    ) {
-        bag.insert(
-            object.objectWillChange.sink(
-                receiveCompletion: { _ in },
-                receiveValue: { [weak self] _ in
-                    // Deliver synchronously when already on main (preserving the synchronous
-                    // observation contract `withObservationTracking` relies on), and only hop to main
-                    // when a dependency publishes off-main — `notifyChange()` asserts main-thread and
-                    // mutates `changeAnchor`, which must never be touched off the main thread.
-                    if Thread.isMainThread {
-                        self?.notifyChange()
-                    } else {
-                        DispatchQueue.main.async {
-                            MainActor.assumeIsolated {
-                                Application.shared.notifyChange()
-                            }
-                        }
-                    }
-                }
-            )
-        )
-    }
-    #endif
 }
-
