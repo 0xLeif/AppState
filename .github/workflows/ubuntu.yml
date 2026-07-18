@@ -35,11 +35,19 @@ jobs:
 
     steps:
       - uses: actions/checkout@v4
-      - name: Set up SwiftWasm
-        id: swiftwasm
-        uses: swiftwasm/setup-swiftwasm@v2
-        with:
-          tag: swift-6.3-DEVELOPMENT-SNAPSHOT-2026-06-11-a
-          target: wasm32-unknown-wasip1
+      - name: Install SwiftWasm SDK
+        env:
+          SWIFTWASM_ASSET: swift-wasm-6.3-SNAPSHOT-2026-06-11-a-wasm32-unknown-wasip1.artifactbundle.zip
+          SWIFTWASM_RELEASE: https://github.com/swiftwasm/swift/releases/download/swift-wasm-6.3-SNAPSHOT-2026-06-11-a
+        run: |
+          apt-get update
+          apt-get install --yes --no-install-recommends ca-certificates curl
+          curl --fail --location --retry 3 --output "/tmp/${SWIFTWASM_ASSET}" \
+            "${SWIFTWASM_RELEASE}/${SWIFTWASM_ASSET}"
+          curl --fail --location --retry 3 --output "/tmp/${SWIFTWASM_ASSET}.sha256" \
+            "${SWIFTWASM_RELEASE}/${SWIFTWASM_ASSET}.sha256"
+          cd /tmp
+          sed "s|$|  ${SWIFTWASM_ASSET}|" "${SWIFTWASM_ASSET}.sha256" | sha256sum --check -
+          swift sdk install "/tmp/${SWIFTWASM_ASSET}"
       - name: Build for WebAssembly
-        run: swift build --swift-sdk "${{ steps.swiftwasm.outputs.swift-sdk-id }}"
+        run: swift build --swift-sdk 6.3-SNAPSHOT-2026-06-11-a-wasm32-unknown-wasip1
