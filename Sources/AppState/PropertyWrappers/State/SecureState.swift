@@ -1,4 +1,4 @@
-#if !os(Linux) && !os(Windows)
+#if canImport(Security)
 import Combine
 import SwiftUI
 

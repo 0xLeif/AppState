@@ -27,3 +27,19 @@ jobs:
         run: swift test -v
         env:
           APPSTATE_STRICT: "1"
+
+  wasm-build:
+    name: WebAssembly
+    runs-on: ubuntu-latest
+    container: swift:6.3.3-noble
+
+    steps:
+      - uses: actions/checkout@v4
+      - name: Set up SwiftWasm
+        id: swiftwasm
+        uses: swiftwasm/setup-swiftwasm@v2
+        with:
+          tag: swift-6.3-DEVELOPMENT-SNAPSHOT-2026-06-11-a
+          target: wasm32-unknown-wasip1
+      - name: Build for WebAssembly
+        run: swift build --swift-sdk "${{ steps.swiftwasm.outputs.swift-sdk-id }}"

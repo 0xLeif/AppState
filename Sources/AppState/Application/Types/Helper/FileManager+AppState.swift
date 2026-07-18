@@ -8,7 +8,7 @@ extension FileManager {
             return "~/App"
         }
 
-        #if !os(Linux) && !os(Windows)
+        #if canImport(Security)
         if #available(macOS 13.0, iOS 16.0, watchOS 9.0, tvOS 16.0, *) {
             return path.appending(path: "App").path()
         } else {
@@ -144,7 +144,7 @@ extension FileManager {
     }
 
     func url(filePath: String) -> URL {
-        #if !os(Linux) && !os(Windows)
+        #if canImport(Security)
         if #available(macOS 13.0, iOS 16.0, watchOS 9.0, tvOS 16.0, *) {
             return URL(filePath: filePath)
         } else {

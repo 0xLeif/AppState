@@ -1,4 +1,4 @@
-#if !os(Linux) && !os(Windows)
+#if canImport(Security)
 import Cache
 import Foundation
 import os

@@ -1,4 +1,4 @@
-#if !os(Linux) && !os(Windows)
+#if canImport(Security)
 import Foundation
 
 /// A protocol that provides a thread-safe interface for interacting with `NSUbiquitousKeyValueStore`,

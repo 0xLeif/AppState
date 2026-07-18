@@ -66,7 +66,9 @@ public extension Application {
     static func promote<CustomApplication: Application>(
         to customApplication: CustomApplication.Type
     ) -> CustomApplication.Type {
+        #if !os(WASI)
         NotificationCenter.default.removeObserver(shared)
+        #endif
 
         let cache = shared.cache
         shared = customApplication.init()
@@ -672,7 +674,7 @@ public extension Application {
     }
 }
 
-#if !os(Linux) && !os(Windows)
+#if canImport(Security)
 // MARK: - SyncState Functions
 
 @available(watchOS 9.0, *)
