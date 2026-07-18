@@ -1,4 +1,4 @@
-#if !os(Linux) && !os(Windows)
+#if canImport(Security)
 import Foundation
 
 @available(watchOS 9.0, *)

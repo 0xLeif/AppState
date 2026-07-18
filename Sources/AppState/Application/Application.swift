@@ -100,12 +100,14 @@ open class Application: NSObject {
     ///   delivery would break the synchronous `withObservationTracking` contract that AppState and
     ///   SwiftUI rely on when already on the main thread.
     public func notifyChange() {
+        #if !os(WASI)
         assert(Thread.isMainThread, "Application.notifyChange() must be called on the main thread.")
+        #endif
 
         changeAnchor &+= 1
     }
 
-    #if !os(Linux) && !os(Windows)
+    #if canImport(Security)
     /**
      Called when the value of one or more keys in the local key-value store changed due to incoming data pushed from iCloud.
 

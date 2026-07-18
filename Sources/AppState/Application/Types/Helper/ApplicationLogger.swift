@@ -1,4 +1,4 @@
-#if os(Linux) || os(Windows)
+#if !canImport(OSLog)
 import Foundation
 
 /// `ApplicationLogger` is a struct that provides logging functionalities for Linux and Windows operating systems using closures.
