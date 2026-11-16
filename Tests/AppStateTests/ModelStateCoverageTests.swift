@@ -387,6 +387,23 @@ final class ModelStateCoverageTests: XCTestCase {
         XCTAssertTrue(state.models.isEmpty)
     }
 
+    /// `deleteAll()` is predicate-wide: a `fetchLimit` pages `models`, not the delete.
+    @MainActor
+    func testDeleteAllIgnoresFetchLimit() {
+        let baseState = Application.modelState(\.mscNotes)
+        for index in 1...5 {
+            baseState.insert(MSCoverageNote(title: "Note\(index)", body: "", priority: index))
+        }
+
+        let limited = Application.modelState(\.mscNotesLimited)
+        XCTAssertEqual(limited.models.count, 2)
+
+        limited.deleteAll()
+
+        XCTAssertTrue(limited.models.isEmpty)
+        XCTAssertTrue(baseState.models.isEmpty)
+    }
+
     // MARK: - FetchDescriptor behaviors
 
     /// Sorting via FetchDescriptor is applied on every `models` access.

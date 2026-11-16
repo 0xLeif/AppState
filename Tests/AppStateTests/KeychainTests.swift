@@ -72,5 +72,26 @@ final class KeychainTests: XCTestCase {
         XCTAssertEqual(keychain.values().count, 0)
         XCTAssertNil(keychain.get("key"))
     }
+
+    /// A `get` beside a `remove` of the same key used to deadlock inside Security.framework, because
+    /// `get` did not take the lock that `set` and `remove` hold. Two instances are used on purpose:
+    /// they share one system keychain, so the lock must cover both.
+    func testConcurrentGetSetRemoveOfSameKeyReturns() {
+        let writer = Keychain()
+        let reader = Keychain()
+        let key = "keychainSameKey_\(UUID().uuidString)"
+        defer { writer.remove(key) }
+
+        DispatchQueue.concurrentPerform(iterations: 600) { iteration in
+            switch iteration % 3 {
+            case 0: writer.set(value: "value_\(iteration)", forKey: key)
+            case 1: _ = reader.get(key)
+            default: writer.remove(key)
+            }
+        }
+
+        writer.set(value: "sentinel", forKey: key)
+        XCTAssertEqual(reader.get(key), "sentinel")
+    }
 }
 #endif

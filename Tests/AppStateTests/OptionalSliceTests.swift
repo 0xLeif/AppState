@@ -1,4 +1,5 @@
 import Foundation
+import Observation
 #if !os(Linux) && !os(Windows)
 import SwiftUI
 #endif
@@ -123,6 +124,115 @@ final class OptionalSliceTests: XCTestCase {
         viewModel.username = "Leif"
         XCTAssertNotNil(viewModel.username)
         viewModel.username = nil
+        XCTAssertNil(viewModel.username)
+    }
+
+    /// A `nil` written to a non-optional field has nothing to store, so it must not write or notify.
+    /// On 3.0.1 the setter wrote the unchanged value back and notified.
+    @MainActor
+    func testApplicationSliceNilForNonOptionalFieldDoesNotWriteOrNotify() async {
+        var isLoadingSlice = Application.slice(\.exampleValue, \.isLoading)
+
+        isLoadingSlice.value = true
+
+        let change = expectation(description: "No change is published for an ignored nil")
+        change.isInverted = true
+
+        withObservationTracking {
+            _ = Application.state(\.exampleValue).value
+        } onChange: {
+            change.fulfill()
+        }
+
+        isLoadingSlice.value = nil
+
+        await fulfillment(of: [change], timeout: 0.1)
+
+        XCTAssertEqual(isLoadingSlice.value, true)
+        XCTAssertEqual(Application.state(\.exampleValue).value?.isLoading, true)
+    }
+
+    /// The control for the test above: a `nil` written to an optional field is stored and notifies.
+    @MainActor
+    func testApplicationSliceNilForOptionalFieldStoresNilAndNotifies() async {
+        var usernameSlice = Application.slice(\.exampleValue, \.username)
+
+        usernameSlice.value = "Leif"
+
+        let change = expectation(description: "Storing nil publishes a change")
+
+        withObservationTracking {
+            _ = Application.state(\.exampleValue).value
+        } onChange: {
+            change.fulfill()
+        }
+
+        usernameSlice.value = nil
+
+        await fulfillment(of: [change], timeout: 1)
+
+        XCTAssertNil(usernameSlice.value)
+        XCTAssertNotNil(Application.state(\.exampleValue).value)
+        XCTAssertNil(Application.state(\.exampleValue).value?.username)
+    }
+
+    /// An optional field reached through the non-optional `OptionalSlice` type still clears on `nil`.
+    @MainActor
+    func testApplicationSliceNilClearsOptionalFieldThroughNonOptionalSliceType() async {
+        var usernameSlice: Application.OptionalSlice<
+            Application.State<ExampleValue?>,
+            ExampleValue,
+            String?,
+            WritableKeyPath<ExampleValue, String?>
+        > = Application.slice(\.exampleValue, \.username)
+
+        usernameSlice.value = "Leif"
+
+        XCTAssertEqual(Application.state(\.exampleValue).value?.username, "Leif")
+
+        usernameSlice.value = nil
+
+        XCTAssertNotNil(Application.state(\.exampleValue).value)
+        XCTAssertNil(Application.state(\.exampleValue).value?.username)
+    }
+
+    @MainActor
+    func testPropertyWrapperNilForNonOptionalFieldDoesNotWriteOrNotify() async {
+        let viewModel = ExampleViewModel()
+
+        viewModel.isLoading = true
+
+        #if !os(Linux) && !os(Windows)
+        var hostChangeCount = 0
+        let cancellable = viewModel.objectWillChange.sink { hostChangeCount += 1 }
+        #endif
+
+        let change = expectation(description: "No change is published for an ignored nil")
+        change.isInverted = true
+
+        withObservationTracking {
+            _ = Application.state(\.exampleValue).value
+        } onChange: {
+            change.fulfill()
+        }
+
+        viewModel.isLoading = nil
+
+        await fulfillment(of: [change], timeout: 0.1)
+
+        XCTAssertEqual(viewModel.isLoading, true)
+
+        #if !os(Linux) && !os(Windows)
+        XCTAssertEqual(hostChangeCount, 0)
+
+        viewModel.username = "Leif"
+        viewModel.username = nil
+
+        XCTAssertEqual(hostChangeCount, 2)
+
+        cancellable.cancel()
+        #endif
+
         XCTAssertNil(viewModel.username)
     }
 }

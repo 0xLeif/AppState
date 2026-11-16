@@ -26,9 +26,17 @@ public final class Keychain: Sendable {
     public typealias Key = String
     public typealias Value = String
 
-    /// Serializes Keychain *write* operations (`set`/`remove`) so multi-call sequences such as
-    /// `set`'s update-then-add are atomic. Reads are thread-safe at the system level and stay lock-free.
-    private let writeLock: NSLock
+    /// Serializes every Security call made through `Keychain`: `get`, `set`, and `remove`.
+    ///
+    /// The lock is shared by all instances, because every instance reads and writes the same
+    /// system keychain and the hazards below are per key, not per instance.
+    ///
+    /// Writes need it so `set`'s update-then-add pair is atomic. Reads need it too: on macOS the
+    /// file-based keychain shares one item object per key inside Security.framework, and a read takes
+    /// that item's mutex and then the keychain's mutex while a delete takes them in the opposite order.
+    /// A `get` that runs beside a `remove` of the same key can therefore deadlock inside
+    /// `SecItemCopyMatching` and `SecItemDelete`, with the `remove` still holding this lock.
+    private static let securityLock = NSLock()
     /// The in-memory index of known keys, used by ``values(ofType:)``. Guarded by its own lock so
     /// `Keychain` is `Sendable` without an `@unchecked` escape; the critical sections are short and
     /// never span a Keychain syscall.
@@ -36,7 +44,6 @@ public final class Keychain: Sendable {
 
     /// Default initializer
     public init() {
-        self.writeLock = NSLock()
         self.index = OSAllocatedUnfairLock(initialState: [])
     }
 
@@ -45,7 +52,6 @@ public final class Keychain: Sendable {
      - Parameter keys: The predefined set of keys.
      */
     public init(keys: Set<Key>) {
-        self.writeLock = NSLock()
         self.index = OSAllocatedUnfairLock(initialState: keys)
     }
 
@@ -63,13 +69,17 @@ public final class Keychain: Sendable {
             kSecMatchLimit: kSecMatchLimitOne
         ]
 
-        // Reads are a single, system-serialized syscall — no AppState-level lock required.
-        var dataTypeRef: AnyObject?
-        let status: OSStatus = SecItemCopyMatching(query as CFDictionary, &dataTypeRef)
+        // The read shares the lock with `set` and `remove`. A lock-free read can deadlock inside
+        // Security.framework against a concurrent delete of the same key (see `securityLock`).
+        let (status, result): (OSStatus, AnyObject?) = Self.securityLock.withLock {
+            var dataTypeRef: AnyObject?
+            let status = SecItemCopyMatching(query as CFDictionary, &dataTypeRef)
+            return (status, dataTypeRef)
+        }
 
         guard
             status == noErr,
-            let data = dataTypeRef as? Data,
+            let data = result as? Data,
             let output = String(data: data, encoding: .utf8) as? Output
         else { return nil }
 
@@ -110,14 +120,14 @@ public final class Keychain: Sendable {
 
         // The update/add pair must be atomic: without serialization, two concurrent `set` calls for
         // the same key can both see `errSecItemNotFound` and both attempt `SecItemAdd`.
-        writeLock.lock()
-        let updateStatus = SecItemUpdate(query as CFDictionary, updateAttributes as CFDictionary)
-        if updateStatus == errSecItemNotFound {
-            var addQuery = query
-            addQuery[kSecValueData] = data
-            SecItemAdd(addQuery as CFDictionary, nil)
+        Self.securityLock.withLock {
+            let updateStatus = SecItemUpdate(query as CFDictionary, updateAttributes as CFDictionary)
+            if updateStatus == errSecItemNotFound {
+                var addQuery = query
+                addQuery[kSecValueData] = data
+                SecItemAdd(addQuery as CFDictionary, nil)
+            }
         }
-        writeLock.unlock()
 
         index.withLock { keys in _ = keys.insert(key) }
     }
@@ -132,9 +142,9 @@ public final class Keychain: Sendable {
             kSecAttrAccount: key
         ]
 
-        writeLock.lock()
-        SecItemDelete(query as CFDictionary)
-        writeLock.unlock()
+        Self.securityLock.withLock {
+            _ = SecItemDelete(query as CFDictionary)
+        }
 
         index.withLock { keys in _ = keys.remove(key) }
     }
@@ -182,8 +192,8 @@ public final class Keychain: Sendable {
      */
     @MainActor
     public func values<Output>(ofType: Output.Type) -> [Key: Output] {
-        // Snapshot the index under its lock, then read each value lock-free. Capturing the snapshot
-        // first avoids holding the index lock across Keychain syscalls.
+        // Snapshot the index under its lock, then read each value. Capturing the snapshot first
+        // avoids holding the index lock across Keychain syscalls.
         let storedKeys = index.withLock { Array($0) }
         var values: [Key: Output] = [:]
 

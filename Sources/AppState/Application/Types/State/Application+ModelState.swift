@@ -104,7 +104,11 @@ extension Application {
             try? saveThrowing()
         }
 
-        /// Deletes **every** model matching this state's `FetchDescriptor` and saves.
+        /// Deletes **every** model matching the predicate of this state's `FetchDescriptor` and saves.
+        ///
+        /// The descriptor's `fetchLimit` and `fetchOffset` are ignored: they shape what ``models``
+        /// returns, not what `deleteAll()` removes. A state whose descriptor has no predicate deletes
+        /// every model of the type. After `deleteAll()`, ``models`` is empty.
         ///
         /// Failures are logged and swallowed. Use ``strict`` for a throwing variant.
         ///
@@ -158,7 +162,8 @@ extension Application {
                 try state.saveThrowing()
             }
 
-            /// Deletes **every** matching model and saves, throwing on failure.
+            /// Deletes **every** model matching the descriptor's predicate and saves, throwing on
+            /// failure. `fetchLimit` and `fetchOffset` are ignored.
             ///
             /// - Warning: Destructive and irreversible — see ``ModelState/deleteAll()``.
             public func deleteAll() throws {
@@ -190,9 +195,16 @@ extension Application {
         @MainActor
         private func deleteAllThrowing() throws {
             let context = context
+            let matches: [Model]
+
+            // `deleteAll` is predicate-wide. A limit or offset on the descriptor pages
+            // `models`; it must not leave matching rows behind here.
+            var descriptor = fetchDescriptor()
+            descriptor.fetchLimit = nil
+            descriptor.fetchOffset = nil
 
             do {
-                try context.delete(model: Model.self, where: fetchDescriptor().predicate)
+                matches = try context.fetch(descriptor)
             } catch {
                 log(
                     error: error,
@@ -203,6 +215,14 @@ extension Application {
                     column: #column
                 )
                 throw error
+            }
+
+            // Fetch then delete. SwiftData's batch `delete(model:where:)` fails and
+            // rolls nothing useful back when a model has a relationship: Core Data
+            // rejects the batch with "mandatory ... nullify inverse", and the lenient
+            // caller was swallowing that as a successful deleteAll.
+            for model in matches {
+                context.delete(model)
             }
 
             try persist(context: context, action: "Deleting")

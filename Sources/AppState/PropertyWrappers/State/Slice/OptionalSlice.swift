@@ -58,6 +58,18 @@ import SwiftUI
             return slicedValue
         }
         nonmutating set {
+            guard canStore(newValue) else {
+                Application.log(
+                    debug: "🍕 Ignoring nil for non-optional Slice \(sliceKeyPath)",
+                    fileID: fileID,
+                    function: function,
+                    line: line,
+                    column: column
+                )
+
+                return
+            }
+
             Application.log(
                 debug: {
                     if let newValue {
@@ -74,19 +86,25 @@ import SwiftUI
 
             var state = app.value(keyPath: stateKeyPath)
 
-            guard 
+            if let optionalValueKeyPath {
+                state.value?[keyPath: optionalValueKeyPath] = newValue
+            } else if
                 let valueKeyPath,
-                let newValue
-            else {
-                if let optionalValueKeyPath {
-                    state.value?[keyPath: optionalValueKeyPath] = newValue
-                }
-
-                return
+                let sliceValue = newValue ?? Application.nilSliceValue()
+            {
+                state.value?[keyPath: valueKeyPath] = sliceValue
             }
-
-            state.value?[keyPath: valueKeyPath] = newValue
         }
+    }
+
+    /// Whether `newValue` can be stored in the sliced field.
+    ///
+    /// A `nil` can only be stored when the field is optional. A `nil` for a non-optional field is ignored:
+    /// nothing is written and no change is published.
+    private func canStore(_ newValue: SliceValue?) -> Bool {
+        newValue != nil
+            || optionalValueKeyPath != nil
+            || Application.nilSliceValue(SliceValue.self) != nil
     }
 
     #if canImport(Combine)
@@ -178,12 +196,15 @@ import SwiftUI
             observed[keyPath: storageKeyPath].wrappedValue
         }
         set {
+            let storage = observed[keyPath: storageKeyPath]
+
             guard
+                storage.canStore(newValue),
                 let publisher = observed.objectWillChange as? ObservableObjectPublisher
             else { return }
 
             publisher.send()
-            observed[keyPath: storageKeyPath].wrappedValue = newValue
+            storage.wrappedValue = newValue
         }
     }
     #endif

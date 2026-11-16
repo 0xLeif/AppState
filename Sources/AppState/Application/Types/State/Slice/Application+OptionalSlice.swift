@@ -39,13 +39,29 @@ extension Application.OptionalSlice where SliceKeyPath == WritableKeyPath<Value,
             return sliceState[keyPath: keyPath]
         }
         set {
-            guard var sliceState = state.value else { return }
+            // A `nil` write can only be stored when `SliceValue` is itself optional.
+            // Otherwise nothing is written, so observers are not notified of a change that did not happen.
+            guard
+                var sliceState = state.value,
+                let sliceValue = newValue ?? Application.nilSliceValue()
+            else { return }
 
-            if let newValue {
-                sliceState[keyPath: keyPath] = newValue
-            } 
+            sliceState[keyPath: keyPath] = sliceValue
 
             state.value = sliceState
         }
+    }
+}
+
+extension Application {
+    /// The `nil` of `SliceValue` when `SliceValue` is itself an optional type, otherwise `nil`.
+    ///
+    /// The slice setters use this to decide whether a `nil` write has anything to store.
+    static func nilSliceValue<SliceValue>(
+        _ type: SliceValue.Type = SliceValue.self
+    ) -> SliceValue? {
+        guard let nilType = type as? any ExpressibleByNilLiteral.Type else { return nil }
+
+        return nilType.init(nilLiteral: ()) as? SliceValue
     }
 }
