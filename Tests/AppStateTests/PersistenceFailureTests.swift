@@ -12,6 +12,27 @@ fileprivate struct FailureReading: Codable, Sendable, Equatable {
 fileprivate let failureDirectory = "./PersistenceFailureTests"
 fileprivate let failureBlocker = "./PersistenceFailureTests/blocker"
 
+fileprivate struct FailureDeleteRefused: Error {}
+
+/// Reads and writes like the real file manager, and refuses every delete.
+fileprivate struct DeleteRefusingFileManager: FileManaging {
+    func `in`<Value: Decodable>(path: String, filename: String) throws -> Value {
+        try FileManager.default.in(path: path, filename: filename)
+    }
+
+    func `out`<Value: Encodable>(_ value: Value, path: String, filename: String, base64Encoded: Bool) throws {
+        try FileManager.default.out(value, path: path, filename: filename, base64Encoded: base64Encoded)
+    }
+
+    func `delete`(path: String, filename: String) throws {
+        throw FailureDeleteRefused()
+    }
+
+    func removeItem(atPath path: String) throws {
+        try FileManager.default.removeItem(atPath: path)
+    }
+}
+
 @MainActor
 fileprivate final class RecordingApplication: Application {
     static var failures: [PersistenceFailure] = []
@@ -35,6 +56,11 @@ extension Application {
     @MainActor
     fileprivate var failureMissingFile: FileState<Int?> {
         fileState(path: failureDirectory, filename: "missing")
+    }
+
+    @MainActor
+    fileprivate var failureOptionalFile: FileState<Int?> {
+        fileState(path: failureDirectory, filename: "optional")
     }
 
     /// The directory of this state is a regular file, so nothing can be written below it.
@@ -138,6 +164,25 @@ final class PersistenceFailureTests: XCTestCase {
         XCTAssertEqual(writes.first?.key, key)
 
         forgetCachedValue(for: key)
+    }
+
+    @MainActor
+    func testRefusedDeleteReportsDeleteFailure() async {
+        let fileManagerOverride = Application.override(\.fileManager, with: DeleteRefusingFileManager())
+
+        var optional = Application.fileState(\.failureOptionalFile)
+        optional.value = 3
+
+        XCTAssertTrue(RecordingApplication.failures.isEmpty)
+
+        optional.value = nil
+
+        XCTAssertEqual(RecordingApplication.failures.count, 1)
+        XCTAssertEqual(RecordingApplication.failures.first?.store, .fileState)
+        XCTAssertEqual(RecordingApplication.failures.first?.operation, .delete)
+        XCTAssertTrue(RecordingApplication.failures.first?.error is FailureDeleteRefused)
+
+        await fileManagerOverride.cancel()
     }
 
     @MainActor
