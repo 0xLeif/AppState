@@ -5,6 +5,7 @@
 ### Added
 
 - `Application.didFailToPersist(_:)`, an overridable method that is called when a `FileState` file cannot be decoded, written or deleted, or when a `StoredState` or `SyncState` value cannot be encoded. It receives an `Application.PersistenceFailure` with the kind of state, the operation, the state's key and the underlying error. The default implementation does nothing, and logging is unchanged, so an app that does not override it behaves as before. A `FileState` that was never written is not reported. An unreadable file is reported once, not on every read.
+- An iOS demo app in `Examples/DemoApp` with UI tests, and an iOS CI job that runs them and the unit tests inside the app.
 
 ### Fixed
 
