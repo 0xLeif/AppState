@@ -7,10 +7,11 @@
   "title": "Fix the 10 bugs the review recorded, changing code to match the doc comments",
   "description": "Fix the 10 bugs the review recorded, changing code to match the doc comments",
   "kind": "bug_fix",
-  "state": "approved",
+  "state": "verifying",
+  "canonical_applied": true,
   "base_commit": "7e4eb923d14b7a05c8dfdb10099ae13d83352bdc",
   "created_at": 1794806260,
-  "updated_at": 1794871661,
+  "updated_at": 1794871674,
   "affected_specs": [
     "application",
     "property-wrappers"
