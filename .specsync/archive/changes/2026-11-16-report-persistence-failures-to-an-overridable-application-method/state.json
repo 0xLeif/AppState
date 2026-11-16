@@ -1,0 +1,55 @@
+{
+  "schema_version": 1,
+  "workflow_version": 3,
+  "workflow_origin_version": 2,
+  "id": "report-persistence-failures-to-an-overridable-application-method",
+  "slug": "report-persistence-failures-to-an-overridable-application-method",
+  "title": "Report persistence failures to an overridable Application method",
+  "description": "Report persistence failures to an overridable Application method",
+  "kind": "feature",
+  "state": "archived",
+  "canonical_applied": true,
+  "base_commit": "194067d89470cad8e27fa81a9fe006986a802958",
+  "created_at": 1794839031,
+  "updated_at": 1794871839,
+  "affected_specs": [
+    "application"
+  ],
+  "affected_paths": [
+    "Sources/AppState/Application/Application+public.swift",
+    "Sources/AppState/Application/Application.swift",
+    "Sources/AppState/Application/Types/Helper/Application+PersistenceFailure.swift",
+    "Sources/AppState/Application/Types/State/Application+FileState.swift",
+    "Sources/AppState/Application/Types/State/Application+StoredState.swift",
+    "Sources/AppState/Application/Types/State/Application+SyncState.swift",
+    "Tests",
+    "documentation",
+    "specs",
+    "README.md",
+    "CHANGELOG.md",
+    ".chough",
+    ".specsync",
+    "knowledge",
+    ".github/workflows/iOS.yml",
+    "Examples/DemoApp"
+  ],
+  "no_spec_change": false,
+  "no_spec_change_rationale": null,
+  "acceptance_criteria": [
+    "PersistenceFailureTests passes: an Application subclass that overrides didFailToPersist hears a FileState read failure for a file that cannot be decoded, a FileState write failure, a rejected StoredState value and a SyncState value that cannot be encoded, each with the store, operation, key and error; it hears nothing for a successful round trip or for a FileState that was never written; an application without the override behaves as before; every test class passes on macOS under the strict build and in a release build, the Linux suite passes on Swift 6.1 and the WASI build passes"
+  ],
+  "selected_artifacts": [
+    "context",
+    "requirements",
+    "plan",
+    "tasks",
+    "testing",
+    "docs"
+  ],
+  "dependencies": [],
+  "answers": {
+    "architecture_risk": "no",
+    "constraints": "Additive only: no existing declaration, log line or fallback value may change. SyncState only inside canImport(Security). Swift 6 with explicit access control and no force-unwrap. Must build on Linux, Windows and WASI.",
+    "public_contract": "yes"
+  }
+}

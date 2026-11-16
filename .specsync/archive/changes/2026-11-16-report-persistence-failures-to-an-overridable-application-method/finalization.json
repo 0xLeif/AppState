@@ -1,0 +1,12 @@
+{
+  "schema_version": 2,
+  "change_id": "report-persistence-failures-to-an-overridable-application-method",
+  "implementation_commit": "1daef60e3b1725e0e985b6aba9b6eb50f853117d",
+  "implementation_tree": "50974f0f89bdc298299f7efd65e361bd64d2cdd0",
+  "contract_digest": "d43509c422c1fd0d87bb3eccc165fe59d3cf60346d7bc7df296ceafc51310428",
+  "workspace_digest": "a014090b5c43635a7414bfb26cb8821664bf68742ed417d53d4b6c137f8adb10",
+  "closing_digest": "b72646aafd40d880315452f0a712672511e7ecbb6d469c168728b2e85aded4eb",
+  "review_digest": "d7c481cacf9315addb605dc0fdca6a5e0765e8f651064d05201bd8befb040bf8",
+  "finalization_digest": "9c51db5d2e87cd2e5dfa03d3a7ab42d42278874f0aced502e816d0eacc78d689",
+  "timestamp": 1794871838
+}

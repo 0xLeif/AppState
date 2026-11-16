@@ -1,0 +1,22 @@
+{
+  "schema_version": 2,
+  "change_id": "report-persistence-failures-to-an-overridable-application-method",
+  "reviewer": "0xLeif",
+  "provenance": {
+    "schema_version": 1,
+    "provider": "github_actions_check",
+    "required_check": "SpecSync scoped review"
+  },
+  "verdict": "pass",
+  "implementation_commit": "1daef60e3b1725e0e985b6aba9b6eb50f853117d",
+  "contract_digest": "d43509c422c1fd0d87bb3eccc165fe59d3cf60346d7bc7df296ceafc51310428",
+  "execution_digest": "779a57a63ea488d5b3f52e482c9543cad0c27adfea0b28da0b00d460a16de8b2",
+  "workspace_digest": "a014090b5c43635a7414bfb26cb8821664bf68742ed417d53d4b6c137f8adb10",
+  "timestamp": 1794871832,
+  "relayed_by": {
+    "decided_by": "0xLeif",
+    "words": "merged on rebase and fix the merge conflicts",
+    "where": "Claude Code chat on 2026-11-16, after he merged PR 159 into main with these commits inside it; asked next whether to ship the records, he answered: Yes do it and tag the 3.1.0 release",
+    "recorded_by": "claude-code"
+  }
+}

@@ -7,11 +7,11 @@
   "title": "Report persistence failures to an overridable Application method",
   "description": "Report persistence failures to an overridable Application method",
   "kind": "feature",
-  "state": "verifying",
+  "state": "accepted",
   "canonical_applied": true,
   "base_commit": "194067d89470cad8e27fa81a9fe006986a802958",
   "created_at": 1794839031,
-  "updated_at": 1794871830,
+  "updated_at": 1794871838,
   "affected_specs": [
     "application"
   ],

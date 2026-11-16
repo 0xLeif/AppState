@@ -104,6 +104,13 @@
         "where": "Claude Code chat on 2026-11-16, in reply to: Do you approve the re-scoped failure-hook change? (after his send-back to declare the owning modules; the declared paths now name the six changed source files)",
         "recorded_by": "claude-code"
       }
+    },
+    {
+      "gate": "finalization",
+      "actor": "specsync:finalization",
+      "timestamp": 1794871838,
+      "digest": "b72646aafd40d880315452f0a712672511e7ecbb6d469c168728b2e85aded4eb",
+      "note": "Same-PR finalization closing digest"
     }
   ],
   "reopenings": [],
