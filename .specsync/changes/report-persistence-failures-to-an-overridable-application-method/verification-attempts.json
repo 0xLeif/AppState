@@ -144,6 +144,24 @@
       "requirement_ids": [
         "REQ-application-007"
       ]
+    },
+    {
+      "timestamp": 1794871828,
+      "commit": "adadd60fa06236df61f21dafa82888ee194a377f",
+      "contract_digest": "d43509c422c1fd0d87bb3eccc165fe59d3cf60346d7bc7df296ceafc51310428",
+      "execution_digest": "779a57a63ea488d5b3f52e482c9543cad0c27adfea0b28da0b00d460a16de8b2",
+      "workspace_digest": "a014090b5c43635a7414bfb26cb8821664bf68742ed417d53d4b6c137f8adb10",
+      "passed": true,
+      "commands": [
+        {
+          "command": "specsync check --spec application",
+          "success": true,
+          "exit_code": 0
+        }
+      ],
+      "requirement_ids": [
+        "REQ-application-007"
+      ]
     }
   ]
 }

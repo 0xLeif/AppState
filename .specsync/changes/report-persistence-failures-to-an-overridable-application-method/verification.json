@@ -1,13 +1,13 @@
 {
-  "timestamp": 1794871696,
-  "commit": "9df3b9e3226b2b8abb364c299ed2ffd3e87c0460",
-  "contract_digest": "de414993ef32143e95554df5f23a1900c49d810c9791c9c15109b2856b0b44d5",
-  "execution_digest": "aceef3bb7e30c43f6f27bfa7045f6109237dd98954e8a4d5d66ef0e2e6fae20d",
+  "timestamp": 1794871828,
+  "commit": "adadd60fa06236df61f21dafa82888ee194a377f",
+  "contract_digest": "d43509c422c1fd0d87bb3eccc165fe59d3cf60346d7bc7df296ceafc51310428",
+  "execution_digest": "779a57a63ea488d5b3f52e482c9543cad0c27adfea0b28da0b00d460a16de8b2",
   "workspace_digest": "a014090b5c43635a7414bfb26cb8821664bf68742ed417d53d4b6c137f8adb10",
   "passed": true,
   "commands": [
     {
-      "command": "specsync check --spec application --spec property-wrappers --spec swiftdata",
+      "command": "specsync check --spec application",
       "success": true,
       "exit_code": 0
     }
