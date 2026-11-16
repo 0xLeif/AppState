@@ -40,6 +40,14 @@ fileprivate class ExampleViewModel {
 extension ExampleViewModel: ObservableObject { }
 #endif
 
+/// A `Sendable` flag the `@Sendable` `onChange` closure can write to.
+/// `withObservationTracking` delivers that closure synchronously, so the tests
+/// read the flag after the write. `XCTestCase.fulfillment(of:)` sends the test
+/// instance and does not compile on the Swift 6.1 Linux and Windows toolchains.
+private final class SliceChangeFlag: @unchecked Sendable {
+    var didChange = false
+}
+
 @MainActor
 fileprivate struct ExampleView {
     @OptionalSlice(\.exampleValue, \.username) var username
@@ -135,18 +143,17 @@ final class OptionalSliceTests: XCTestCase {
 
         isLoadingSlice.value = true
 
-        let change = expectation(description: "No change is published for an ignored nil")
-        change.isInverted = true
+        let change = SliceChangeFlag()
 
         withObservationTracking {
             _ = Application.state(\.exampleValue).value
         } onChange: {
-            change.fulfill()
+            change.didChange = true
         }
 
         isLoadingSlice.value = nil
 
-        await fulfillment(of: [change], timeout: 0.1)
+        XCTAssertFalse(change.didChange)
 
         XCTAssertEqual(isLoadingSlice.value, true)
         XCTAssertEqual(Application.state(\.exampleValue).value?.isLoading, true)
@@ -159,17 +166,17 @@ final class OptionalSliceTests: XCTestCase {
 
         usernameSlice.value = "Leif"
 
-        let change = expectation(description: "Storing nil publishes a change")
+        let change = SliceChangeFlag()
 
         withObservationTracking {
             _ = Application.state(\.exampleValue).value
         } onChange: {
-            change.fulfill()
+            change.didChange = true
         }
 
         usernameSlice.value = nil
 
-        await fulfillment(of: [change], timeout: 1)
+        XCTAssertTrue(change.didChange)
 
         XCTAssertNil(usernameSlice.value)
         XCTAssertNotNil(Application.state(\.exampleValue).value)
@@ -207,18 +214,17 @@ final class OptionalSliceTests: XCTestCase {
         let cancellable = viewModel.objectWillChange.sink { hostChangeCount += 1 }
         #endif
 
-        let change = expectation(description: "No change is published for an ignored nil")
-        change.isInverted = true
+        let change = SliceChangeFlag()
 
         withObservationTracking {
             _ = Application.state(\.exampleValue).value
         } onChange: {
-            change.fulfill()
+            change.didChange = true
         }
 
         viewModel.isLoading = nil
 
-        await fulfillment(of: [change], timeout: 0.1)
+        XCTAssertFalse(change.didChange)
 
         XCTAssertEqual(viewModel.isLoading, true)
 
