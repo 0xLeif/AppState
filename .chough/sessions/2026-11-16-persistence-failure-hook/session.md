@@ -5,7 +5,7 @@ aliases: [persistence-failure-hook]
 objective: Let an app observe a FileState, StoredState or SyncState persistence failure through an overridable Application method
 intent_scope: ""
 modules: [application]
-stage: intent
+stage: accept
 stage_status: active
 iteration: 1
 callers: []
@@ -19,13 +19,9 @@ files: []
 observations: []
 bugs: []
 blockers: []
-waiting_on_human:
-  - gate: Implementation review of report-persistence-failures-to-an-overridable-application-method
-    holds: intent
-    drives: none
-    opened: 2026-11-16T14:42:09Z
+waiting_on_human: []
 run_consents: []
-next: Wait for 0xLeif to review PR 157 and PR 158; do not ship or merge
+next: Continue accept
 ---
 # Let an app observe a FileState, StoredState or SyncState persistence failure through an overridable Application method
 
@@ -42,6 +38,7 @@ Let an app observe a FileState, StoredState or SyncState persistence failure thr
 ## Decisions and why
 
 - 0xLeif decided "Scope approval of report-persistence-failures-to-an-overridable-application-method": "I approve as long as you are 95% confident" (Claude Code chat on 2026-11-16, in reply to the request for scope approval of the persistence-failure hook); recorded by claude-code; a relayed claim, not authenticated; ran specsync change approve report-persistence-failures-to-an-overridable-application-method as 0xLeif
+- 0xLeif decided "Implementation review of report-persistence-failures-to-an-overridable-application-method": "merged on rebase and fix the merge conflicts" (Claude Code chat on 2026-11-16, after he merged PR 159 into main with these commits inside it; asked next whether to ship the records, he answered: Yes do it and tag the 3.1.0 release); recorded by claude-code; a relayed claim, not authenticated
 
 ## What was verified
 
@@ -74,4 +71,36 @@ Let an app observe a FileState, StoredState or SyncState persistence failure thr
     - recorded_by: claude-code
     - native: specsync change approve report-persistence-failures-to-an-overridable-application-method
     - actor: 0xLeif
+  - by: claude-code (hc t34)
+- 2026-11-16T23:28:15Z · gate-closed · intent → intent · Implementation review of report-persistence-failures-to-an-overridable-application-method ^t-ffb91a
+  - native_change: report-persistence-failures-to-an-overridable-application-method
+  - revision: 4c6acb2d2e346d400942e12ca4cbbf708fdebc09
+  - relayed_by:
+    - decided_by: 0xLeif
+    - words: merged on rebase and fix the merge conflicts
+    - where: Claude Code chat on 2026-11-16, after he merged PR 159 into main with these commits inside it; asked next whether to ship the records, he answered: Yes do it and tag the 3.1.0 release
+    - recorded_by: claude-code
+  - by: claude-code (hc t34)
+- 2026-11-16T23:28:15Z · advance · intent → design ·  ^t-48c7e0
+  - native_change: report-persistence-failures-to-an-overridable-application-method
+  - revision: 4c6acb2d2e346d400942e12ca4cbbf708fdebc09
+  - by: claude-code (hc t34)
+- 2026-11-16T23:28:15Z · advance · design → plan ·  ^t-66c010
+  - native_change: report-persistence-failures-to-an-overridable-application-method
+  - revision: 4c6acb2d2e346d400942e12ca4cbbf708fdebc09
+  - by: claude-code (hc t34)
+- 2026-11-16T23:28:15Z · advance · plan → build · ungated:sdd-disabled ^t-b8c12c
+  - native_change: report-persistence-failures-to-an-overridable-application-method
+  - gate: ungated:sdd-disabled
+  - revision: 4c6acb2d2e346d400942e12ca4cbbf708fdebc09
+  - by: claude-code (hc t34)
+- 2026-11-16T23:28:15Z · advance · build → test · ungated:sdd-disabled ^t-285f9d
+  - native_change: report-persistence-failures-to-an-overridable-application-method
+  - gate: ungated:sdd-disabled
+  - revision: 4c6acb2d2e346d400942e12ca4cbbf708fdebc09
+  - by: claude-code (hc t34)
+- 2026-11-16T23:28:15Z · advance · test → accept · ungated:sdd-disabled ^t-b91a1c
+  - native_change: report-persistence-failures-to-an-overridable-application-method
+  - gate: ungated:sdd-disabled
+  - revision: 4c6acb2d2e346d400942e12ca4cbbf708fdebc09
   - by: claude-code (hc t34)
