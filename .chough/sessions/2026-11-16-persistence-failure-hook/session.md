@@ -25,7 +25,7 @@ waiting_on_human:
     drives: none
     opened: 2026-11-16T14:42:09Z
 run_consents: []
-next: Wait for 0xLeif to review PR 158 after PR 157 merges; do not ship or merge
+next: Wait for 0xLeif to review PR 157 and PR 158; do not ship or merge
 ---
 # Let an app observe a FileState, StoredState or SyncState persistence failure through an overridable Application method
 
@@ -37,6 +37,7 @@ Let an app observe a FileState, StoredState or SyncState persistence failure thr
 
 - Hook, seven tests, docs and changelog written; macOS strict and release, Linux 6.1 tests and WASI build pass
 - Scope approved by 0xLeif on the condition of 95 percent confidence, met once CI passed on four platforms; native check passed with commit
+- Override ordering fixed, unreadable file reported once, SwiftUI hosting tests added; macOS, iOS host app, iOS UI tests, Linux and CI on four platforms pass
 
 ## Decisions and why
 
