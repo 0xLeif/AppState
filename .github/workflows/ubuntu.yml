@@ -11,7 +11,8 @@ on:
 
 jobs:
   build:
-    runs-on: ubuntu-latest
+    # ubuntu-latest is 26.04. setup-swift@v2 rejects it, and Swift 6.1.0 publishes no 26.04 toolchain.
+    runs-on: ubuntu-24.04
 
     steps:
       - name: Set up Swift
