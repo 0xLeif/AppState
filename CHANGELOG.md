@@ -8,12 +8,6 @@
 
 ### Fixed
 
-- Overrides of the same dependency can end in any order. Ending an older override while a newer one was alive used to put the older value back at once, and left a stale override in place after both had ended. The dependency is now the newest override still alive, and the original once none is.
-
-## 3.0.3
-
-### Fixed
-
 - A write to a `State` or `FileState` made right after its first read is no longer undone. Outside XCTest on Apple platforms the getter filled the cache from a deferred task, which ran after the write and put the older value back. The cache is now filled before the getter returns.
 - `state(initial:)` evaluates its initial value once per scope, as documented, instead of on every access. A state with a `UUID()` or `Date()` initial now reads the same value every time, and `reset()` restores that first value.
 - A write through `@AppState`, `@StoredState`, `@FileState`, `@SecureState`, `@SyncState`, `@Slice` or `@OptionalSlice` on an `ObservableObject` that declares its own `objectWillChange` is stored. It used to be dropped.
@@ -21,6 +15,7 @@
 - A `FileState` created with `isBase64Encoded: false` reads back values whose JSON text is also valid Base64, such as `true` or `1234`. They used to read as the initial value after a relaunch.
 - `Application.promote(to:)` keeps the promoted application registered for iCloud key-value store changes when `icloudStore` was loaded before the promotion.
 - `FileManager.defaultFileStatePath` is no longer percent-encoded. A documents path with a space or a non-ASCII character pointed at a directory that does not exist.
+- Overrides of the same dependency can end in any order. Ending an older override while a newer one was alive used to put the older value back at once, and left a stale override in place after both had ended. The dependency is now the newest override still alive, and the original once none is.
 
 ### Changed
 
