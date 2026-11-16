@@ -5,7 +5,7 @@ aliases: [demo-app-ui-tests]
 objective: Add an iOS demo app with UI tests and an iOS CI job that runs them and the unit tests inside the app
 intent_scope: ""
 modules: []
-stage: accept
+stage: done
 stage_status: active
 iteration: 1
 callers: []
@@ -21,7 +21,7 @@ bugs: []
 blockers: []
 waiting_on_human: []
 run_consents: []
-next: Continue accept
+next: Continue done
 ---
 # Add an iOS demo app with UI tests and an iOS CI job that runs them and the unit tests inside the app
 
@@ -101,4 +101,20 @@ Add an iOS demo app with UI tests and an iOS CI job that runs them and the unit 
   - native_change: add-an-ios-demo-app-with-ui-tests-and-an-ios-ci-job
   - gate: ungated:sdd-disabled
   - revision: 69d692c665ddf38fcd8963a716376ceccc034476
+  - by: claude-code (hc t34)
+- 2026-11-16T23:24:13Z · direct-native-write · accept → accept · add-an-ios-demo-app-with-ui-tests-and-an-ios-ci-job's lifecycle records changed outside Chough: review.json added, review-attempts.json added; state stays verifying ^t-cd89fe
+  - native_change: add-an-ios-demo-app-with-ui-tests-and-an-ios-ci-job
+  - revision: 646b30ba28f5eb73e5e5cbb6f374e8913dae378e
+  - direct_write:
+    - change: add-an-ios-demo-app-with-ui-tests-and-an-ios-ci-job
+    - files:
+      - review.json: added
+      - review-attempts.json: added
+    - before_state: verifying
+    - after_state: verifying
+  - by: claude-code (hc t34)
+- 2026-11-16T23:24:13Z · advance · accept → done · ungated:sdd-disabled ^t-2840a7
+  - native_change: add-an-ios-demo-app-with-ui-tests-and-an-ios-ci-job
+  - gate: ungated:sdd-disabled
+  - revision: 646b30ba28f5eb73e5e5cbb6f374e8913dae378e
   - by: claude-code (hc t34)

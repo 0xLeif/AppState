@@ -24,6 +24,7 @@ changes. Changes archived before the journal began are in [.specsync/archive/cha
 
 Newest posts:
 
+- [Add an iOS demo app with UI tests and an iOS CI job that runs them…](journal/2026-11-16-add-an-ios-demo-app-with-ui-tests-and-an-ios-ci-job-that-runs.md) (2026-11-16, shipped)
 - [Archive the deleteAll and slice-write fix](journal/2026-11-16-archive-the-deleteall-and-slice-write-fix.md) (2026-11-16, shipped)
 
 ## Where things live
@@ -36,7 +37,18 @@ Newest posts:
 
 ## Open bugs
 
-- none
+10 open bugs, blocking first, then newest.
+
+- [2026-11-16-releasing-a-dependencyoverride-does-not-restore-the-dependency](../.chough/bugs/2026-11-16-releasing-a-dependencyoverride-does-not-restore-the-dependency.md) Releasing a DependencyOverride does not restore the dependency (fix-pending-verification)
+- [2026-11-16-docs-the-dependency-example-in-usage-state-dependency-md-does](../.chough/bugs/2026-11-16-docs-the-dependency-example-in-usage-state-dependency-md-does.md) Docs: the dependency example in usage-state-dependency.md does not compile in Swift 6 mode (fix-pending-verification)
+- [2026-11-16-docs-the-restricted-state-example-never-keeps-its-value-and](../.chough/bugs/2026-11-16-docs-the-restricted-state-example-never-keeps-its-value-and.md) Docs: the restricted state example never keeps its value and grows the cache (fix-pending-verification)
+- [2026-11-16-state-initial-evaluates-the-initial-value-on-every-access](../.chough/bugs/2026-11-16-state-initial-evaluates-the-initial-value-on-every-access.md) state(initial:) evaluates the initial value on every access (fix-pending-verification)
+- [2026-11-16-defaultfilestatepath-is-percent-encoded-and-points-at-the](../.chough/bugs/2026-11-16-defaultfilestatepath-is-percent-encoded-and-points-at-the.md) defaultFileStatePath is percent-encoded and points at the wrong directory (fix-pending-verification)
+- [2026-11-16-filestate-with-isbase64encoded-false-loses-values-that-look](../.chough/bugs/2026-11-16-filestate-with-isbase64encoded-false-loses-values-that-look.md) FileState with isBase64Encoded false loses values that look like Base64 (fix-pending-verification)
+- [2026-11-16-promote-to-drops-the-icloud-observer-when-icloudstore-was](../.chough/bugs/2026-11-16-promote-to-drops-the-icloud-observer-when-icloudstore-was.md) promote(to:) drops the iCloud observer when icloudStore was already loaded (fix-pending-verification)
+- [2026-11-16-property-wrapper-setter-drops-the-write-when-the-host-has-a](../.chough/bugs/2026-11-16-property-wrapper-setter-drops-the-write-when-the-host-has-a.md) Property wrapper setter drops the write when the host has a custom objectWillChange (fix-pending-verification)
+- [2026-11-16-state-and-filestate-revert-a-write-made-right-after-the-first](../.chough/bugs/2026-11-16-state-and-filestate-revert-a-write-made-right-after-the-first.md) State and FileState revert a write made right after the first read (fix-pending-verification)
+- [2026-11-16-storedstate-crashes-on-a-value-that-jsonencoder-rejects](../.chough/bugs/2026-11-16-storedstate-crashes-on-a-value-that-jsonencoder-rejects.md) StoredState crashes on a value that JSONEncoder rejects (fix-pending-verification)
 
 ## Rules, skills and decisions
 
@@ -60,6 +72,7 @@ Lessons that span projects:
 
 Lesson bundles of the newest 3 archived changes:
 
+- [add-an-ios-demo-app-with-ui-tests-and-an-ios-ci-job](../.specsync/archive/changes/2026-11-16-add-an-ios-demo-app-with-ui-tests-and-an-ios-ci-job/lesson-bundle.md), Add an iOS demo app with UI tests and an iOS CI job
 - [make-modelstate-deleteall-remove-related-models-and-make-struct-dependency-slice-writes-stick](../.specsync/archive/changes/2026-11-16-make-modelstate-deleteall-remove-related-models-and-make-struct-dependency-slice-writes-stick/lesson-bundle.md), Make ModelState.deleteAll remove related models, and make struct dependency slice writes stick
 
 ## Snapshots and briefs
