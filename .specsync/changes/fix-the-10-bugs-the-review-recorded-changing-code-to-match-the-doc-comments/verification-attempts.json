@@ -184,6 +184,29 @@
         "REQ-application-006",
         "REQ-property-wrappers-002"
       ]
+    },
+    {
+      "timestamp": 1794871674,
+      "commit": "4e39f3027462978ddfea1177861cc6d443377527",
+      "contract_digest": "c60fc055c135a6f7030efc6a31842933a70ff5e99592d29772a05db29d865410",
+      "execution_digest": "62b390b8b33dcf96e893ab747cd7fa634eab54120fdb8d8c2fd0820775012043",
+      "workspace_digest": "e32e62c27905e88ea4ff77e4d3302af138ec241d794412896ba0ce8ee85d4f70",
+      "passed": true,
+      "commands": [
+        {
+          "command": "specsync check --spec application --spec property-wrappers",
+          "success": true,
+          "exit_code": 0
+        }
+      ],
+      "requirement_ids": [
+        "REQ-application-002",
+        "REQ-application-003",
+        "REQ-application-004",
+        "REQ-application-005",
+        "REQ-application-006",
+        "REQ-property-wrappers-002"
+      ]
     }
   ]
 }
