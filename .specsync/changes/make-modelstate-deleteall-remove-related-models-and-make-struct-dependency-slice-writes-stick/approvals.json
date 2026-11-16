@@ -1,4 +1,53 @@
 {
-  "approvals": [],
+  "approvals": [
+    {
+      "gate": "definition",
+      "actor": "0xLeif",
+      "timestamp": 1794803526,
+      "digest": "253e517fc01f6b88eaea2b3a5954cfcc9d2d1cb7d8b1c81f76b612f8b8a14481",
+      "note": null,
+      "approved_scope": {
+        "schema_version": 1,
+        "change_id": "make-modelstate-deleteall-remove-related-models-and-make-struct-dependency-slice-writes-stick",
+        "title": "Make ModelState.deleteAll remove related models, and make struct dependency slice writes stick",
+        "description": "Make ModelState.deleteAll remove related models, and make struct dependency slice writes stick",
+        "kind": "bug_fix",
+        "affected_specs": [
+          "application",
+          "property-wrappers",
+          "swiftdata"
+        ],
+        "affected_paths": [
+          "Sources/AppState/Application/Types/Dependency/Slice/Application+DependencySlice.swift",
+          "Sources/AppState/Application/Types/State/Application+ModelState.swift",
+          "Sources/AppState/PropertyWrappers/Dependency/Slice/DependencySlice.swift"
+        ],
+        "no_spec_change": false,
+        "no_spec_change_rationale": null,
+        "acceptance_criteria": [
+          "Filtered ModelState.deleteAll removes only matching related models, and a struct DependencySlice write stays visible on the stored dependency."
+        ],
+        "dependencies": [],
+        "supersedes": [],
+        "answers": {
+          "architecture_risk": "yes",
+          "constraints": "none",
+          "public_contract": "yes"
+        }
+      },
+      "approved_delta_digests": {
+        "application": "e714b3c151ff8e19e68d355830bc7a7400f2477408deac1fd4f75605b5fb0774",
+        "property-wrappers": "be8e358d1ff7a0ff85ff9df2e708d706660cf27216ba97ebd1a996ae0888b637",
+        "swiftdata": "5d784de1957a91194c4775d4a17dfea43a91a7ec999d928ad3a103754ce789ee"
+      },
+      "approved_delta_bases": {},
+      "relayed_by": {
+        "decided_by": "0xLeif",
+        "words": "i approve",
+        "where": "Grok Build chat in /Users/tob/Development/AppState on 2026-11-15, in reply to the report that the next gate was specsync change approve",
+        "recorded_by": "Grok"
+      }
+    }
+  ],
   "reopenings": []
 }

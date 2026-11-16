@@ -20,4 +20,13 @@ artifact: testing
 
 With the two lines that clear the limit and offset removed, the three new `deleteAll` tests fail.
 
+## Requirement evidence
+
+| Requirement | Evidence |
+|---|---|
+| REQ-swiftdata-001 | `DogfoodAppTests.testFilteredDeleteAllLeavesOtherPagesAndCascadeRemovesTheGraph`, `testDeleteAllIgnoresFetchLimitAndRemovesEveryMatch`, `testDeleteAllIgnoresFetchOffsetAndRemovesEveryMatch`, and `ModelStateCoverageTests.testDeleteAllIgnoresFetchLimit` |
+| REQ-property-wrappers-001 | `DogfoodAppTests.testStructDependencySliceWriteReachesTheStoredDependency`, `testHeldDependencySliceKeepsSiblingFieldsAndReadsLive`, `testHeldDependencySliceWritesThroughAnOverride`, and `testHeldStructDependencySliceWritesThroughAnOverride` |
+| REQ-application-001 | The same held-slice and struct-write tests in `DogfoodAppTests`, which call `Application.dependencySlice` |
+
+
 Run `APPSTATE_STRICT=1 swift test --filter 'DogfoodAppTests|ModelStateTests|ModelStateCoverageTests|DependencySliceTests'`. Do not run an unfiltered `swift test` in this checkout.

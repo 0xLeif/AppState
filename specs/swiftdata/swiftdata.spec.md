@@ -1,6 +1,6 @@
 ---
 module: swiftdata
-version: 3
+version: 4
 status: draft
 files:
   - Sources/AppState/Application/Types/Dependency/Application+ModelContainer.swift
@@ -112,3 +112,4 @@ And a following read of models returns an empty array
 | 1 | 2026-06-09 | Initial spec: SwiftData ModelContainer dependency + ModelState |
 | 2 | 2026-06-09 | models is read-only; deleteAll() replaces reset(); dropped MutableApplicationState conformance |
 | 3 | 2026-11-15 | deleteAll() is predicate-wide: it ignores fetchLimit and fetchOffset, and the next models read is empty |
+| 4 | 2026-11-16 | make-modelstate-deleteall-remove-related-models-and-make-struct-dependency-slice-writes-stick: Make ModelState.deleteAll remove related models, and make struct dependency slice writes stick |
