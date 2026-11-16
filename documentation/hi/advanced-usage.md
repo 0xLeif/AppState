@@ -141,6 +141,27 @@ AppState `State`, `Dependency`, `StoredState`, और `SyncState` को सं�
 
 डिफ़ॉल्ट रूप से, AppState "App" के रूप में एक नाम मान निर्दिष्ट करता है, जो यह सुनिश्चित करता है कि एक मॉड्यूल से जुड़े सभी मान उस नाम से बंधे हैं। यह इन स्थितियों और निर्भरताओं को अन्य मॉड्यूलों से एक्सेस करना कठिन बना देता है।
 
+### 3.6 पर्सिस्टेंस विफलताओं का अवलोकन
+
+जिस `FileState` की फ़ाइल डिकोड, लिखी या हटाई नहीं जा सकती, वह ऐप को चलने देता है: पढ़ने पर प्रारंभिक मान मिलता है। यही बात उस `StoredState` या `SyncState` मान पर लागू होती है जिसे एन्कोड नहीं किया जा सकता। ऐसा होने की जानकारी पाने के लिए `Application` के उपवर्ग में `didFailToPersist(_:)` को ओवरराइड करें।
+
+### उदाहरण
+
+```swift
+import AppState
+
+final class MyApplication: Application {
+    override func didFailToPersist(_ failure: PersistenceFailure) {
+        print("AppState could not \(failure.operation) \(failure.key): \(failure.error)")
+    }
+}
+
+// एक बार, ऐप के जीवनचक्र की शुरुआत में।
+Application.promote(to: MyApplication.self)
+```
+
+विफलता में स्टेट का प्रकार (`store`), `operation` (`read`, `write` या `delete`), स्टेट की `key` और मूल `error` होता है। जो `FileState` कभी लिखा ही नहीं गया, वह विफलता नहीं है। विफल पठन कैश नहीं होता, इसलिए हर बार पढ़ने की कोशिश पर यह मेथड फिर से कॉल होता है।
+
 ## 4. AppState बनाम SwiftUI का पर्यावरण
 
 AppState और SwiftUI का पर्यावरण दोनों आपके एप्लिकेशन में साझा स्थिति और निर्भरताओं के प्रबंधन के तरीके प्रदान करते हैं, लेकिन वे दायरे, कार्यक्षमता और उपयोग के मामलों में भिन्न होते हैं।

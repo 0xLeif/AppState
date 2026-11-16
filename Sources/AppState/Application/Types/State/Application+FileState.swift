@@ -84,6 +84,12 @@ extension Application {
                         column: #column
                     )
 
+                    if Application.isMissingFile(error) == false {
+                        shared.didFailToPersist(
+                            PersistenceFailure(store: .fileState, operation: .read, key: scope.key, error: error)
+                        )
+                    }
+
                     return initial()
                 }
             }
@@ -104,6 +110,13 @@ extension Application {
                             line: #line,
                             column: #column
                         )
+
+                        // Writing `nil` to a state that was never written has no file to delete.
+                        if Application.isMissingFile(error) == false {
+                            shared.didFailToPersist(
+                                PersistenceFailure(store: .fileState, operation: .delete, key: scope.key, error: error)
+                            )
+                        }
                     }
                 } else {
                     shared.cache.set(
@@ -130,6 +143,10 @@ extension Application {
                             function: #function,
                             line: #line,
                             column: #column
+                        )
+
+                        shared.didFailToPersist(
+                            PersistenceFailure(store: .fileState, operation: .write, key: scope.key, error: error)
                         )
                     }
                 }

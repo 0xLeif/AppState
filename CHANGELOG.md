@@ -1,5 +1,11 @@
 # Changelog
 
+## 3.1.0
+
+### Added
+
+- `Application.didFailToPersist(_:)`, an overridable method that is called when a `FileState` file cannot be decoded, written or deleted, or when a `StoredState` or `SyncState` value cannot be encoded. It receives an `Application.PersistenceFailure` with the kind of state, the operation, the state's key and the underlying error. The default implementation does nothing, and logging is unchanged, so an app that does not override it behaves as before. A `FileState` that was never written is not reported.
+
 ## 3.0.3
 
 ### Fixed

@@ -84,6 +84,9 @@ extension Application {
                                 line: #line,
                                 column: #column
                             )
+                            shared.didFailToPersist(
+                                PersistenceFailure(store: .storedState, operation: .write, key: scope.key, error: error)
+                            )
 
                             return
                         }

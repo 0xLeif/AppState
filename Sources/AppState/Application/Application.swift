@@ -112,6 +112,31 @@ open class Application: NSObject {
         changeAnchor &+= 1
     }
 
+    /// Called when AppState could not read, write, or delete a persisted value.
+    ///
+    /// A ``FileState`` whose file cannot be decoded, written or deleted reports here, and so does a
+    /// ``StoredState`` or `SyncState` value that cannot be encoded. A `FileState` that was never
+    /// written is not a failure and is not reported.
+    ///
+    /// A failed read is not cached. Each later read tries the file again and, if it still fails,
+    /// reports again, so an override that shows an alert should remember what it has shown.
+    ///
+    /// The default implementation does nothing. AppState logs the failure as before when logging is
+    /// enabled, whether or not this method is overridden. Override it in an `Application` subclass
+    /// that you install with ``promote(to:)`` to tell the user, retry, or record the error:
+    ///
+    /// ```swift
+    /// final class MyApplication: Application {
+    ///     override func didFailToPersist(_ failure: PersistenceFailure) {
+    ///         analytics.record(failure.error, key: failure.key)
+    ///     }
+    /// }
+    /// ```
+    ///
+    /// - Parameter failure: Which state failed, during which operation, and the underlying error.
+    @MainActor
+    open func didFailToPersist(_ failure: PersistenceFailure) {}
+
     #if canImport(Security)
     /**
      Called when the value of one or more keys in the local key-value store changed due to incoming data pushed from iCloud.

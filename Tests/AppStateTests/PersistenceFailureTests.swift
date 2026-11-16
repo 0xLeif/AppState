@@ -1,0 +1,191 @@
+import Foundation
+import XCTest
+
+@testable import AppState
+
+// MARK: - Fixtures
+
+fileprivate struct FailureReading: Codable, Sendable, Equatable {
+    var celsius: Double
+}
+
+fileprivate let failureDirectory = "./PersistenceFailureTests"
+fileprivate let failureBlocker = "./PersistenceFailureTests/blocker"
+
+@MainActor
+fileprivate final class RecordingApplication: Application {
+    static var failures: [PersistenceFailure] = []
+
+    override func didFailToPersist(_ failure: PersistenceFailure) {
+        RecordingApplication.failures.append(failure)
+    }
+}
+
+extension Application {
+    @MainActor
+    fileprivate var failureGoodFile: FileState<Int> {
+        fileState(initial: 7, path: failureDirectory, filename: "good")
+    }
+
+    @MainActor
+    fileprivate var failureCorruptFile: FileState<Int> {
+        fileState(initial: 7, path: failureDirectory, filename: "corrupt")
+    }
+
+    @MainActor
+    fileprivate var failureMissingFile: FileState<Int?> {
+        fileState(path: failureDirectory, filename: "missing")
+    }
+
+    /// The directory of this state is a regular file, so nothing can be written below it.
+    @MainActor
+    fileprivate var failureBlockedFile: FileState<Int> {
+        fileState(initial: 7, path: failureBlocker, filename: "blocked")
+    }
+
+    fileprivate var failureReading: StoredState<FailureReading> {
+        storedState(initial: FailureReading(celsius: 0), feature: "PersistenceFailure", id: "reading")
+    }
+
+    #if canImport(Security)
+    @available(watchOS 9.0, *)
+    fileprivate var failureSyncReading: SyncState<FailureReading> {
+        syncState(initial: FailureReading(celsius: 0), feature: "PersistenceFailure", id: "syncReading")
+    }
+    #endif
+}
+
+// MARK: - PersistenceFailureTests
+
+/// `Application.didFailToPersist(_:)` hears each failure once and stays quiet otherwise.
+final class PersistenceFailureTests: XCTestCase {
+    @MainActor
+    override func setUp() async throws {
+        try? FileManager.default.removeItem(atPath: failureDirectory)
+        try FileManager.default.createDirectory(atPath: failureDirectory, withIntermediateDirectories: true)
+
+        Application.promote(to: RecordingApplication.self)
+        RecordingApplication.failures = []
+    }
+
+    @MainActor
+    override func tearDown() async throws {
+        Application.promote(to: Application.self)
+        RecordingApplication.failures = []
+
+        try? FileManager.default.removeItem(atPath: failureDirectory)
+    }
+
+    @MainActor
+    private func forgetCachedValue(for key: String) {
+        Application.shared.cache.remove(key)
+    }
+
+    @MainActor
+    func testSuccessfulFileStateRoundTripReportsNothing() async {
+        var good = Application.fileState(\.failureGoodFile)
+        good.value = 12
+
+        forgetCachedValue(for: Application.shared.failureGoodFile.scope.key)
+
+        XCTAssertEqual(Application.fileState(\.failureGoodFile).value, 12)
+        XCTAssertTrue(RecordingApplication.failures.isEmpty)
+    }
+
+    @MainActor
+    func testFileStateThatWasNeverWrittenReportsNothing() async {
+        XCTAssertNil(Application.fileState(\.failureMissingFile).value)
+
+        var missing = Application.fileState(\.failureMissingFile)
+        missing.value = nil
+
+        XCTAssertTrue(RecordingApplication.failures.isEmpty)
+    }
+
+    @MainActor
+    func testUnreadableFileReportsReadFailureAndFallsBackToInitial() async throws {
+        let key = Application.shared.failureCorruptFile.scope.key
+
+        try Data("{ not json".utf8).write(to: URL(fileURLWithPath: failureDirectory).appendingPathComponent("corrupt"))
+        forgetCachedValue(for: key)
+
+        XCTAssertEqual(Application.fileState(\.failureCorruptFile).value, 7)
+
+        // A failed read is not cached, so each attempt reads the file again and reports again.
+        XCTAssertFalse(RecordingApplication.failures.isEmpty)
+
+        for failure in RecordingApplication.failures {
+            XCTAssertEqual(failure.store, .fileState)
+            XCTAssertEqual(failure.operation, .read)
+            XCTAssertEqual(failure.key, key)
+            XCTAssertTrue(failure.error is DecodingError)
+        }
+    }
+
+    @MainActor
+    func testUnwritableFileReportsWriteFailure() async throws {
+        let key = Application.shared.failureBlockedFile.scope.key
+
+        try Data("not a directory".utf8).write(to: URL(fileURLWithPath: failureBlocker))
+
+        var blocked = Application.fileState(\.failureBlockedFile)
+        blocked.value = 9
+
+        let writes = RecordingApplication.failures.filter { $0.operation == .write }
+
+        XCTAssertEqual(writes.count, 1)
+        XCTAssertEqual(writes.first?.store, .fileState)
+        XCTAssertEqual(writes.first?.key, key)
+
+        forgetCachedValue(for: key)
+    }
+
+    @MainActor
+    func testRejectedStoredStateValueReportsWriteFailure() async {
+        let key = Application.shared.failureReading.scope.key
+
+        var reading = Application.storedState(\.failureReading)
+        reading.value = FailureReading(celsius: 21)
+
+        XCTAssertTrue(RecordingApplication.failures.isEmpty)
+
+        reading.value = FailureReading(celsius: .nan)
+
+        XCTAssertEqual(Application.storedState(\.failureReading).value, FailureReading(celsius: 21))
+        XCTAssertEqual(RecordingApplication.failures.count, 1)
+        XCTAssertEqual(RecordingApplication.failures.first?.store, .storedState)
+        XCTAssertEqual(RecordingApplication.failures.first?.operation, .write)
+        XCTAssertEqual(RecordingApplication.failures.first?.key, key)
+        XCTAssertTrue(RecordingApplication.failures.first?.error is EncodingError)
+
+        Application.reset(storedState: \.failureReading)
+    }
+
+    #if canImport(Security)
+    @available(watchOS 9.0, *)
+    @MainActor
+    func testSyncStateValueThatCannotBeEncodedReportsWriteFailure() async {
+        let key = "PersistenceFailure/syncReading"
+
+        var reading = Application.syncState(\.failureSyncReading)
+        reading.value = FailureReading(celsius: .nan)
+
+        XCTAssertEqual(RecordingApplication.failures.count, 1)
+        XCTAssertEqual(RecordingApplication.failures.first?.store, .syncState)
+        XCTAssertEqual(RecordingApplication.failures.first?.operation, .write)
+        XCTAssertEqual(RecordingApplication.failures.first?.key, key)
+    }
+    #endif
+
+    /// An application that does not override the method behaves as it did before the method existed.
+    @MainActor
+    func testDefaultApplicationIgnoresFailures() async throws {
+        Application.promote(to: Application.self)
+
+        try Data("{ not json".utf8).write(to: URL(fileURLWithPath: failureDirectory).appendingPathComponent("corrupt"))
+        forgetCachedValue(for: Application.shared.failureCorruptFile.scope.key)
+
+        XCTAssertEqual(Application.fileState(\.failureCorruptFile).value, 7)
+        XCTAssertTrue(RecordingApplication.failures.isEmpty)
+    }
+}

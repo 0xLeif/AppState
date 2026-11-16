@@ -141,6 +141,27 @@ AppState utiliza una caché unificada para almacenar `State`, `Dependency`, `Sto
 
 Por defecto, AppState asigna un valor de nombre como "App", lo que asegura que todos los valores asociados con un módulo estén vinculados a ese nombre. Esto dificulta el acceso a estos estados y dependencias desde otros módulos.
 
+### 3.6 Observar fallos de persistencia
+
+Un `FileState` cuyo archivo no se puede decodificar, escribir o eliminar deja que la app siga funcionando: una lectura devuelve el valor inicial. Lo mismo ocurre con un valor de `StoredState` o `SyncState` que no se puede codificar. Para enterarte de que ocurrió, sobrescribe `didFailToPersist(_:)` en una subclase de `Application`.
+
+### Ejemplo
+
+```swift
+import AppState
+
+final class MyApplication: Application {
+    override func didFailToPersist(_ failure: PersistenceFailure) {
+        print("AppState could not \(failure.operation) \(failure.key): \(failure.error)")
+    }
+}
+
+// Una vez, al inicio del ciclo de vida de la app.
+Application.promote(to: MyApplication.self)
+```
+
+El fallo incluye el tipo de estado (`store`), la `operation` (`read`, `write` o `delete`), la `key` del estado y el `error` subyacente. Un `FileState` que nunca se escribió no es un fallo. Una lectura fallida no se guarda en caché, así que el método se llama de nuevo cada vez que se intenta la lectura.
+
 ## 4. AppState vs Entorno de SwiftUI
 
 AppState y el Entorno de SwiftUI ofrecen formas de gestionar el estado compartido y las dependencias en su aplicación, pero difieren en alcance, funcionalidad y casos de uso.

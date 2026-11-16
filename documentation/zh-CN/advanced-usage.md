@@ -141,6 +141,27 @@ AppState 使用统一的缓存来存储 `State`、`Dependency`、`StoredState` �
 
 默认情况下，AppState 将名称值指定为“App”，这确保了与模块关联的所有值都与该名称绑定。这使得从其他模块访问这些状态和依赖项变得更加困难。
 
+### 3.6 观察持久化失败
+
+当 `FileState` 的文件无法解码、写入或删除时，应用会继续运行：读取会返回初始值。无法编码的 `StoredState` 或 `SyncState` 值也是如此。要得知发生了这种情况，请在 `Application` 的子类中重写 `didFailToPersist(_:)`。
+
+### 示例
+
+```swift
+import AppState
+
+final class MyApplication: Application {
+    override func didFailToPersist(_ failure: PersistenceFailure) {
+        print("AppState could not \(failure.operation) \(failure.key): \(failure.error)")
+    }
+}
+
+// 在应用生命周期的早期调用一次。
+Application.promote(to: MyApplication.self)
+```
+
+失败信息包含状态的种类（`store`）、`operation`（`read`、`write` 或 `delete`）、状态的 `key` 以及底层的 `error`。从未写入过的 `FileState` 不算失败。失败的读取不会被缓存，因此每次再次尝试读取时都会再次调用该方法。
+
 ## 4. AppState 与 SwiftUI 的 Environment
 
 AppState 和 SwiftUI 的 Environment 都提供了在应用程序中管理共享状态和依赖项的方法，但它们在范围、功能和用例上有所不同。

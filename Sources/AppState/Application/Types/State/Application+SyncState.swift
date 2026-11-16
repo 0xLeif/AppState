@@ -115,6 +115,9 @@ extension Application {
                             line: #line,
                             column: #column
                         )
+                        shared.didFailToPersist(
+                            PersistenceFailure(store: .syncState, operation: .write, key: scope.key, error: error)
+                        )
                     }
                 }
 
