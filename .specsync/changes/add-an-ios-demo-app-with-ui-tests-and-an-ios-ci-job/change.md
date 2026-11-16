@@ -1,6 +1,6 @@
 ---
 id: add-an-ios-demo-app-with-ui-tests-and-an-ios-ci-job
-state: approved
+state: implementing
 type: operations
 base_commit: 07cf51e1cee0e6ec4469b75db25738dd8642268f
 ---

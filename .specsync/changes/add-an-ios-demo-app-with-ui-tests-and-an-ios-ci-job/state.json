@@ -7,10 +7,11 @@
   "title": "Add an iOS demo app with UI tests and an iOS CI job",
   "description": "Add an iOS demo app with UI tests and an iOS CI job",
   "kind": "operations",
-  "state": "approved",
+  "state": "verifying",
+  "canonical_applied": true,
   "base_commit": "07cf51e1cee0e6ec4469b75db25738dd8642268f",
   "created_at": 1794842119,
-  "updated_at": 1794842153,
+  "updated_at": 1794842154,
   "affected_specs": [],
   "affected_paths": [
     "Examples",
