@@ -5,7 +5,7 @@ aliases: [persistence-failure-hook]
 objective: Let an app observe a FileState, StoredState or SyncState persistence failure through an overridable Application method
 intent_scope: ""
 modules: [application]
-stage: accept
+stage: done
 stage_status: active
 iteration: 1
 callers: []
@@ -21,7 +21,7 @@ bugs: []
 blockers: []
 waiting_on_human: []
 run_consents: []
-next: Continue accept
+next: Continue done
 ---
 # Let an app observe a FileState, StoredState or SyncState persistence failure through an overridable Application method
 
@@ -103,4 +103,42 @@ Let an app observe a FileState, StoredState or SyncState persistence failure thr
   - native_change: report-persistence-failures-to-an-overridable-application-method
   - gate: ungated:sdd-disabled
   - revision: 4c6acb2d2e346d400942e12ca4cbbf708fdebc09
+  - by: claude-code (hc t34)
+- 2026-11-16T23:30:41Z · direct-native-write · accept → accept · report-persistence-failures-to-an-overridable-application-method's lifecycle records changed outside Chough: state.json changed, approvals.json changed; state verifying → draft ^t-2e378d
+  - native_change: report-persistence-failures-to-an-overridable-application-method
+  - revision: 95d1b33bace084e5d6d04652ec92bfbd896cdc33
+  - direct_write:
+    - change: report-persistence-failures-to-an-overridable-application-method
+    - files:
+      - state.json: changed
+      - approvals.json: changed
+    - before_state: verifying
+    - after_state: draft
+  - by: claude-code (hc t34)
+- 2026-11-16T23:30:41Z · direct-native-write · accept → accept · report-persistence-failures-to-an-overridable-application-method's lifecycle records changed outside Chough: state.json changed, approvals.json changed; state draft → approved ^t-dabb0d
+  - native_change: report-persistence-failures-to-an-overridable-application-method
+  - revision: 95d1b33bace084e5d6d04652ec92bfbd896cdc33
+  - direct_write:
+    - change: report-persistence-failures-to-an-overridable-application-method
+    - files:
+      - state.json: changed
+      - approvals.json: changed
+    - before_state: draft
+    - after_state: approved
+  - by: claude-code (hc t34)
+- 2026-11-16T23:30:41Z · direct-native-write · accept → accept · report-persistence-failures-to-an-overridable-application-method's lifecycle records changed outside Chough: review.json added, review-attempts.json added; state stays verifying ^t-2e92fc
+  - native_change: report-persistence-failures-to-an-overridable-application-method
+  - revision: 95d1b33bace084e5d6d04652ec92bfbd896cdc33
+  - direct_write:
+    - change: report-persistence-failures-to-an-overridable-application-method
+    - files:
+      - review.json: added
+      - review-attempts.json: added
+    - before_state: verifying
+    - after_state: verifying
+  - by: claude-code (hc t34)
+- 2026-11-16T23:30:41Z · advance · accept → done · ungated:sdd-disabled ^t-055043
+  - native_change: report-persistence-failures-to-an-overridable-application-method
+  - gate: ungated:sdd-disabled
+  - revision: 95d1b33bace084e5d6d04652ec92bfbd896cdc33
   - by: claude-code (hc t34)

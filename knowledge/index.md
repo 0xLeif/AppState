@@ -24,6 +24,7 @@ changes. Changes archived before the journal began are in [.specsync/archive/cha
 
 Newest posts:
 
+- [Let an app observe a FileState](journal/2026-11-16-let-an-app-observe-a-filestate.md) (2026-11-16, shipped)
 - [Fix the 10 bugs the review recorded](journal/2026-11-16-fix-the-10-bugs-the-review-recorded.md) (2026-11-16, shipped)
 - [Add an iOS demo app with UI tests and an iOS CI job that runs them…](journal/2026-11-16-add-an-ios-demo-app-with-ui-tests-and-an-ios-ci-job-that-runs.md) (2026-11-16, shipped)
 - [Archive the deleteAll and slice-write fix](journal/2026-11-16-archive-the-deleteall-and-slice-write-fix.md) (2026-11-16, shipped)
@@ -73,9 +74,9 @@ Lessons that span projects:
 
 Lesson bundles of the newest 3 archived changes:
 
+- [report-persistence-failures-to-an-overridable-application-method](../.specsync/archive/changes/2026-11-16-report-persistence-failures-to-an-overridable-application-method/lesson-bundle.md), Report persistence failures to an overridable Application method
 - [fix-the-10-bugs-the-review-recorded-changing-code-to-match-the-doc-comments](../.specsync/archive/changes/2026-11-16-fix-the-10-bugs-the-review-recorded-changing-code-to-match-the-doc-comments/lesson-bundle.md), Fix the 10 bugs the review recorded, changing code to match the doc comments
 - [add-an-ios-demo-app-with-ui-tests-and-an-ios-ci-job](../.specsync/archive/changes/2026-11-16-add-an-ios-demo-app-with-ui-tests-and-an-ios-ci-job/lesson-bundle.md), Add an iOS demo app with UI tests and an iOS CI job
-- [make-modelstate-deleteall-remove-related-models-and-make-struct-dependency-slice-writes-stick](../.specsync/archive/changes/2026-11-16-make-modelstate-deleteall-remove-related-models-and-make-struct-dependency-slice-writes-stick/lesson-bundle.md), Make ModelState.deleteAll remove related models, and make struct dependency slice writes stick
 
 ## Snapshots and briefs
 
