@@ -1,0 +1,53 @@
+# .chough/cases/<module>.cases.toml (or <module>.<part>.cases.toml): test-case
+# definitions only. Evidence lives in each session's evidence/ folder. Unknown fields
+# are rejected.
+# New IDs use TC-<module>-<title-slug>: curated lowercase ASCII letters and digits
+# in nonempty runs separated by single hyphens. Keep IDs stable and globally unique.
+# The complete ID stays within 100 bytes using the module-aware title-slug bound.
+# Exact legacy TC-<module>-NNNN cases remain valid; never renumber or reuse an ID.
+# Retire a case instead of deleting it or changing its ID to match a new title.
+profile = "chough-testing/1"
+module = "<module>"
+
+[[case]]
+id = "TC-<module>-<automated-test-slug>"
+title = "<what this case shows>"
+status = "active"                  # active | retired
+track = "functional"               # functional | copy-localization | design-qa
+method = "automated"               # automated | manual | agent-assisted
+criteria = ["<FAMILY-N>"]
+requirements = ["REQ-<module>-001"]
+paths = ["src/"]                   # optional: changed paths that select this case
+environments = ["local", "ci-linux"]
+artifacts = ["test-log"]           # test-log | report-json | screenshot | recording | transcript | reviewer-note
+setup = ["<preconditions>"]
+steps = ["<what runs>"]
+expected = ["<explicit observable outcome>"]
+
+[case.bind]
+adapter = "cargo-test"             # cargo-test | fledge-task | command
+test_target = "<integration test file stem>"
+test = "<exact test name>"         # exactly one test must run for a pass
+# timeout_seconds = 600            # optional, 1 to 3600 (default 600); a timeout is recorded failed
+# env = { NO_COLOR = "1" }         # optional variables on top of the inherited environment; never secrets
+# A fledge-task binding instead: adapter = "fledge-task", task = "<fledge task>",
+#   expect_output = ["<visible text>"] (at least one fragment).
+# A command binding instead: adapter = "command", argv = ["<program>", "<arg>"],
+#   expect_output = ["<visible text>"] (at least one fragment; run without a shell).
+
+[[case]]
+id = "TC-<module>-<person-check-slug>"
+title = "<what a person checks>"
+status = "active"
+track = "design-qa"
+method = "manual"                  # manual cases have no binding
+criteria = ["<FAMILY-N>"]
+requirements = ["REQ-<module>-001"]
+environments = ["chromium-1280x800", "chromium-390x844"]
+artifacts = ["screenshot", "reviewer-note"]
+setup = ["Open design/prototype/index.html and the implementation side by side"]
+steps = ["Compare the empty, error and success states at each viewport"]
+expected = [
+  "Layout and spacing match the prototype at each viewport",
+  "Focus order and visible focus match the companion notes",
+]

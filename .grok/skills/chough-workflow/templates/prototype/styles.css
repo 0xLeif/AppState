@@ -1,0 +1,54 @@
+/* Build on project tokens. The fallbacks below only keep the template readable
+   when no token file is linked; replace them with the project's tokens. */
+:root {
+  --proto-ink: var(--ink, #15181b);
+  --proto-paper: var(--paper, #faf9f6);
+  --proto-surface: var(--surface, #ffffff);
+  --proto-accent: var(--sheen, #0e6f66);
+  --proto-danger: var(--danger, #b3261e);
+  --proto-hairline: var(--hairline, rgba(21, 24, 27, 0.12));
+}
+
+* { box-sizing: border-box; }
+
+/* The state switcher hides panels with `hidden`; keep them hidden over project display rules. */
+[hidden] { display: none !important; }
+
+body {
+  margin: 0;
+  font-family: var(--font-display, system-ui, sans-serif);
+  background: var(--proto-paper);
+  color: var(--proto-ink);
+  line-height: 1.5;
+}
+
+.prototype-controls {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  align-items: center;
+  padding: 0.5rem 1rem;
+  border-bottom: 1px dashed var(--proto-hairline);
+  font-size: 0.875rem;
+}
+
+.prototype-controls button[aria-pressed="true"] { outline: 2px solid var(--proto-accent); }
+
+.surface {
+  max-width: 40rem;
+  margin: 2rem auto;
+  padding: 1.5rem;
+  background: var(--proto-surface);
+  border: 1px solid var(--proto-hairline);
+  border-radius: 0.5rem;
+}
+
+.error { color: var(--proto-danger); }
+
+a { color: var(--proto-accent); }
+
+:focus-visible { outline: 3px solid var(--proto-accent); outline-offset: 2px; }
+
+@media (max-width: 480px) {
+  .surface { margin: 0; border-radius: 0; border-left: 0; border-right: 0; }
+}

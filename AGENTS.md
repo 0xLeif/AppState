@@ -4,7 +4,7 @@ Rules for an agent working in this checkout.
 
 ## Process
 
-- SpecSync is strict, and `source_dirs` is `Sources`. There is no `.chough/`. Before you edit `Sources` or a spec, continue the open draft with `specsync`.
+- SpecSync is strict, and `source_dirs` is `Sources`. Chough sessions live in `.chough/`. Before you edit `Sources` or a spec, run `chough next`, then continue the open draft with `specsync`.
 - Do not approve, ship, or close a human gate. Leif does that.
 - Do not commit or push unless the user asks.
 - `fledge.toml` defines the tasks: build is `swift build`, test is `swift test`, and lint is `APPSTATE_STRICT=1 swift build && APPSTATE_STRICT=1 swift test`.

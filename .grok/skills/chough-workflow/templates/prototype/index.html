@@ -1,0 +1,54 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Prototype: &lt;surface&gt;</title>
+  <!-- Link the project's design tokens first, for example the CorvidLabs tokens.css. -->
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <!-- Prototype controls are not part of the product; they switch states for review. -->
+  <nav class="prototype-controls" aria-label="Prototype state">
+    <span>State:</span>
+    <button type="button" data-state="loading">Loading</button>
+    <button type="button" data-state="empty">Empty</button>
+    <button type="button" data-state="error">Error</button>
+    <button type="button" data-state="success" aria-pressed="true">Success</button>
+  </nav>
+
+  <main class="surface" data-current-state="success">
+    <h1>&lt;Surface title&gt;</h1>
+
+    <section data-state-panel="loading" hidden>
+      <p role="status">Loading…</p>
+    </section>
+
+    <section data-state-panel="empty" hidden>
+      <p>Nothing here yet.</p>
+    </section>
+
+    <section data-state-panel="error" hidden>
+      <p role="alert" class="error">Something went wrong. <a href="#">Try again</a></p>
+    </section>
+
+    <section data-state-panel="success">
+      <p>Replace with the realistic content of the intended product.</p>
+    </section>
+  </main>
+
+  <script>
+    // Lightweight interaction only: show one state panel at a time.
+    const buttons = document.querySelectorAll("[data-state]");
+    function show(state) {
+      document.querySelector(".surface").dataset.currentState = state;
+      document.querySelectorAll("[data-state-panel]").forEach(panel => {
+        panel.hidden = panel.dataset.statePanel !== state;
+      });
+      buttons.forEach(button => button.setAttribute("aria-pressed", String(button.dataset.state === state)));
+    }
+    buttons.forEach(button => button.addEventListener("click", () => show(button.dataset.state)));
+    show(new URLSearchParams(location.search).get("state") || "success");
+  </script>
+</body>
+</html>
