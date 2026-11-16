@@ -5,7 +5,7 @@ aliases: [review-state-dependency-types-and-examples]
 objective: Fix the 10 bugs the review recorded, changing code to match the doc comments
 intent_scope: Sources, Tests, README and documentation/en examples
 modules: [application, property-wrappers, swiftdata]
-stage: accept
+stage: done
 stage_status: active
 iteration: 1
 callers: []
@@ -19,13 +19,9 @@ files: []
 observations: []
 bugs: []
 blockers: []
-waiting_on_human:
-  - gate: Implementation review of fix-the-10-bugs-the-review-recorded-changing-code-to-match-the-doc-comments
-    holds: accept
-    drives: review
-    opened: 2026-11-16T14:08:48Z
+waiting_on_human: []
 run_consents: []
-next: Watch CI on PR 157, then wait for 0xLeif's implementation review; do not ship or merge
+next: Continue done
 ---
 # Review every state and dependency type and the documented examples, and record each reproduced bug
 
@@ -46,6 +42,7 @@ Review every state and dependency type and the documented examples, and record e
 - 0xLeif decided "Which of the 10 recorded bugs to fix, and for the override and initial-evaluation bugs whether to change the code or the doc comment": "fix all of them, change the code to match the comments" (Claude Code chat on 2026-11-15, in reply to the review summary); recorded by claude-code; a relayed claim, not authenticated
 - decided: fix all 10 recorded bugs, and for the override and initial-evaluation bugs change the code to match the comments, because 0xLeif said so in chat
 - 0xLeif decided "Scope approval of fix-the-10-bugs-the-review-recorded-changing-code-to-match-the-doc-comments": "I approve" (Claude Code chat on 2026-11-16, in reply to the fix report asking for scope approval); recorded by claude-code; a relayed claim, not authenticated; ran specsync change approve fix-the-10-bugs-the-review-recorded-changing-code-to-match-the-doc-comments as 0xLeif
+- 0xLeif decided "Implementation review of fix-the-10-bugs-the-review-recorded-changing-code-to-match-the-doc-comments": "merged on rebase and fix the merge conflicts" (Claude Code chat on 2026-11-16, after he merged PR 159 into main with these commits inside it; asked next whether to ship the records, he answered: Yes do it and tag the 3.1.0 release); recorded by claude-code; a relayed claim, not authenticated; ran specsync change review fix-the-10-bugs-the-review-recorded-changing-code-to-match-the-doc-comments as 0xLeif with verdict pass
 
 ## What was verified
 
@@ -112,4 +109,42 @@ Review every state and dependency type and the documented examples, and record e
   - revision: 7e4eb923d14b7a05c8dfdb10099ae13d83352bdc
   - holds: accept
   - drives: review
+  - by: claude-code (hc t34)
+- 2026-11-16T23:28:06Z · direct-native-write · accept → accept · fix-the-10-bugs-the-review-recorded-changing-code-to-match-the-doc-comments's lifecycle records changed outside Chough: state.json changed, approvals.json changed; state verifying → draft ^t-76d820
+  - native_change: fix-the-10-bugs-the-review-recorded-changing-code-to-match-the-doc-comments
+  - revision: 86b5ee81116f2e76fe849fe24af5a6349273ca16
+  - direct_write:
+    - change: fix-the-10-bugs-the-review-recorded-changing-code-to-match-the-doc-comments
+    - files:
+      - state.json: changed
+      - approvals.json: changed
+    - before_state: verifying
+    - after_state: draft
+  - by: claude-code (hc t34)
+- 2026-11-16T23:28:06Z · direct-native-write · accept → accept · fix-the-10-bugs-the-review-recorded-changing-code-to-match-the-doc-comments's lifecycle records changed outside Chough: state.json changed, approvals.json changed; state draft → approved ^t-db92ec
+  - native_change: fix-the-10-bugs-the-review-recorded-changing-code-to-match-the-doc-comments
+  - revision: 86b5ee81116f2e76fe849fe24af5a6349273ca16
+  - direct_write:
+    - change: fix-the-10-bugs-the-review-recorded-changing-code-to-match-the-doc-comments
+    - files:
+      - state.json: changed
+      - approvals.json: changed
+    - before_state: draft
+    - after_state: approved
+  - by: claude-code (hc t34)
+- 2026-11-16T23:28:06Z · gate-closed · accept → accept · Implementation review of fix-the-10-bugs-the-review-recorded-changing-code-to-match-the-doc-comments ^t-5f6ae4
+  - native_change: fix-the-10-bugs-the-review-recorded-changing-code-to-match-the-doc-comments
+  - revision: 86b5ee81116f2e76fe849fe24af5a6349273ca16
+  - relayed_by:
+    - decided_by: 0xLeif
+    - words: merged on rebase and fix the merge conflicts
+    - where: Claude Code chat on 2026-11-16, after he merged PR 159 into main with these commits inside it; asked next whether to ship the records, he answered: Yes do it and tag the 3.1.0 release
+    - recorded_by: claude-code
+    - native: specsync change review fix-the-10-bugs-the-review-recorded-changing-code-to-match-the-doc-comments
+    - actor: 0xLeif
+  - by: claude-code (hc t34)
+- 2026-11-16T23:28:06Z · advance · accept → done · ungated:sdd-disabled ^t-659aab
+  - native_change: fix-the-10-bugs-the-review-recorded-changing-code-to-match-the-doc-comments
+  - gate: ungated:sdd-disabled
+  - revision: 86b5ee81116f2e76fe849fe24af5a6349273ca16
   - by: claude-code (hc t34)

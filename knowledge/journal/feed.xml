@@ -2,9 +2,16 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
 <title>Project journal</title>
 <id>urn:chough:journal</id>
-<updated>2026-11-16T23:24:13Z</updated>
+<updated>2026-11-16T23:28:06Z</updated>
 <author><name>Chough</name></author>
 <link rel="self" href="feed.xml"/>
+  <entry>
+<title>Fix the 10 bugs the review recorded</title>
+<id>urn:chough:journal:2026-11-16-fix-the-10-bugs-the-review-recorded</id>
+<updated>2026-11-16T23:28:06Z</updated>
+<link href="2026-11-16-fix-the-10-bugs-the-review-recorded.md"/>
+<category term="shipped"/>
+</entry>
   <entry>
 <title>Add an iOS demo app with UI tests and an iOS CI job that runs them…</title>
 <id>urn:chough:journal:2026-11-16-add-an-ios-demo-app-with-ui-tests-and-an-ios-ci-job-that-runs</id>
