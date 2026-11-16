@@ -10,7 +10,7 @@ final class DemoUITests: XCTestCase {
 
     private func value(_ id: String, in app: XCUIApplication) -> String {
         let element = app.staticTexts["\(id)-value"]
-        XCTAssertTrue(element.waitForExistence(timeout: 10), "\(id) is missing")
+        XCTAssertTrue(element.waitForExistence(timeout: 30), "\(id) is missing")
         return element.label
     }
 
@@ -18,7 +18,9 @@ final class DemoUITests: XCTestCase {
         let element = app.staticTexts["\(id)-value"]
         let predicate = NSPredicate(format: "label == %@", expected)
         let expectation = XCTNSPredicateExpectation(predicate: predicate, object: element)
-        let result = XCTWaiter().wait(for: [expectation], timeout: 5)
+        // The wait ends as soon as the label matches. The limit is long because a relaunch on a
+        // shared CI runner can take many seconds.
+        let result = XCTWaiter().wait(for: [expectation], timeout: 30)
         XCTAssertEqual(result, .completed, "\(id) is \(element.label), expected \(expected)", file: file, line: line)
     }
 

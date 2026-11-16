@@ -24,7 +24,7 @@ Add `Examples/DemoApp`, an XcodeGen project with a small SwiftUI app, a unit-tes
 
 ## Risks
 
-- UI tests are slower and less steady than unit tests. The job has a 30-minute limit and the tests wait up to five seconds for each value.
+- UI tests are slower and less steady than unit tests. The job has a 30-minute limit and the tests wait up to thirty seconds for each value.
 - The workflow picks the newest iPhone simulator on the runner, so a runner image change can change the iOS version tested.
 - The generated Xcode project is not checked in, so XcodeGen is needed to run the tests.
 
