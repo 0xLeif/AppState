@@ -20,16 +20,18 @@ changes and Chough's records each stay where they live, linked below.
 ## Journal: the timeline of archived changes
 
 The [journal](journal/) and its [feed](journal/feed.xml) are the timeline of archived
-changes. No native change was archived before the journal began.
+changes. Changes archived before the journal began are in [.specsync/archive/changes/](../.specsync/archive/changes/).
 
 Newest posts:
 
-- none yet
+- [Archive the deleteAll and slice-write fix](journal/2026-11-16-archive-the-deleteall-and-slice-write-fix.md) (2026-11-16, shipped)
 
 ## Where things live
 
 - Contracts and requirements: [specs/](../specs/)
+- Archived native changes: [.specsync/archive/](../.specsync/archive/)
 - Chough's records: [.chough/README.md](../.chough/README.md)
+- Finished sessions: [.chough/archive/sessions/](../.chough/archive/sessions/)
 - Tasks: [fledge.toml](../fledge.toml)
 
 ## Open bugs
@@ -58,7 +60,7 @@ Lessons that span projects:
 
 Lesson bundles of the newest 3 archived changes:
 
-- none
+- [make-modelstate-deleteall-remove-related-models-and-make-struct-dependency-slice-writes-stick](../.specsync/archive/changes/2026-11-16-make-modelstate-deleteall-remove-related-models-and-make-struct-dependency-slice-writes-stick/lesson-bundle.md), Make ModelState.deleteAll remove related models, and make struct dependency slice writes stick
 
 ## Snapshots and briefs
 
