@@ -1,0 +1,45 @@
+name: iOS
+
+on:
+  push:
+    branches: ["main"]
+  pull_request:
+    branches: ["main"]
+
+jobs:
+  demo-app:
+    runs-on: macos-15
+    timeout-minutes: 30
+    steps:
+    - uses: maxim-lobanov/setup-xcode@v1
+      with:
+        xcode-version: latest-stable
+    - uses: actions/checkout@v4
+    - name: Install XcodeGen
+      run: command -v xcodegen || brew install xcodegen
+    - name: Generate the project
+      working-directory: Examples/DemoApp
+      run: xcodegen generate
+    - name: Pick a simulator
+      run: |
+        # The newest available iPhone simulator on this runner.
+        udid=$(xcrun simctl list devices available --json | python3 -c '
+        import json, re, sys
+        devices = json.load(sys.stdin)["devices"]
+        phones = []
+        for runtime, entries in devices.items():
+            version = re.search(r"SimRuntime\.iOS-(\d+)-(\d+)", runtime)
+            if version:
+                phones += [((int(version[1]), int(version[2])), d["udid"]) for d in entries if d["name"].startswith("iPhone")]
+        print(max(phones)[1])')
+        echo "SIMULATOR_UDID=$udid" >> "$GITHUB_ENV"
+    - name: Run the hosted unit tests and the UI tests
+      working-directory: Examples/DemoApp
+      run: |
+        set -o pipefail
+        xcodebuild test \
+          -project DemoApp.xcodeproj \
+          -scheme DemoApp \
+          -destination "platform=iOS Simulator,id=$SIMULATOR_UDID" \
+          -derivedDataPath .build-dd \
+          | grep -E "Test Case|Test Suite .* (passed|failed)|error:|Executed|\*\* TEST"

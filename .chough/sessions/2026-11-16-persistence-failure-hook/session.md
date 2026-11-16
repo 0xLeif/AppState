@@ -1,0 +1,77 @@
+---
+kind: session
+id: 2026-11-16-persistence-failure-hook
+aliases: [persistence-failure-hook]
+objective: Let an app observe a FileState, StoredState or SyncState persistence failure through an overridable Application method
+intent_scope: ""
+modules: [application]
+stage: intent
+stage_status: active
+iteration: 1
+callers: []
+native_change: report-persistence-failures-to-an-overridable-application-method
+pr: ""
+criteria: []
+requirements: []
+cases: []
+design: []
+files: []
+observations: []
+bugs: []
+blockers: []
+waiting_on_human:
+  - gate: Implementation review of report-persistence-failures-to-an-overridable-application-method
+    holds: intent
+    drives: none
+    opened: 2026-11-16T14:42:09Z
+run_consents: []
+next: Wait for 0xLeif to review PR 157 and PR 158; do not ship or merge
+---
+# Let an app observe a FileState, StoredState or SyncState persistence failure through an overridable Application method
+
+## Goal
+
+Let an app observe a FileState, StoredState or SyncState persistence failure through an overridable Application method
+
+## Where it stands
+
+- Hook, seven tests, docs and changelog written; macOS strict and release, Linux 6.1 tests and WASI build pass
+- Scope approved by 0xLeif on the condition of 95 percent confidence, met once CI passed on four platforms; native check passed with commit
+- Override ordering fixed, unreadable file reported once, SwiftUI hosting tests added; macOS, iOS host app, iOS UI tests, Linux and CI on four platforms pass
+
+## Decisions and why
+
+- 0xLeif decided "Scope approval of report-persistence-failures-to-an-overridable-application-method": "I approve as long as you are 95% confident" (Claude Code chat on 2026-11-16, in reply to the request for scope approval of the persistence-failure hook); recorded by claude-code; a relayed claim, not authenticated; ran specsync change approve report-persistence-failures-to-an-overridable-application-method as 0xLeif
+
+## What was verified
+
+## Open threads
+
+## Timeline
+
+- 2026-11-16T14:23:51Z · start · intent → intent · Let an app observe a FileState, StoredState or SyncState persistence failure through an overridable Application method ^t-ba9ea5
+  - revision: 194067d89470cad8e27fa81a9fe006986a802958
+  - by: claude-code (hc t34)
+- 2026-11-16T14:28:53Z · gate-opened · intent → intent · Scope approval of report-persistence-failures-to-an-overridable-application-method ^t-c3e275
+  - native_change: report-persistence-failures-to-an-overridable-application-method
+  - revision: 194067d89470cad8e27fa81a9fe006986a802958
+  - holds: intent
+  - drives: approve
+  - by: claude-code (hc t34)
+- 2026-11-16T14:42:09Z · gate-opened · intent → intent · Implementation review of report-persistence-failures-to-an-overridable-application-method ^t-7a5935
+  - native_change: report-persistence-failures-to-an-overridable-application-method
+  - revision: 5c4eaa48be305b658b7f34aa6ee198781083a1fc
+  - holds: intent
+  - drives: none
+  - by: claude-code (hc t34)
+- 2026-11-16T14:42:31Z · gate-closed · intent → intent · Scope approval of report-persistence-failures-to-an-overridable-application-method ^t-d549ff
+  - native_change: report-persistence-failures-to-an-overridable-application-method
+  - revision: 6394077518059dbf0b5f89a59162a17bfab3bd0c
+  - relayed_by:
+    - decided_by: 0xLeif
+    - words: I approve as long as you are 95% confident
+    - where: Claude Code chat on 2026-11-16, in reply to the request for scope approval of the persistence-failure hook
+    - recorded_by: claude-code
+    - native: specsync change approve report-persistence-failures-to-an-overridable-application-method
+    - actor: 0xLeif
+  - by: claude-code (hc t34)

@@ -67,6 +67,33 @@ extension Application {
                     shared.cache.remove(scope.key)
                     userDefaults.removeObject(forKey: scope.key)
                 } else {
+                    // Decide what goes to `UserDefaults` before anything is committed. A value that
+                    // is neither JSON-encodable nor a property list must not reach `UserDefaults`,
+                    // which raises an Objective-C exception for it.
+                    let storedObject: Any
+
+                    do {
+                        storedObject = try JSONEncoder().encode(newValue)
+                    } catch {
+                        guard PropertyListSerialization.propertyList(newValue, isValidFor: .binary) else {
+                            Application.log(
+                                error: error,
+                                message: "\(StoredState.emoji) StoredState failed to encode: \(newValue)",
+                                fileID: #fileID,
+                                function: #function,
+                                line: #line,
+                                column: #column
+                            )
+                            shared.didFailToPersist(
+                                PersistenceFailure(store: .storedState, operation: .write, key: scope.key, error: error)
+                            )
+
+                            return
+                        }
+
+                        storedObject = newValue
+                    }
+
                     shared.cache.set(
                         value: Application.State(
                             type: .stored,
@@ -75,12 +102,7 @@ extension Application {
                         ),
                         forKey: scope.key
                     )
-
-                    if let encodedValue = try? JSONEncoder().encode(newValue) {
-                        userDefaults.set(encodedValue, forKey: scope.key)
-                    } else {
-                        userDefaults.set(newValue, forKey: scope.key)
-                    }
+                    userDefaults.set(storedObject, forKey: scope.key)
                 }
 
                 shared.notifyChange()

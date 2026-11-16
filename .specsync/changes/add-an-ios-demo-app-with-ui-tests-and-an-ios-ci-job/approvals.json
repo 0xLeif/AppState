@@ -1,0 +1,46 @@
+{
+  "approvals": [
+    {
+      "gate": "definition",
+      "actor": "0xLeif",
+      "timestamp": 1794842153,
+      "digest": "e63b7884ce6c4d56bb632360959600d476dcec1d8e9858377a1882f6f24fe516",
+      "note": "Approved by 0xLeif at the Chough gate \"Scope approval of add-an-ios-demo-app-with-ui-tests-and-an-ios-ci-job\": \"Yes everything as 3.1.0 and yes add demo apps and ui tests and all\" (Claude Code chat on 2026-11-16, in reply to the question whether to add the demo app and UI tests under Examples with an iOS CI job). Relayed and recorded by claude-code at 2026-11-16T15:15:53Z through chough checkpoint --close-gate; a relayed claim, not authenticated.",
+      "approved_scope": {
+        "schema_version": 1,
+        "change_id": "add-an-ios-demo-app-with-ui-tests-and-an-ios-ci-job",
+        "title": "Add an iOS demo app with UI tests and an iOS CI job",
+        "description": "Add an iOS demo app with UI tests and an iOS CI job",
+        "kind": "operations",
+        "affected_specs": [],
+        "affected_paths": [
+          ".chough",
+          ".github",
+          ".specsync/change.lock",
+          "CHANGELOG.md",
+          "Examples"
+        ],
+        "no_spec_change": true,
+        "no_spec_change_rationale": "The demo app, its UI tests and the CI workflow exercise existing behaviour and change no library source or canonical spec",
+        "acceptance_criteria": [
+          "xcodegen generate then xcodebuild test of the DemoApp scheme passes on an iOS simulator: the package's unit tests run inside the app, including the Keychain and SecureState tests, and the five UI tests pass, including persisted state surviving an app relaunch; the iOS workflow passes on the pull request"
+        ],
+        "dependencies": [],
+        "supersedes": [],
+        "answers": {
+          "architecture_risk": "no",
+          "public_contract": "no"
+        }
+      },
+      "approved_delta_digests": {},
+      "approved_delta_bases": {},
+      "relayed_by": {
+        "decided_by": "0xLeif",
+        "words": "Yes everything as 3.1.0 and yes add demo apps and ui tests and all",
+        "where": "Claude Code chat on 2026-11-16, in reply to the question whether to add the demo app and UI tests under Examples with an iOS CI job",
+        "recorded_by": "claude-code"
+      }
+    }
+  ],
+  "reopenings": []
+}

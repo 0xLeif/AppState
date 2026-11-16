@@ -84,13 +84,17 @@ Pour restreindre l'accès, utilisez un identifiant unique comme un UUID pour vou
 ### Exemple
 
 ```swift
+// Créé une seule fois. Un `UUID()` dans la propriété calculée produirait un nouvel identifiant à chaque accès.
+private let restrictedStateID = UUID().uuidString
+private let restrictedDependencyID = UUID().uuidString
+
 private extension Application {
     var restrictedState: State<Int?> {
-        state(initial: nil, id: UUID().uuidString)
+        state(initial: nil, id: restrictedStateID)
     }
 
     var restrictedDependency: Dependency<SomeType> {
-        dependency(SomeType(), id: UUID().uuidString)
+        dependency(SomeType(), id: restrictedDependencyID)
     }
 }
 ```
@@ -136,6 +140,27 @@ fileprivate extension Application {
 AppState utilise un cache unifié pour stocker `State`, `Dependency`, `StoredState` et `SyncState`. Cela garantit que ces types de données sont gérés de manière efficace dans toute votre application.
 
 Par défaut, AppState attribue une valeur de nom "App", ce qui garantit que toutes les valeurs associées à un module sont liées à ce nom. Cela rend plus difficile l'accès à ces états et dépendances depuis d'autres modules.
+
+### 3.6 Observer les échecs de persistance
+
+Un `FileState` dont le fichier ne peut pas être décodé, écrit ou supprimé laisse l'application fonctionner : une lecture renvoie la valeur initiale. Il en va de même pour une valeur `StoredState` ou `SyncState` qui ne peut pas être encodée. Pour en être informé, redéfinissez `didFailToPersist(_:)` dans une sous-classe d'`Application`.
+
+### Exemple
+
+```swift
+import AppState
+
+final class MyApplication: Application {
+    override func didFailToPersist(_ failure: PersistenceFailure) {
+        print("AppState could not \(failure.operation) \(failure.key): \(failure.error)")
+    }
+}
+
+// Une fois, au début du cycle de vie de l'application.
+Application.promote(to: MyApplication.self)
+```
+
+L'échec indique le type d'état (`store`), l'`operation` (`read`, `write` ou `delete`), la `key` de l'état et l'`error` sous-jacente. Un `FileState` qui n'a jamais été écrit n'est pas un échec. Un fichier illisible est signalé une seule fois, et non à chaque lecture, jusqu'à ce que cet état soit de nouveau lu ou écrit avec succès.
 
 ## 4. AppState vs Environnement de SwiftUI
 

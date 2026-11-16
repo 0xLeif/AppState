@@ -84,13 +84,17 @@ private extension Application {
 ### Пример
 
 ```swift
+// Создаётся один раз. `UUID()` внутри вычисляемого свойства давал бы новый идентификатор при каждом обращении.
+private let restrictedStateID = UUID().uuidString
+private let restrictedDependencyID = UUID().uuidString
+
 private extension Application {
     var restrictedState: State<Int?> {
-        state(initial: nil, id: UUID().uuidString)
+        state(initial: nil, id: restrictedStateID)
     }
 
     var restrictedDependency: Dependency<SomeType> {
-        dependency(SomeType(), id: UUID().uuidString)
+        dependency(SomeType(), id: restrictedDependencyID)
     }
 }
 ```
@@ -136,6 +140,27 @@ fileprivate extension Application {
 AppState использует единый кэш для хранения `State`, `Dependency`, `StoredState` и `SyncState`. Это обеспечивает эффективное управление этими типами данных в вашем приложении.
 
 По умолчанию AppState присваивает значение имени "App", что гарантирует, что все значения, связанные с модулем, привязаны к этому имени. Это усложняет доступ к этим состояниям и зависимостям из других модулей.
+
+### 3.6 Наблюдение за ошибками сохранения
+
+`FileState`, файл которого не удаётся декодировать, записать или удалить, не останавливает приложение: чтение возвращает начальное значение. То же относится к значению `StoredState` или `SyncState`, которое не удаётся закодировать. Чтобы узнать об этом, переопределите `didFailToPersist(_:)` в подклассе `Application`.
+
+### Пример
+
+```swift
+import AppState
+
+final class MyApplication: Application {
+    override func didFailToPersist(_ failure: PersistenceFailure) {
+        print("AppState could not \(failure.operation) \(failure.key): \(failure.error)")
+    }
+}
+
+// Один раз, в начале жизненного цикла приложения.
+Application.promote(to: MyApplication.self)
+```
+
+Ошибка содержит вид состояния (`store`), операцию `operation` (`read`, `write` или `delete`), ключ состояния `key` и исходную ошибку `error`. `FileState`, который ни разу не записывали, ошибкой не считается. О нечитаемом файле сообщается один раз, а не при каждом чтении, пока это состояние снова не будет успешно прочитано или записано.
 
 ## 4. AppState по сравнению с окружением SwiftUI
 

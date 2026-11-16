@@ -85,13 +85,17 @@ To restrict access, use a unique ID like a UUID to ensure that only the right pa
 ### Example
 
 ```swift
+// Created once. A `UUID()` inside the computed property would make a new ID on every access.
+private let restrictedStateID = UUID().uuidString
+private let restrictedDependencyID = UUID().uuidString
+
 private extension Application {
     var restrictedState: State<Int?> {
-        state(initial: nil, id: UUID().uuidString)
+        state(initial: nil, id: restrictedStateID)
     }
 
     var restrictedDependency: Dependency<SomeType> {
-        dependency(SomeType(), id: UUID().uuidString)
+        dependency(SomeType(), id: restrictedDependencyID)
     }
 }
 ```
@@ -137,6 +141,27 @@ fileprivate extension Application {
 AppState uses a unified cache to store `State`, `Dependency`, `StoredState`, and `SyncState`. This ensures that these data types are efficiently managed across your app.
 
 By default, AppState assigns a name value as "App", which ensures that all values associated with a module are tied to that name. This makes it harder to access these states and dependencies from other modules.
+
+### 3.6 Observing Persistence Failures
+
+A `FileState` whose file cannot be decoded, written or deleted keeps the app running: a read returns the initial value. The same holds for a `StoredState` or `SyncState` value that cannot be encoded. To learn that this happened, override `didFailToPersist(_:)` in an `Application` subclass.
+
+### Example
+
+```swift
+import AppState
+
+final class MyApplication: Application {
+    override func didFailToPersist(_ failure: PersistenceFailure) {
+        print("AppState could not \(failure.operation) \(failure.key): \(failure.error)")
+    }
+}
+
+// Once, early in the app's lifecycle.
+Application.promote(to: MyApplication.self)
+```
+
+The failure carries the kind of state (`store`), the `operation` (`read`, `write` or `delete`), the state's `key` and the underlying `error`. A `FileState` that was never written is not a failure. An unreadable file is reported once, not on every read, until that state is read or written successfully again.
 
 ## 4. AppState vs SwiftUI's Environment
 

@@ -1,0 +1,61 @@
+# Generates DemoApp.xcodeproj with XcodeGen. The project is not checked in:
+#   xcodegen generate
+name: DemoApp
+options:
+  bundleIdPrefix: com.appstate.demo
+  deploymentTarget:
+    iOS: "17.0"
+packages:
+  AppState:
+    path: ../..
+targets:
+  # A small SwiftUI app that uses every kind of state. It is the host for both test bundles.
+  DemoApp:
+    type: application
+    platform: iOS
+    sources: [App]
+    dependencies:
+      - package: AppState
+    settings:
+      base:
+        GENERATE_INFOPLIST_FILE: YES
+        INFOPLIST_KEY_UILaunchScreen_Generation: YES
+        PRODUCT_BUNDLE_IDENTIFIER: com.appstate.demo.DemoApp
+        SWIFT_VERSION: "6.0"
+  # The package's own unit tests, run inside the app. On iOS the Keychain needs an app host, so
+  # the Keychain and SecureState tests only pass here, not in a bare `xcodebuild test` of the package.
+  HostedUnitTests:
+    type: bundle.unit-test
+    platform: iOS
+    sources:
+      - path: ../../Tests/AppStateTests
+    dependencies:
+      - target: DemoApp
+    settings:
+      base:
+        GENERATE_INFOPLIST_FILE: YES
+        PRODUCT_BUNDLE_IDENTIFIER: com.appstate.demo.HostedUnitTests
+        SWIFT_VERSION: "6.0"
+  # Taps through the app and relaunches it, to check what a user would see.
+  DemoUITests:
+    type: bundle.ui-testing
+    platform: iOS
+    sources: [UITests]
+    dependencies:
+      - target: DemoApp
+    settings:
+      base:
+        GENERATE_INFOPLIST_FILE: YES
+        PRODUCT_BUNDLE_IDENTIFIER: com.appstate.demo.DemoUITests
+        SWIFT_VERSION: "5.0"
+schemes:
+  DemoApp:
+    build:
+      targets:
+        DemoApp: all
+        HostedUnitTests: [test]
+        DemoUITests: [test]
+    test:
+      targets:
+        - HostedUnitTests
+        - DemoUITests

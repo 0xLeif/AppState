@@ -3,7 +3,7 @@ import XCTest
 
 final class FileManagerExtensionTests: XCTestCase {
     func testWriteAndReadCodable() throws {
-        let path = "./FileManagerTests"
+        let path = NSTemporaryDirectory() + "FileManagerTests"
         let filename = "test.json"
         let text = "Hello"
 
@@ -16,7 +16,7 @@ final class FileManagerExtensionTests: XCTestCase {
     }
 
     func testWriteAndReadData() throws {
-        let path = "./FileManagerTestsData"
+        let path = NSTemporaryDirectory() + "FileManagerTestsData"
         let filename = "data.txt"
         let data = Data("Data".utf8)
 

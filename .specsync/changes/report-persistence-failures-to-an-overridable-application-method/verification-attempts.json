@@ -1,0 +1,113 @@
+{
+  "schema_version": 1,
+  "attempts": [
+    {
+      "timestamp": 1794840156,
+      "commit": "aa6c36eb27d787ef134966cda3a639dbe9a79d43",
+      "contract_digest": "de414993ef32143e95554df5f23a1900c49d810c9791c9c15109b2856b0b44d5",
+      "execution_digest": "aceef3bb7e30c43f6f27bfa7045f6109237dd98954e8a4d5d66ef0e2e6fae20d",
+      "workspace_digest": "5a4c2feb1675c0795cee49ee09249d6b9686f7fc083a39cc2e067424e47f241b",
+      "passed": true,
+      "commands": [
+        {
+          "command": "specsync check --spec application --spec property-wrappers --spec swiftdata",
+          "success": true,
+          "exit_code": 0
+        }
+      ],
+      "requirement_ids": [
+        "REQ-application-007"
+      ]
+    },
+    {
+      "timestamp": 1794840156,
+      "commit": "68c92ab0af8ed714cf765db1f9f6cd78492583cc",
+      "contract_digest": "de414993ef32143e95554df5f23a1900c49d810c9791c9c15109b2856b0b44d5",
+      "execution_digest": "aceef3bb7e30c43f6f27bfa7045f6109237dd98954e8a4d5d66ef0e2e6fae20d",
+      "workspace_digest": "cb9c54fc7e8b8e78dc4d957f115e61088c098e94600782676c4b396e090464c0",
+      "passed": true,
+      "commands": [
+        {
+          "command": "specsync check --spec application --spec property-wrappers --spec swiftdata",
+          "success": true,
+          "exit_code": 0
+        }
+      ],
+      "requirement_ids": [
+        "REQ-application-007"
+      ]
+    },
+    {
+      "timestamp": 1794841399,
+      "commit": "7c658e9590b131e0c4ae7bce905cdb541c058bea",
+      "contract_digest": "de414993ef32143e95554df5f23a1900c49d810c9791c9c15109b2856b0b44d5",
+      "execution_digest": "aceef3bb7e30c43f6f27bfa7045f6109237dd98954e8a4d5d66ef0e2e6fae20d",
+      "workspace_digest": "507499f92baf84ecb89663d736d5ebb0087211bf7dd287fb4fe9a9369e74dcdb",
+      "passed": true,
+      "commands": [
+        {
+          "command": "specsync check --spec application --spec property-wrappers --spec swiftdata",
+          "success": true,
+          "exit_code": 0
+        }
+      ],
+      "requirement_ids": [
+        "REQ-application-007"
+      ]
+    },
+    {
+      "timestamp": 1794841400,
+      "commit": "74f2680c0eefa4534c14acd18f6141c98e5f28df",
+      "contract_digest": "de414993ef32143e95554df5f23a1900c49d810c9791c9c15109b2856b0b44d5",
+      "execution_digest": "aceef3bb7e30c43f6f27bfa7045f6109237dd98954e8a4d5d66ef0e2e6fae20d",
+      "workspace_digest": "507499f92baf84ecb89663d736d5ebb0087211bf7dd287fb4fe9a9369e74dcdb",
+      "passed": true,
+      "commands": [
+        {
+          "command": "specsync check --spec application --spec property-wrappers --spec swiftdata",
+          "success": true,
+          "exit_code": 0
+        }
+      ],
+      "requirement_ids": [
+        "REQ-application-007"
+      ]
+    },
+    {
+      "timestamp": 1794842106,
+      "commit": "0d45feec6aa785f2cedd7979a7b771b360f66fbf",
+      "contract_digest": "de414993ef32143e95554df5f23a1900c49d810c9791c9c15109b2856b0b44d5",
+      "execution_digest": "aceef3bb7e30c43f6f27bfa7045f6109237dd98954e8a4d5d66ef0e2e6fae20d",
+      "workspace_digest": "8e7ccedea1c8c0ec2655be2e33a0bb9859538dfa9f15fd8fbeda8f377623dd3d",
+      "passed": true,
+      "commands": [
+        {
+          "command": "specsync check --spec application --spec property-wrappers --spec swiftdata",
+          "success": true,
+          "exit_code": 0
+        }
+      ],
+      "requirement_ids": [
+        "REQ-application-007"
+      ]
+    },
+    {
+      "timestamp": 1794842107,
+      "commit": "5a4c18529b38bd0f1390eb4a1d656b657badecb9",
+      "contract_digest": "de414993ef32143e95554df5f23a1900c49d810c9791c9c15109b2856b0b44d5",
+      "execution_digest": "aceef3bb7e30c43f6f27bfa7045f6109237dd98954e8a4d5d66ef0e2e6fae20d",
+      "workspace_digest": "8e7ccedea1c8c0ec2655be2e33a0bb9859538dfa9f15fd8fbeda8f377623dd3d",
+      "passed": true,
+      "commands": [
+        {
+          "command": "specsync check --spec application --spec property-wrappers --spec swiftdata",
+          "success": true,
+          "exit_code": 0
+        }
+      ],
+      "requirement_ids": [
+        "REQ-application-007"
+      ]
+    }
+  ]
+}

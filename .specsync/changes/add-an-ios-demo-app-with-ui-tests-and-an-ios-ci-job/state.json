@@ -1,0 +1,40 @@
+{
+  "schema_version": 1,
+  "workflow_version": 3,
+  "workflow_origin_version": 2,
+  "id": "add-an-ios-demo-app-with-ui-tests-and-an-ios-ci-job",
+  "slug": "add-an-ios-demo-app-with-ui-tests-and-an-ios-ci-job",
+  "title": "Add an iOS demo app with UI tests and an iOS CI job",
+  "description": "Add an iOS demo app with UI tests and an iOS CI job",
+  "kind": "operations",
+  "state": "verifying",
+  "canonical_applied": true,
+  "base_commit": "07cf51e1cee0e6ec4469b75db25738dd8642268f",
+  "created_at": 1794842119,
+  "updated_at": 1794843354,
+  "affected_specs": [],
+  "affected_paths": [
+    "Examples",
+    ".github",
+    "CHANGELOG.md",
+    ".chough",
+    ".specsync/change.lock"
+  ],
+  "no_spec_change": true,
+  "no_spec_change_rationale": "The demo app, its UI tests and the CI workflow exercise existing behaviour and change no library source or canonical spec",
+  "acceptance_criteria": [
+    "xcodegen generate then xcodebuild test of the DemoApp scheme passes on an iOS simulator: the package's unit tests run inside the app, including the Keychain and SecureState tests, and the five UI tests pass, including persisted state surviving an app relaunch; the iOS workflow passes on the pull request"
+  ],
+  "selected_artifacts": [
+    "context",
+    "plan",
+    "testing",
+    "design",
+    "tasks"
+  ],
+  "dependencies": [],
+  "answers": {
+    "architecture_risk": "no",
+    "public_contract": "no"
+  }
+}

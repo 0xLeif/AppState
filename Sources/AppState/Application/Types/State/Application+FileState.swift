@@ -62,32 +62,18 @@ extension Application {
                 do {
                     let storedValue: Value = try fileManager.in(path: path, filename: filename)
 
-                    defer {
-                        let setValue = {
-                            shared.cache.set(
-                                value: Application.State(
-                                    type: .file,
-                                    initial: storedValue,
-                                    scope: scope
-                                ),
-                                forKey: scope.key
-                            )
-                        }
+                    shared.reportedReadFailures.remove(scope.key)
 
-                        #if canImport(ObjectiveC)
-                        if NSClassFromString("XCTest") == nil {
-                            Task {
-                                await MainActor.run {
-                                    setValue()
-                                }
-                            }
-                        } else {
-                            setValue()
-                        }
-                        #else
-                        setValue()
-                        #endif
-                    }
+                    // Seed the cache before returning. A deferred seed would land after a write
+                    // made in the same main-actor turn and leave the cache on this older value.
+                    shared.cache.set(
+                        value: Application.State(
+                            type: .file,
+                            initial: storedValue,
+                            scope: scope
+                        ),
+                        forKey: scope.key
+                    )
 
                     return storedValue
                 } catch {
@@ -99,6 +85,13 @@ extension Application {
                         line: #line,
                         column: #column
                     )
+
+                    if Application.isMissingFile(error) == false,
+                       shared.reportedReadFailures.insert(scope.key).inserted {
+                        shared.didFailToPersist(
+                            PersistenceFailure(store: .fileState, operation: .read, key: scope.key, error: error)
+                        )
+                    }
 
                     return initial()
                 }
@@ -120,6 +113,13 @@ extension Application {
                             line: #line,
                             column: #column
                         )
+
+                        // Writing `nil` to a state that was never written has no file to delete.
+                        if Application.isMissingFile(error) == false {
+                            shared.didFailToPersist(
+                                PersistenceFailure(store: .fileState, operation: .delete, key: scope.key, error: error)
+                            )
+                        }
                     }
                 } else {
                     shared.cache.set(
@@ -138,6 +138,7 @@ extension Application {
                             filename: filename,
                             base64Encoded: isBase64Encoded
                         )
+                        shared.reportedReadFailures.remove(scope.key)
                     } catch {
                         log(
                             error: error,
@@ -146,6 +147,10 @@ extension Application {
                             function: #function,
                             line: #line,
                             column: #column
+                        )
+
+                        shared.didFailToPersist(
+                            PersistenceFailure(store: .fileState, operation: .write, key: scope.key, error: error)
                         )
                     }
                 }

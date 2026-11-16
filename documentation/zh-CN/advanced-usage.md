@@ -84,13 +84,17 @@ private extension Application {
 ### 示例
 
 ```swift
+// 只创建一次。如果在计算属性内部调用 `UUID()`，每次访问都会生成新的 ID。
+private let restrictedStateID = UUID().uuidString
+private let restrictedDependencyID = UUID().uuidString
+
 private extension Application {
     var restrictedState: State<Int?> {
-        state(initial: nil, id: UUID().uuidString)
+        state(initial: nil, id: restrictedStateID)
     }
 
     var restrictedDependency: Dependency<SomeType> {
-        dependency(SomeType(), id: UUID().uuidString)
+        dependency(SomeType(), id: restrictedDependencyID)
     }
 }
 ```
@@ -136,6 +140,27 @@ fileprivate extension Application {
 AppState 使用统一的缓存来存储 `State`、`Dependency`、`StoredState` 和 `SyncState`。这确保了这些数据类型在您的应用程序中得到有效管理。
 
 默认情况下，AppState 将名称值指定为“App”，这确保了与模块关联的所有值都与该名称绑定。这使得从其他模块访问这些状态和依赖项变得更加困难。
+
+### 3.6 观察持久化失败
+
+当 `FileState` 的文件无法解码、写入或删除时，应用会继续运行：读取会返回初始值。无法编码的 `StoredState` 或 `SyncState` 值也是如此。要得知发生了这种情况，请在 `Application` 的子类中重写 `didFailToPersist(_:)`。
+
+### 示例
+
+```swift
+import AppState
+
+final class MyApplication: Application {
+    override func didFailToPersist(_ failure: PersistenceFailure) {
+        print("AppState could not \(failure.operation) \(failure.key): \(failure.error)")
+    }
+}
+
+// 在应用生命周期的早期调用一次。
+Application.promote(to: MyApplication.self)
+```
+
+失败信息包含状态的种类（`store`）、`operation`（`read`、`write` 或 `delete`）、状态的 `key` 以及底层的 `error`。从未写入过的 `FileState` 不算失败。无法读取的文件只报告一次，而不是每次读取都报告，直到该状态再次被成功读取或写入。
 
 ## 4. AppState 与 SwiftUI 的 Environment
 

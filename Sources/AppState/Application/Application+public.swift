@@ -66,11 +66,13 @@ public extension Application {
     static func promote<CustomApplication: Application>(
         to customApplication: CustomApplication.Type
     ) -> CustomApplication.Type {
+        let previous = shared
+
         #if !os(WASI)
-        NotificationCenter.default.removeObserver(shared)
+        NotificationCenter.default.removeObserver(previous)
         #endif
 
-        let cache = shared.cache
+        let cache = previous.cache
         shared = customApplication.init()
         customApplication.shared = shared
 
@@ -78,6 +80,19 @@ public extension Application {
             shared.cache.set(value: value, forKey: key)
             cache.remove(key)
         }
+
+        // Overrides made before the promotion end on the promoted instance.
+        shared.liveDependencyOverrides = previous.liveDependencyOverrides
+        previous.liveDependencyOverrides = [:]
+
+        #if canImport(Security)
+        // The cached `icloudStore` dependency moved with the cache, so its factory will not run
+        // again. Hand the registration over, or the promoted instance never hears iCloud changes.
+        if previous.isObservingExternalChanges {
+            previous.isObservingExternalChanges = false
+            shared.observeExternalChanges()
+        }
+        #endif
 
         return CustomApplication.self
     }
@@ -165,7 +180,8 @@ public extension Application {
 
      The override remains active for the lifetime of the returned `DependencyOverride` token.
      When this token is deallocated (or its `cancel()` method is explicitly called),
-     the original dependency value is restored.
+     the dependency that was stored when the override began is restored. Keep the token for as
+     long as the override should apply: `_ = Application.override(…)` ends it at once.
 
      - Parameters:
         - keyPath: The `KeyPath` of the `Dependency` to be overridden (e.g., `\.myServiceDependency`).
@@ -196,15 +212,21 @@ public extension Application {
             column: column
         )
 
+        let overrideID = UUID()
+        let key = dependency.scope.key
+
+        shared.liveDependencyOverrides[key, default: []].append(
+            LiveDependencyOverride(id: overrideID, previous: dependency)
+        )
         shared.cache.set(
             value: Dependency(value, scope: dependency.scope),
-            forKey: dependency.scope.key
+            forKey: key
         )
 
         let keyPath = String(describing: keyPath)
 
         return DependencyOverride {
-            await log(
+            log(
                 debug: "🔗 Cancelling Dependency Override \(keyPath) ",
                 fileID: fileID,
                 function: function,
@@ -212,12 +234,7 @@ public extension Application {
                 column: column
             )
 
-            await MainActor.run {
-                shared.cache.set(
-                    value: dependency,
-                    forKey: dependency.scope.key
-                )
-            }
+            shared.endDependencyOverride(id: overrideID, key: key)
         }
     }
 
@@ -509,11 +526,21 @@ public extension Application {
         feature: String = "App",
         id: String
     ) -> State<Value> {
-        State(
+        let scope = Scope(name: feature, id: id)
+
+        if let state = cache.get(scope.key, as: State<Value>.self) {
+            return state
+        }
+
+        let state = State(
             type: .state,
             initial: initial(),
-            scope: Scope(name: feature, id: id)
+            scope: scope
         )
+
+        cache.set(value: state, forKey: scope.key)
+
+        return state
     }
 
     /// Defines and retrieves a `State<Value>` instance with an automatically generated identifier from the call site's context.

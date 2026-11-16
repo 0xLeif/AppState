@@ -84,13 +84,17 @@ Para restringir o acesso, use um ID exclusivo como um UUID para garantir que ape
 ### Exemplo
 
 ```swift
+// Criado uma única vez. Um `UUID()` dentro da propriedade computada geraria um novo ID a cada acesso.
+private let restrictedStateID = UUID().uuidString
+private let restrictedDependencyID = UUID().uuidString
+
 private extension Application {
     var restrictedState: State<Int?> {
-        state(initial: nil, id: UUID().uuidString)
+        state(initial: nil, id: restrictedStateID)
     }
 
     var restrictedDependency: Dependency<SomeType> {
-        dependency(SomeType(), id: UUID().uuidString)
+        dependency(SomeType(), id: restrictedDependencyID)
     }
 }
 ```
@@ -136,6 +140,27 @@ fileprivate extension Application {
 O AppState usa um cache unificado para armazenar `State`, `Dependency`, `StoredState` e `SyncState`. Isso garante que esses tipos de dados sejam gerenciados de forma eficiente em toda a sua aplicação.
 
 Por padrão, o AppState atribui um valor de nome como "App", o que garante que todos os valores associados a um módulo estejam vinculados a esse nome. Isso torna mais difícil o acesso a esses estados e dependências de outros módulos.
+
+### 3.6 Observar falhas de persistência
+
+Um `FileState` cujo arquivo não pode ser decodificado, gravado ou excluído mantém o app em execução: uma leitura retorna o valor inicial. O mesmo vale para um valor de `StoredState` ou `SyncState` que não pode ser codificado. Para saber que isso aconteceu, sobrescreva `didFailToPersist(_:)` em uma subclasse de `Application`.
+
+### Exemplo
+
+```swift
+import AppState
+
+final class MyApplication: Application {
+    override func didFailToPersist(_ failure: PersistenceFailure) {
+        print("AppState could not \(failure.operation) \(failure.key): \(failure.error)")
+    }
+}
+
+// Uma vez, no início do ciclo de vida do app.
+Application.promote(to: MyApplication.self)
+```
+
+A falha traz o tipo de estado (`store`), a `operation` (`read`, `write` ou `delete`), a `key` do estado e o `error` subjacente. Um `FileState` que nunca foi gravado não é uma falha. Um arquivo ilegível é informado uma vez, e não a cada leitura, até que esse estado seja lido ou gravado com sucesso novamente.
 
 ## 4. AppState vs Ambiente do SwiftUI
 

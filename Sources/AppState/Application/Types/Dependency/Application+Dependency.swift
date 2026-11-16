@@ -1,3 +1,5 @@
+import Foundation
+
 extension Application {
     var dependencyPromotions: State<[DependencyOverride]> {
         state(initial: [])
@@ -34,23 +36,60 @@ extension Application {
     }
 
     /// `DependencyOverride` provides a handle to revert a dependency override operation.
+    ///
+    /// The override ends when ``cancel()`` is called or when the last reference to the token is
+    /// released, whichever comes first. The dependency is restored once.
     public final class DependencyOverride: Sendable {
-        /// Closure to be invoked when the dependency override is cancelled. This closure typically contains logic to revert the overrides on the dependency.
-        private let cancelOverride: @Sendable () async -> Void
+        /// Holds the restore closure on the main actor and runs it at most once, so an explicit
+        /// ``cancel()`` followed by the token's release does not restore twice.
+        @MainActor
+        private final class Restoration {
+            private var restore: (@MainActor () -> Void)?
+
+            init(restore: @escaping @MainActor () -> Void) {
+                self.restore = restore
+            }
+
+            func run() {
+                let restore = restore
+                self.restore = nil
+                restore?()
+            }
+        }
+
+        private let restoration: Restoration
 
         /**
          Initializes a `DependencyOverride` instance.
 
-         - Parameter cancelOverride: The closure to be invoked when the
-           dependency override is cancelled.
+         - Parameter restore: The closure that puts the overridden dependency back. It runs once,
+           on the main actor.
          */
-        init(cancelOverride: @Sendable @escaping () async -> Void) {
-            self.cancelOverride = cancelOverride
+        @MainActor
+        init(restore: @escaping @MainActor () -> Void) {
+            self.restoration = Restoration(restore: restore)
+        }
+
+        deinit {
+            let restoration = restoration
+
+            // Released on the main thread, which is the usual case for tests and previews, the
+            // dependency is back before the release returns. Elsewhere it is restored on the
+            // main actor's next turn.
+            #if os(WASI)
+            Task { @MainActor in restoration.run() }
+            #else
+            if Thread.isMainThread {
+                MainActor.assumeIsolated { restoration.run() }
+            } else {
+                Task { @MainActor in restoration.run() }
+            }
+            #endif
         }
 
         /// Cancels the override and resets the Dependency back to its value before the override.
         public func cancel() async {
-            await cancelOverride()
+            await restoration.run()
         }
     }
 }

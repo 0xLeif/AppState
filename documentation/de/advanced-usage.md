@@ -84,13 +84,17 @@ Um den Zugriff einzuschränken, verwenden Sie eine eindeutige ID wie eine UUID, 
 ### Beispiel
 
 ```swift
+// Einmal erstellt. Ein `UUID()` innerhalb der berechneten Eigenschaft würde bei jedem Zugriff eine neue ID erzeugen.
+private let restrictedStateID = UUID().uuidString
+private let restrictedDependencyID = UUID().uuidString
+
 private extension Application {
     var restrictedState: State<Int?> {
-        state(initial: nil, id: UUID().uuidString)
+        state(initial: nil, id: restrictedStateID)
     }
 
     var restrictedDependency: Dependency<SomeType> {
-        dependency(SomeType(), id: UUID().uuidString)
+        dependency(SomeType(), id: restrictedDependencyID)
     }
 }
 ```
@@ -136,6 +140,27 @@ fileprivate extension Application {
 AppState verwendet einen einheitlichen Cache zum Speichern von `State`, `Dependency`, `StoredState` und `SyncState`. Dadurch wird sichergestellt, dass diese Datentypen in Ihrer gesamten App effizient verwaltet werden.
 
 Standardmäßig weist AppState einen Namenswert als "App" zu, wodurch sichergestellt wird, dass alle mit einem Modul verbundenen Werte an diesen Namen gebunden sind. Dies erschwert den Zugriff auf diese Zustände und Abhängigkeiten von anderen Modulen.
+
+### 3.6 Persistenzfehler beobachten
+
+Ein `FileState`, dessen Datei nicht dekodiert, geschrieben oder gelöscht werden kann, lässt die App weiterlaufen: Ein Lesezugriff liefert den Anfangswert. Dasselbe gilt für einen `StoredState`- oder `SyncState`-Wert, der sich nicht kodieren lässt. Um davon zu erfahren, überschreiben Sie `didFailToPersist(_:)` in einer `Application`-Unterklasse.
+
+### Beispiel
+
+```swift
+import AppState
+
+final class MyApplication: Application {
+    override func didFailToPersist(_ failure: PersistenceFailure) {
+        print("AppState could not \(failure.operation) \(failure.key): \(failure.error)")
+    }
+}
+
+// Einmal, früh im Lebenszyklus der App.
+Application.promote(to: MyApplication.self)
+```
+
+Der Fehler enthält die Art des Zustands (`store`), die `operation` (`read`, `write` oder `delete`), den `key` des Zustands und den zugrunde liegenden `error`. Ein `FileState`, der nie geschrieben wurde, ist kein Fehler. Eine nicht lesbare Datei wird einmal gemeldet, nicht bei jedem Lesezugriff, bis dieser Zustand wieder erfolgreich gelesen oder geschrieben wurde.
 
 ## 4. AppState vs. SwiftUI-Umgebung
 

@@ -84,13 +84,17 @@ private extension Application {
 ### उदाहरण
 
 ```swift
+// एक बार बनाया जाता है। कंप्यूटेड प्रॉपर्टी के अंदर `UUID()` हर एक्सेस पर एक नई आईडी बनाएगा।
+private let restrictedStateID = UUID().uuidString
+private let restrictedDependencyID = UUID().uuidString
+
 private extension Application {
     var restrictedState: State<Int?> {
-        state(initial: nil, id: UUID().uuidString)
+        state(initial: nil, id: restrictedStateID)
     }
 
     var restrictedDependency: Dependency<SomeType> {
-        dependency(SomeType(), id: UUID().uuidString)
+        dependency(SomeType(), id: restrictedDependencyID)
     }
 }
 ```
@@ -136,6 +140,27 @@ fileprivate extension Application {
 AppState `State`, `Dependency`, `StoredState`, और `SyncState` को संग्रहीत करने के लिए एक एकीकृत कैश का उपयोग करता है। यह सुनिश्चित करता है कि ये डेटा प्रकार आपके पूरे ऐप में कुशलतापूर्वक प्रबंधित किए जाते हैं।
 
 डिफ़ॉल्ट रूप से, AppState "App" के रूप में एक नाम मान निर्दिष्ट करता है, जो यह सुनिश्चित करता है कि एक मॉड्यूल से जुड़े सभी मान उस नाम से बंधे हैं। यह इन स्थितियों और निर्भरताओं को अन्य मॉड्यूलों से एक्सेस करना कठिन बना देता है।
+
+### 3.6 पर्सिस्टेंस विफलताओं का अवलोकन
+
+जिस `FileState` की फ़ाइल डिकोड, लिखी या हटाई नहीं जा सकती, वह ऐप को चलने देता है: पढ़ने पर प्रारंभिक मान मिलता है। यही बात उस `StoredState` या `SyncState` मान पर लागू होती है जिसे एन्कोड नहीं किया जा सकता। ऐसा होने की जानकारी पाने के लिए `Application` के उपवर्ग में `didFailToPersist(_:)` को ओवरराइड करें।
+
+### उदाहरण
+
+```swift
+import AppState
+
+final class MyApplication: Application {
+    override func didFailToPersist(_ failure: PersistenceFailure) {
+        print("AppState could not \(failure.operation) \(failure.key): \(failure.error)")
+    }
+}
+
+// एक बार, ऐप के जीवनचक्र की शुरुआत में।
+Application.promote(to: MyApplication.self)
+```
+
+विफलता में स्टेट का प्रकार (`store`), `operation` (`read`, `write` या `delete`), स्टेट की `key` और मूल `error` होता है। जो `FileState` कभी लिखा ही नहीं गया, वह विफलता नहीं है। न पढ़ी जा सकने वाली फ़ाइल की सूचना एक बार दी जाती है, हर पठन पर नहीं, जब तक वह स्टेट फिर से सफलतापूर्वक पढ़ा या लिखा न जाए।
 
 ## 4. AppState बनाम SwiftUI का पर्यावरण
 

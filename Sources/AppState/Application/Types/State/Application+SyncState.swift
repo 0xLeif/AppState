@@ -22,15 +22,27 @@ extension Application {
     /// The default `NSUbiquitousKeyValueStore` instance.
     public var icloudStore: Dependency<any UbiquitousKeyValueStoreManaging> {
         dependency {
-            NotificationCenter.default.addObserver(
-                self,
-                selector: #selector(didChangeExternally),
-                name: NSUbiquitousKeyValueStore.didChangeExternallyNotification,
-                object: NSUbiquitousKeyValueStore.default
-            )
+            observeExternalChanges()
 
             return SendableNSUbiquitousKeyValueStore()
         }
+    }
+
+    /// Registers this instance for `NSUbiquitousKeyValueStore.didChangeExternallyNotification`, once.
+    ///
+    /// The `icloudStore` dependency calls this when it is first created. `promote(to:)` calls it on
+    /// the promoted instance, because the cached dependency is copied over and never created again.
+    func observeExternalChanges() {
+        guard isObservingExternalChanges == false else { return }
+
+        isObservingExternalChanges = true
+
+        NotificationCenter.default.addObserver(
+            self,
+            selector: #selector(didChangeExternally),
+            name: NSUbiquitousKeyValueStore.didChangeExternallyNotification,
+            object: NSUbiquitousKeyValueStore.default
+        )
     }
 
     /**
@@ -102,6 +114,9 @@ extension Application {
                             function: #function,
                             line: #line,
                             column: #column
+                        )
+                        shared.didFailToPersist(
+                            PersistenceFailure(store: .syncState, operation: .write, key: scope.key, error: error)
                         )
                     }
                 }
