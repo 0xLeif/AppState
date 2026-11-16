@@ -25,7 +25,7 @@ waiting_on_human:
     drives: review
     opened: 2026-11-16T14:08:48Z
 run_consents: []
-next: Wait for 0xLeif to review the working tree and say whether to commit on a branch; do not ship
+next: Watch CI on PR 157, then wait for 0xLeif's implementation review; do not ship or merge
 ---
 # Review every state and dependency type and the documented examples, and record each reproduced bug
 
@@ -39,6 +39,7 @@ Review every state and dependency type and the documented examples, and record e
 - Evidence could not be recorded: chough evidence add needs a HI criterion and this project has no hi/ directory, so the bugs read as unverified
 - Fixed all 10 recorded bugs in the working tree, uncommitted; ReviewFixTests added; every test class passes on macOS arm64 under the strict build; chough change ready reports nothing missing
 - Scope approved by 0xLeif; native change check passed with no commit
+- Committed on fix/review-state-dependency-bugs, native check passed with commit, PR 157 opened; macOS strict, Linux 6.1 tests and WASI build pass locally
 
 ## Decisions and why
 
