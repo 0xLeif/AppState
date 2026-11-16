@@ -160,7 +160,7 @@ final class MyApplication: Application {
 Application.promote(to: MyApplication.self)
 ```
 
-विफलता में स्टेट का प्रकार (`store`), `operation` (`read`, `write` या `delete`), स्टेट की `key` और मूल `error` होता है। जो `FileState` कभी लिखा ही नहीं गया, वह विफलता नहीं है। विफल पठन कैश नहीं होता, इसलिए हर बार पढ़ने की कोशिश पर यह मेथड फिर से कॉल होता है।
+विफलता में स्टेट का प्रकार (`store`), `operation` (`read`, `write` या `delete`), स्टेट की `key` और मूल `error` होता है। जो `FileState` कभी लिखा ही नहीं गया, वह विफलता नहीं है। न पढ़ी जा सकने वाली फ़ाइल की सूचना एक बार दी जाती है, हर पठन पर नहीं, जब तक वह स्टेट फिर से सफलतापूर्वक पढ़ा या लिखा न जाए।
 
 ## 4. AppState बनाम SwiftUI का पर्यावरण
 

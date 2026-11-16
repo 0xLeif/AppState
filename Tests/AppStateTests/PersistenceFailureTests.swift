@@ -9,8 +9,9 @@ fileprivate struct FailureReading: Codable, Sendable, Equatable {
     var celsius: Double
 }
 
-fileprivate let failureDirectory = "./PersistenceFailureTests"
-fileprivate let failureBlocker = "./PersistenceFailureTests/blocker"
+// An iOS app cannot write to its working directory, so the fixtures live in the temporary directory.
+fileprivate let failureDirectory = NSTemporaryDirectory() + "PersistenceFailureTests"
+fileprivate let failureBlocker = failureDirectory + "/blocker"
 
 fileprivate struct FailureDeleteRefused: Error {}
 
@@ -137,15 +138,28 @@ final class PersistenceFailureTests: XCTestCase {
 
         XCTAssertEqual(Application.fileState(\.failureCorruptFile).value, 7)
 
-        // A failed read is not cached, so each attempt reads the file again and reports again.
-        XCTAssertFalse(RecordingApplication.failures.isEmpty)
+        XCTAssertEqual(RecordingApplication.failures.count, 1)
+        XCTAssertEqual(RecordingApplication.failures.first?.store, .fileState)
+        XCTAssertEqual(RecordingApplication.failures.first?.operation, .read)
+        XCTAssertEqual(RecordingApplication.failures.first?.key, key)
+        XCTAssertTrue(RecordingApplication.failures.first?.error is DecodingError)
 
-        for failure in RecordingApplication.failures {
-            XCTAssertEqual(failure.store, .fileState)
-            XCTAssertEqual(failure.operation, .read)
-            XCTAssertEqual(failure.key, key)
-            XCTAssertTrue(failure.error is DecodingError)
+        // A view reads its state on every render. The same unreadable file is reported once.
+        for _ in 0..<5 {
+            XCTAssertEqual(Application.fileState(\.failureCorruptFile).value, 7)
         }
+
+        XCTAssertEqual(RecordingApplication.failures.count, 1)
+
+        // After a successful write the file is readable again, and a new failure is a new report.
+        var corrupt = Application.fileState(\.failureCorruptFile)
+        corrupt.value = 8
+
+        try Data("{ still not json".utf8).write(to: URL(fileURLWithPath: failureDirectory).appendingPathComponent("corrupt"))
+        forgetCachedValue(for: key)
+
+        XCTAssertEqual(Application.fileState(\.failureCorruptFile).value, 7)
+        XCTAssertEqual(RecordingApplication.failures.count, 2)
     }
 
     @MainActor

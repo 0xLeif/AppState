@@ -160,7 +160,7 @@ final class MyApplication: Application {
 Application.promote(to: MyApplication.self)
 ```
 
-失败信息包含状态的种类（`store`）、`operation`（`read`、`write` 或 `delete`）、状态的 `key` 以及底层的 `error`。从未写入过的 `FileState` 不算失败。失败的读取不会被缓存，因此每次再次尝试读取时都会再次调用该方法。
+失败信息包含状态的种类（`store`）、`operation`（`read`、`write` 或 `delete`）、状态的 `key` 以及底层的 `error`。从未写入过的 `FileState` 不算失败。无法读取的文件只报告一次，而不是每次读取都报告，直到该状态再次被成功读取或写入。
 
 ## 4. AppState 与 SwiftUI 的 Environment
 

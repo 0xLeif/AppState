@@ -160,7 +160,7 @@ final class MyApplication: Application {
 Application.promote(to: MyApplication.self)
 ```
 
-L'échec indique le type d'état (`store`), l'`operation` (`read`, `write` ou `delete`), la `key` de l'état et l'`error` sous-jacente. Un `FileState` qui n'a jamais été écrit n'est pas un échec. Une lecture échouée n'est pas mise en cache : la méthode est donc appelée à chaque nouvelle tentative de lecture.
+L'échec indique le type d'état (`store`), l'`operation` (`read`, `write` ou `delete`), la `key` de l'état et l'`error` sous-jacente. Un `FileState` qui n'a jamais été écrit n'est pas un échec. Un fichier illisible est signalé une seule fois, et non à chaque lecture, jusqu'à ce que cet état soit de nouveau lu ou écrit avec succès.
 
 ## 4. AppState vs Environnement de SwiftUI
 

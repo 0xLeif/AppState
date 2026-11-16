@@ -57,6 +57,48 @@ open class Application: NSObject {
     @ObservationIgnored
     var isObservingExternalChanges: Bool = false
 
+    /// One live override of a dependency: what the dependency was before it.
+    struct LiveDependencyOverride {
+        let id: UUID
+        var previous: Any
+    }
+
+    /// The live overrides of each dependency, oldest first, by the key of the dependency's scope.
+    ///
+    /// Overrides of one dependency can end in any order. Each remembers what it replaced, so the
+    /// one that ends hands that on to the next newer override, and only the newest writes the cache.
+    @ObservationIgnored
+    var liveDependencyOverrides: [String: [LiveDependencyOverride]] = [:]
+
+    /// Ends the override `id` of the dependency stored under `key`.
+    ///
+    /// The newest override puts back what it replaced. An older one leaves the dependency alone
+    /// and passes what it replaced to the override that came after it.
+    @MainActor
+    func endDependencyOverride(id: UUID, key: String) {
+        guard
+            var overrides = liveDependencyOverrides[key],
+            let index = overrides.firstIndex(where: { $0.id == id })
+        else { return }
+
+        let ended = overrides.remove(at: index)
+
+        if index == overrides.count {
+            cache.set(value: ended.previous, forKey: key)
+        } else {
+            overrides[index].previous = ended.previous
+        }
+
+        liveDependencyOverrides[key] = overrides.isEmpty ? nil : overrides
+    }
+
+    /// Keys of file states whose unreadable file has already been reported to
+    /// ``didFailToPersist(_:)``. A view reads its state on every render, so without this an
+    /// unreadable file would be reported on each one. A key leaves the set when that state is next
+    /// read or written successfully.
+    @ObservationIgnored
+    var reportedReadFailures: Set<String> = []
+
     /// Initializes a new instance of `Application`.
     ///
     /// This initializer is used for the default `Application.shared` instance and any custom `Application` subclasses.
@@ -118,8 +160,9 @@ open class Application: NSObject {
     /// ``StoredState`` or `SyncState` value that cannot be encoded. A `FileState` that was never
     /// written is not a failure and is not reported.
     ///
-    /// A failed read is not cached. Each later read tries the file again and, if it still fails,
-    /// reports again, so an override that shows an alert should remember what it has shown.
+    /// An unreadable file is reported once, not on every read. It is reported again only after
+    /// that state has been read or written successfully in between. Every failed write or delete
+    /// is reported.
     ///
     /// The default implementation does nothing. AppState logs the failure as before when logging is
     /// enabled, whether or not this method is overridden. Override it in an `Application` subclass

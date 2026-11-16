@@ -160,7 +160,7 @@ final class MyApplication: Application {
 Application.promote(to: MyApplication.self)
 ```
 
-A falha traz o tipo de estado (`store`), a `operation` (`read`, `write` ou `delete`), a `key` do estado e o `error` subjacente. Um `FileState` que nunca foi gravado não é uma falha. Uma leitura que falhou não fica em cache, então o método é chamado novamente a cada nova tentativa de leitura.
+A falha traz o tipo de estado (`store`), a `operation` (`read`, `write` ou `delete`), a `key` do estado e o `error` subjacente. Um `FileState` que nunca foi gravado não é uma falha. Um arquivo ilegível é informado uma vez, e não a cada leitura, até que esse estado seja lido ou gravado com sucesso novamente.
 
 ## 4. AppState vs Ambiente do SwiftUI
 

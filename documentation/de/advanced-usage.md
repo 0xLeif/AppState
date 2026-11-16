@@ -160,7 +160,7 @@ final class MyApplication: Application {
 Application.promote(to: MyApplication.self)
 ```
 
-Der Fehler enthält die Art des Zustands (`store`), die `operation` (`read`, `write` oder `delete`), den `key` des Zustands und den zugrunde liegenden `error`. Ein `FileState`, der nie geschrieben wurde, ist kein Fehler. Ein fehlgeschlagener Lesezugriff wird nicht zwischengespeichert, daher wird die Methode bei jedem neuen Leseversuch erneut aufgerufen.
+Der Fehler enthält die Art des Zustands (`store`), die `operation` (`read`, `write` oder `delete`), den `key` des Zustands und den zugrunde liegenden `error`. Ein `FileState`, der nie geschrieben wurde, ist kein Fehler. Eine nicht lesbare Datei wird einmal gemeldet, nicht bei jedem Lesezugriff, bis dieser Zustand wieder erfolgreich gelesen oder geschrieben wurde.
 
 ## 4. AppState vs. SwiftUI-Umgebung
 

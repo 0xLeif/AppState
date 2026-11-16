@@ -161,7 +161,7 @@ final class MyApplication: Application {
 Application.promote(to: MyApplication.self)
 ```
 
-The failure carries the kind of state (`store`), the `operation` (`read`, `write` or `delete`), the state's `key` and the underlying `error`. A `FileState` that was never written is not a failure. A failed read is not cached, so the method is called again each time the read is tried.
+The failure carries the kind of state (`store`), the `operation` (`read`, `write` or `delete`), the state's `key` and the underlying `error`. A `FileState` that was never written is not a failure. An unreadable file is reported once, not on every read, until that state is read or written successfully again.
 
 ## 4. AppState vs SwiftUI's Environment
 

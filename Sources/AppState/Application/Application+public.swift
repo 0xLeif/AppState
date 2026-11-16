@@ -81,6 +81,10 @@ public extension Application {
             cache.remove(key)
         }
 
+        // Overrides made before the promotion end on the promoted instance.
+        shared.liveDependencyOverrides = previous.liveDependencyOverrides
+        previous.liveDependencyOverrides = [:]
+
         #if canImport(Security)
         // The cached `icloudStore` dependency moved with the cache, so its factory will not run
         // again. Hand the registration over, or the promoted instance never hears iCloud changes.
@@ -208,9 +212,15 @@ public extension Application {
             column: column
         )
 
+        let overrideID = UUID()
+        let key = dependency.scope.key
+
+        shared.liveDependencyOverrides[key, default: []].append(
+            LiveDependencyOverride(id: overrideID, previous: dependency)
+        )
         shared.cache.set(
             value: Dependency(value, scope: dependency.scope),
-            forKey: dependency.scope.key
+            forKey: key
         )
 
         let keyPath = String(describing: keyPath)
@@ -224,10 +234,7 @@ public extension Application {
                 column: column
             )
 
-            shared.cache.set(
-                value: dependency,
-                forKey: dependency.scope.key
-            )
+            shared.endDependencyOverride(id: overrideID, key: key)
         }
     }
 

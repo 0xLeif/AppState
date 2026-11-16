@@ -54,7 +54,8 @@ fileprivate final class ReviewRecordingUserDefaults: UserDefaultsManaging, @unch
     }
 }
 
-fileprivate let reviewFilePath = "./ReviewFixTests"
+// An iOS app cannot write to its working directory, so the fixtures live in the temporary directory.
+fileprivate let reviewFilePath = NSTemporaryDirectory() + "ReviewFixTests"
 
 extension Application {
     fileprivate var reviewCounter: State<Int> {
@@ -332,6 +333,33 @@ final class ReviewFixTests: XCTestCase {
 
         await second.cancel()
 
+        XCTAssertEqual(Application.dependency(\.reviewService), "real")
+    }
+
+    /// Two overrides of one dependency can end in either order. The dependency is always the
+    /// newest override still alive, and the original once none is.
+    @MainActor
+    func testOverridesEndedOutOfOrderRestoreTheRightDependency() async {
+        let first = Application.override(\.reviewService, with: "first")
+        let second = Application.override(\.reviewService, with: "second")
+        let third = Application.override(\.reviewService, with: "third")
+
+        await second.cancel()
+        XCTAssertEqual(Application.dependency(\.reviewService), "third")
+
+        await first.cancel()
+        XCTAssertEqual(Application.dependency(\.reviewService), "third")
+
+        await third.cancel()
+        XCTAssertEqual(Application.dependency(\.reviewService), "real")
+
+        let outer = Application.override(\.reviewService, with: "outer")
+        let inner = Application.override(\.reviewService, with: "inner")
+
+        await outer.cancel()
+        XCTAssertEqual(Application.dependency(\.reviewService), "inner")
+
+        await inner.cancel()
         XCTAssertEqual(Application.dependency(\.reviewService), "real")
     }
 

@@ -4,7 +4,11 @@
 
 ### Added
 
-- `Application.didFailToPersist(_:)`, an overridable method that is called when a `FileState` file cannot be decoded, written or deleted, or when a `StoredState` or `SyncState` value cannot be encoded. It receives an `Application.PersistenceFailure` with the kind of state, the operation, the state's key and the underlying error. The default implementation does nothing, and logging is unchanged, so an app that does not override it behaves as before. A `FileState` that was never written is not reported.
+- `Application.didFailToPersist(_:)`, an overridable method that is called when a `FileState` file cannot be decoded, written or deleted, or when a `StoredState` or `SyncState` value cannot be encoded. It receives an `Application.PersistenceFailure` with the kind of state, the operation, the state's key and the underlying error. The default implementation does nothing, and logging is unchanged, so an app that does not override it behaves as before. A `FileState` that was never written is not reported. An unreadable file is reported once, not on every read.
+
+### Fixed
+
+- Overrides of the same dependency can end in any order. Ending an older override while a newer one was alive used to put the older value back at once, and left a stale override in place after both had ended. The dependency is now the newest override still alive, and the original once none is.
 
 ## 3.0.3
 

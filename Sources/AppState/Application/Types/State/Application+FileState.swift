@@ -62,6 +62,8 @@ extension Application {
                 do {
                     let storedValue: Value = try fileManager.in(path: path, filename: filename)
 
+                    shared.reportedReadFailures.remove(scope.key)
+
                     // Seed the cache before returning. A deferred seed would land after a write
                     // made in the same main-actor turn and leave the cache on this older value.
                     shared.cache.set(
@@ -84,7 +86,8 @@ extension Application {
                         column: #column
                     )
 
-                    if Application.isMissingFile(error) == false {
+                    if Application.isMissingFile(error) == false,
+                       shared.reportedReadFailures.insert(scope.key).inserted {
                         shared.didFailToPersist(
                             PersistenceFailure(store: .fileState, operation: .read, key: scope.key, error: error)
                         )
@@ -135,6 +138,7 @@ extension Application {
                             filename: filename,
                             base64Encoded: isBase64Encoded
                         )
+                        shared.reportedReadFailures.remove(scope.key)
                     } catch {
                         log(
                             error: error,
