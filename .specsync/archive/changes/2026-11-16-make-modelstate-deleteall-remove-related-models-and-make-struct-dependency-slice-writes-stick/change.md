@@ -1,6 +1,6 @@
 ---
 id: make-modelstate-deleteall-remove-related-models-and-make-struct-dependency-slice-writes-stick
-state: implementing
+state: archived
 type: bug_fix
 base_commit: 5053feab3497605386613e4309bc0cf8c95dc5c4
 ---

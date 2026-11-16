@@ -7,11 +7,11 @@
   "title": "Make ModelState.deleteAll remove related models, and make struct dependency slice writes stick",
   "description": "Make ModelState.deleteAll remove related models, and make struct dependency slice writes stick",
   "kind": "bug_fix",
-  "state": "verifying",
+  "state": "archived",
   "canonical_applied": true,
   "base_commit": "5053feab3497605386613e4309bc0cf8c95dc5c4",
   "created_at": 1794797442,
-  "updated_at": 1794804576,
+  "updated_at": 1794804597,
   "affected_specs": [
     "swiftdata",
     "property-wrappers",

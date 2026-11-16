@@ -1,0 +1,206 @@
+{
+  "timestamp": 1794804575,
+  "commit": "2ad56485d09a8bd78daeb561126d281911716034",
+  "contract_digest": "253e517fc01f6b88eaea2b3a5954cfcc9d2d1cb7d8b1c81f76b612f8b8a14481",
+  "execution_digest": "3a974480047ece983af26fd8a8a10ada2aa3e9b1e7ec42cb0c36733d9763b464",
+  "workspace_digest": "4cb4e6b6a1f17ac0637997516c0cac059ab531c026e28f00a988fbf517180c6b",
+  "acceptance_input_digest": "99906f371568ab9dc3732c1529ec5f4363b72f1a0f3469ef1e698d89dfbb6470",
+  "acceptance_manifest": {
+    "schema_version": 1,
+    "entries": [
+      {
+        "path": "Sources/AppState/Application/Types/Dependency/Slice/Application+DependencySlice.swift",
+        "kind": "file",
+        "mode": 33188,
+        "payload_digest": "723539e470701562499476afd876da9c8333fe4db2870ba7a39e0d2780345e38",
+        "entry_digest": "0e00fa34b59eee18551dde71c6b9344f6d4ee25d414579f723017e72cb014a71",
+        "owners": [
+          "application"
+        ]
+      },
+      {
+        "path": "Sources/AppState/Application/Types/State/Application+ModelState.swift",
+        "kind": "file",
+        "mode": 33188,
+        "payload_digest": "25544fefbcf53610181a11068a48491e7d0bd11e15546f3d214127b743091a1b",
+        "entry_digest": "8516f647c96042cde41efc42f832ea580d0d06bd92f37f45011f8844cc239353",
+        "owners": [
+          "swiftdata"
+        ]
+      },
+      {
+        "path": "Sources/AppState/PropertyWrappers/Dependency/Slice/DependencySlice.swift",
+        "kind": "file",
+        "mode": 33188,
+        "payload_digest": "d4a9c9b6d197b2499f4dc77541e304e7661dc1f497130a651f8ccca5846d0a63",
+        "entry_digest": "c922ba3cc09405a2f1f85a811b7ea737091e7e281c59b27b79818a77d290ec56",
+        "owners": [
+          "property-wrappers"
+        ]
+      },
+      {
+        "path": "specs/application/application.spec.md",
+        "kind": "file",
+        "mode": 33188,
+        "payload_digest": "9f3e6507422e00ba7473137a1a9f2876e1992aa24e14e09836d10424c667b35b",
+        "entry_digest": "9ffcb2a65d46c0bd1daaf0ba7e1e0f5a5cb7e40d2292bb46278234355979059a",
+        "owners": [
+          "application"
+        ]
+      },
+      {
+        "path": "specs/application/context.md",
+        "kind": "file",
+        "mode": 33188,
+        "payload_digest": "684a2049772ee1adc8403255c4e23c1a2cdd2d4dccd68bff70e48ca203d5ea1c",
+        "entry_digest": "d213d708386275489966dd66d010c778c8b4967817d13696b1e86d11b8e2e353",
+        "owners": [
+          "application"
+        ]
+      },
+      {
+        "path": "specs/application/requirements.md",
+        "kind": "file",
+        "mode": 33188,
+        "payload_digest": "18f9fa044567ecc6005bbf4a72a09cdecfd11004652df571cc71555ddfa3183a",
+        "entry_digest": "eca54c2c3bd9dbcb7b39dcb24f0f5f39c61a19b3dcd8f5f0873733f5866abef7",
+        "owners": [
+          "application"
+        ]
+      },
+      {
+        "path": "specs/application/tasks.md",
+        "kind": "file",
+        "mode": 33188,
+        "payload_digest": "2a2987cc3ec257bdafd7fc01be194d423af475a0bda34ca34b6fa31929fe93df",
+        "entry_digest": "069010f58657ca1eec454ee4910aa0f7f83faae35ae18e2aefead2e474cfa774",
+        "owners": [
+          "application"
+        ]
+      },
+      {
+        "path": "specs/application/testing.md",
+        "kind": "file",
+        "mode": 33188,
+        "payload_digest": "941feeb1fbf7eed808d4e070510841af4130a2fd2e9f3e3f74d807b2104add76",
+        "entry_digest": "21aad20aeccdb24909439704838a46d2f9e8b68560eb689763cf56a9f507926c",
+        "owners": [
+          "application"
+        ]
+      },
+      {
+        "path": "specs/property-wrappers/context.md",
+        "kind": "file",
+        "mode": 33188,
+        "payload_digest": "f470ad9da08c450f59e62c3bb36fbcb14ce964412bc0054dfb157d56ab144df3",
+        "entry_digest": "2265920f9585c0f84159a1884b83c45d1e5d19a50e0c6769f696fbce31b29ca2",
+        "owners": [
+          "property-wrappers"
+        ]
+      },
+      {
+        "path": "specs/property-wrappers/property-wrappers.spec.md",
+        "kind": "file",
+        "mode": 33188,
+        "payload_digest": "357f10cabca01a5abc6695c4fc20010bf0f2a18d317517af2eee7078ce6dc2d3",
+        "entry_digest": "36daef7a265a2c7ad4743f9ba8b8e52d77480d9ba7a9aecee5e4f4a7842e6d3c",
+        "owners": [
+          "property-wrappers"
+        ]
+      },
+      {
+        "path": "specs/property-wrappers/requirements.md",
+        "kind": "file",
+        "mode": 33188,
+        "payload_digest": "53c86578780a64393711558816145244e749ae3a3ecb6a25bec6a5227ba1017b",
+        "entry_digest": "830196c7918ab6d1cd1e83477eaefdefbebc89090d96d38b4209c2a79453c3f6",
+        "owners": [
+          "property-wrappers"
+        ]
+      },
+      {
+        "path": "specs/property-wrappers/tasks.md",
+        "kind": "file",
+        "mode": 33188,
+        "payload_digest": "ba8a53b2cd6d42964fe7c2ed5a8a6d53d7f74f8df18f8f7e3572f6121b6bff60",
+        "entry_digest": "812f5ad57c762d0d94ddb03d73658113f17a9cc4f8b00ec435519e432deb4945",
+        "owners": [
+          "property-wrappers"
+        ]
+      },
+      {
+        "path": "specs/property-wrappers/testing.md",
+        "kind": "file",
+        "mode": 33188,
+        "payload_digest": "8c4ce76ce42ebbfc27c9a97f58fa2542af8721091367d72a84f52bf2c473d965",
+        "entry_digest": "c106bf960743e3bf5585c36a386f107c28ec79378bcadb80238d20df005e240b",
+        "owners": [
+          "property-wrappers"
+        ]
+      },
+      {
+        "path": "specs/swiftdata/context.md",
+        "kind": "file",
+        "mode": 33188,
+        "payload_digest": "b7c944da317906bc96abae72b8db00f0596d741a801be8c61c59b11fd4c6c5f8",
+        "entry_digest": "53f6bb8cd81a8c6a40cedd90be34e5f03969049fa246668862a1abef2ef7f7db",
+        "owners": [
+          "swiftdata"
+        ]
+      },
+      {
+        "path": "specs/swiftdata/requirements.md",
+        "kind": "file",
+        "mode": 33188,
+        "payload_digest": "7b493a5e277838097c357a1ccd5a9c1c7ea648423b71259c094785d23651d03e",
+        "entry_digest": "3491f26ef9de402e9183cd6c6c13b0070b1ca7e12e018f698a47bfc352999259",
+        "owners": [
+          "swiftdata"
+        ]
+      },
+      {
+        "path": "specs/swiftdata/swiftdata.spec.md",
+        "kind": "file",
+        "mode": 33188,
+        "payload_digest": "86449c4f26e0723ae84d8c2d470d6c735d52eaec98feea8aab9290881a4ae84f",
+        "entry_digest": "fe17879fe778273cee20576b96d73d0ee750e78e143a13bb967f21f75470adbc",
+        "owners": [
+          "swiftdata"
+        ]
+      },
+      {
+        "path": "specs/swiftdata/tasks.md",
+        "kind": "file",
+        "mode": 33188,
+        "payload_digest": "83f37da75a70000a5a99d0191d53bc2080e4d69996ea7572b98a1565a20cae3e",
+        "entry_digest": "f359c6bbc202ec84f83da4b8fd9d537f2865dd8d33c3309d6e7ecda906816766",
+        "owners": [
+          "swiftdata"
+        ]
+      },
+      {
+        "path": "specs/swiftdata/testing.md",
+        "kind": "file",
+        "mode": 33188,
+        "payload_digest": "272d84f6c55692af810604a9bb7cd10ea139e14f447fd357662c265fe236912b",
+        "entry_digest": "7e8c5fd4a0f78c75dbd4c74e7fa1e2499327120069e1795fb58e00823c5d1e8d",
+        "owners": [
+          "swiftdata"
+        ]
+      }
+    ]
+  },
+  "passed": true,
+  "commands": [
+    {
+      "command": "specsync check --spec application --spec property-wrappers --spec swiftdata",
+      "success": true,
+      "exit_code": 0
+    }
+  ],
+  "requirement_ids": [
+    "REQ-application-001",
+    "REQ-property-wrappers-001",
+    "REQ-swiftdata-001"
+  ]
+}

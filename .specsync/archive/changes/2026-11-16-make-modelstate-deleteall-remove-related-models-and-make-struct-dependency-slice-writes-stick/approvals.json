@@ -47,6 +47,13 @@
         "where": "Grok Build chat in /Users/tob/Development/AppState on 2026-11-15, in reply to the report that the next gate was specsync change approve",
         "recorded_by": "Grok"
       }
+    },
+    {
+      "gate": "finalization",
+      "actor": "specsync:finalization",
+      "timestamp": 1794804596,
+      "digest": "e9e7a595a420d8882c4102e4ef808e755add3a9c6570084eac047bd9b671b99c",
+      "note": "Same-PR finalization closing digest"
     }
   ],
   "reopenings": []
