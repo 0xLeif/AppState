@@ -47,7 +47,90 @@
         "where": "Claude Code chat on 2026-11-16, in reply to the request for scope approval of the persistence-failure hook",
         "recorded_by": "claude-code"
       }
+    },
+    {
+      "gate": "definition",
+      "actor": "0xLeif",
+      "timestamp": 1794871827,
+      "digest": "d43509c422c1fd0d87bb3eccc165fe59d3cf60346d7bc7df296ceafc51310428",
+      "note": null,
+      "approved_scope": {
+        "schema_version": 1,
+        "change_id": "report-persistence-failures-to-an-overridable-application-method",
+        "title": "Report persistence failures to an overridable Application method",
+        "description": "Report persistence failures to an overridable Application method",
+        "kind": "feature",
+        "affected_specs": [
+          "application"
+        ],
+        "affected_paths": [
+          ".chough",
+          ".github/workflows/iOS.yml",
+          ".specsync",
+          "CHANGELOG.md",
+          "Examples/DemoApp",
+          "README.md",
+          "Sources/AppState/Application/Application+public.swift",
+          "Sources/AppState/Application/Application.swift",
+          "Sources/AppState/Application/Types/Helper/Application+PersistenceFailure.swift",
+          "Sources/AppState/Application/Types/State/Application+FileState.swift",
+          "Sources/AppState/Application/Types/State/Application+StoredState.swift",
+          "Sources/AppState/Application/Types/State/Application+SyncState.swift",
+          "Tests",
+          "documentation",
+          "knowledge",
+          "specs"
+        ],
+        "no_spec_change": false,
+        "no_spec_change_rationale": null,
+        "acceptance_criteria": [
+          "PersistenceFailureTests passes: an Application subclass that overrides didFailToPersist hears a FileState read failure for a file that cannot be decoded, a FileState write failure, a rejected StoredState value and a SyncState value that cannot be encoded, each with the store, operation, key and error; it hears nothing for a successful round trip or for a FileState that was never written; an application without the override behaves as before; every test class passes on macOS under the strict build and in a release build, the Linux suite passes on Swift 6.1 and the WASI build passes"
+        ],
+        "dependencies": [],
+        "supersedes": [],
+        "answers": {
+          "architecture_risk": "no",
+          "constraints": "Additive only: no existing declaration, log line or fallback value may change. SyncState only inside canImport(Security). Swift 6 with explicit access control and no force-unwrap. Must build on Linux, Windows and WASI.",
+          "public_contract": "yes"
+        }
+      },
+      "approved_delta_digests": {
+        "application": "f37270f4d1cbeeb8decabc8b5405becba3d1904d97de96a60d0c17a13b60693f"
+      },
+      "approved_delta_bases": {},
+      "relayed_by": {
+        "decided_by": "0xLeif",
+        "words": "yes",
+        "where": "Claude Code chat on 2026-11-16, in reply to: Do you approve the re-scoped failure-hook change? (after his send-back to declare the owning modules; the declared paths now name the six changed source files)",
+        "recorded_by": "claude-code"
+      }
     }
   ],
-  "reopenings": []
+  "reopenings": [],
+  "send_backs": [
+    {
+      "schema_version": 1,
+      "change_id": "report-persistence-failures-to-an-overridable-application-method",
+      "actor": "0xLeif",
+      "reason": "declare the owning modules",
+      "timestamp": 1794871723,
+      "from_state": "verifying",
+      "to_state": "draft",
+      "cancelled_approvals": 1,
+      "cancelled_review_attempts": 0,
+      "canonical_applied": true,
+      "applied_items": [
+        {
+          "module": "application",
+          "operation": "added",
+          "target": "requirement",
+          "key": "REQ-application-007",
+          "content": "Application SHALL call its overridable didFailToPersist method, on the main actor, when a FileState file cannot be decoded, written or deleted, and when a StoredState or SyncState value cannot be encoded. The failure SHALL carry the kind of state, the operation, the key of the state and the underlying error. A FileState whose file does not exist SHALL NOT be reported, on a read or on a write of nil. The default implementation SHALL do nothing, and existing logging and fallback values SHALL be unchanged.\n\nAcceptance Criteria\n\n- A FileState whose file holds text that is not JSON reads its initial value and reports a read failure with a DecodingError.\n- A FileState whose directory is a regular file reports one write failure for one write.\n- A StoredState given a struct that holds Double.nan keeps its previous value and reports one write failure with an EncodingError.\n- A SyncState given a value that cannot be encoded reports one write failure.\n- A FileState round trip that succeeds, a read of a FileState that was never written, and a write of nil to it report nothing.\n- An Application that does not override the method reads the initial value from an unreadable file as before."
+        }
+      ],
+      "applied_modules": [
+        "application"
+      ]
+    }
+  ]
 }
