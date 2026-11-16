@@ -14,7 +14,7 @@ spec: swiftdata.spec.md
 - `Application.modelContext(\.container)` returns the backing container's `mainContext`, and repeated calls return the same context.
 - Reading `ModelState.models` performs a live fetch using the state's `FetchDescriptor`; an empty result returns `[]`. `models` is read-only.
 - `insert(_:)`, `delete(_:)`, and `save()` persist through the container's `mainContext`.
-- `ModelState.deleteAll()` deletes every model matching the `FetchDescriptor` and saves, after which `models` is empty.
+- `ModelState.deleteAll()` deletes every model matching the `FetchDescriptor`'s predicate, ignoring `fetchLimit` and `fetchOffset`, then saves. The next `models` read is empty.
 - A `ModelState` configured with a sorting `FetchDescriptor` returns models in the specified order.
 
 ## Constraints
@@ -28,3 +28,14 @@ spec: swiftdata.spec.md
 - Automatic broadcasting of model mutations to SwiftUI (use SwiftData's `@Query` for reactive views).
 - Caching of fetched model values in AppState's `Cache` (the `ModelContext` is the source of truth).
 - Assigning to `ModelState.models` or the `@ModelState` wrapped value (both are read-only; mutate via `insert(_:)`/`delete(_:)`/`deleteAll()`).
+
+### REQ-swiftdata-001
+
+ModelState.deleteAll() SHALL delete every persisted model matching the predicate of the state's FetchDescriptor, including models that have relationships, and SHALL ignore fetchLimit and fetchOffset. It SHALL then save. The next models read for that predicate SHALL be empty.
+
+Acceptance Criteria
+
+- A filtered deleteAll removes only the models that predicate matches, including models with relationships, and leaves other models in the same container.
+- A state with fetchLimit or fetchOffset still deletes every match of the predicate.
+- After deleteAll, the next models read is empty for that predicate.
+

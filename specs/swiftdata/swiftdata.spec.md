@@ -1,6 +1,6 @@
 ---
 module: swiftdata
-version: 2
+version: 4
 status: draft
 files:
   - Sources/AppState/Application/Types/Dependency/Application+ModelContainer.swift
@@ -45,7 +45,7 @@ A `struct` with `emoji == "🗃️"`. It does not conform to `MutableApplication
 | insert | `func insert(_ model: Model)` | Inserts a model into the context and saves |
 | delete | `func delete(_ model: Model)` | Deletes a model from the context and saves |
 | save | `func save()` | Persists pending changes (no-op when `context.hasChanges` is false) |
-| deleteAll | `func deleteAll()` | Fetches every model matching the `FetchDescriptor`, deletes each, and saves |
+| deleteAll | `func deleteAll()` | Deletes every model matching the `FetchDescriptor`'s predicate, ignoring `fetchLimit` and `fetchOffset`, then saves; the next `models` read is empty |
 
 ### @ModelState property wrapper
 
@@ -84,7 +84,8 @@ And the subsequent fetch returns an array containing that Item
 ```
 Given a ModelState holding several persisted models
 When deleteAll() is called on the ModelState (e.g. via $items.deleteAll())
-Then every model matching the state's FetchDescriptor is deleted and saved
+Then every model matching the predicate of the state's FetchDescriptor is deleted, ignoring fetchLimit and fetchOffset
+And the deletion is saved
 And a following read of models returns an empty array
 ```
 
@@ -110,3 +111,5 @@ And a following read of models returns an empty array
 |---------|------|---------|
 | 1 | 2026-06-09 | Initial spec: SwiftData ModelContainer dependency + ModelState |
 | 2 | 2026-06-09 | models is read-only; deleteAll() replaces reset(); dropped MutableApplicationState conformance |
+| 3 | 2026-11-15 | deleteAll() is predicate-wide: it ignores fetchLimit and fetchOffset, and the next models read is empty |
+| 4 | 2026-11-16 | make-modelstate-deleteall-remove-related-models-and-make-struct-dependency-slice-writes-stick: Make ModelState.deleteAll remove related models, and make struct dependency slice writes stick |

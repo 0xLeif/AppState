@@ -1,0 +1,46 @@
+{
+  "schema_version": 1,
+  "workflow_version": 3,
+  "workflow_origin_version": 2,
+  "id": "make-modelstate-deleteall-remove-related-models-and-make-struct-dependency-slice-writes-stick",
+  "slug": "make-modelstate-deleteall-remove-related-models-and-make-struct-dependency-slice-writes-stick",
+  "title": "Make ModelState.deleteAll remove related models, and make struct dependency slice writes stick",
+  "description": "Make ModelState.deleteAll remove related models, and make struct dependency slice writes stick",
+  "kind": "bug_fix",
+  "state": "accepted",
+  "canonical_applied": true,
+  "base_commit": "5053feab3497605386613e4309bc0cf8c95dc5c4",
+  "created_at": 1794797442,
+  "updated_at": 1794804596,
+  "affected_specs": [
+    "swiftdata",
+    "property-wrappers",
+    "application"
+  ],
+  "affected_paths": [
+    "Sources/AppState/Application/Types/State/Application+ModelState.swift",
+    "Sources/AppState/Application/Types/Dependency/Slice/Application+DependencySlice.swift",
+    "Sources/AppState/PropertyWrappers/Dependency/Slice/DependencySlice.swift"
+  ],
+  "no_spec_change": false,
+  "no_spec_change_rationale": null,
+  "acceptance_criteria": [
+    "Filtered ModelState.deleteAll removes only matching related models, and a struct DependencySlice write stays visible on the stored dependency."
+  ],
+  "selected_artifacts": [
+    "context",
+    "testing",
+    "tasks",
+    "design",
+    "requirements",
+    "docs",
+    "research",
+    "plan"
+  ],
+  "dependencies": [],
+  "answers": {
+    "architecture_risk": "yes",
+    "constraints": "none",
+    "public_contract": "yes"
+  }
+}

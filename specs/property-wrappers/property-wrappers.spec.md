@@ -1,6 +1,6 @@
 ---
 module: property-wrappers
-version: 2
+version: 3
 status: draft
 files:
   - Sources/AppState/PropertyWrappers/State/AppState.swift
@@ -173,3 +173,4 @@ And the value is written through to Application
 | 1 | 2026-04-21 | Initial spec |
 | 2 | 2026-06-09 | Author full spec; Observation-based reactivity; add `@ModelState` |
 | 2 | 2026-06-09 | `@ModelState` wrapped value is read-only `[Model]` (live fetch); mutate via the projected value's `insert`/`delete`/`save`/`deleteAll` (no wrapped-value assignment) |
+| 3 | 2026-11-16 | make-modelstate-deleteall-remove-related-models-and-make-struct-dependency-slice-writes-stick: Make ModelState.deleteAll remove related models, and make struct dependency slice writes stick |

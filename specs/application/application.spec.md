@@ -1,11 +1,12 @@
 ---
 module: application
-version: 2
+version: 3
 status: draft
 files:
   - Sources/AppState/Application/Application.swift
   - Sources/AppState/Application/Application+public.swift
   - Sources/AppState/Application/Application+internal.swift
+  - Sources/AppState/Application/Types/Dependency/Slice/Application+DependencySlice.swift
 
 db_tables: []
 depends_on: []
@@ -105,3 +106,4 @@ Then the subclass calls notifyChange() to refresh SwiftUI views
 |---------|------|---------|
 | 1 | 2026-04-21 | Initial spec |
 | 2 | 2026-06-09 | AppState 3.0: adopt Observation (`@Observable`); add `notifyChange()`; remove `ObservableObject` conformance; raise platform floors to iOS 17 / macOS 14; pin Swift 6 language mode + `ExistentialAny` |
+| 3 | 2026-11-16 | make-modelstate-deleteall-remove-related-models-and-make-struct-dependency-slice-writes-stick: Make ModelState.deleteAll remove related models, and make struct dependency slice writes stick |

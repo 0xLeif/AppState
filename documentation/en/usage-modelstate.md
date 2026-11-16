@@ -146,7 +146,7 @@ func syncItems() {
 | `$items.insert(_:)` | Inserts a model and saves |
 | `$items.delete(_:)` | Deletes a model and saves |
 | `$items.save()` | Persists pending changes |
-| `$items.deleteAll()` | Deletes all models matching the `FetchDescriptor` and saves |
+| `$items.deleteAll()` | Deletes every model matching the `FetchDescriptor`'s predicate and saves. `fetchLimit` and `fetchOffset` are ignored, so the next `models` read is empty |
 
 These mutators log and swallow any underlying SwiftData error so call sites stay terse. When you need to surface or recover from a failed write, reach for the throwing counterparts on `strict`:
 

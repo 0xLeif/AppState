@@ -72,6 +72,10 @@ final class DependencySliceTests: XCTestCase {
 
     @MainActor
     func testPropertyWrappers() async {
+        var usernameSlice = Application.dependencySlice(\.exampleViewModel, \.username)
+
+        usernameSlice.value = "Leif"
+
         let exampleView = ExampleView()
 
         XCTAssertEqual(exampleView.username, "Leif")

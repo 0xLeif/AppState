@@ -1,0 +1,4 @@
+interface:
+  display_name: "Chough Workflow"
+  short_description: "Intent-to-acceptance work with a resumable checkpoint"
+  default_prompt: "Use $chough-workflow: find the checkpoint with `chough next`, then carry this request through intent, design when relevant, one scope approval, focused tests, local bugs and human acceptance."

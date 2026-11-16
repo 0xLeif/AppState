@@ -1,0 +1,12 @@
+{
+  "schema_version": 2,
+  "change_id": "make-modelstate-deleteall-remove-related-models-and-make-struct-dependency-slice-writes-stick",
+  "implementation_commit": "2ad56485d09a8bd78daeb561126d281911716034",
+  "implementation_tree": "51b7b789d15582225d204393dca2b63f5558b71b",
+  "contract_digest": "253e517fc01f6b88eaea2b3a5954cfcc9d2d1cb7d8b1c81f76b612f8b8a14481",
+  "workspace_digest": "4cb4e6b6a1f17ac0637997516c0cac059ab531c026e28f00a988fbf517180c6b",
+  "closing_digest": "e9e7a595a420d8882c4102e4ef808e755add3a9c6570084eac047bd9b671b99c",
+  "review_digest": "4238add63c9e80f7e139ae34c7f7e1a75620cf729504e2358c9956f57d750c8f",
+  "finalization_digest": "d3e57538edac96acda497317246bf09208e800dece3efab52514acf12b952aa2",
+  "timestamp": 1794804596
+}

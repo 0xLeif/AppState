@@ -45,8 +45,9 @@ import SwiftUI
             )
 
             var dependency = app.value(keyPath: dependencyKeyPath)
-            Application.shared.notifyChange()
             dependency.value[keyPath: valueKeyPath] = newValue
+            app.cache.set(value: dependency, forKey: dependency.scope.key)
+            app.notifyChange()
         }
     }
 

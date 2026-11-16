@@ -2,6 +2,50 @@
 
 This overview provides a quick introduction to using the key components of the **AppState** library within a SwiftUI `View`. Each section includes simple examples that fit into the scope of a SwiftUI view structure.
 
+The map below shows where each property wrapper keeps its value and whether reading it calls `registerObservation()`, which is what lets a SwiftUI view follow later changes. 🍎 marks the wrappers and stores that exist only on Apple platforms.
+
+```mermaid
+flowchart LR
+    subgraph registers["Read calls registerObservation()"]
+        AppState["@AppState"]
+        StoredState["@StoredState"]
+        FileState["@FileState"]
+        SecureState["🍎 @SecureState"]
+        SyncState["🍎 @SyncState"]
+        ModelState["🍎 @ModelState<br/>(its mutations do not notify)"]
+        Slice["@Slice<br/>@OptionalSlice"]
+        DependencySlice["@DependencySlice"]
+    end
+
+    subgraph silent["Read does not call registerObservation()"]
+        Constant["@Constant<br/>@OptionalConstant"]
+        AppDependency["@AppDependency"]
+        ObservedDependency["@ObservedDependency<br/>(SwiftUI; observes the object itself)"]
+        DependencyConstant["@DependencyConstant"]
+    end
+
+    Cache[("Application cache<br/>(in memory)")]
+    Defaults[("UserDefaults")]
+    Files[("File system")]
+    Keychain[("🍎 Keychain")]
+    ICloud[("🍎 iCloud key-value store")]
+    SwiftData[("🍎 SwiftData ModelContainer")]
+    Sliced[("Wherever the sliced<br/>state lives")]
+
+    AppState --> Cache
+    StoredState --> Defaults
+    FileState --> Files
+    SecureState --> Keychain
+    SyncState --> ICloud
+    ModelState --> SwiftData
+    Slice --> Sliced
+    Constant --> Sliced
+    AppDependency --> Cache
+    ObservedDependency --> Cache
+    DependencySlice --> Cache
+    DependencyConstant --> Cache
+```
+
 ## Defining Values in Application Extension
 
 To define application-wide state or dependencies, you should extend the `Application` object. This allows you to centralize all your app’s state in one place. Here's an example of how to extend `Application` to create various states and dependencies:
@@ -239,6 +283,7 @@ struct SlicingView: View {
 - **Use `AppState` in SwiftUI Views**: Property wrappers like `@AppState`, `@StoredState`, `@FileState`, `@SecureState`, and others are designed to be used within the scope of SwiftUI views.
 - **Define State in Application Extension**: Centralize state management by extending `Application` to define your app’s state and dependencies.
 - **Reactive Updates**: SwiftUI automatically updates views when state changes, so you don’t need to manually refresh the UI.
+- **Know What Refreshes a View**: `@Constant` and `@ModelState` do not by themselves refresh a SwiftUI view.
 - **[Best Practices Guide](best-practices.md)**: For a detailed breakdown of best practices when using AppState.
 
 ## Next Steps

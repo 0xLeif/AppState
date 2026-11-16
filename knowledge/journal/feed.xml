@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+<title>Project journal</title>
+<id>urn:chough:journal</id>
+<updated>2026-11-16T04:49:59Z</updated>
+<author><name>Chough</name></author>
+<link rel="self" href="feed.xml"/>
+  <entry>
+<title>Archive the deleteAll and slice-write fix</title>
+<id>urn:chough:journal:2026-11-16-archive-the-deleteall-and-slice-write-fix</id>
+<updated>2026-11-16T04:49:59Z</updated>
+<link href="2026-11-16-archive-the-deleteall-and-slice-write-fix.md"/>
+<category term="shipped"/>
+</entry>
+</feed>
