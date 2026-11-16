@@ -36,6 +36,24 @@
       "requirement_ids": [
         "REQ-application-007"
       ]
+    },
+    {
+      "timestamp": 1794841399,
+      "commit": "7c658e9590b131e0c4ae7bce905cdb541c058bea",
+      "contract_digest": "de414993ef32143e95554df5f23a1900c49d810c9791c9c15109b2856b0b44d5",
+      "execution_digest": "aceef3bb7e30c43f6f27bfa7045f6109237dd98954e8a4d5d66ef0e2e6fae20d",
+      "workspace_digest": "507499f92baf84ecb89663d736d5ebb0087211bf7dd287fb4fe9a9369e74dcdb",
+      "passed": true,
+      "commands": [
+        {
+          "command": "specsync check --spec application --spec property-wrappers --spec swiftdata",
+          "success": true,
+          "exit_code": 0
+        }
+      ],
+      "requirement_ids": [
+        "REQ-application-007"
+      ]
     }
   ]
 }
