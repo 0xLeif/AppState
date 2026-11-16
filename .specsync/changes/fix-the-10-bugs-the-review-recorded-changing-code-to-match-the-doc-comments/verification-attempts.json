@@ -69,6 +69,29 @@
         "REQ-application-006",
         "REQ-property-wrappers-002"
       ]
+    },
+    {
+      "timestamp": 1794838984,
+      "commit": "a2f556f80f5ab48a936a7f4e1f1324494c096e43",
+      "contract_digest": "dab58e71b686d7f2bdbe9bf4e8dd63c52a4e2349f6adba6ec7a7d57c7b84f2ee",
+      "execution_digest": "190cece280e00f7defd8142a2d0ec673e8c54eab39b169ae247edbdca04d2c79",
+      "workspace_digest": "4785be2e0cf2c12179b493b5c65df0247097b1a11ce183ec5480f82ece0698c3",
+      "passed": true,
+      "commands": [
+        {
+          "command": "specsync check --spec application --spec property-wrappers --spec swiftdata",
+          "success": true,
+          "exit_code": 0
+        }
+      ],
+      "requirement_ids": [
+        "REQ-application-002",
+        "REQ-application-003",
+        "REQ-application-004",
+        "REQ-application-005",
+        "REQ-application-006",
+        "REQ-property-wrappers-002"
+      ]
     }
   ]
 }
