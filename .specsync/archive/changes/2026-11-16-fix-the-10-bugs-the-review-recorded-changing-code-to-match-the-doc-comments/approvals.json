@@ -121,6 +121,13 @@
         "where": "Claude Code chat on 2026-11-16, in reply to: Do you approve the re-scoped change? (after his send-back to declare the owning modules; the application spec gains 20 files and the declared paths name the changed files)",
         "recorded_by": "claude-code"
       }
+    },
+    {
+      "gate": "finalization",
+      "actor": "specsync:finalization",
+      "timestamp": 1794871683,
+      "digest": "daa82c08208120eb7f1c73365f0e0d0c2701af01a6ffc771fc2104ed735b2341",
+      "note": "Same-PR finalization closing digest"
     }
   ],
   "reopenings": [],
