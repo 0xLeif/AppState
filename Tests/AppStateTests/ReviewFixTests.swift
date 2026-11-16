@@ -1,4 +1,7 @@
 import XCTest
+#if canImport(Observation)
+import Observation
+#endif
 
 @testable import AppState
 
@@ -87,6 +90,14 @@ extension Application {
     @MainActor
     fileprivate var reviewEncodedPinFile: FileState<Int> {
         fileState(initial: 0, path: reviewFilePath, filename: "encodedPin")
+    }
+
+    fileprivate var reviewQuietCounter: State<Int> {
+        state(initial: 0, feature: "ReviewFix", id: "quietCounter")
+    }
+
+    fileprivate var reviewPromotedService: Dependency<String> {
+        dependency("real", feature: "ReviewFix", id: "promotedService")
     }
 
     fileprivate var reviewService: Dependency<String> {
@@ -178,6 +189,32 @@ final class ReviewFixTests: XCTestCase {
 
         XCTAssertEqual(Application.state(\.reviewCountedInitial).value, first)
         XCTAssertEqual(reviewInitialCounter.value, 1)
+    }
+
+    /// The getter fills the cache on a first read. That must stay invisible to observers, or a
+    /// SwiftUI view body would invalidate itself by reading its own state.
+    @MainActor
+    func testFirstReadDoesNotNotifyObservers() async {
+        Application.reset(\.reviewQuietCounter)
+        Application.shared.cache.remove(Application.shared.reviewQuietCounter.scope.key)
+
+        let changes = InitialCounter()
+
+        withObservationTracking {
+            _ = Application.state(\.reviewQuietCounter).value
+            _ = Application.state(\.reviewQuietCounter).value
+        } onChange: {
+            _ = changes.next()
+        }
+
+        XCTAssertEqual(changes.value, 0)
+
+        var counter = Application.state(\.reviewQuietCounter)
+        counter.value = 1
+
+        XCTAssertEqual(changes.value, 1)
+
+        Application.reset(\.reviewQuietCounter)
     }
 
     // MARK: Enclosing-instance setter
@@ -296,6 +333,42 @@ final class ReviewFixTests: XCTestCase {
         await second.cancel()
 
         XCTAssertEqual(Application.dependency(\.reviewService), "real")
+    }
+
+    /// Off the main thread the release cannot restore synchronously. It restores on the main
+    /// actor's next turn.
+    @MainActor
+    func testOverrideReleasedOffMainThreadRestoresOnMainActor() async {
+        func releaseOffMain(_ token: sending Application.DependencyOverride) async {
+            await Task.detached {
+                XCTAssertFalse(Thread.isMainThread)
+                _ = token
+            }.value
+        }
+
+        XCTAssertEqual(Application.dependency(\.reviewService), "real")
+
+        await releaseOffMain(Application.override(\.reviewService, with: "mock"))
+
+        for _ in 0..<50 where Application.dependency(\.reviewService) != "real" {
+            try? await Task.sleep(nanoseconds: 10_000_000)
+        }
+
+        XCTAssertEqual(Application.dependency(\.reviewService), "real")
+    }
+
+    /// `promote(_:with:)` keeps its override itself, so a promotion outlives the call.
+    @MainActor
+    func testPromotedDependencyOutlivesTheCall() async {
+        let original = Application.dependency(\.reviewPromotedService)
+
+        Application.promote(\.reviewPromotedService, with: "promoted")
+
+        await Task.yield()
+        try? await Task.sleep(nanoseconds: 20_000_000)
+
+        XCTAssertEqual(original, "real")
+        XCTAssertEqual(Application.dependency(\.reviewPromotedService), "promoted")
     }
 
     // MARK: promote(to:)
