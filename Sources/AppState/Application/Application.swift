@@ -52,6 +52,11 @@ open class Application: NSObject {
     /// `@Observable` registrar, which is `Sendable` and internally synchronized.
     private var changeAnchor: Int = 0
 
+    /// Whether this instance is registered for the iCloud key-value store's external-change
+    /// notification. `promote(to:)` reads it to register the promoted instance in its place.
+    @ObservationIgnored
+    var isObservingExternalChanges: Bool = false
+
     /// Initializes a new instance of `Application`.
     ///
     /// This initializer is used for the default `Application.shared` instance and any custom `Application` subclasses.

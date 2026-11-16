@@ -84,13 +84,17 @@ Para restringir el acceso, utilice un ID único como un UUID para asegurarse de 
 ### Ejemplo
 
 ```swift
+// Se crea una sola vez. Un `UUID()` dentro de la propiedad calculada generaría un ID nuevo en cada acceso.
+private let restrictedStateID = UUID().uuidString
+private let restrictedDependencyID = UUID().uuidString
+
 private extension Application {
     var restrictedState: State<Int?> {
-        state(initial: nil, id: UUID().uuidString)
+        state(initial: nil, id: restrictedStateID)
     }
 
     var restrictedDependency: Dependency<SomeType> {
-        dependency(SomeType(), id: UUID().uuidString)
+        dependency(SomeType(), id: restrictedDependencyID)
     }
 }
 ```

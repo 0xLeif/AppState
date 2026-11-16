@@ -63,18 +63,18 @@ Vous pouvez définir des ressources partagées, comme un service réseau, en tan
 ```swift
 import AppState
 
-protocol NetworkServiceType {
+protocol NetworkServiceType: Sendable {
     func fetchData() -> String
 }
 
-class NetworkService: NetworkServiceType {
+final class NetworkService: NetworkServiceType {
     func fetchData() -> String {
         return "Data from network"
     }
 }
 
 extension Application {
-    var networkService: Dependency<NetworkServiceType> {
+    var networkService: Dependency<any NetworkServiceType> {
         dependency(NetworkService())
     }
 }
@@ -89,7 +89,7 @@ import AppState
 import SwiftUI
 
 struct NetworkView: View {
-    @AppDependency(\.networkService) var networkService: NetworkServiceType
+    @AppDependency(\.networkService) var networkService: any NetworkServiceType
 
     var body: some View {
         VStack {
@@ -109,7 +109,7 @@ import SwiftUI
 
 struct CombinedView: View {
     @AppState(\.user) var user: User
-    @AppDependency(\.networkService) var networkService: NetworkServiceType
+    @AppDependency(\.networkService) var networkService: any NetworkServiceType
 
     var body: some View {
         VStack {

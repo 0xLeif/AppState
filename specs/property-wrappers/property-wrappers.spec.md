@@ -1,6 +1,6 @@
 ---
 module: property-wrappers
-version: 3
+version: 4
 status: draft
 files:
   - Sources/AppState/PropertyWrappers/State/AppState.swift
@@ -97,7 +97,7 @@ This module exports property wrapper types rather than free functions. The wrapp
 4. Mutating `wrappedValue` writes through `Application`, which calls `notifyChange()` so observers update; `@Constant`, `@OptionalConstant`, and `@DependencyConstant` are read-only and expose no setter.
 5. `@SyncState` and `@SecureState` compile only on Apple platforms (`!os(Linux) && !os(Windows)`); `@ModelState` compiles only where `canImport(SwiftData)`. `@AppState`, `@StoredState`, `@FileState`, `@AppDependency`, and the value slices/constants build cross-platform.
 6. On Apple platforms each reactive wrapper conforms to `DynamicProperty`; the `Binding` projected value's get and set both round-trip through `wrappedValue`.
-7. The enclosing-instance subscript only sends `objectWillChange` when the host's publisher is an `ObservableObjectPublisher`; otherwise the write is skipped.
+7. The enclosing-instance subscript sends `objectWillChange` when the host's publisher is an `ObservableObjectPublisher`, and always writes the value. A host that declares its own `objectWillChange` of another type still has its write stored.
 8. `Value` (and `SliceValue`) of dependency wrappers is `Sendable`; `Value` of `@StoredState`/`@FileState`/`@SyncState` is `Codable & Sendable`.
 
 ## Behavioral Examples
@@ -174,3 +174,4 @@ And the value is written through to Application
 | 2 | 2026-06-09 | Author full spec; Observation-based reactivity; add `@ModelState` |
 | 2 | 2026-06-09 | `@ModelState` wrapped value is read-only `[Model]` (live fetch); mutate via the projected value's `insert`/`delete`/`save`/`deleteAll` (no wrapped-value assignment) |
 | 3 | 2026-11-16 | make-modelstate-deleteall-remove-related-models-and-make-struct-dependency-slice-writes-stick: Make ModelState.deleteAll remove related models, and make struct dependency slice writes stick |
+| 4 | 2026-11-16 | fix-the-10-bugs-the-review-recorded-changing-code-to-match-the-doc-comments: Fix the 10 bugs the review recorded, changing code to match the doc comments |

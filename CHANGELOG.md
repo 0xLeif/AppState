@@ -1,5 +1,26 @@
 # Changelog
 
+## 3.0.3
+
+### Fixed
+
+- A write to a `State` or `FileState` made right after its first read is no longer undone. Outside XCTest on Apple platforms the getter filled the cache from a deferred task, which ran after the write and put the older value back. The cache is now filled before the getter returns.
+- `state(initial:)` evaluates its initial value once per scope, as documented, instead of on every access. A state with a `UUID()` or `Date()` initial now reads the same value every time, and `reset()` restores that first value.
+- A write through `@AppState`, `@StoredState`, `@FileState`, `@SecureState`, `@SyncState`, `@Slice` or `@OptionalSlice` on an `ObservableObject` that declares its own `objectWillChange` is stored. It used to be dropped.
+- `StoredState` no longer crashes with `NSInvalidArgumentException` on a value that `JSONEncoder` rejects, such as a struct holding `Double.nan`. The write is logged and ignored, and the previous value stays.
+- A `FileState` created with `isBase64Encoded: false` reads back values whose JSON text is also valid Base64, such as `true` or `1234`. They used to read as the initial value after a relaunch.
+- `Application.promote(to:)` keeps the promoted application registered for iCloud key-value store changes when `icloudStore` was loaded before the promotion.
+- `FileManager.defaultFileStatePath` is no longer percent-encoded. A documents path with a space or a non-ASCII character pointed at a directory that does not exist.
+
+### Changed
+
+- Releasing a `DependencyOverride` restores the dependency, as the `override` documentation says. Before, only `cancel()` did. Code that discarded the token and relied on the override staying must now keep the token, or use `Application.promote(_:with:)` for a permanent replacement.
+
+### Documentation
+
+- The restricted state example in Advanced Usage keeps its ID in a constant. With `UUID()` inside the computed property the state never kept a value.
+- The dependency example in State and Dependency Usage compiles in Swift 6 mode.
+
 ## 3.0.2
 
 ### Fixed

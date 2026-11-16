@@ -84,13 +84,17 @@ private extension Application {
 ### 示例
 
 ```swift
+// 只创建一次。如果在计算属性内部调用 `UUID()`，每次访问都会生成新的 ID。
+private let restrictedStateID = UUID().uuidString
+private let restrictedDependencyID = UUID().uuidString
+
 private extension Application {
     var restrictedState: State<Int?> {
-        state(initial: nil, id: UUID().uuidString)
+        state(initial: nil, id: restrictedStateID)
     }
 
     var restrictedDependency: Dependency<SomeType> {
-        dependency(SomeType(), id: UUID().uuidString)
+        dependency(SomeType(), id: restrictedDependencyID)
     }
 }
 ```

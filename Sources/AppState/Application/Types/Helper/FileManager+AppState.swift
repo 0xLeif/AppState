@@ -8,16 +8,24 @@ extension FileManager {
             return "~/App"
         }
 
+        return fileStatePath(inDocumentsDirectory: path)
+    }()
+
+    /// The "App" directory inside `documentsDirectory`, as a plain file path.
+    ///
+    /// The path is not percent-encoded. It is later passed to `URL(filePath:)`, which takes its
+    /// argument literally, so an encoded space would name a directory that does not exist.
+    static func fileStatePath(inDocumentsDirectory documentsDirectory: URL) -> String {
         #if canImport(Security)
         if #available(macOS 13.0, iOS 16.0, watchOS 9.0, tvOS 16.0, *) {
-            return path.appending(path: "App").path()
+            return documentsDirectory.appending(path: "App").path(percentEncoded: false)
         } else {
-            return "\(path.path)/App"
+            return "\(documentsDirectory.path)/App"
         }
         #else
-        return "\(path.path)/App"
+        return "\(documentsDirectory.path)/App"
         #endif
-    }()
+    }
 
     /// Creates a directory at the specified path.
     ///
@@ -39,12 +47,26 @@ extension FileManager {
         path: String = ".",
         filename: String
     ) throws -> Value {
-        let data = try data(
-            path: path,
-            filename: filename
+        let directoryURL: URL = url(filePath: path)
+        let fileData = try Data(
+            contentsOf: directoryURL.appendingPathComponent(filename)
         )
 
-        return try JSONDecoder().decode(Value.self, from: data)
+        guard let base64DecodedData = Data(base64Encoded: fileData) else {
+            return try JSONDecoder().decode(Value.self, from: fileData)
+        }
+
+        do {
+            return try JSONDecoder().decode(Value.self, from: base64DecodedData)
+        } catch {
+            // A file written without Base64 can still be valid Base64: `true`, `null`, `1234`.
+            // Its Base64 reading is not JSON, so read the bytes as they are.
+            guard let value = try? JSONDecoder().decode(Value.self, from: fileData) else {
+                throw error
+            }
+
+            return value
+        }
     }
 
     /// Read a file's data

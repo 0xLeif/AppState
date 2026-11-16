@@ -1,0 +1,51 @@
+{
+  "schema_version": 1,
+  "workflow_version": 3,
+  "workflow_origin_version": 2,
+  "id": "fix-the-10-bugs-the-review-recorded-changing-code-to-match-the-doc-comments",
+  "slug": "fix-the-10-bugs-the-review-recorded-changing-code-to-match-the-doc-comments",
+  "title": "Fix the 10 bugs the review recorded, changing code to match the doc comments",
+  "description": "Fix the 10 bugs the review recorded, changing code to match the doc comments",
+  "kind": "bug_fix",
+  "state": "verifying",
+  "canonical_applied": true,
+  "base_commit": "7e4eb923d14b7a05c8dfdb10099ae13d83352bdc",
+  "created_at": 1794806260,
+  "updated_at": 1794838122,
+  "affected_specs": [
+    "application",
+    "property-wrappers"
+  ],
+  "affected_paths": [
+    "Sources/AppState",
+    "Tests/AppStateTests",
+    "documentation",
+    "README.md",
+    "CHANGELOG.md",
+    "specs",
+    ".chough",
+    ".specsync/change.lock",
+    "knowledge"
+  ],
+  "no_spec_change": false,
+  "no_spec_change_rationale": null,
+  "acceptance_criteria": [
+    "ReviewFixTests has a test for each of the 8 library bugs in .chough/bugs and all pass; six of them fail on the sources of 7e4eb92, and the write-after-read bug, which XCTest could not show, is shown fixed by a plain executable; the two corrected documentation examples compile in Swift 6 mode; every test class passes on macOS under the strict build"
+  ],
+  "selected_artifacts": [
+    "context",
+    "testing",
+    "tasks",
+    "design",
+    "requirements",
+    "docs",
+    "research",
+    "plan"
+  ],
+  "dependencies": [],
+  "answers": {
+    "architecture_risk": "yes",
+    "constraints": "AGENTS.md: Swift 6, explicit access control, no force-unwrap or try! or as! in library code, no @unchecked Sendable; SecureState, SyncState and Keychain stay inside canImport(Security); Linux, Windows and WASI CI must keep building",
+    "public_contract": "yes"
+  }
+}

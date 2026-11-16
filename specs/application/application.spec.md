@@ -1,6 +1,6 @@
 ---
 module: application
-version: 3
+version: 4
 status: draft
 files:
   - Sources/AppState/Application/Application.swift
@@ -70,6 +70,10 @@ As of AppState 3.0 the singleton adopts Apple's Observation framework (`@Observa
 3. Reading a value through a property wrapper registers an observation dependency; mutating a value notifies observers exactly once per change.
 4. Dependency values are `Sendable`; dependency resolution must never cause retain cycles.
 5. The library builds warning-free under the Swift 6 language mode with the `ExistentialAny` upcoming feature and `-warnings-as-errors`.
+6. A `State` or `FileState` read fills the cache before it returns. A write made after a read in the same main-actor turn is the value later reads return.
+7. `state(initial:)` evaluates its initial value once per scope while the state is cached, and `reset()` restores that first value.
+8. A `DependencyOverride` restores the dependency it replaced on `cancel()` or on release, whichever comes first, and only once. Released on the main thread, it has restored before the release returns.
+9. `promote(to:)` registers the promoted instance for the iCloud key-value store's external-change notification when the previous instance was registered.
 
 ## Behavioral Examples
 
@@ -93,6 +97,7 @@ Then the subclass calls notifyChange() to refresh SwiftUI views
 | Keychain unavailable | SecureState accessed without entitlements | Returns the initial value; error logged |
 | iCloud unavailable | SyncState accessed without iCloud capability | Falls back to the local value |
 | Decode failure | Stored/File state data cannot be decoded | Returns the initial value; error logged |
+| Encode failure | A `StoredState` value is neither JSON-encodable nor a property list | The write is ignored and logged; the previous value stays |
 
 ## Dependencies
 
@@ -107,3 +112,4 @@ Then the subclass calls notifyChange() to refresh SwiftUI views
 | 1 | 2026-04-21 | Initial spec |
 | 2 | 2026-06-09 | AppState 3.0: adopt Observation (`@Observable`); add `notifyChange()`; remove `ObservableObject` conformance; raise platform floors to iOS 17 / macOS 14; pin Swift 6 language mode + `ExistentialAny` |
 | 3 | 2026-11-16 | make-modelstate-deleteall-remove-related-models-and-make-struct-dependency-slice-writes-stick: Make ModelState.deleteAll remove related models, and make struct dependency slice writes stick |
+| 4 | 2026-11-16 | fix-the-10-bugs-the-review-recorded-changing-code-to-match-the-doc-comments: Fix the 10 bugs the review recorded, changing code to match the doc comments |

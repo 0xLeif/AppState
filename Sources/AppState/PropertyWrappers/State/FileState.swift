@@ -89,11 +89,8 @@ import SwiftUI
             observed[keyPath: storageKeyPath].wrappedValue
         }
         set {
-            guard
-                let publisher = observed.objectWillChange as? ObservableObjectPublisher
-            else { return }
-
-            publisher.send()
+            // A host may declare its own `objectWillChange`. The write still has to be stored.
+            (observed.objectWillChange as? ObservableObjectPublisher)?.send()
             observed[keyPath: storageKeyPath].wrappedValue = newValue
         }
     }

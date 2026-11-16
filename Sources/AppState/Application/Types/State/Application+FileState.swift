@@ -62,32 +62,16 @@ extension Application {
                 do {
                     let storedValue: Value = try fileManager.in(path: path, filename: filename)
 
-                    defer {
-                        let setValue = {
-                            shared.cache.set(
-                                value: Application.State(
-                                    type: .file,
-                                    initial: storedValue,
-                                    scope: scope
-                                ),
-                                forKey: scope.key
-                            )
-                        }
-
-                        #if canImport(ObjectiveC)
-                        if NSClassFromString("XCTest") == nil {
-                            Task {
-                                await MainActor.run {
-                                    setValue()
-                                }
-                            }
-                        } else {
-                            setValue()
-                        }
-                        #else
-                        setValue()
-                        #endif
-                    }
+                    // Seed the cache before returning. A deferred seed would land after a write
+                    // made in the same main-actor turn and leave the cache on this older value.
+                    shared.cache.set(
+                        value: Application.State(
+                            type: .file,
+                            initial: storedValue,
+                            scope: scope
+                        ),
+                        forKey: scope.key
+                    )
 
                     return storedValue
                 } catch {

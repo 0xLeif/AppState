@@ -84,13 +84,17 @@ private extension Application {
 ### Пример
 
 ```swift
+// Создаётся один раз. `UUID()` внутри вычисляемого свойства давал бы новый идентификатор при каждом обращении.
+private let restrictedStateID = UUID().uuidString
+private let restrictedDependencyID = UUID().uuidString
+
 private extension Application {
     var restrictedState: State<Int?> {
-        state(initial: nil, id: UUID().uuidString)
+        state(initial: nil, id: restrictedStateID)
     }
 
     var restrictedDependency: Dependency<SomeType> {
-        dependency(SomeType(), id: UUID().uuidString)
+        dependency(SomeType(), id: restrictedDependencyID)
     }
 }
 ```

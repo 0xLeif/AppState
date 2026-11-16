@@ -51,43 +51,18 @@ extension Application {
                         as: State<Value>.self
                     )
                 else {
-                    defer {
-                        let setValue = {
-                            shared.cache.set(
-                                value: Application.State(
-                                    type: .state,
-                                    initial: _value,
-                                    scope: scope
-                                ),
-                                forKey: scope.key
-                            )
-                        }
-                        #if canImport(ObjectiveC)
-                        if NSClassFromString("XCTest") == nil {
-                            Task { @MainActor in
-                                setValue()
-                            }
-                        } else {
-                            setValue()
-                        }
-                        #else
-                        setValue()
-                        #endif
-                    }
+                    // Seed the cache before returning. A deferred seed would land after a write
+                    // made in the same main-actor turn and replace it with this older value.
+                    shared.cache.set(value: self, forKey: scope.key)
+
                     return _value
                 }
                 return state._value
             }
             set {
                 _value = newValue
-                shared.cache.set(
-                    value: Application.State(
-                        type: .state,
-                        initial: newValue,
-                        scope: scope
-                    ),
-                    forKey: scope.key
-                )
+                // `self` keeps the first `initial`, so a cached state still resets to it.
+                shared.cache.set(value: self, forKey: scope.key)
                 shared.notifyChange()
             }
         }
