@@ -1,0 +1,312 @@
+{
+  "timestamp": 1794871427,
+  "commit": "93c9ee5eb170ac7bd82323b23d49fa14e230b2bb",
+  "contract_digest": "e63b7884ce6c4d56bb632360959600d476dcec1d8e9858377a1882f6f24fe516",
+  "execution_digest": "cf14b8299a437b59c227fdfe4994fbb36b91a58081d8ce82058dacbfe0ed7de1",
+  "workspace_digest": "c91ca34d1e44ad0beca8f37e8dd25bf58194d2ad5af3bbe1ceaf4215827d37a2",
+  "acceptance_input_digest": "03d754ba2abf0e781181e03055b5932dce1cb727492ab38ea12f442e3f165276",
+  "acceptance_manifest": {
+    "schema_version": 1,
+    "entries": [
+      {
+        "path": ".chough",
+        "kind": "non_file",
+        "mode": 0,
+        "payload_digest": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "entry_digest": "3ada852af58fcf7313d0f743d9f5ad1ac3a8591c4141d3cb3e9709f8196c32c6",
+        "owners": [
+          "@exact:delivery"
+        ]
+      },
+      {
+        "path": ".chough/README.md",
+        "kind": "file",
+        "mode": 33188,
+        "payload_digest": "61e586343df7fef0d88b6db19452d338e089abe33c2eab1e3ac3e9e6739f69df",
+        "entry_digest": "547e60dc00f7a85748ec15f7b506f58706ae5fd525323c8ac0ad46f910108103",
+        "owners": [
+          "@exact:delivery"
+        ]
+      },
+      {
+        "path": ".chough/archive/sessions/2026-11-16-make-modelstate-deleteall-remove-related-models-and-make.md",
+        "kind": "file",
+        "mode": 33188,
+        "payload_digest": "3b1ef74dae32ba35310d88c0f08130adb66a3ef86cbe3950127e871fd0c37e43",
+        "entry_digest": "4c039510c40fdddc0da9925ce0141c2dd03c7e41430b66276df2b9bf7807840b",
+        "owners": [
+          "@exact:delivery"
+        ]
+      },
+      {
+        "path": ".chough/bugs/2026-11-16-defaultfilestatepath-is-percent-encoded-and-points-at-the.md",
+        "kind": "file",
+        "mode": 33188,
+        "payload_digest": "35dec5d8f9d066cc1981e31214329d068f522d5cfb266665300adbfe9c274589",
+        "entry_digest": "8d676ace0c105aeb61f87b2971d4405f46915c0f7fbbce8bcec17dd75335a720",
+        "owners": [
+          "@exact:delivery"
+        ]
+      },
+      {
+        "path": ".chough/bugs/2026-11-16-docs-the-dependency-example-in-usage-state-dependency-md-does.md",
+        "kind": "file",
+        "mode": 33188,
+        "payload_digest": "1c365ad842cf2af7945e4e536680dfe5f5678f6d37bcd33bec312e032136003e",
+        "entry_digest": "dd5355b68aad7f11799b1a8c49ab7dec846e409dbba83bd4223ec88c86a93c8e",
+        "owners": [
+          "@exact:delivery"
+        ]
+      },
+      {
+        "path": ".chough/bugs/2026-11-16-docs-the-restricted-state-example-never-keeps-its-value-and.md",
+        "kind": "file",
+        "mode": 33188,
+        "payload_digest": "c1bb34f0ff9d1ecf052cc11c5098b8b740b5149505828ef0d81391832f9979da",
+        "entry_digest": "599932dfa6db86d199ad31cb52ea9781c71e2d0b2692bfd36cf581c12b6b078b",
+        "owners": [
+          "@exact:delivery"
+        ]
+      },
+      {
+        "path": ".chough/bugs/2026-11-16-filestate-with-isbase64encoded-false-loses-values-that-look.md",
+        "kind": "file",
+        "mode": 33188,
+        "payload_digest": "a48ec3bce7d6acad44dbe426617b74a2b58ccf3c8342b710601f5843a5f6072e",
+        "entry_digest": "089a70fc9d2bd2a2cc9d3a165a80ebaa72ade6109b12f06c76b28392d3e2f8fa",
+        "owners": [
+          "@exact:delivery"
+        ]
+      },
+      {
+        "path": ".chough/bugs/2026-11-16-promote-to-drops-the-icloud-observer-when-icloudstore-was.md",
+        "kind": "file",
+        "mode": 33188,
+        "payload_digest": "7490a25a4a4ba8066c34a0f0ee8a088267f64e52ecf38a5c393c613a1fef954e",
+        "entry_digest": "382fc6164fc1203ef79761cf273d7ef49a0f54797ed3d39f23eb33525c5a759a",
+        "owners": [
+          "@exact:delivery"
+        ]
+      },
+      {
+        "path": ".chough/bugs/2026-11-16-property-wrapper-setter-drops-the-write-when-the-host-has-a.md",
+        "kind": "file",
+        "mode": 33188,
+        "payload_digest": "4ce436ca3777139e4721f34c65a9cbb4a33ab73bfd4dbf22b3834a55492a6f3c",
+        "entry_digest": "2d73f4826eb98568e884c96f72c9248089e8a2b4c13cb5b96101bf8c7f975979",
+        "owners": [
+          "@exact:delivery"
+        ]
+      },
+      {
+        "path": ".chough/bugs/2026-11-16-releasing-a-dependencyoverride-does-not-restore-the-dependency.md",
+        "kind": "file",
+        "mode": 33188,
+        "payload_digest": "abf5c5f0651a8e50a3a6535b1e40290679ac8789fba4abd3dd82a09bd52e6e45",
+        "entry_digest": "125af17db02d1de3ba8b15a59f14e0b6e96fc113b18129222d3ddf689f4cbbb3",
+        "owners": [
+          "@exact:delivery"
+        ]
+      },
+      {
+        "path": ".chough/bugs/2026-11-16-state-and-filestate-revert-a-write-made-right-after-the-first.md",
+        "kind": "file",
+        "mode": 33188,
+        "payload_digest": "40f71a04caee6e80a4af69b3f387818795a92bf81c8d11fac9e663ee28e04db5",
+        "entry_digest": "ab68b0f6023dbea1bd259c69dd79d614ec1e607f2f06731a4e713be536ba945e",
+        "owners": [
+          "@exact:delivery"
+        ]
+      },
+      {
+        "path": ".chough/bugs/2026-11-16-state-initial-evaluates-the-initial-value-on-every-access.md",
+        "kind": "file",
+        "mode": 33188,
+        "payload_digest": "478e87e3eff7e2605580b39444e362ec77971d5ec0b0febdadd5023554a38dfa",
+        "entry_digest": "60132d49b80f59f3a3da23999c201fb770141d25045ac5039579d95049acc13b",
+        "owners": [
+          "@exact:delivery"
+        ]
+      },
+      {
+        "path": ".chough/bugs/2026-11-16-storedstate-crashes-on-a-value-that-jsonencoder-rejects.md",
+        "kind": "file",
+        "mode": 33188,
+        "payload_digest": "003f123abd4e6e96a37f35cb27fc2cef9288a574ee433fb5e61d5e0ffcb2d906",
+        "entry_digest": "3174c1cddedafbab9dea821b6aa20198e26455a2e839f2d98f1fda46108db8bb",
+        "owners": [
+          "@exact:delivery"
+        ]
+      },
+      {
+        "path": ".chough/sessions/2026-11-16-demo-app-ui-tests/session.md",
+        "kind": "file",
+        "mode": 33188,
+        "payload_digest": "4d9f068f2cb438b7f8457ae395861eb97f0fbbb9415d25097988991555e54379",
+        "entry_digest": "26725a7e637fdc99da5026a7ee9dfd0cf0687299c35b3e331256defaf215ae3f",
+        "owners": [
+          "@exact:delivery"
+        ]
+      },
+      {
+        "path": ".chough/sessions/2026-11-16-persistence-failure-hook/session.md",
+        "kind": "file",
+        "mode": 33188,
+        "payload_digest": "40b92a4ec092cda9e7d446bb92039765c496b96ba6b8f30275e701e860ee804b",
+        "entry_digest": "5dd05c30c27a0a3a9bd799ba6d00e34d0a389b3563a7dcc8fdcd22a937555b1b",
+        "owners": [
+          "@exact:delivery"
+        ]
+      },
+      {
+        "path": ".chough/sessions/2026-11-16-review-state-dependency-types-and-examples/session.md",
+        "kind": "file",
+        "mode": 33188,
+        "payload_digest": "5e65c463031164596bd9b6a4b02dc50ae292bbf7aba3becf18421dad90b47ba5",
+        "entry_digest": "9285b6fc471b86d1e802f5f42f7681e6453b98b004f5eeb01df912cf8c7405b2",
+        "owners": [
+          "@exact:delivery"
+        ]
+      },
+      {
+        "path": ".github",
+        "kind": "non_file",
+        "mode": 0,
+        "payload_digest": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "entry_digest": "71e52f56dae984563cd9af36b644be833dd2bf455d9e2c6b4aa4467ce488a165",
+        "owners": [
+          "@exact:delivery"
+        ]
+      },
+      {
+        "path": ".github/FUNDING.yml",
+        "kind": "file",
+        "mode": 33188,
+        "payload_digest": "022494e681ecb38738f29876412c6674c4f3d760e4f5071677707837298ba327",
+        "entry_digest": "06b76aa45a3d6e0709998a14f2e466dfa48982b751dd9ab396286d6c54b19334",
+        "owners": [
+          "@exact:delivery"
+        ]
+      },
+      {
+        "path": ".github/workflows/docc.yml",
+        "kind": "file",
+        "mode": 33188,
+        "payload_digest": "c7273e7be5924aeeb0b623c643134bfdfb6ef9dcf149e60096f6ff13e2ea3f17",
+        "entry_digest": "90923424696696dac9a6c00210c5d09c3b3d8dbd6b08b7420fd05c4ded5067bc",
+        "owners": [
+          "@exact:delivery"
+        ]
+      },
+      {
+        "path": ".github/workflows/iOS.yml",
+        "kind": "file",
+        "mode": 33188,
+        "payload_digest": "74f2dbb8813815b8f49d4cb75e95b2333e877315d78c991de1d217e49acfdab5",
+        "entry_digest": "9e692007311ec33f8a7a6fb0a7d614fbd5d1fd234e617af53cd29f23282c0366",
+        "owners": [
+          "@exact:delivery"
+        ]
+      },
+      {
+        "path": ".github/workflows/macOS.yml",
+        "kind": "file",
+        "mode": 33188,
+        "payload_digest": "10868c1948b0242157cc05cbb4f35d2bb3949161a6e1f1b318efbb63ca106a9c",
+        "entry_digest": "0a37afafa024ec41fc305348af2809f80427c369c71955a46b1dd2544ef28817",
+        "owners": [
+          "@exact:delivery"
+        ]
+      },
+      {
+        "path": ".github/workflows/ubuntu.yml",
+        "kind": "file",
+        "mode": 33188,
+        "payload_digest": "0ebe4369fbab91272940f7d4d474729c661b60b8feca90881916d91564645545",
+        "entry_digest": "c6625147d18eb4c6cbd44469484ddf1b48823f787a8fee9ca9f707ddecc71616",
+        "owners": [
+          "@exact:delivery"
+        ]
+      },
+      {
+        "path": ".github/workflows/windows.yml",
+        "kind": "file",
+        "mode": 33188,
+        "payload_digest": "120629112237c181cdccca9e478aadefdbf6333976971b3ea212ab6185a6472d",
+        "entry_digest": "d88f718008dda33984a4f706a605c2ed3b90fb1b9af6d59af7d4d8fb6ce2ec58",
+        "owners": [
+          "@exact:delivery"
+        ]
+      },
+      {
+        "path": "CHANGELOG.md",
+        "kind": "file",
+        "mode": 33188,
+        "payload_digest": "3429192fbaaaf72d1aa8468f71a97c8794f9d7907a8ad47d9007ee09b1a17fe5",
+        "entry_digest": "4b54ac52f3ecbbfee8f5485afd30345ee95d22590a136921636504c6f68884f1",
+        "owners": [
+          "@exact:delivery"
+        ]
+      },
+      {
+        "path": "Examples",
+        "kind": "non_file",
+        "mode": 0,
+        "payload_digest": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "entry_digest": "3bbde5788b142a4634360540ee4ae27ce987e5aef30c22f5f0de61707da35093",
+        "owners": [
+          "@exact:delivery"
+        ]
+      },
+      {
+        "path": "Examples/DemoApp/App/DemoApp.swift",
+        "kind": "file",
+        "mode": 33188,
+        "payload_digest": "be24ee0afbb902aabfe0cde26ba14662e18d574a77b98067590b74e060e1029e",
+        "entry_digest": "0257cf2f96376690f2cf462f4540bc706cb1afb98e4191eec74fe12fd784226c",
+        "owners": [
+          "@exact:delivery"
+        ]
+      },
+      {
+        "path": "Examples/DemoApp/README.md",
+        "kind": "file",
+        "mode": 33188,
+        "payload_digest": "84ee0a5c61a60f8a69ab7868b8540b8f6d1b402bdc347538aacd862557bc630f",
+        "entry_digest": "ef5c3d953f1bc754dcfe7ee569b276c9de9ce4e998a4de484e92b95416521afc",
+        "owners": [
+          "@exact:delivery"
+        ]
+      },
+      {
+        "path": "Examples/DemoApp/UITests/DemoUITests.swift",
+        "kind": "file",
+        "mode": 33188,
+        "payload_digest": "f6757b6bfc59c103a1d98a038a3f2fbccc7dcee9cf84ae1ee4f86f5a20368c74",
+        "entry_digest": "ba833f9788667899806bcad98b6d427ae685f897ff6d76eff708e8181df80c2c",
+        "owners": [
+          "@exact:delivery"
+        ]
+      },
+      {
+        "path": "Examples/DemoApp/project.yml",
+        "kind": "file",
+        "mode": 33188,
+        "payload_digest": "0f1bae86ce135e07ccb8f13cb8dd4a2d3b79cf66af1b2a4d6658c9d4a7f93649",
+        "entry_digest": "38cffdda8898d146ba7525a11a37f38ddf92c54c2c2b8380ff6f817df49d1ab9",
+        "owners": [
+          "@exact:delivery"
+        ]
+      }
+    ]
+  },
+  "passed": true,
+  "commands": [
+    {
+      "command": "specsync check (no spec in scope)",
+      "success": true,
+      "exit_code": 0
+    }
+  ],
+  "requirement_ids": []
+}

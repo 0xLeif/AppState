@@ -1,0 +1,22 @@
+{
+  "schema_version": 2,
+  "change_id": "add-an-ios-demo-app-with-ui-tests-and-an-ios-ci-job",
+  "reviewer": "0xLeif",
+  "provenance": {
+    "schema_version": 1,
+    "provider": "github_actions_check",
+    "required_check": "SpecSync scoped review"
+  },
+  "verdict": "pass",
+  "implementation_commit": "93c9ee5eb170ac7bd82323b23d49fa14e230b2bb",
+  "contract_digest": "e63b7884ce6c4d56bb632360959600d476dcec1d8e9858377a1882f6f24fe516",
+  "execution_digest": "cf14b8299a437b59c227fdfe4994fbb36b91a58081d8ce82058dacbfe0ed7de1",
+  "workspace_digest": "c91ca34d1e44ad0beca8f37e8dd25bf58194d2ad5af3bbe1ceaf4215827d37a2",
+  "timestamp": 1794871445,
+  "relayed_by": {
+    "decided_by": "0xLeif",
+    "words": "merged on rebase and fix the merge conflicts",
+    "where": "Claude Code chat on 2026-11-16, after he merged PR 159 into main; asked next whether to ship the records, he answered: Yes do it and tag the 3.1.0 release",
+    "recorded_by": "claude-code"
+  }
+}
