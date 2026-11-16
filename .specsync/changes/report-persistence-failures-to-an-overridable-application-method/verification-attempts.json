@@ -1,0 +1,23 @@
+{
+  "schema_version": 1,
+  "attempts": [
+    {
+      "timestamp": 1794840156,
+      "commit": "aa6c36eb27d787ef134966cda3a639dbe9a79d43",
+      "contract_digest": "de414993ef32143e95554df5f23a1900c49d810c9791c9c15109b2856b0b44d5",
+      "execution_digest": "aceef3bb7e30c43f6f27bfa7045f6109237dd98954e8a4d5d66ef0e2e6fae20d",
+      "workspace_digest": "5a4c2feb1675c0795cee49ee09249d6b9686f7fc083a39cc2e067424e47f241b",
+      "passed": true,
+      "commands": [
+        {
+          "command": "specsync check --spec application --spec property-wrappers --spec swiftdata",
+          "success": true,
+          "exit_code": 0
+        }
+      ],
+      "requirement_ids": [
+        "REQ-application-007"
+      ]
+    }
+  ]
+}
