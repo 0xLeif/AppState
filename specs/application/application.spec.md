@@ -7,6 +7,26 @@ files:
   - Sources/AppState/Application/Application+public.swift
   - Sources/AppState/Application/Application+internal.swift
   - Sources/AppState/Application/Types/Dependency/Slice/Application+DependencySlice.swift
+  - Sources/AppState/Application/Types/Dependency/Application+Dependency.swift
+  - Sources/AppState/Application/Types/Helper/Application+ApplicationPreview.swift
+  - Sources/AppState/Application/Types/Helper/Application+PersistenceFailure.swift
+  - Sources/AppState/Application/Types/Helper/Application+Scope.swift
+  - Sources/AppState/Application/Types/Helper/ApplicationLogger.swift
+  - Sources/AppState/Application/Types/Helper/FileManager+AppState.swift
+  - Sources/AppState/Application/Types/Helper/FileManaging.swift
+  - Sources/AppState/Application/Types/Helper/Loggable.swift
+  - Sources/AppState/Application/Types/Helper/MutableApplicationState.swift
+  - Sources/AppState/Application/Types/Helper/UbiquitousKeyValueStoreManaging.swift
+  - Sources/AppState/Application/Types/Helper/UserDefaultsManaging.swift
+  - Sources/AppState/Application/Types/State/Application+FileState.swift
+  - Sources/AppState/Application/Types/State/Application+SecureState.swift
+  - Sources/AppState/Application/Types/State/Application+State.swift
+  - Sources/AppState/Application/Types/State/Application+StoredState.swift
+  - Sources/AppState/Application/Types/State/Application+SyncState.swift
+  - Sources/AppState/Application/Types/State/Slice/Application+OptionalSlice.swift
+  - Sources/AppState/Application/Types/State/Slice/Application+OptionalSliceOptionalValue.swift
+  - Sources/AppState/Application/Types/State/Slice/Application+Slice.swift
+  - Sources/AppState/Dependencies/Keychain.swift
 
 db_tables: []
 depends_on: []

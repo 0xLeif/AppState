@@ -40,6 +40,13 @@
         "where": "Claude Code chat on 2026-11-16, in reply to the question whether to add the demo app and UI tests under Examples with an iOS CI job",
         "recorded_by": "claude-code"
       }
+    },
+    {
+      "gate": "finalization",
+      "actor": "specsync:finalization",
+      "timestamp": 1794871451,
+      "digest": "8d29f6d29e26b0ff6d42d9ee261aefeace3f719f16052c558b53a38a389c8bd0",
+      "note": "Same-PR finalization closing digest"
     }
   ],
   "reopenings": []

@@ -1,0 +1,22 @@
+{
+  "schema_version": 2,
+  "change_id": "fix-the-10-bugs-the-review-recorded-changing-code-to-match-the-doc-comments",
+  "reviewer": "0xLeif",
+  "provenance": {
+    "schema_version": 1,
+    "provider": "github_actions_check",
+    "required_check": "SpecSync scoped review"
+  },
+  "verdict": "pass",
+  "implementation_commit": "ef98934fe8b5762e39da415641692c0ff67d89f0",
+  "contract_digest": "c60fc055c135a6f7030efc6a31842933a70ff5e99592d29772a05db29d865410",
+  "execution_digest": "62b390b8b33dcf96e893ab747cd7fa634eab54120fdb8d8c2fd0820775012043",
+  "workspace_digest": "e32e62c27905e88ea4ff77e4d3302af138ec241d794412896ba0ce8ee85d4f70",
+  "timestamp": 1794871677,
+  "relayed_by": {
+    "decided_by": "0xLeif",
+    "words": "merged on rebase and fix the merge conflicts",
+    "where": "Claude Code chat on 2026-11-16, after he merged PR 159 into main with these commits inside it; asked next whether to ship the records, he answered: Yes do it and tag the 3.1.0 release",
+    "recorded_by": "claude-code"
+  }
+}

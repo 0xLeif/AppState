@@ -1,0 +1,12 @@
+{
+  "schema_version": 2,
+  "change_id": "add-an-ios-demo-app-with-ui-tests-and-an-ios-ci-job",
+  "implementation_commit": "93c9ee5eb170ac7bd82323b23d49fa14e230b2bb",
+  "implementation_tree": "3c5eeff8d23e47706dd6ed171c299acc0e85e333",
+  "contract_digest": "e63b7884ce6c4d56bb632360959600d476dcec1d8e9858377a1882f6f24fe516",
+  "workspace_digest": "c91ca34d1e44ad0beca8f37e8dd25bf58194d2ad5af3bbe1ceaf4215827d37a2",
+  "closing_digest": "8d29f6d29e26b0ff6d42d9ee261aefeace3f719f16052c558b53a38a389c8bd0",
+  "review_digest": "59555a93191ac48ffecfb95b75511530ccd75895e07064f7e1c214a5e519ccce",
+  "finalization_digest": "3c4b8af1d2c147dfef624e1163b7cceeea9fb7a99963c48531b2b97baa38f252",
+  "timestamp": 1794871451
+}

@@ -1,0 +1,2579 @@
+{
+  "timestamp": 1794871674,
+  "commit": "ef98934fe8b5762e39da415641692c0ff67d89f0",
+  "contract_digest": "c60fc055c135a6f7030efc6a31842933a70ff5e99592d29772a05db29d865410",
+  "execution_digest": "62b390b8b33dcf96e893ab747cd7fa634eab54120fdb8d8c2fd0820775012043",
+  "workspace_digest": "e32e62c27905e88ea4ff77e4d3302af138ec241d794412896ba0ce8ee85d4f70",
+  "acceptance_input_digest": "2adf2a728a2ac0b5fb59b7aba6d748fdaa8445c9e3a9ec62235336b7a146a177",
+  "acceptance_manifest": {
+    "schema_version": 1,
+    "entries": [
+      {
+        "path": ".chough",
+        "kind": "non_file",
+        "mode": 0,
+        "payload_digest": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "entry_digest": "3ada852af58fcf7313d0f743d9f5ad1ac3a8591c4141d3cb3e9709f8196c32c6",
+        "owners": [
+          "@exact:delivery"
+        ]
+      },
+      {
+        "path": ".chough/README.md",
+        "kind": "file",
+        "mode": 33188,
+        "payload_digest": "61e586343df7fef0d88b6db19452d338e089abe33c2eab1e3ac3e9e6739f69df",
+        "entry_digest": "547e60dc00f7a85748ec15f7b506f58706ae5fd525323c8ac0ad46f910108103",
+        "owners": [
+          "@exact:delivery"
+        ]
+      },
+      {
+        "path": ".chough/archive/sessions/2026-11-16-demo-app-ui-tests.md",
+        "kind": "file",
+        "mode": 33188,
+        "payload_digest": "772bc5192bbed558dc7fb44accef5ad52630dde4fc025e5cf306ef1b37952c91",
+        "entry_digest": "959994fa9bbf950f921e3f6d14a608f64eeddac572f92e29c1c2ba00aa940f3d",
+        "owners": [
+          "@exact:delivery"
+        ]
+      },
+      {
+        "path": ".chough/archive/sessions/2026-11-16-make-modelstate-deleteall-remove-related-models-and-make.md",
+        "kind": "file",
+        "mode": 33188,
+        "payload_digest": "3b1ef74dae32ba35310d88c0f08130adb66a3ef86cbe3950127e871fd0c37e43",
+        "entry_digest": "4c039510c40fdddc0da9925ce0141c2dd03c7e41430b66276df2b9bf7807840b",
+        "owners": [
+          "@exact:delivery"
+        ]
+      },
+      {
+        "path": ".chough/bugs/2026-11-16-defaultfilestatepath-is-percent-encoded-and-points-at-the.md",
+        "kind": "file",
+        "mode": 33188,
+        "payload_digest": "35dec5d8f9d066cc1981e31214329d068f522d5cfb266665300adbfe9c274589",
+        "entry_digest": "8d676ace0c105aeb61f87b2971d4405f46915c0f7fbbce8bcec17dd75335a720",
+        "owners": [
+          "@exact:delivery"
+        ]
+      },
+      {
+        "path": ".chough/bugs/2026-11-16-docs-the-dependency-example-in-usage-state-dependency-md-does.md",
+        "kind": "file",
+        "mode": 33188,
+        "payload_digest": "1c365ad842cf2af7945e4e536680dfe5f5678f6d37bcd33bec312e032136003e",
+        "entry_digest": "dd5355b68aad7f11799b1a8c49ab7dec846e409dbba83bd4223ec88c86a93c8e",
+        "owners": [
+          "@exact:delivery"
+        ]
+      },
+      {
+        "path": ".chough/bugs/2026-11-16-docs-the-restricted-state-example-never-keeps-its-value-and.md",
+        "kind": "file",
+        "mode": 33188,
+        "payload_digest": "c1bb34f0ff9d1ecf052cc11c5098b8b740b5149505828ef0d81391832f9979da",
+        "entry_digest": "599932dfa6db86d199ad31cb52ea9781c71e2d0b2692bfd36cf581c12b6b078b",
+        "owners": [
+          "@exact:delivery"
+        ]
+      },
+      {
+        "path": ".chough/bugs/2026-11-16-filestate-with-isbase64encoded-false-loses-values-that-look.md",
+        "kind": "file",
+        "mode": 33188,
+        "payload_digest": "a48ec3bce7d6acad44dbe426617b74a2b58ccf3c8342b710601f5843a5f6072e",
+        "entry_digest": "089a70fc9d2bd2a2cc9d3a165a80ebaa72ade6109b12f06c76b28392d3e2f8fa",
+        "owners": [
+          "@exact:delivery"
+        ]
+      },
+      {
+        "path": ".chough/bugs/2026-11-16-promote-to-drops-the-icloud-observer-when-icloudstore-was.md",
+        "kind": "file",
+        "mode": 33188,
+        "payload_digest": "7490a25a4a4ba8066c34a0f0ee8a088267f64e52ecf38a5c393c613a1fef954e",
+        "entry_digest": "382fc6164fc1203ef79761cf273d7ef49a0f54797ed3d39f23eb33525c5a759a",
+        "owners": [
+          "@exact:delivery"
+        ]
+      },
+      {
+        "path": ".chough/bugs/2026-11-16-property-wrapper-setter-drops-the-write-when-the-host-has-a.md",
+        "kind": "file",
+        "mode": 33188,
+        "payload_digest": "4ce436ca3777139e4721f34c65a9cbb4a33ab73bfd4dbf22b3834a55492a6f3c",
+        "entry_digest": "2d73f4826eb98568e884c96f72c9248089e8a2b4c13cb5b96101bf8c7f975979",
+        "owners": [
+          "@exact:delivery"
+        ]
+      },
+      {
+        "path": ".chough/bugs/2026-11-16-releasing-a-dependencyoverride-does-not-restore-the-dependency.md",
+        "kind": "file",
+        "mode": 33188,
+        "payload_digest": "abf5c5f0651a8e50a3a6535b1e40290679ac8789fba4abd3dd82a09bd52e6e45",
+        "entry_digest": "125af17db02d1de3ba8b15a59f14e0b6e96fc113b18129222d3ddf689f4cbbb3",
+        "owners": [
+          "@exact:delivery"
+        ]
+      },
+      {
+        "path": ".chough/bugs/2026-11-16-state-and-filestate-revert-a-write-made-right-after-the-first.md",
+        "kind": "file",
+        "mode": 33188,
+        "payload_digest": "40f71a04caee6e80a4af69b3f387818795a92bf81c8d11fac9e663ee28e04db5",
+        "entry_digest": "ab68b0f6023dbea1bd259c69dd79d614ec1e607f2f06731a4e713be536ba945e",
+        "owners": [
+          "@exact:delivery"
+        ]
+      },
+      {
+        "path": ".chough/bugs/2026-11-16-state-initial-evaluates-the-initial-value-on-every-access.md",
+        "kind": "file",
+        "mode": 33188,
+        "payload_digest": "478e87e3eff7e2605580b39444e362ec77971d5ec0b0febdadd5023554a38dfa",
+        "entry_digest": "60132d49b80f59f3a3da23999c201fb770141d25045ac5039579d95049acc13b",
+        "owners": [
+          "@exact:delivery"
+        ]
+      },
+      {
+        "path": ".chough/bugs/2026-11-16-storedstate-crashes-on-a-value-that-jsonencoder-rejects.md",
+        "kind": "file",
+        "mode": 33188,
+        "payload_digest": "003f123abd4e6e96a37f35cb27fc2cef9288a574ee433fb5e61d5e0ffcb2d906",
+        "entry_digest": "3174c1cddedafbab9dea821b6aa20198e26455a2e839f2d98f1fda46108db8bb",
+        "owners": [
+          "@exact:delivery"
+        ]
+      },
+      {
+        "path": ".chough/sessions/2026-11-16-demo-app-ui-tests/session.md",
+        "kind": "file",
+        "mode": 33188,
+        "payload_digest": "eba2a89ad84022ea0e3dfe9dbddf3e28ad7ac6f82cca00cb0d3515dfb35d7a15",
+        "entry_digest": "90d99559bbbce047d6568a122595d44684564c69144845b923b23caafc147882",
+        "owners": [
+          "@exact:delivery"
+        ]
+      },
+      {
+        "path": ".chough/sessions/2026-11-16-persistence-failure-hook/session.md",
+        "kind": "file",
+        "mode": 33188,
+        "payload_digest": "40b92a4ec092cda9e7d446bb92039765c496b96ba6b8f30275e701e860ee804b",
+        "entry_digest": "5dd05c30c27a0a3a9bd799ba6d00e34d0a389b3563a7dcc8fdcd22a937555b1b",
+        "owners": [
+          "@exact:delivery"
+        ]
+      },
+      {
+        "path": ".chough/sessions/2026-11-16-review-state-dependency-types-and-examples/session.md",
+        "kind": "file",
+        "mode": 33188,
+        "payload_digest": "5e65c463031164596bd9b6a4b02dc50ae292bbf7aba3becf18421dad90b47ba5",
+        "entry_digest": "9285b6fc471b86d1e802f5f42f7681e6453b98b004f5eeb01df912cf8c7405b2",
+        "owners": [
+          "@exact:delivery"
+        ]
+      },
+      {
+        "path": ".github/workflows/iOS.yml",
+        "kind": "file",
+        "mode": 33188,
+        "payload_digest": "74f2dbb8813815b8f49d4cb75e95b2333e877315d78c991de1d217e49acfdab5",
+        "entry_digest": "9e692007311ec33f8a7a6fb0a7d614fbd5d1fd234e617af53cd29f23282c0366",
+        "owners": [
+          "@exact:delivery"
+        ]
+      },
+      {
+        "path": ".specsync",
+        "kind": "non_file",
+        "mode": 0,
+        "payload_digest": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "entry_digest": "ec687cc7aaffc7e753e06ffdb26e0b705e9444e58c3d447f2302af2e57b20096",
+        "owners": [
+          "@exact:delivery"
+        ]
+      },
+      {
+        "path": ".specsync/.gitignore",
+        "kind": "file",
+        "mode": 33188,
+        "payload_digest": "a505253bd2fdfb84f8121e89e48bbc67144082b5a88f439ee6acfb45424799b0",
+        "entry_digest": "ec3b8bd021ac6ac36ddfba3d0d6b84535be8074b917e9bffa050216e422d1792",
+        "owners": [
+          "@exact:delivery"
+        ]
+      },
+      {
+        "path": ".specsync/config.toml",
+        "kind": "file",
+        "mode": 33188,
+        "payload_digest": "62dd21fabebb80a9de5dbe9b5f084eb6884bcdf64be6a56eed5d11863b0e9f2e",
+        "entry_digest": "256fe1c48fa2099a1aef36d8a26f1e0de920b3808166192aedee7bb10f4fd57f",
+        "owners": [
+          "@exact:delivery"
+        ]
+      },
+      {
+        "path": ".specsync/registry.toml",
+        "kind": "file",
+        "mode": 33188,
+        "payload_digest": "f87f09b9a45f20f6b662dcbc727899da267dfb284e8d8eb8b400cbc3b4fcd45b",
+        "entry_digest": "ce0eedda49c652bb3f5723ca19adffef999929d50c01ca36491d1bb82f27ae4f",
+        "owners": [
+          "@exact:delivery"
+        ]
+      },
+      {
+        "path": ".specsync/version",
+        "kind": "file",
+        "mode": 33188,
+        "payload_digest": "8722a3e4c8ef0feb2e7a669f5f854c72d5d6390b25598f9745dc95e5ffe51dce",
+        "entry_digest": "431b673e4d3b34b8123b18ef9ef4fc779e58867abf5fbf805150dcf21f5812f5",
+        "owners": [
+          "@exact:delivery"
+        ]
+      },
+      {
+        "path": ".specsync/workflow-v2-baseline.json",
+        "kind": "file",
+        "mode": 33188,
+        "payload_digest": "6e0594f291a47c23624224f6fcaf1e6bda4b2729d7c54091721322467217438e",
+        "entry_digest": "e5d089ccfa5c4725d1dac7d294747a393ff9f736a96f0ee4918a3c5a105adc0e",
+        "owners": [
+          "@exact:delivery"
+        ]
+      },
+      {
+        "path": "CHANGELOG.md",
+        "kind": "file",
+        "mode": 33188,
+        "payload_digest": "3429192fbaaaf72d1aa8468f71a97c8794f9d7907a8ad47d9007ee09b1a17fe5",
+        "entry_digest": "4b54ac52f3ecbbfee8f5485afd30345ee95d22590a136921636504c6f68884f1",
+        "owners": [
+          "@exact:delivery"
+        ]
+      },
+      {
+        "path": "Examples/DemoApp",
+        "kind": "non_file",
+        "mode": 0,
+        "payload_digest": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "entry_digest": "58249b2acc506d714420af3cffdbef1fbd1e86630d40ef9a8cc33e0cb4701322",
+        "owners": [
+          "@exact:delivery"
+        ]
+      },
+      {
+        "path": "Examples/DemoApp/App/DemoApp.swift",
+        "kind": "file",
+        "mode": 33188,
+        "payload_digest": "be24ee0afbb902aabfe0cde26ba14662e18d574a77b98067590b74e060e1029e",
+        "entry_digest": "0257cf2f96376690f2cf462f4540bc706cb1afb98e4191eec74fe12fd784226c",
+        "owners": [
+          "@exact:delivery"
+        ]
+      },
+      {
+        "path": "Examples/DemoApp/README.md",
+        "kind": "file",
+        "mode": 33188,
+        "payload_digest": "84ee0a5c61a60f8a69ab7868b8540b8f6d1b402bdc347538aacd862557bc630f",
+        "entry_digest": "ef5c3d953f1bc754dcfe7ee569b276c9de9ce4e998a4de484e92b95416521afc",
+        "owners": [
+          "@exact:delivery"
+        ]
+      },
+      {
+        "path": "Examples/DemoApp/UITests/DemoUITests.swift",
+        "kind": "file",
+        "mode": 33188,
+        "payload_digest": "f6757b6bfc59c103a1d98a038a3f2fbccc7dcee9cf84ae1ee4f86f5a20368c74",
+        "entry_digest": "ba833f9788667899806bcad98b6d427ae685f897ff6d76eff708e8181df80c2c",
+        "owners": [
+          "@exact:delivery"
+        ]
+      },
+      {
+        "path": "Examples/DemoApp/project.yml",
+        "kind": "file",
+        "mode": 33188,
+        "payload_digest": "0f1bae86ce135e07ccb8f13cb8dd4a2d3b79cf66af1b2a4d6658c9d4a7f93649",
+        "entry_digest": "38cffdda8898d146ba7525a11a37f38ddf92c54c2c2b8380ff6f817df49d1ab9",
+        "owners": [
+          "@exact:delivery"
+        ]
+      },
+      {
+        "path": "README.md",
+        "kind": "file",
+        "mode": 33188,
+        "payload_digest": "721e0a0cfe6ebc0fa6a87a00fe7d55cf5b3b3d89c13135688dabc852a174d01e",
+        "entry_digest": "209c60af4f5df2d34ba880bc14c3b18cf2ff1ccdef832670ebc6342c4f381d25",
+        "owners": [
+          "@exact:delivery"
+        ]
+      },
+      {
+        "path": "Sources/AppState/Application/Application+public.swift",
+        "kind": "file",
+        "mode": 33188,
+        "payload_digest": "7c8c593d310a869d102b96f1af12a97a33b28387c0270add02f37f414ac35f49",
+        "entry_digest": "6645cd9891d221caad135ac820868541845aca44d95e16fc559801eed029bf66",
+        "owners": [
+          "application"
+        ]
+      },
+      {
+        "path": "Sources/AppState/Application/Application.swift",
+        "kind": "file",
+        "mode": 33188,
+        "payload_digest": "0c251c8f824dcefb7a87f51e67418c91d94738477f6a987877bb08546b6444d8",
+        "entry_digest": "9d8bc2b9d5af34ec1471cd742d51ecba12d00fea2fff7f5d005775a4cdd65519",
+        "owners": [
+          "application"
+        ]
+      },
+      {
+        "path": "Sources/AppState/Application/Types/Dependency/Application+Dependency.swift",
+        "kind": "file",
+        "mode": 33188,
+        "payload_digest": "7d690109fe564970b8f673ec2aaea1db0fa77b0e69c0efb8720749f6d0afd82c",
+        "entry_digest": "45cc2ae1f8884e072d2affc6f33f6defc6e0497350171432cc5981c7319fb289",
+        "owners": [
+          "application"
+        ]
+      },
+      {
+        "path": "Sources/AppState/Application/Types/Helper/Application+ApplicationPreview.swift",
+        "kind": "file",
+        "mode": 33188,
+        "payload_digest": "bbb349662bf36841da06189c49c789fac8a2a4962f5a571d6608411de5071b8e",
+        "entry_digest": "eab919de98462aca291b9eab3d65b929892418fdfdee832f4ed6378025141f3a",
+        "owners": [
+          "application"
+        ]
+      },
+      {
+        "path": "Sources/AppState/Application/Types/Helper/Application+PersistenceFailure.swift",
+        "kind": "file",
+        "mode": 33188,
+        "payload_digest": "a23222f82be2e055f7ec8aa7063fd2d0b402990e59df99552875dddafbc2d0ca",
+        "entry_digest": "ec089fae2df8a9ed3fe96364785220f24fc49f13af58bcabf3701caa93a07e91",
+        "owners": [
+          "application"
+        ]
+      },
+      {
+        "path": "Sources/AppState/Application/Types/Helper/FileManager+AppState.swift",
+        "kind": "file",
+        "mode": 33188,
+        "payload_digest": "aa16284ffb627e2111a4055009e82a9abc930300b07f8001be389c007c89f365",
+        "entry_digest": "25eac93034f1cbb302ba8ffecae4c97649272402f529fda1eced3441323cc4df",
+        "owners": [
+          "application"
+        ]
+      },
+      {
+        "path": "Sources/AppState/Application/Types/State/Application+FileState.swift",
+        "kind": "file",
+        "mode": 33188,
+        "payload_digest": "4a2d57cb21fa219205e14e9fdc346d33218406ebca534668ba35d3faae21e4c3",
+        "entry_digest": "e156d8ac36429faa7db7b58bb7c003c1d82c5dba5c10921f46479da48a11ec6f",
+        "owners": [
+          "application"
+        ]
+      },
+      {
+        "path": "Sources/AppState/Application/Types/State/Application+State.swift",
+        "kind": "file",
+        "mode": 33188,
+        "payload_digest": "4087ddd164a85368cc04188655dacdc142f217dfaa64f5e8b24eee8f45eec3ca",
+        "entry_digest": "10b1d8777d1146f6b7612e5838e12d19386bb9faa41d5413d7b02d42dc7c4e87",
+        "owners": [
+          "application"
+        ]
+      },
+      {
+        "path": "Sources/AppState/Application/Types/State/Application+StoredState.swift",
+        "kind": "file",
+        "mode": 33188,
+        "payload_digest": "fcf67ab1343971ae0faf12283341860f2a40e3f7b8d600b488839cec59c12bae",
+        "entry_digest": "53ec3bbcb26ca5d63c9883026e9a009c815c0f1c37e4fa1d862d9f2e3cd6f2bc",
+        "owners": [
+          "application"
+        ]
+      },
+      {
+        "path": "Sources/AppState/Application/Types/State/Application+SyncState.swift",
+        "kind": "file",
+        "mode": 33188,
+        "payload_digest": "88df9fd22a87d4a0e54b1ffde5e7da39b7f095de5743e76b99a704c5285a8c4a",
+        "entry_digest": "1722c2071bfdba621cb4813844f8140aa95dd4b74dae1aa04ae5d0afaaf9ea39",
+        "owners": [
+          "application"
+        ]
+      },
+      {
+        "path": "Sources/AppState/PropertyWrappers/State/AppState.swift",
+        "kind": "file",
+        "mode": 33188,
+        "payload_digest": "34dfde14c4a1a172706baddac2e9359139073c32ab115d2150c4029a5a5da67e",
+        "entry_digest": "418db411ff3d54a792225342da12a042213f25a035809ca3210cb71035aea60b",
+        "owners": [
+          "property-wrappers"
+        ]
+      },
+      {
+        "path": "Sources/AppState/PropertyWrappers/State/FileState.swift",
+        "kind": "file",
+        "mode": 33188,
+        "payload_digest": "39bfbbffa79b2cc6440034dc3304aa3a6145c90ea7fbbcae2a72204275779896",
+        "entry_digest": "7510235f941fe7104f041c829c89572e2d05b02849b70865930ace30e9dbf555",
+        "owners": [
+          "property-wrappers"
+        ]
+      },
+      {
+        "path": "Sources/AppState/PropertyWrappers/State/SecureState.swift",
+        "kind": "file",
+        "mode": 33188,
+        "payload_digest": "8a3e9d50836e3b718754132d5c97b9fc02f19659ddce6ea02072380ab76d6028",
+        "entry_digest": "1c50390c38b8f9269ec95d356d9d74628b119e0a97f61d0c2f4f67d3a8bce9d0",
+        "owners": [
+          "property-wrappers"
+        ]
+      },
+      {
+        "path": "Sources/AppState/PropertyWrappers/State/Slice/OptionalSlice.swift",
+        "kind": "file",
+        "mode": 33188,
+        "payload_digest": "5d0e38bc107ee6efbee077eb8d1e63d7e9ae1e530cb7750b72d05f04d7a51ebf",
+        "entry_digest": "6c8c82af5a07c8556fe378b6df217ab8dedaf84fd58c9208903468e96dc2fd43",
+        "owners": [
+          "property-wrappers"
+        ]
+      },
+      {
+        "path": "Sources/AppState/PropertyWrappers/State/Slice/Slice.swift",
+        "kind": "file",
+        "mode": 33188,
+        "payload_digest": "6b5e4345d7e9261616412c95947d81ffa7210c9cf720228e5c54780ca2e0b1f8",
+        "entry_digest": "09286d91c9ef23dd070b54f01037e8327bc1835f6aceb4f041add06fa07b199c",
+        "owners": [
+          "property-wrappers"
+        ]
+      },
+      {
+        "path": "Sources/AppState/PropertyWrappers/State/StoredState.swift",
+        "kind": "file",
+        "mode": 33188,
+        "payload_digest": "c83721ea871646f7882727b85a238a3e02fad66a5c8bb18103e6c785c5189b6f",
+        "entry_digest": "3a3b70a3eebd6c3b22ee9d98cdf4770c7d32611622127c88bae11b5e9f3f2b38",
+        "owners": [
+          "property-wrappers"
+        ]
+      },
+      {
+        "path": "Sources/AppState/PropertyWrappers/State/SyncState.swift",
+        "kind": "file",
+        "mode": 33188,
+        "payload_digest": "d9311225b356edf7887f1d8ac0d85a0bac03af608287000090b2e464952d0b84",
+        "entry_digest": "f416854fde7f491ef0290f4064d0c73228e8bc230a393f0c8efe86fc176f6fa9",
+        "owners": [
+          "property-wrappers"
+        ]
+      },
+      {
+        "path": "Tests/AppStateTests",
+        "kind": "non_file",
+        "mode": 0,
+        "payload_digest": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "entry_digest": "c276808ad8ffbce53d4e604d0b17740b5824d995e4472d177886746285175ba7",
+        "owners": [
+          "@exact:test"
+        ]
+      },
+      {
+        "path": "Tests/AppStateTests/AdversarialBreakItTests.swift",
+        "kind": "file",
+        "mode": 33188,
+        "payload_digest": "d205242ed40ef8d63ad2a22dc075fdfaa03cd12185ad78bab2f8c7fa3c584d82",
+        "entry_digest": "06adcb6d180f4dfea67bd26f59efc6bb256cebe5666f97bba8b84a28ee004967",
+        "owners": [
+          "@exact:test"
+        ]
+      },
+      {
+        "path": "Tests/AppStateTests/AppDependencyTests.swift",
+        "kind": "file",
+        "mode": 33188,
+        "payload_digest": "0480c00a01e669513200bff2bbd1d51c2af284c4728f35be0e0d82491e3f36c4",
+        "entry_digest": "dac04cab55078ab043358dd75507ac1073614020c2043230de8b84d6aa7f286f",
+        "owners": [
+          "@exact:test"
+        ]
+      },
+      {
+        "path": "Tests/AppStateTests/AppStateTests.swift",
+        "kind": "file",
+        "mode": 33188,
+        "payload_digest": "4589e6f370eb8ef8c291933f18eb901890439ea88a956c018e7815c78df33e1d",
+        "entry_digest": "5f46f8111198875346c079bafd5d1cf90371bf9ec7280bb13a484fd6de95c02d",
+        "owners": [
+          "@exact:test"
+        ]
+      },
+      {
+        "path": "Tests/AppStateTests/ApplicationTests.swift",
+        "kind": "file",
+        "mode": 33188,
+        "payload_digest": "a4d9f668fa6511fd4da3e887e34e1d2c0773b7f2e6737fc90b059a8e707789b2",
+        "entry_digest": "3a08f98a619548e7ebc96d53ce06ed4425f896df03b0ba42cb79772ee90e3da0",
+        "owners": [
+          "@exact:test"
+        ]
+      },
+      {
+        "path": "Tests/AppStateTests/BugFixRegressionTests.swift",
+        "kind": "file",
+        "mode": 33188,
+        "payload_digest": "e330824b43ac565ad3787606f7945550f71079f8c83a6f996f2301055004dfb3",
+        "entry_digest": "96bc9f8c60bcc508b7c978e9908c8ada6a91e4794776e95000ba42cd09c19e55",
+        "owners": [
+          "@exact:test"
+        ]
+      },
+      {
+        "path": "Tests/AppStateTests/CrossPlatformObservationTests.swift",
+        "kind": "file",
+        "mode": 33188,
+        "payload_digest": "3625b343233885bc0d0b18189eb0a5b1635e0ccadb7f93bef70cd0ddcd507cf2",
+        "entry_digest": "d540644958ba74955ecd584535236f6b7fa96e59573bdf26a4ce8c1efa7adf71",
+        "owners": [
+          "@exact:test"
+        ]
+      },
+      {
+        "path": "Tests/AppStateTests/DependencySliceTests.swift",
+        "kind": "file",
+        "mode": 33188,
+        "payload_digest": "a7796d9d6f69fd5640de74e50550a5d63e79174dbc4f3f790b04330f385cf1a0",
+        "entry_digest": "85820b2c5b01e42cc626140265b76b33cf454be04881f07e4c42be99558230ce",
+        "owners": [
+          "@exact:test"
+        ]
+      },
+      {
+        "path": "Tests/AppStateTests/DogfoodAppTests.swift",
+        "kind": "file",
+        "mode": 33188,
+        "payload_digest": "637499b954880c31133cb894eba00b697dc9f9d4ed33c38dc250ce458246caed",
+        "entry_digest": "82c5045dd6f9048bdad88232b8d07a3dcb0370ac6834d42f6a01504f815b3691",
+        "owners": [
+          "@exact:test"
+        ]
+      },
+      {
+        "path": "Tests/AppStateTests/DogfoodPersistentEdgeTests.swift",
+        "kind": "file",
+        "mode": 33188,
+        "payload_digest": "9848fc9e9120aa5961a60132fdeb1140d539728ddd8b89311439d15f3b20568c",
+        "entry_digest": "5a36ef662f8e4573777e5a58b124b23db62d31ac0f53f555cbf07b77f71aaf18",
+        "owners": [
+          "@exact:test"
+        ]
+      },
+      {
+        "path": "Tests/AppStateTests/FileManagerExtensionTests.swift",
+        "kind": "file",
+        "mode": 33188,
+        "payload_digest": "b56c8aa68909c6e23d463c5d6455e94734bee411233f5027fce99aa9ae6187cd",
+        "entry_digest": "77606676417e760aff25b53ca82af788d06e7de653fbb47fc1a7504c17d9b403",
+        "owners": [
+          "@exact:test"
+        ]
+      },
+      {
+        "path": "Tests/AppStateTests/FileStateTests.swift",
+        "kind": "file",
+        "mode": 33188,
+        "payload_digest": "ea80d139d5ecedbb2c3d5f0e935ec900f1d6ad698bbf78bd5227e6cfb9279e89",
+        "entry_digest": "022bc7c11f4bc063e5f0a408574918f1ff884aa3b03b9520fdfbbd74a45f35f7",
+        "owners": [
+          "@exact:test"
+        ]
+      },
+      {
+        "path": "Tests/AppStateTests/KeychainTests.swift",
+        "kind": "file",
+        "mode": 33188,
+        "payload_digest": "2a6d9e3f714b344821d5727f1d841c1e017f9a216d14cac59c81de955b387ffd",
+        "entry_digest": "c3791b52cf5b28001ac791f48a4a0e18318a700223a475649453ba3b1b6f7ac5",
+        "owners": [
+          "@exact:test"
+        ]
+      },
+      {
+        "path": "Tests/AppStateTests/ModelStateCoverageTests.swift",
+        "kind": "file",
+        "mode": 33188,
+        "payload_digest": "3a219ad24295e1d03d1a9c66f97909a00372004a8ec1837576123385dfef2783",
+        "entry_digest": "e37cc8efd74d0b5227ab54c4ca11ff114128038a8e5eca88769fdbe56dc1fabb",
+        "owners": [
+          "@exact:test"
+        ]
+      },
+      {
+        "path": "Tests/AppStateTests/ModelStateTests.swift",
+        "kind": "file",
+        "mode": 33188,
+        "payload_digest": "89afd403e1c3e9d188f6c404fcb83862cd7301feda77fdbd7788aa6f1f17dad8",
+        "entry_digest": "622147b56f88c80a72388ad60e329572aa08196d7522b1602411cfc964eb7f2d",
+        "owners": [
+          "@exact:test"
+        ]
+      },
+      {
+        "path": "Tests/AppStateTests/ObservationBridgeTests.swift",
+        "kind": "file",
+        "mode": 33188,
+        "payload_digest": "eb087e6a96e00f4eb29640e84563e24a6e4940349bec37b6fc601327ab27558c",
+        "entry_digest": "c224076fcc3179839ba8779433ba0c53725d444cc145d0b061fb6ee72a066cfa",
+        "owners": [
+          "@exact:test"
+        ]
+      },
+      {
+        "path": "Tests/AppStateTests/ObservationTests.swift",
+        "kind": "file",
+        "mode": 33188,
+        "payload_digest": "559067c4775d2620aa0222dab718b237d77aea704bb34a77082f31f7c2f125dc",
+        "entry_digest": "56acd9e16f5ee6c18933eb32dcfa3e538656e49c285ca14e59def5984f63d377",
+        "owners": [
+          "@exact:test"
+        ]
+      },
+      {
+        "path": "Tests/AppStateTests/ObservedDependencyTests.swift",
+        "kind": "file",
+        "mode": 33188,
+        "payload_digest": "7b3f67e521ec5d18120bff220341ee9b20516e394a3e03dabe452b63d0e2175c",
+        "entry_digest": "7c12b3f5a70d092778267a1ffe60997101e6a81d89a31c8ca9dffc0d17633143",
+        "owners": [
+          "@exact:test"
+        ]
+      },
+      {
+        "path": "Tests/AppStateTests/OptionalSliceTests.swift",
+        "kind": "file",
+        "mode": 33188,
+        "payload_digest": "425965da0f66cedf4399d45c67f0a76f870ecac8c559114424056b29fbdb4fb5",
+        "entry_digest": "b4863ad7861cb0ded46b8cb55fdd66be79507567a9b6cf03820fad788a43aef4",
+        "owners": [
+          "@exact:test"
+        ]
+      },
+      {
+        "path": "Tests/AppStateTests/PersistenceFailureTests.swift",
+        "kind": "file",
+        "mode": 33188,
+        "payload_digest": "b50c85379e871d19f1c0bfee3fca3ccb15a17ebe34ea38928b3d1a5587e488b5",
+        "entry_digest": "8ee31e8ed93d8d39610e6805773648ec3a7b2a32a195cd30e6566bd5aa8382c5",
+        "owners": [
+          "@exact:test"
+        ]
+      },
+      {
+        "path": "Tests/AppStateTests/ReviewFixTests.swift",
+        "kind": "file",
+        "mode": 33188,
+        "payload_digest": "02ca35791164a1ccb4fe160856469272a3e4162a7a39ce7752d18840f7f8967c",
+        "entry_digest": "189aaee9bab8afe19c1ec7181123b9978d90a540def0255bf9cacb57769d694a",
+        "owners": [
+          "@exact:test"
+        ]
+      },
+      {
+        "path": "Tests/AppStateTests/SecureStateTests.swift",
+        "kind": "file",
+        "mode": 33188,
+        "payload_digest": "1a542390325f24bdce144d282f467016128c4d7253939d3d760cbad23a475673",
+        "entry_digest": "318a16a2e35186030d2927641a709a2630f5a139892d300bef2408866ae7a77e",
+        "owners": [
+          "@exact:test"
+        ]
+      },
+      {
+        "path": "Tests/AppStateTests/SliceTests.swift",
+        "kind": "file",
+        "mode": 33188,
+        "payload_digest": "fbe293e431d839ff3793f3d23bf947569e8b728738ea47c615e787b3e1b84f5a",
+        "entry_digest": "9aace7b225f06e158d6517d5417925e8ff9947b0e11962fd5984ff6103d0b87c",
+        "owners": [
+          "@exact:test"
+        ]
+      },
+      {
+        "path": "Tests/AppStateTests/StoredStateTests.swift",
+        "kind": "file",
+        "mode": 33188,
+        "payload_digest": "84f1b698e9d9006f26cafa44a172e76c95d06744d776efc27e964f53cd613b0e",
+        "entry_digest": "297ea9e89ed47f1a72f19b1c6cf7b40acea8e2099c4968bef544bed7925aa2df",
+        "owners": [
+          "@exact:test"
+        ]
+      },
+      {
+        "path": "Tests/AppStateTests/SwiftUIHostingTests.swift",
+        "kind": "file",
+        "mode": 33188,
+        "payload_digest": "166281f9f8d08b0574629f0115cacc2e4cbfca929b3d8447b301e89ed31f7ae0",
+        "entry_digest": "8c54a2111db3b83f4d7a464fcd7250ae93120b471cc0cb1fb272e2875aa68fcf",
+        "owners": [
+          "@exact:test"
+        ]
+      },
+      {
+        "path": "Tests/AppStateTests/SyncStateTests.swift",
+        "kind": "file",
+        "mode": 33188,
+        "payload_digest": "4ccf27eda7f6c18e6e5699e0b19514d03c15230ac8ff77d2fbad4131adc6ee1d",
+        "entry_digest": "cae4d89dbe4d28197389406033a306359fde1dfa65c325e07c3764adbd772fa3",
+        "owners": [
+          "@exact:test"
+        ]
+      },
+      {
+        "path": "documentation",
+        "kind": "non_file",
+        "mode": 0,
+        "payload_digest": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "entry_digest": "12eb44463dda619fc963c5b00b5b1ce7b7543445f4e2c3db2125d0dc2fd86122",
+        "owners": [
+          "@exact:delivery"
+        ]
+      },
+      {
+        "path": "documentation/README.de.md",
+        "kind": "file",
+        "mode": 33188,
+        "payload_digest": "f044f1708c724ca023fc8d1dbda114e7ea78aee5492d42916368b1500c981dd4",
+        "entry_digest": "c041ab81778b19dca85db8744156017ef157032307a74f4b5e0853c0b85076b9",
+        "owners": [
+          "@exact:delivery"
+        ]
+      },
+      {
+        "path": "documentation/README.es.md",
+        "kind": "file",
+        "mode": 33188,
+        "payload_digest": "d889f8ccd5715873c19031d305ff553876f7c4e10e802f4fc7bf9b867862e089",
+        "entry_digest": "b7451046d4a03e749095f7a4fa7972fecde29d560e832e32bef745de155a2e42",
+        "owners": [
+          "@exact:delivery"
+        ]
+      },
+      {
+        "path": "documentation/README.fr.md",
+        "kind": "file",
+        "mode": 33188,
+        "payload_digest": "b06d65be01000cf322df588d748e154f85f025a92e90a0c45f51cf26b2b4d6cf",
+        "entry_digest": "8608d45d86acded69833294609f1b529ca676b6173f7b0a11a6486fbe1485558",
+        "owners": [
+          "@exact:delivery"
+        ]
+      },
+      {
+        "path": "documentation/README.hi.md",
+        "kind": "file",
+        "mode": 33188,
+        "payload_digest": "91a9339cfbb995bbbdaf73619eee8517c71c8cf8fc954416277efb6b7bf881b7",
+        "entry_digest": "9443fa87fc1441f6bd720ac6148d8fdaa91866648f80d7cd82b9ca37386653b3",
+        "owners": [
+          "@exact:delivery"
+        ]
+      },
+      {
+        "path": "documentation/README.pt.md",
+        "kind": "file",
+        "mode": 33188,
+        "payload_digest": "6998ef185f3ff48541fffac8c72faafde0c14d33837f3971b3fd7e194dc51515",
+        "entry_digest": "338c7c82a22ea7e6c2a74048d6f326ee823eededaf47f35370c403f4a4c4491e",
+        "owners": [
+          "@exact:delivery"
+        ]
+      },
+      {
+        "path": "documentation/README.ru.md",
+        "kind": "file",
+        "mode": 33188,
+        "payload_digest": "add0537f8d3cd0fb049f71d314b2f7497b4cb94289952641a1d504b334b33ec3",
+        "entry_digest": "f2bc936927df6ad79cf719a7a5c9796723aa23b87f378872cdda251ef00d13cb",
+        "owners": [
+          "@exact:delivery"
+        ]
+      },
+      {
+        "path": "documentation/README.zh-CN.md",
+        "kind": "file",
+        "mode": 33188,
+        "payload_digest": "520a48c0e3a0659155c5b962576eaa8d58257deb6693c7966e63087af0fe2fa5",
+        "entry_digest": "cdabb520e0b6fc98884590ddae375ad1b6c8d8f2e4f3de25c94d648169ce985e",
+        "owners": [
+          "@exact:delivery"
+        ]
+      },
+      {
+        "path": "documentation/de/advanced-usage.md",
+        "kind": "file",
+        "mode": 33188,
+        "payload_digest": "e9a4014fdb6fab1613ec93525fa930fcfb150ac249ad601bc4d928c75d8ecd61",
+        "entry_digest": "9a467cd1cd463de14dc6f66168e1b40cd4ac47d340fc53fc35cc47a14ad9fa67",
+        "owners": [
+          "@exact:delivery"
+        ]
+      },
+      {
+        "path": "documentation/de/best-practices.md",
+        "kind": "file",
+        "mode": 33188,
+        "payload_digest": "becb32e54ba794f2c3a04e60471c5f6755cc5eb6573d86da80d76299571fe38a",
+        "entry_digest": "434f686a4c75604bd87fa2cbf1f65980d97c2fbfce98c889642150f3b53dd8bd",
+        "owners": [
+          "@exact:delivery"
+        ]
+      },
+      {
+        "path": "documentation/de/contributing.md",
+        "kind": "file",
+        "mode": 33188,
+        "payload_digest": "1dc069feaca673d405b57ff57b1d247743ae2b542240c1fb3d9a81560d2b42fc",
+        "entry_digest": "a0e7dea71d236038818f1c685db3e4b24484a649c37e540baf2c50cc77276397",
+        "owners": [
+          "@exact:delivery"
+        ]
+      },
+      {
+        "path": "documentation/de/faq.md",
+        "kind": "file",
+        "mode": 33188,
+        "payload_digest": "2f32af9d008848de4d46571940197e7d4f2b9a29c8b84ca8121581b4eba5abad",
+        "entry_digest": "73bbe61e1b2d8d7edf5d52f2937acb8e791a619496a7c36470b5325a670a65d5",
+        "owners": [
+          "@exact:delivery"
+        ]
+      },
+      {
+        "path": "documentation/de/installation.md",
+        "kind": "file",
+        "mode": 33188,
+        "payload_digest": "6f37ba970374d5c746c0dd1aa9573559d9d6813f098f69ebbff2bf4cf4ab5070",
+        "entry_digest": "1b8797d49bc42df53d5e798f7baed451ef9b58dd7fc2b92d62c218c4066050d3",
+        "owners": [
+          "@exact:delivery"
+        ]
+      },
+      {
+        "path": "documentation/de/migration-considerations.md",
+        "kind": "file",
+        "mode": 33188,
+        "payload_digest": "0072e8c1bbbb07b7d668b30137ff7244a6d9d24f354972ee05bc370d8a0bc833",
+        "entry_digest": "3287ca520b1f7f26e85346119436953b1dd19dfbba8ae2d7da1e20273e447a3c",
+        "owners": [
+          "@exact:delivery"
+        ]
+      },
+      {
+        "path": "documentation/de/starting-to-use-syncstate.md",
+        "kind": "file",
+        "mode": 33188,
+        "payload_digest": "3d6d859901bd276c13da9901826ebd2fd2d55a266f5c2fa9070cf85b2722fb4b",
+        "entry_digest": "0d141218e63c2601e88d835cab805b17743e0f577b0ca286bbfe89883cd42121",
+        "owners": [
+          "@exact:delivery"
+        ]
+      },
+      {
+        "path": "documentation/de/syncstate-implementation.md",
+        "kind": "file",
+        "mode": 33188,
+        "payload_digest": "8ac81c994fb1d8064a6be8f2f128c57b84d489ea6a1a953131ee41b3b5f380cd",
+        "entry_digest": "9c222a6df0728f598a9d6afe0b8937ad509d8984b48fffec874d925823f2d42f",
+        "owners": [
+          "@exact:delivery"
+        ]
+      },
+      {
+        "path": "documentation/de/upgrade-to-v3.md",
+        "kind": "file",
+        "mode": 33188,
+        "payload_digest": "8e151c25c53aa8d41cf08206d72d8edd68d431e242e7c63685502b4aeb40d8e1",
+        "entry_digest": "fc050ada5df12bcebd752fc2370dc68e515c08084dffe7abb1b6ebe94ead2797",
+        "owners": [
+          "@exact:delivery"
+        ]
+      },
+      {
+        "path": "documentation/de/usage-constant.md",
+        "kind": "file",
+        "mode": 33188,
+        "payload_digest": "50e9e22cb28a87dea4596720004bc6b668bb863e7675be35578f0f135dca1acf",
+        "entry_digest": "0d6022d7c0d9c7890d658d95e25b1c6d1a39d494b55023d6dbee87640f0e1530",
+        "owners": [
+          "@exact:delivery"
+        ]
+      },
+      {
+        "path": "documentation/de/usage-filestate.md",
+        "kind": "file",
+        "mode": 33188,
+        "payload_digest": "fee86f47804c068d4fcf0a7d00215f2f14f6949c6b8d7a2da51931b49642c1a8",
+        "entry_digest": "4338df2a9bec0822203ab51d04edff625c9ca2270a80fa0bd92e0b99d10a0164",
+        "owners": [
+          "@exact:delivery"
+        ]
+      },
+      {
+        "path": "documentation/de/usage-modelstate.md",
+        "kind": "file",
+        "mode": 33188,
+        "payload_digest": "e68d23cd0c83135a9a690aac7a8fc728b0f217080008c28bf0e7ed16bf537c81",
+        "entry_digest": "992351caed3521148c30441b247f0bdbea9085ce716101c9242521886009bbe6",
+        "owners": [
+          "@exact:delivery"
+        ]
+      },
+      {
+        "path": "documentation/de/usage-observeddependency.md",
+        "kind": "file",
+        "mode": 33188,
+        "payload_digest": "531986c7306fafcf903437eea72a0aeb20d1729a7d9d07cfcea7480c84d22050",
+        "entry_digest": "ac92b715b830255d527d9d056cb675e101c50c51bb008741d28c5c215c1d2b5e",
+        "owners": [
+          "@exact:delivery"
+        ]
+      },
+      {
+        "path": "documentation/de/usage-overview.md",
+        "kind": "file",
+        "mode": 33188,
+        "payload_digest": "2ab4c24e9b93ee5c78d6e3f63129d7d7757a6c18db14801d005ffe148cb536aa",
+        "entry_digest": "b6d4b4648a0bb1cd8caa57de2b5c379394632a15372da18999ceecc5404ce033",
+        "owners": [
+          "@exact:delivery"
+        ]
+      },
+      {
+        "path": "documentation/de/usage-securestate.md",
+        "kind": "file",
+        "mode": 33188,
+        "payload_digest": "c32afe62dc1293bf4cd44caffa33b7b1befee2b29af5f84a279eecf7de9b0697",
+        "entry_digest": "0435613e2ecf4af82f934dad99accb70cef63c89b92cbf8649c9d743a963ae96",
+        "owners": [
+          "@exact:delivery"
+        ]
+      },
+      {
+        "path": "documentation/de/usage-slice.md",
+        "kind": "file",
+        "mode": 33188,
+        "payload_digest": "8532f7a74d0e5a245d675a9e0e917a93cdf5562ad3e483c2ec8606ded95a6542",
+        "entry_digest": "8223cabd35594a508352c64b33e57d96bb8077bbe5524d5f2a77e5a976211d22",
+        "owners": [
+          "@exact:delivery"
+        ]
+      },
+      {
+        "path": "documentation/de/usage-state-dependency.md",
+        "kind": "file",
+        "mode": 33188,
+        "payload_digest": "55550fedfc536ca2758db263178431941ea7e8f9cd4f706754f1bdbb794b958f",
+        "entry_digest": "c7084b7fce5ed19d192826edac910cbaeb08a621d7ff4bb9a865f25ee70fec61",
+        "owners": [
+          "@exact:delivery"
+        ]
+      },
+      {
+        "path": "documentation/de/usage-storedstate.md",
+        "kind": "file",
+        "mode": 33188,
+        "payload_digest": "2bfcd6117f59a655f4a87bea01a3a7fb4b147163c6bd3e21783102e619837cb2",
+        "entry_digest": "4e5b7224190ad7ab2cced8e5e89c563532ecd65e1df977c7620178573393175a",
+        "owners": [
+          "@exact:delivery"
+        ]
+      },
+      {
+        "path": "documentation/de/usage-syncstate.md",
+        "kind": "file",
+        "mode": 33188,
+        "payload_digest": "f726f6a2558f4bbf93e4df9c63c822490c6f6b663d8c5a710623c7a5d4417b63",
+        "entry_digest": "16ae7f81748f253b3839142a3b77cac6332b27ce6b27796544697e6f8d80cf04",
+        "owners": [
+          "@exact:delivery"
+        ]
+      },
+      {
+        "path": "documentation/en/advanced-usage.md",
+        "kind": "file",
+        "mode": 33188,
+        "payload_digest": "9c322293ded29c4e3b4491f44226a04f3ac5171d997ea6234bbca304bcab7410",
+        "entry_digest": "0b271c5b18adb1c60bed12e8cf35d51c52e17fb3668684843a0865497ecdc366",
+        "owners": [
+          "@exact:delivery"
+        ]
+      },
+      {
+        "path": "documentation/en/best-practices.md",
+        "kind": "file",
+        "mode": 33188,
+        "payload_digest": "5ad308b293bdbfc91bf585556e5df371a6c822225c2b56f64ca3d4ca6929c326",
+        "entry_digest": "2a0f4cb72cfb02b6636364ffaf19359832a85b337338a86073e126e6d465bb6b",
+        "owners": [
+          "@exact:delivery"
+        ]
+      },
+      {
+        "path": "documentation/en/contributing.md",
+        "kind": "file",
+        "mode": 33188,
+        "payload_digest": "2bf02ac37f145a4be5590f42251b97d6910acc7926c4e1bf73d907ef9195bf8b",
+        "entry_digest": "b0b71eb10dfc530a3be6379fb8ca896b5e838d8ff0dab0982e20382602f5e789",
+        "owners": [
+          "@exact:delivery"
+        ]
+      },
+      {
+        "path": "documentation/en/faq.md",
+        "kind": "file",
+        "mode": 33188,
+        "payload_digest": "9566e0595c005ad3842541bb5c7c9f7f2015c9880baa955f2c50458366b74ce5",
+        "entry_digest": "d875f3206f607f182c2840443be51044002df7da2a361fe012e5f4d816d0154a",
+        "owners": [
+          "@exact:delivery"
+        ]
+      },
+      {
+        "path": "documentation/en/installation.md",
+        "kind": "file",
+        "mode": 33188,
+        "payload_digest": "1d16413ea4ee4657f80c948302e4ed71ff369f43034e78069b99e577eb76165b",
+        "entry_digest": "ed49441df7608d68f1ddb1075dc8240d69c0215e77f5817096efb75e1169b551",
+        "owners": [
+          "@exact:delivery"
+        ]
+      },
+      {
+        "path": "documentation/en/migration-considerations.md",
+        "kind": "file",
+        "mode": 33188,
+        "payload_digest": "3dc92afe056124b2eb3d56e0865ea237c35ce36ec723d95e6a3e8a106fd63a4a",
+        "entry_digest": "e70c26d01f9a7a724e9e10b2a7008bd7513331a35cb6f996bf4e41e8861da8c4",
+        "owners": [
+          "@exact:delivery"
+        ]
+      },
+      {
+        "path": "documentation/en/starting-to-use-syncstate.md",
+        "kind": "file",
+        "mode": 33188,
+        "payload_digest": "95c1b4fa3c6dbf7b8ce57e33bac8193a4cbe9ba307cdf155003495d4a98c40af",
+        "entry_digest": "0d5ee44a28da011e6df923ae047b85450f73e7388a3480736b6461d6b1343b3c",
+        "owners": [
+          "@exact:delivery"
+        ]
+      },
+      {
+        "path": "documentation/en/syncstate-implementation.md",
+        "kind": "file",
+        "mode": 33188,
+        "payload_digest": "af43d8213a5b05620f26cd8a5205be2029abeab63ad96e6f421c31ea9f715d38",
+        "entry_digest": "90b7c2b97a8ac7b04720b3b3103d58c534883f5f2d3da8bdf91818945916d716",
+        "owners": [
+          "@exact:delivery"
+        ]
+      },
+      {
+        "path": "documentation/en/upgrade-to-v3.md",
+        "kind": "file",
+        "mode": 33188,
+        "payload_digest": "d2f30351f5382afa3feefd6eccbe241999e51dbf0d84df3b676db2f9e5b3871d",
+        "entry_digest": "57186c782fd013d12d91c90f2de5fb296cfeb37e42017cb53cd49027295aa4ee",
+        "owners": [
+          "@exact:delivery"
+        ]
+      },
+      {
+        "path": "documentation/en/usage-constant.md",
+        "kind": "file",
+        "mode": 33188,
+        "payload_digest": "c1c6700fcb803b8c0d700ee8cf98ee715a54bcc3604de28b5e546b2654d217a1",
+        "entry_digest": "b4ec8d4b0af65d6dce1abffc23639dbc2990f7f712998832944db0a099560314",
+        "owners": [
+          "@exact:delivery"
+        ]
+      },
+      {
+        "path": "documentation/en/usage-filestate.md",
+        "kind": "file",
+        "mode": 33188,
+        "payload_digest": "a1e0c9142c75158ff138be3dc57fa6dcad44cab2f03976bff67b438701a794d4",
+        "entry_digest": "c760dbe1aaa74242cab18ef1e916f2cb4e3d6db61a7340ff2448e1ff00237564",
+        "owners": [
+          "@exact:delivery"
+        ]
+      },
+      {
+        "path": "documentation/en/usage-modelstate.md",
+        "kind": "file",
+        "mode": 33188,
+        "payload_digest": "7e2478457f53398ea8aa967f968a1aa0ed290a93c96be9dbc2a8559a73d58532",
+        "entry_digest": "31881126d0e2de9d4d58806f77036a742d2d2ce4271b87ceb1532ce52e770dd1",
+        "owners": [
+          "@exact:delivery"
+        ]
+      },
+      {
+        "path": "documentation/en/usage-observeddependency.md",
+        "kind": "file",
+        "mode": 33188,
+        "payload_digest": "433535976b9e8d90a34b67c0d6843a4610fdbb6ca003d08d3800638224e83dfe",
+        "entry_digest": "52040fa584bf43fb7caf0f0d0866fbeeaeb8dd27a31130a9646e77cc6c578837",
+        "owners": [
+          "@exact:delivery"
+        ]
+      },
+      {
+        "path": "documentation/en/usage-overview.md",
+        "kind": "file",
+        "mode": 33188,
+        "payload_digest": "feed9629098591dfd4e2ea901890141dd22e1fbfe42a1fac02b725c75cedfeed",
+        "entry_digest": "54bf9ef47c5c93e5ba50d4ed22450e1b7a11408708f6f3f5c33c5f319f9fbc6e",
+        "owners": [
+          "@exact:delivery"
+        ]
+      },
+      {
+        "path": "documentation/en/usage-securestate.md",
+        "kind": "file",
+        "mode": 33188,
+        "payload_digest": "471d38ac6d20c1887bbf6d647267b74efa68e09ab76971ffff8a1ff145ae09e6",
+        "entry_digest": "702dea065658d8772e268c6cf4ae9e0f95de651e16bb88c1bed11663fbe12bab",
+        "owners": [
+          "@exact:delivery"
+        ]
+      },
+      {
+        "path": "documentation/en/usage-slice.md",
+        "kind": "file",
+        "mode": 33188,
+        "payload_digest": "8ebd71e78603f28b2348377bd32b895cbdd54d85b593a73ed6cb9f17e625c21d",
+        "entry_digest": "c85794ece0a9a9af536907ce55725cd95382a4e426acf07fdfa3fadfb332092c",
+        "owners": [
+          "@exact:delivery"
+        ]
+      },
+      {
+        "path": "documentation/en/usage-state-dependency.md",
+        "kind": "file",
+        "mode": 33188,
+        "payload_digest": "3a7081f20ce591ad8c62259a9a03059caaa555afd6c0deb060aef858f50c5959",
+        "entry_digest": "b231962c14aef1d5f295801bb5dcbd430c76f68bd7f041703c14b6de91a2164a",
+        "owners": [
+          "@exact:delivery"
+        ]
+      },
+      {
+        "path": "documentation/en/usage-storedstate.md",
+        "kind": "file",
+        "mode": 33188,
+        "payload_digest": "a577ad057e1810eb0933e8ad5065763b74163b1d2db10179d0d064793eb8ce51",
+        "entry_digest": "06b7c7918858a9aeb81282e014b6cb21a52c7d9203966b2d54939c94d739a15d",
+        "owners": [
+          "@exact:delivery"
+        ]
+      },
+      {
+        "path": "documentation/en/usage-syncstate.md",
+        "kind": "file",
+        "mode": 33188,
+        "payload_digest": "3038fb593c264ae3eba223ba1ab9d31f1e69a5586b37d12cc425d84d4e42f845",
+        "entry_digest": "eddc05e1139d6017e806c4b959ffa3c906ad291f5cda871d8cf26a497c7a4ee2",
+        "owners": [
+          "@exact:delivery"
+        ]
+      },
+      {
+        "path": "documentation/es/advanced-usage.md",
+        "kind": "file",
+        "mode": 33188,
+        "payload_digest": "9351d65b8e437c0dfa95376fc775bb342facba01c9480a6d53b509443c99be79",
+        "entry_digest": "8d9e90599448ff78382197363b03c6120ee759bf39e71b1f8ba2fe5896b0fef4",
+        "owners": [
+          "@exact:delivery"
+        ]
+      },
+      {
+        "path": "documentation/es/best-practices.md",
+        "kind": "file",
+        "mode": 33188,
+        "payload_digest": "cedaa8125d85f6a111eaa19c98e7d2356e3daf333bb8c95cf5ccb764b9f19494",
+        "entry_digest": "2fbaf3dd4f463b0a8b169b3d5f26eb94cf0500349cb4d24b8782f961c1a0222a",
+        "owners": [
+          "@exact:delivery"
+        ]
+      },
+      {
+        "path": "documentation/es/contributing.md",
+        "kind": "file",
+        "mode": 33188,
+        "payload_digest": "d5effee1321785a248089dd4e4b2519e3019183335a0f5b82fbf654175032927",
+        "entry_digest": "35785b3a4eca6f418c117d6bcc51811b833139a9e3731f5c71f8e20dd4949b77",
+        "owners": [
+          "@exact:delivery"
+        ]
+      },
+      {
+        "path": "documentation/es/faq.md",
+        "kind": "file",
+        "mode": 33188,
+        "payload_digest": "ec2ffdd5c1f28036ed51bb6a8005998256fdec16abb7b737d36f2ecbd92adc69",
+        "entry_digest": "8e8a6d7170a38e41a2e9899d45d3c056a05eb75b452802d4209f74cbc9238845",
+        "owners": [
+          "@exact:delivery"
+        ]
+      },
+      {
+        "path": "documentation/es/installation.md",
+        "kind": "file",
+        "mode": 33188,
+        "payload_digest": "502e777c1ba83a7ff8e4bd822542f58a0fbc5fca61e1bfd7b2eb9523a49c624b",
+        "entry_digest": "2a9f6164ec41cd06a85bb7d2a9778380f6a2e7cf22f769b045b8dfcb7fa1ffbe",
+        "owners": [
+          "@exact:delivery"
+        ]
+      },
+      {
+        "path": "documentation/es/migration-considerations.md",
+        "kind": "file",
+        "mode": 33188,
+        "payload_digest": "15c33f4359cb1c5495d7b1538125eb6b0f4f74d4c1594c9325f340e8afe80057",
+        "entry_digest": "9c9e8b8d0898377a108537d840b9d84046e14cd570cc5256cf0e05959fdad8e6",
+        "owners": [
+          "@exact:delivery"
+        ]
+      },
+      {
+        "path": "documentation/es/starting-to-use-syncstate.md",
+        "kind": "file",
+        "mode": 33188,
+        "payload_digest": "0edf2567488a619f117b6c97f0deaf920d92c1cbaf5848c9be5e0968580db386",
+        "entry_digest": "be0f89f4dd5608672581243380a3cd7a192e8b5b50099c14fb5b6638664c1e4c",
+        "owners": [
+          "@exact:delivery"
+        ]
+      },
+      {
+        "path": "documentation/es/syncstate-implementation.md",
+        "kind": "file",
+        "mode": 33188,
+        "payload_digest": "2bb13c3421e54784ab2cce4339389b3d84c8177c0dcf478ab9862dd0ca2bd974",
+        "entry_digest": "6d4c30e37c535bdc1c567f38ef2d9dd2264bae54d819a412963a85ebe66f4a78",
+        "owners": [
+          "@exact:delivery"
+        ]
+      },
+      {
+        "path": "documentation/es/upgrade-to-v3.md",
+        "kind": "file",
+        "mode": 33188,
+        "payload_digest": "17849158014ea0f83b9e0eae7cdf90f4e42631324cc039dac8f3d01997e7855b",
+        "entry_digest": "c28b96f0c3ba4a5da6500c3d0e7e09475bc06ca6cfa629ca455d02726f3dc3fd",
+        "owners": [
+          "@exact:delivery"
+        ]
+      },
+      {
+        "path": "documentation/es/usage-constant.md",
+        "kind": "file",
+        "mode": 33188,
+        "payload_digest": "2d11eb44d9c3460010c3b7a9abaea38747ac15f9b76746ccc2e8b9b9952ddf43",
+        "entry_digest": "171c16ad378e8e76c741112a036e2c56b31a4069b88a6e4da5406430f5248c48",
+        "owners": [
+          "@exact:delivery"
+        ]
+      },
+      {
+        "path": "documentation/es/usage-filestate.md",
+        "kind": "file",
+        "mode": 33188,
+        "payload_digest": "ff232a21fcd90afc85353db0f5fc0979969bd0dc34c087bfead2d3e352eda2d4",
+        "entry_digest": "c6aa712557f55fc740e1579f2211b0769a83ea5f8b6cca17e9656c95423cdd12",
+        "owners": [
+          "@exact:delivery"
+        ]
+      },
+      {
+        "path": "documentation/es/usage-modelstate.md",
+        "kind": "file",
+        "mode": 33188,
+        "payload_digest": "8cfbef5c2f7c189da20a275562e843617824e43f5a652c28921fb624f032c26b",
+        "entry_digest": "c5e659bd5fac9d3f2077e97debc1631b75f8ce7beb85ecf9b2898ca0a70a52a3",
+        "owners": [
+          "@exact:delivery"
+        ]
+      },
+      {
+        "path": "documentation/es/usage-observeddependency.md",
+        "kind": "file",
+        "mode": 33188,
+        "payload_digest": "9b1c67ca61466a4b03940b17459dbd546d617128fe2ed73e5e4519b3f201b40c",
+        "entry_digest": "3e0fa6a3327ad9ab4e8a97bd204d5b0e3bb061b2cf4579447473e35e3e5408c5",
+        "owners": [
+          "@exact:delivery"
+        ]
+      },
+      {
+        "path": "documentation/es/usage-overview.md",
+        "kind": "file",
+        "mode": 33188,
+        "payload_digest": "15429afee08e8d67691982e45bfc81395efe345d0c6fc20c2ce10ec2ab6ff517",
+        "entry_digest": "6b1fa5f186e97ee332304496f9e8f23a18a87ced269d55076e852375a2f9b323",
+        "owners": [
+          "@exact:delivery"
+        ]
+      },
+      {
+        "path": "documentation/es/usage-securestate.md",
+        "kind": "file",
+        "mode": 33188,
+        "payload_digest": "1c0953dca463b3ceb5c9e6faa085a425fd5f8b2d1acea223ad32e6a4d4fd1a8b",
+        "entry_digest": "d0c95cd584944c837c3a9f7b8d2ef99bbaaec07e931824d17ee200613060c76b",
+        "owners": [
+          "@exact:delivery"
+        ]
+      },
+      {
+        "path": "documentation/es/usage-slice.md",
+        "kind": "file",
+        "mode": 33188,
+        "payload_digest": "b7da0f07cc4da7908ca5e5ae88892af13463f9aa4e6721e76cb6d9f1e2b50405",
+        "entry_digest": "343eea704d46b8105749d161cd90ae28cff6cffb8a8adc9352c5d7d6392f0069",
+        "owners": [
+          "@exact:delivery"
+        ]
+      },
+      {
+        "path": "documentation/es/usage-state-dependency.md",
+        "kind": "file",
+        "mode": 33188,
+        "payload_digest": "e7a6839c714ce2765347272a8813c9cc557dcfdcb1105b761fc7eaf9aa442700",
+        "entry_digest": "3a323087e127176440e28dfe5361d6eae45d93c44833c44186e3fc099d2c9309",
+        "owners": [
+          "@exact:delivery"
+        ]
+      },
+      {
+        "path": "documentation/es/usage-storedstate.md",
+        "kind": "file",
+        "mode": 33188,
+        "payload_digest": "28e63f3237e9bdf187baa3f747ad0c4283c1ef9856e109450aa1d4a9e88a85e2",
+        "entry_digest": "594d72d21dae53348e9437f2d2de79e50ca8074c13cea55971fd51e6559b20ee",
+        "owners": [
+          "@exact:delivery"
+        ]
+      },
+      {
+        "path": "documentation/es/usage-syncstate.md",
+        "kind": "file",
+        "mode": 33188,
+        "payload_digest": "3ad1e468ce4438c60e450ac577aefa3d62cbd790b7d8115d1b3c8ab3fa8da2b1",
+        "entry_digest": "33750c6cf725cabbca35bba9e8c533b379929e1cc7b864532042f66ffe603894",
+        "owners": [
+          "@exact:delivery"
+        ]
+      },
+      {
+        "path": "documentation/fr/advanced-usage.md",
+        "kind": "file",
+        "mode": 33188,
+        "payload_digest": "879c9ba36d089ff3ed502f52a0334c3de3184521b189b5aa830bc8724acfc070",
+        "entry_digest": "ddf34d49a30a52095933b7be52230bd71f6fdb46a7110b8fc6fb0fe455139a8f",
+        "owners": [
+          "@exact:delivery"
+        ]
+      },
+      {
+        "path": "documentation/fr/best-practices.md",
+        "kind": "file",
+        "mode": 33188,
+        "payload_digest": "0ed7ffc91afd9107fc32b5ee5750a850e252aaee35b92944cd48e66da8963a46",
+        "entry_digest": "6bc21779b86be5e84ca6a7ab5570b232bb3aa3a7b68df562ac8f8ddb8234a767",
+        "owners": [
+          "@exact:delivery"
+        ]
+      },
+      {
+        "path": "documentation/fr/contributing.md",
+        "kind": "file",
+        "mode": 33188,
+        "payload_digest": "747de4388ed2f4a3789f24ca9c5adec95a736135ad03af69da79819095f06285",
+        "entry_digest": "547c9fa71606ec5e97e7069ab5e62eb07cbf5981af2a3adabcd174ae052a7cb8",
+        "owners": [
+          "@exact:delivery"
+        ]
+      },
+      {
+        "path": "documentation/fr/faq.md",
+        "kind": "file",
+        "mode": 33188,
+        "payload_digest": "27b113d5854fe98b39fcbc956fb29fa8ee3b147cdb2f7a9cc5fb1d65a0c8474f",
+        "entry_digest": "43d1854369106ea0d536ab0522fadebce9c52112ff20933ace56152fab3b6022",
+        "owners": [
+          "@exact:delivery"
+        ]
+      },
+      {
+        "path": "documentation/fr/installation.md",
+        "kind": "file",
+        "mode": 33188,
+        "payload_digest": "d89ee547389a489dfb7d69b72d74e07e8b64fa5ddc571ae6b375ba8c54d7deae",
+        "entry_digest": "23cb91ae23902840be99a47f1685fd86867c31f97ce09d199af6dde443ab4f7b",
+        "owners": [
+          "@exact:delivery"
+        ]
+      },
+      {
+        "path": "documentation/fr/migration-considerations.md",
+        "kind": "file",
+        "mode": 33188,
+        "payload_digest": "33d7d81b11664e6f2d87bd180929930f1268c56456d75e5eef2195db97cfbf23",
+        "entry_digest": "a28761b413e23fb89d21537e2c38b90c6f0a5fba02ff056a568d7bef1ad39ec7",
+        "owners": [
+          "@exact:delivery"
+        ]
+      },
+      {
+        "path": "documentation/fr/starting-to-use-syncstate.md",
+        "kind": "file",
+        "mode": 33188,
+        "payload_digest": "1b6ef240760ea0409a665659cc5b1e0b6bdad931327c03bfc2a95fb59909ed1f",
+        "entry_digest": "e70e47a27efc8520cc933c748052ac82c5d495e124ab078ad149f9e36dbc212d",
+        "owners": [
+          "@exact:delivery"
+        ]
+      },
+      {
+        "path": "documentation/fr/syncstate-implementation.md",
+        "kind": "file",
+        "mode": 33188,
+        "payload_digest": "932ebe338a2f0a28c15cc8be036c1836dbdc19cb7a9d1b413642e101c452e0a1",
+        "entry_digest": "db60338f714ebd13a92099b9ed7df1d3ce0e85a33b8bf60694551578545d840d",
+        "owners": [
+          "@exact:delivery"
+        ]
+      },
+      {
+        "path": "documentation/fr/upgrade-to-v3.md",
+        "kind": "file",
+        "mode": 33188,
+        "payload_digest": "b930b3b66676728eedf5d4b3dc60b36b925f27540c5d3e88ca7e37876bb7b657",
+        "entry_digest": "58f464974f48e608e8f534c06426faad00aaf7bf71903acb78dd7d969d3cd3a0",
+        "owners": [
+          "@exact:delivery"
+        ]
+      },
+      {
+        "path": "documentation/fr/usage-constant.md",
+        "kind": "file",
+        "mode": 33188,
+        "payload_digest": "aff0a2b5e81fefa8dfe2a612ca22a82c4e4e6941d2f2b1a201d549bfcd1406aa",
+        "entry_digest": "c61562d194bc602f582722bc5972d213676f5719f3fb5975c04aafa3a95cb9f2",
+        "owners": [
+          "@exact:delivery"
+        ]
+      },
+      {
+        "path": "documentation/fr/usage-filestate.md",
+        "kind": "file",
+        "mode": 33188,
+        "payload_digest": "8cafd812fa38a2b581118cb0901fa95fb5a9d3cac919f9ecd0571c570f17f003",
+        "entry_digest": "73c12d3a8cf4eabc58148d567ad51a23c4ff00b5608a75e93f02d9303bebdb19",
+        "owners": [
+          "@exact:delivery"
+        ]
+      },
+      {
+        "path": "documentation/fr/usage-modelstate.md",
+        "kind": "file",
+        "mode": 33188,
+        "payload_digest": "0f9c7d5d74a461e4edae041bcba1d6f52d9cec9de0ef6c40586405b3d60b88e7",
+        "entry_digest": "9320219def71982257ac8a13a439b367a8f151e46b3d8fafed049a3556693373",
+        "owners": [
+          "@exact:delivery"
+        ]
+      },
+      {
+        "path": "documentation/fr/usage-observeddependency.md",
+        "kind": "file",
+        "mode": 33188,
+        "payload_digest": "c05812a657f00fa1f2ad7fa90e306cf2db5deccd826e95cba24aefc380ec1a00",
+        "entry_digest": "8f5d11e18a7cbf305ffa798e89c74541999cd003c9690f7cfc04aa3513e46817",
+        "owners": [
+          "@exact:delivery"
+        ]
+      },
+      {
+        "path": "documentation/fr/usage-overview.md",
+        "kind": "file",
+        "mode": 33188,
+        "payload_digest": "69820a244911521cb4094d4137e87a41a3d4fe7c0a46f7da631261996facee2d",
+        "entry_digest": "641db0e0a8b318fc16710e7f18e6e6808dc872db77413e78ac51075452f5e329",
+        "owners": [
+          "@exact:delivery"
+        ]
+      },
+      {
+        "path": "documentation/fr/usage-securestate.md",
+        "kind": "file",
+        "mode": 33188,
+        "payload_digest": "58f3982ce07fe65bf7e2c4653a4adc0dbeb832c42d3d51d57f0e08b36fb6c350",
+        "entry_digest": "5713d8c0627d63ab33d9a873777b1d03f84ed84c41dd84128f0de8d06c88103c",
+        "owners": [
+          "@exact:delivery"
+        ]
+      },
+      {
+        "path": "documentation/fr/usage-slice.md",
+        "kind": "file",
+        "mode": 33188,
+        "payload_digest": "55b10f023819591ba3a893ac23c233deacfed5084a8145d44c12599375cb369e",
+        "entry_digest": "e6cee4095520d5be796bd886f8840bbcd9457148fb6d33554fece77b8968f955",
+        "owners": [
+          "@exact:delivery"
+        ]
+      },
+      {
+        "path": "documentation/fr/usage-state-dependency.md",
+        "kind": "file",
+        "mode": 33188,
+        "payload_digest": "50a0918f527941485a9165a3fc292e1fab4b051706e818c38dd9a4351eb91ccb",
+        "entry_digest": "7ceee0cecda71ac7eb9f635df0ddd015236f457c16adfc880ced6a6696858bdb",
+        "owners": [
+          "@exact:delivery"
+        ]
+      },
+      {
+        "path": "documentation/fr/usage-storedstate.md",
+        "kind": "file",
+        "mode": 33188,
+        "payload_digest": "d53e3875f6ee47e989d889eb9575f59fbe90a6d64ffc7d174348a709657a4d76",
+        "entry_digest": "02ae079442776bf8afa6c607e8cb68ff3a1b92e5ee448cc06e54dac1b367af51",
+        "owners": [
+          "@exact:delivery"
+        ]
+      },
+      {
+        "path": "documentation/fr/usage-syncstate.md",
+        "kind": "file",
+        "mode": 33188,
+        "payload_digest": "f9767deb1d742d03ddf95eebc4a307d25e4758697668871e1657042f833fb564",
+        "entry_digest": "c38d5966ce409efbd84e2de56d3b1d2def32625a4a497ea1030b7fcce250bc3a",
+        "owners": [
+          "@exact:delivery"
+        ]
+      },
+      {
+        "path": "documentation/hi/advanced-usage.md",
+        "kind": "file",
+        "mode": 33188,
+        "payload_digest": "bde126b2da84b1f74472598efaf7a095f27dc50e674aa982b6e4e718383c04ae",
+        "entry_digest": "3d91d20a8b6d9be9e66dc9acd530aa9fceeb519c8191e67aa028c7138c49e7a4",
+        "owners": [
+          "@exact:delivery"
+        ]
+      },
+      {
+        "path": "documentation/hi/best-practices.md",
+        "kind": "file",
+        "mode": 33188,
+        "payload_digest": "e527a3e7094fee3b16321c00ec7421d050b73918e65ea1968e47d376a2d9634d",
+        "entry_digest": "a88ea46c07c2313e32b5a0ebc85f0e36a227c25f4fdeb9ff304a5bc30c594a42",
+        "owners": [
+          "@exact:delivery"
+        ]
+      },
+      {
+        "path": "documentation/hi/contributing.md",
+        "kind": "file",
+        "mode": 33188,
+        "payload_digest": "5d9e4453a89594f7ea92b0b2ab1ece8fc4a6d1ba266def96615bd39de3e1b2ef",
+        "entry_digest": "bd7430b148c029515558d3c16a412b2eca0c0c899d91ac193f6cd1745c4aa1d9",
+        "owners": [
+          "@exact:delivery"
+        ]
+      },
+      {
+        "path": "documentation/hi/faq.md",
+        "kind": "file",
+        "mode": 33188,
+        "payload_digest": "5ee0d9d0cf8ddc005881c6193c63ae71493f73b8b0782008d03ad752597d1e58",
+        "entry_digest": "214f193666cf67e1443531ebcbfb0623a12a7798f2a8bf6016e443415f8a028e",
+        "owners": [
+          "@exact:delivery"
+        ]
+      },
+      {
+        "path": "documentation/hi/installation.md",
+        "kind": "file",
+        "mode": 33188,
+        "payload_digest": "6c9c950eec338e2d4227093f4786447b52fa4717d73d6eaec0418a7fe42c6e83",
+        "entry_digest": "a6db8f160d248acbd35899e3caa672128961e8b41e71ec91884f811861663ce7",
+        "owners": [
+          "@exact:delivery"
+        ]
+      },
+      {
+        "path": "documentation/hi/migration-considerations.md",
+        "kind": "file",
+        "mode": 33188,
+        "payload_digest": "5aa2b465ce7894fd0d07b342947ee2db41475663d55ea4bd11b8e5d1ad3c586e",
+        "entry_digest": "c7ddce5de81594894c54f40ca97819a5a5dfce44185249ee970b2bd9fcabb794",
+        "owners": [
+          "@exact:delivery"
+        ]
+      },
+      {
+        "path": "documentation/hi/starting-to-use-syncstate.md",
+        "kind": "file",
+        "mode": 33188,
+        "payload_digest": "d1c0116a13da54db820cb3e4514b85cfd2adb93dba25456e0e4711fcf7aedaa1",
+        "entry_digest": "e1c31fc3d52098512c49ef662316660895254dc7734d3461f76cdb0cabcf3af1",
+        "owners": [
+          "@exact:delivery"
+        ]
+      },
+      {
+        "path": "documentation/hi/syncstate-implementation.md",
+        "kind": "file",
+        "mode": 33188,
+        "payload_digest": "b29bcfcc61ce9db187cee3e9cd38f962f19a8d68ddb8a6819461461c630ff29c",
+        "entry_digest": "b3c4effdd717a5dfe36367dddb744da2abf2c5341e8f8b45fc83376a9cc1f1ca",
+        "owners": [
+          "@exact:delivery"
+        ]
+      },
+      {
+        "path": "documentation/hi/upgrade-to-v3.md",
+        "kind": "file",
+        "mode": 33188,
+        "payload_digest": "222fdb1f1c5da7466938d01430d1f636450389de83fd3ac54031f5a1e57fca7a",
+        "entry_digest": "1b06e95e687443875d7f96cba4e3b67d1cacaff95c702ea0715ebefe2e6268f9",
+        "owners": [
+          "@exact:delivery"
+        ]
+      },
+      {
+        "path": "documentation/hi/usage-constant.md",
+        "kind": "file",
+        "mode": 33188,
+        "payload_digest": "39c99afdfd3fd9c02d0c7872fe40662518ae682e069577d09df736a09be17582",
+        "entry_digest": "8f329865a96da8ec0cbbea2f4fe14c4653c29144705ef7920a6d4e46b8a474e8",
+        "owners": [
+          "@exact:delivery"
+        ]
+      },
+      {
+        "path": "documentation/hi/usage-filestate.md",
+        "kind": "file",
+        "mode": 33188,
+        "payload_digest": "9b5312fcb4ce89e1c6380a80147fc9889673588a50c6b7b527c8e90ace4083ca",
+        "entry_digest": "566b2f5c20cd3b2497d943062a4f95592bcbe81e0df1cbb53b0397fa3732658a",
+        "owners": [
+          "@exact:delivery"
+        ]
+      },
+      {
+        "path": "documentation/hi/usage-modelstate.md",
+        "kind": "file",
+        "mode": 33188,
+        "payload_digest": "5394e38f6f57286c3055ac775d4534cf6e7ff82705d5af90fd58be34610b3113",
+        "entry_digest": "a7007516dca418232bf7b7ead7fec277c865c17d41bcc7efe6e6b826e05792da",
+        "owners": [
+          "@exact:delivery"
+        ]
+      },
+      {
+        "path": "documentation/hi/usage-observeddependency.md",
+        "kind": "file",
+        "mode": 33188,
+        "payload_digest": "cc361d12da29f3a8b47431d5a0d3b4a3f735980f60e6998c4fdd0403ff58f5b7",
+        "entry_digest": "3429c2a214e1e07c7a75a8f9675f5da4284dd04923938420a92b69098c80e81e",
+        "owners": [
+          "@exact:delivery"
+        ]
+      },
+      {
+        "path": "documentation/hi/usage-overview.md",
+        "kind": "file",
+        "mode": 33188,
+        "payload_digest": "da5a98bd86158176f3bd782137ea0a016519d511bc9a040064d4ff0b73aa57d7",
+        "entry_digest": "7225e7df84c4939da290d2f7b36c70435a8b654455f97e88a5da02ee8faf02a9",
+        "owners": [
+          "@exact:delivery"
+        ]
+      },
+      {
+        "path": "documentation/hi/usage-securestate.md",
+        "kind": "file",
+        "mode": 33188,
+        "payload_digest": "6003ad01fbc5540c180bd688ddf49f5b6b83b9cbd40a7d5c4b83996f9c2fdc2b",
+        "entry_digest": "a260ec19f873190b72045e4552fc4ff6bc7f34dd1bc8ebc82bd2fdca0af8febf",
+        "owners": [
+          "@exact:delivery"
+        ]
+      },
+      {
+        "path": "documentation/hi/usage-slice.md",
+        "kind": "file",
+        "mode": 33188,
+        "payload_digest": "84ec0de0ef3c9c14b546080227e38204dc4cbc4cba29a361b73102ce558577e2",
+        "entry_digest": "423937de79b75168c5e6ec57ff8513fa8d8a84506f08b6a481aafa0cf52fb0b4",
+        "owners": [
+          "@exact:delivery"
+        ]
+      },
+      {
+        "path": "documentation/hi/usage-state-dependency.md",
+        "kind": "file",
+        "mode": 33188,
+        "payload_digest": "53393a573e8014178a86f65bba41cdecca35d17015a8ff04743699c547a5ac59",
+        "entry_digest": "6f38b6a8977695e7da1b44fda5dfa98cac5aef2ea0d6a79bda9f1d14442473ad",
+        "owners": [
+          "@exact:delivery"
+        ]
+      },
+      {
+        "path": "documentation/hi/usage-storedstate.md",
+        "kind": "file",
+        "mode": 33188,
+        "payload_digest": "2b85e71f05926abd6b68417470a94f9453aa8325d4362b97f6da38665f0da6ca",
+        "entry_digest": "640d561356024b0ef2f7bef2946304cc1383ec30d4781f9cf8ce6729ff8db63a",
+        "owners": [
+          "@exact:delivery"
+        ]
+      },
+      {
+        "path": "documentation/hi/usage-syncstate.md",
+        "kind": "file",
+        "mode": 33188,
+        "payload_digest": "9e62f28a688fe61e4963162eee68f005a2e0c00622fda6bb0c8ca71496628fe7",
+        "entry_digest": "689e0f9cd9b3bddbd2506e16f2027b1d75537eeeb6684dd9a52be579502cf3b5",
+        "owners": [
+          "@exact:delivery"
+        ]
+      },
+      {
+        "path": "documentation/pt/advanced-usage.md",
+        "kind": "file",
+        "mode": 33188,
+        "payload_digest": "1be1f85ceff54adc0f383f6387c4e149bd29ee0d8ca7bcec13550121fa98113d",
+        "entry_digest": "b4d0a4d3805a3ac4fd17487c7614c9edb1278522774ecbc08650f1c5578123fd",
+        "owners": [
+          "@exact:delivery"
+        ]
+      },
+      {
+        "path": "documentation/pt/best-practices.md",
+        "kind": "file",
+        "mode": 33188,
+        "payload_digest": "a0ee355ebd590d71fa59df9eab6c5289d49c4f647d259a8d133863d96cf09e23",
+        "entry_digest": "559c0d54566c168c9fdeb7c60247b123c7828fec82a876e4a159103147ef487e",
+        "owners": [
+          "@exact:delivery"
+        ]
+      },
+      {
+        "path": "documentation/pt/contributing.md",
+        "kind": "file",
+        "mode": 33188,
+        "payload_digest": "37c679624f54759ec6741cb401ca8db9f8ea2ab8197eb322b8aeb6423fc15322",
+        "entry_digest": "0904818c403900d83bafc7369eba58b3b33e2c4f7c28ea679cf6f02e9cb76f1c",
+        "owners": [
+          "@exact:delivery"
+        ]
+      },
+      {
+        "path": "documentation/pt/faq.md",
+        "kind": "file",
+        "mode": 33188,
+        "payload_digest": "6b3f9a7c075001e3e5c2ef7afa892526b0c819786e70e2091b76b9528a6dbffd",
+        "entry_digest": "ee49d1259061c6639f54a3549477ec93d11fe5d946f5f7c7f54903ef79190a88",
+        "owners": [
+          "@exact:delivery"
+        ]
+      },
+      {
+        "path": "documentation/pt/installation.md",
+        "kind": "file",
+        "mode": 33188,
+        "payload_digest": "d9703cb09cfb9e92b67e1ec29e07a692da9bbf93f2c48f1a0c6e496c287daac1",
+        "entry_digest": "947a11a93ef8fcee62812563d8e410438bbe88d6b40db09b20b5349b203b6cd0",
+        "owners": [
+          "@exact:delivery"
+        ]
+      },
+      {
+        "path": "documentation/pt/migration-considerations.md",
+        "kind": "file",
+        "mode": 33188,
+        "payload_digest": "83a4633ad18f9da4a51a532d94d2058f1b6cc326abf78b7a1e692599abad5995",
+        "entry_digest": "59acd9072675f4f3936523f6208dad975cebf7f7d891983db05709881e6add35",
+        "owners": [
+          "@exact:delivery"
+        ]
+      },
+      {
+        "path": "documentation/pt/starting-to-use-syncstate.md",
+        "kind": "file",
+        "mode": 33188,
+        "payload_digest": "73daecc20cf58ea7989913c6c70b12abafb617fbbe5ee1b0137fc6116b6b5f96",
+        "entry_digest": "36d3f969d36f667cc91c65e1497b9531a6dfc65f79444f60a89ae55ebca99147",
+        "owners": [
+          "@exact:delivery"
+        ]
+      },
+      {
+        "path": "documentation/pt/syncstate-implementation.md",
+        "kind": "file",
+        "mode": 33188,
+        "payload_digest": "e2caf852a383ece970202e323fc3159026e83d2fd0d72b8c42a25dba701986ef",
+        "entry_digest": "51cae8c9514a431d47c7142cce8beffa70ce7949c4051c9766edd3410ec42111",
+        "owners": [
+          "@exact:delivery"
+        ]
+      },
+      {
+        "path": "documentation/pt/upgrade-to-v3.md",
+        "kind": "file",
+        "mode": 33188,
+        "payload_digest": "229df92b59cde40447e0f16d3eee40269b6a8cefd3fad2b8a13251ab32fc6914",
+        "entry_digest": "2497ec2f349281b1d236b81b560d6d930a4cbfd4cee5a6f8eb93972e6cdf8745",
+        "owners": [
+          "@exact:delivery"
+        ]
+      },
+      {
+        "path": "documentation/pt/usage-constant.md",
+        "kind": "file",
+        "mode": 33188,
+        "payload_digest": "d1acb9be6f7c37bae1ebacdc4d567529aaea6beac8c9561818e4b2b3cc50d6e5",
+        "entry_digest": "8567a9ca00addadf3d192179b6ce7a808921a8088c9c0ec6ed33ac7a8a25c50e",
+        "owners": [
+          "@exact:delivery"
+        ]
+      },
+      {
+        "path": "documentation/pt/usage-filestate.md",
+        "kind": "file",
+        "mode": 33188,
+        "payload_digest": "2ca6775740baabacf2954136cb70c7fa8ddb9a37e786afa8a67cac33523c041c",
+        "entry_digest": "f9cd2df9f82894dcc68d9f04d49decffe8c93bc0696f60fb4c6f38440ff7b1f5",
+        "owners": [
+          "@exact:delivery"
+        ]
+      },
+      {
+        "path": "documentation/pt/usage-modelstate.md",
+        "kind": "file",
+        "mode": 33188,
+        "payload_digest": "ecb251b102bb1e07d22dd169bdf6e4270048ca79bfc397d6fca3cf87ab671c67",
+        "entry_digest": "2e680de2d1ba0e5800867ecd3dc5c8a5cb45e5d4eaf1715a20fb698b3f925a34",
+        "owners": [
+          "@exact:delivery"
+        ]
+      },
+      {
+        "path": "documentation/pt/usage-observeddependency.md",
+        "kind": "file",
+        "mode": 33188,
+        "payload_digest": "bfd274d0ffd03259fcd1637a6b6c757a7b34134d5b633fa553f5f3c02e2f2d65",
+        "entry_digest": "ed0304ac41de89ec410e60c1896c2e57fa967ca1504c9c6f94618e11021ff504",
+        "owners": [
+          "@exact:delivery"
+        ]
+      },
+      {
+        "path": "documentation/pt/usage-overview.md",
+        "kind": "file",
+        "mode": 33188,
+        "payload_digest": "2c2f3e9e791f027384849653846aa80e7e4f4430d242918e6fe3a6c1fe125bee",
+        "entry_digest": "b98f17559af24cd04f429eb900e0f3a74e3ef2a73a677636d2aab048d019dddd",
+        "owners": [
+          "@exact:delivery"
+        ]
+      },
+      {
+        "path": "documentation/pt/usage-securestate.md",
+        "kind": "file",
+        "mode": 33188,
+        "payload_digest": "e12958a0354f1124405d053a15b0fe6f71ce1f0b72d94b4f32aa48f894b4bba0",
+        "entry_digest": "300b9137d9389ac84c003bd27acc1af78c5b2378bc6b7aee3fb9d115239ae24c",
+        "owners": [
+          "@exact:delivery"
+        ]
+      },
+      {
+        "path": "documentation/pt/usage-slice.md",
+        "kind": "file",
+        "mode": 33188,
+        "payload_digest": "02e8260cb7b5116472dad8545edf84ea0e54ca08a1b6b85141bf2b8147380209",
+        "entry_digest": "8e99777d41f50c7ef1367c9f8ba067d11b2b8aad461fafb3127bb76217fa1daa",
+        "owners": [
+          "@exact:delivery"
+        ]
+      },
+      {
+        "path": "documentation/pt/usage-state-dependency.md",
+        "kind": "file",
+        "mode": 33188,
+        "payload_digest": "163331a6317f049caa2f973fa00d10feeb7be18ba12c4285e8c9d3fd8da66124",
+        "entry_digest": "5b8db827a43209f1b289479d3f802a3b954fb617f2c1e56d41a59fe669a76c47",
+        "owners": [
+          "@exact:delivery"
+        ]
+      },
+      {
+        "path": "documentation/pt/usage-storedstate.md",
+        "kind": "file",
+        "mode": 33188,
+        "payload_digest": "502200705728a8c41265123d38f692b69b09cf8fba437136db927c6665d2248c",
+        "entry_digest": "206ab30089b958950ced92f79cd93771df1601324e9822282bd346dd0c2c47ba",
+        "owners": [
+          "@exact:delivery"
+        ]
+      },
+      {
+        "path": "documentation/pt/usage-syncstate.md",
+        "kind": "file",
+        "mode": 33188,
+        "payload_digest": "710c0a9c91fd5df089b096e8da211f33c245ea1d5af0f5452f33689bffead14a",
+        "entry_digest": "4ec65c17497f55b89c8a2731234f43d735705d606b3698af616f7348980f75d9",
+        "owners": [
+          "@exact:delivery"
+        ]
+      },
+      {
+        "path": "documentation/ru/advanced-usage.md",
+        "kind": "file",
+        "mode": 33188,
+        "payload_digest": "db510e757748137f093bd313e1c27766d4f89daa40ab1d6738be26cdac18fe82",
+        "entry_digest": "5b9c2d4133b3dca6e34d18f2def4cfcf74c71da9a6fcc5c5433dc5ad26243fc9",
+        "owners": [
+          "@exact:delivery"
+        ]
+      },
+      {
+        "path": "documentation/ru/best-practices.md",
+        "kind": "file",
+        "mode": 33188,
+        "payload_digest": "704166fc7a051a6686e567f2e87fc4a0acec67eb31d260b8c93c1bf1deea6ae2",
+        "entry_digest": "a2fa80de7208e1adff3c52ce99df9f733dff21714c6d26aea63b251630ae628b",
+        "owners": [
+          "@exact:delivery"
+        ]
+      },
+      {
+        "path": "documentation/ru/contributing.md",
+        "kind": "file",
+        "mode": 33188,
+        "payload_digest": "9857633e1c11d02da59aa2fdf7b0b38f111bc6fb4dd36e8ff52c507ef0caabff",
+        "entry_digest": "b49e712627f3fd39af43fc1f6b87f760931e00ce437ad2ce4171cf06f7be284e",
+        "owners": [
+          "@exact:delivery"
+        ]
+      },
+      {
+        "path": "documentation/ru/faq.md",
+        "kind": "file",
+        "mode": 33188,
+        "payload_digest": "5ec4800cb88a05d60ea836bfef7871a2c75543029fc37565c3dbb47f88b558ea",
+        "entry_digest": "72bd14ffded5964cd1ec475482f0421f7e87900e4ec92ae38535ad40a33377ae",
+        "owners": [
+          "@exact:delivery"
+        ]
+      },
+      {
+        "path": "documentation/ru/installation.md",
+        "kind": "file",
+        "mode": 33188,
+        "payload_digest": "daea90fde0d08282d5400ad13231956e64f21329d11829ff414112a62bdb7097",
+        "entry_digest": "cfe12d4c4c34429940aa741c8d00f71d90d1d3dc69438d148ceb9268b521a8c1",
+        "owners": [
+          "@exact:delivery"
+        ]
+      },
+      {
+        "path": "documentation/ru/migration-considerations.md",
+        "kind": "file",
+        "mode": 33188,
+        "payload_digest": "94ee8a9293e175867369ccd910ebd2bbd077109f668a45bc058c925066ea82d1",
+        "entry_digest": "2ee127c21bf11a78e8db018a85bc105b4b5a267fa45ca138fcea9c7baa30f180",
+        "owners": [
+          "@exact:delivery"
+        ]
+      },
+      {
+        "path": "documentation/ru/starting-to-use-syncstate.md",
+        "kind": "file",
+        "mode": 33188,
+        "payload_digest": "9881b89896c2ab34b4ac94b75af56ec24f0a17f47037daa291d13295f103c591",
+        "entry_digest": "a33a29d561cd1b9e9a5e9273b548ee6ffa6e13a8cbbbc2cccc0caced69337c87",
+        "owners": [
+          "@exact:delivery"
+        ]
+      },
+      {
+        "path": "documentation/ru/syncstate-implementation.md",
+        "kind": "file",
+        "mode": 33188,
+        "payload_digest": "149b5828bcac12c7a22d6baf20ced5c2b9df04a539ae5363209f7d3cc46df4c6",
+        "entry_digest": "0542570b5b7bd7cd6c258d62b20105d23ad1fdce93d2d34f8defcc2d30a3baba",
+        "owners": [
+          "@exact:delivery"
+        ]
+      },
+      {
+        "path": "documentation/ru/upgrade-to-v3.md",
+        "kind": "file",
+        "mode": 33188,
+        "payload_digest": "e48a0e43ed88e8675b4be6fe684bae91079267f66fafccb7453961fe17bf8107",
+        "entry_digest": "5fb03442451661d7bf043f43fc5a529e89e882ccbc236ac9b8bb12caa125a07f",
+        "owners": [
+          "@exact:delivery"
+        ]
+      },
+      {
+        "path": "documentation/ru/usage-constant.md",
+        "kind": "file",
+        "mode": 33188,
+        "payload_digest": "adb27a853f48d5312de51cb9a4ef3a0c6ab21fbb42d2c908125f47eceb754fa2",
+        "entry_digest": "6ea88e2897e0e604c1674059a6e2530c921fde30bcf54cffbf972c636f12c188",
+        "owners": [
+          "@exact:delivery"
+        ]
+      },
+      {
+        "path": "documentation/ru/usage-filestate.md",
+        "kind": "file",
+        "mode": 33188,
+        "payload_digest": "7624699846fac7a0d45aaa3a9e743104bc5b54a60436270134fb4399ca69a90b",
+        "entry_digest": "6618c44e81cff217e7d16b3fca92db5e6a7b30d8ee52eec4eea7f9a98cc4eaa9",
+        "owners": [
+          "@exact:delivery"
+        ]
+      },
+      {
+        "path": "documentation/ru/usage-modelstate.md",
+        "kind": "file",
+        "mode": 33188,
+        "payload_digest": "5fd23e744bd6b59c76bfef2f850e48634d839f4a382cdb0ffc86afa6a26335c8",
+        "entry_digest": "176a0c978327b09358527595ed59775c351fd843dcf586728efd75679b033438",
+        "owners": [
+          "@exact:delivery"
+        ]
+      },
+      {
+        "path": "documentation/ru/usage-observeddependency.md",
+        "kind": "file",
+        "mode": 33188,
+        "payload_digest": "c160e7e3123b8cdff5957f027c0bdbcb7b40ae6f8182438cf85e082d73d4d468",
+        "entry_digest": "0879a8f032bcfb58423d5cd17b54c34b4fd25aeba580e4ca8d3e74a5aee79ae9",
+        "owners": [
+          "@exact:delivery"
+        ]
+      },
+      {
+        "path": "documentation/ru/usage-overview.md",
+        "kind": "file",
+        "mode": 33188,
+        "payload_digest": "624ed3230ec4db900b105a295b9069e483805933e0dddf8984ac5d902074fa15",
+        "entry_digest": "66ebac9f03754d61dbe92686026b2cb466947cf37754df2148f7504abfd90961",
+        "owners": [
+          "@exact:delivery"
+        ]
+      },
+      {
+        "path": "documentation/ru/usage-securestate.md",
+        "kind": "file",
+        "mode": 33188,
+        "payload_digest": "3c295cb4e5ecde21a5e73b32557d74ff8829e55c549b31bd04ea86c4df047888",
+        "entry_digest": "7c87fc2a360b4937c8f819cee2b337f0614fad4f634916783f05b68dd5e4a88a",
+        "owners": [
+          "@exact:delivery"
+        ]
+      },
+      {
+        "path": "documentation/ru/usage-slice.md",
+        "kind": "file",
+        "mode": 33188,
+        "payload_digest": "ed091623a83857843518bed39ac8803923eb0b084ab15f1de9c0f83014bf1fe4",
+        "entry_digest": "1f79baf0859a1c7f7d46ede6bee8e63b952dbae3249bbde5b037a28d6491bbec",
+        "owners": [
+          "@exact:delivery"
+        ]
+      },
+      {
+        "path": "documentation/ru/usage-state-dependency.md",
+        "kind": "file",
+        "mode": 33188,
+        "payload_digest": "1f826d0f6ee681260ce65a0d1330cb74fc1282f16ede4e64b6a170ac65a491aa",
+        "entry_digest": "24898e22a4a03ccfa15442ff5197531b5600e404a47bfdd42e9008ec665fdbdb",
+        "owners": [
+          "@exact:delivery"
+        ]
+      },
+      {
+        "path": "documentation/ru/usage-storedstate.md",
+        "kind": "file",
+        "mode": 33188,
+        "payload_digest": "d12ba2b36d26348a432ce0729ddb8dee1372cf1d2bab35dcc0f17d1076921c01",
+        "entry_digest": "bf23e44f058f7c1acf3bec5827eed754487a05a9d8c949f4cc15daeb3eef7e81",
+        "owners": [
+          "@exact:delivery"
+        ]
+      },
+      {
+        "path": "documentation/ru/usage-syncstate.md",
+        "kind": "file",
+        "mode": 33188,
+        "payload_digest": "07db84d060cc75112eb0bd625e9060949327e5d2c0f7f4e355317ba2fc65a1e6",
+        "entry_digest": "3e2223672a326a5b62e13f1c7a646af802d82cea5ed7734fd775af6f088610b0",
+        "owners": [
+          "@exact:delivery"
+        ]
+      },
+      {
+        "path": "documentation/zh-CN/advanced-usage.md",
+        "kind": "file",
+        "mode": 33188,
+        "payload_digest": "dd3a2740a6ab44dd873f09835a7ef641b1f121fdb0dbf7c35d7aea1078ffeb8f",
+        "entry_digest": "1262e8f68b1f4f21a97ecfaf377dea23d9f54e95b1b7eabb73ac6a30b91ea2b0",
+        "owners": [
+          "@exact:delivery"
+        ]
+      },
+      {
+        "path": "documentation/zh-CN/best-practices.md",
+        "kind": "file",
+        "mode": 33188,
+        "payload_digest": "e4f7f9323d7025f2e1aa124acdd9c58b621d1101f673b1fc17effc3fab9e8afb",
+        "entry_digest": "2fdbb80ec07127ba5a7e201ff297712593496aaa2226983e8216f9d6a16250c7",
+        "owners": [
+          "@exact:delivery"
+        ]
+      },
+      {
+        "path": "documentation/zh-CN/contributing.md",
+        "kind": "file",
+        "mode": 33188,
+        "payload_digest": "1de597b62fecd814de4d46ca1b173999c9e3ad295b728c4e7eb070a17552163d",
+        "entry_digest": "efc80afd6c2b827db50d6296a830878c4b39920e44d5e1ce4c7f8a0bb165a42a",
+        "owners": [
+          "@exact:delivery"
+        ]
+      },
+      {
+        "path": "documentation/zh-CN/faq.md",
+        "kind": "file",
+        "mode": 33188,
+        "payload_digest": "cafb7950f7cf7c35a927b629408f0f4e83127b3b7efe02335561704ce34fc4dc",
+        "entry_digest": "b2b158d141405d1a115b79074f433d4a2200f1710476fdd60d59f13992ff5e1f",
+        "owners": [
+          "@exact:delivery"
+        ]
+      },
+      {
+        "path": "documentation/zh-CN/installation.md",
+        "kind": "file",
+        "mode": 33188,
+        "payload_digest": "69cee10c86c7e01dda1f075d55ca79d5f4c76812a520c5741c8bc6723640908b",
+        "entry_digest": "f52ebe47ace668f8b5a6d8b76df557b81e24d6aa44d5f9f931e9d49f80fc5bb1",
+        "owners": [
+          "@exact:delivery"
+        ]
+      },
+      {
+        "path": "documentation/zh-CN/migration-considerations.md",
+        "kind": "file",
+        "mode": 33188,
+        "payload_digest": "8d9cc422f034eca8debb5dc1ffbb99eb3252f578c85356deedf0d3df375f7acf",
+        "entry_digest": "af4ce1b733bce60fac3d04fe58b0b9b55f34fac5da940d4bb882a85797af5907",
+        "owners": [
+          "@exact:delivery"
+        ]
+      },
+      {
+        "path": "documentation/zh-CN/starting-to-use-syncstate.md",
+        "kind": "file",
+        "mode": 33188,
+        "payload_digest": "0ff13768cabb13d0478f63f3964b0923c35197b6c36455319e7377a1f69f88de",
+        "entry_digest": "2965704fa8614a79cdf6576bf54400ff7f61c54d502687a88517e018dd59c52e",
+        "owners": [
+          "@exact:delivery"
+        ]
+      },
+      {
+        "path": "documentation/zh-CN/syncstate-implementation.md",
+        "kind": "file",
+        "mode": 33188,
+        "payload_digest": "00a07fc9d70ff0d381a1f9284adad31f1c39e5091f8528e0f085ecaeabee6d82",
+        "entry_digest": "0b4a024d9daa3a7d73b02d506d4bcbeff86819a7e53d8c3af2a9d14f7de150ed",
+        "owners": [
+          "@exact:delivery"
+        ]
+      },
+      {
+        "path": "documentation/zh-CN/upgrade-to-v3.md",
+        "kind": "file",
+        "mode": 33188,
+        "payload_digest": "d1aff111db677a8d848c98ece2a45ccf93c41ac8fda025b896f5b51c2f3b258d",
+        "entry_digest": "712e09d03597b8abe69e5ea99b1a0047df1e0ac038f034f47f065461e5b09e57",
+        "owners": [
+          "@exact:delivery"
+        ]
+      },
+      {
+        "path": "documentation/zh-CN/usage-constant.md",
+        "kind": "file",
+        "mode": 33188,
+        "payload_digest": "07fda79f7ee27c8b5e9eade68cea0036edc33bec0cfad8de8a84d949b26d4084",
+        "entry_digest": "be5f29e9c3ddd840faa88e352df64c6fd19b6fa8f82b88efc3641fbaa9b17d2d",
+        "owners": [
+          "@exact:delivery"
+        ]
+      },
+      {
+        "path": "documentation/zh-CN/usage-filestate.md",
+        "kind": "file",
+        "mode": 33188,
+        "payload_digest": "d5373309548b42ff06d13fc72b8573c764337100b79610f61ec4201054246b4e",
+        "entry_digest": "6f4c125ccd674e829dd8bb4bfabb9982fd167628b0bfda4555249ba136f6d531",
+        "owners": [
+          "@exact:delivery"
+        ]
+      },
+      {
+        "path": "documentation/zh-CN/usage-modelstate.md",
+        "kind": "file",
+        "mode": 33188,
+        "payload_digest": "1e7972062d8c84cefd97361ada5447ade24a8dc823f6a72e1f77543ef75f133d",
+        "entry_digest": "25706b1c16f1944bf090c824ad4616800bf686b651f6fa5e258a94ea4783097b",
+        "owners": [
+          "@exact:delivery"
+        ]
+      },
+      {
+        "path": "documentation/zh-CN/usage-observeddependency.md",
+        "kind": "file",
+        "mode": 33188,
+        "payload_digest": "a633f38cda8896b3fe3df0d4356a4469cdcbbff4053e02e17220db18841fd503",
+        "entry_digest": "72b730382ed981c3276b19e6408b1f8b98d059e720dbc6bacc49b4a17b9bce13",
+        "owners": [
+          "@exact:delivery"
+        ]
+      },
+      {
+        "path": "documentation/zh-CN/usage-overview.md",
+        "kind": "file",
+        "mode": 33188,
+        "payload_digest": "80e6aef0968db2e526350671551d49e3d2909f8728fefcc2a8d1f1d74ac9cd5c",
+        "entry_digest": "e8e3ad1af39803178d7dd111fe359c4dc8c29e4d1e64061f002d8f7330dbd46f",
+        "owners": [
+          "@exact:delivery"
+        ]
+      },
+      {
+        "path": "documentation/zh-CN/usage-securestate.md",
+        "kind": "file",
+        "mode": 33188,
+        "payload_digest": "a184afc35e789dd26e1167ebb9432e1cd57be7962ec37b03bcd86cb09d6137a6",
+        "entry_digest": "2b959be95be8023d8499530a7781993bef18187e11fcc0b9a25adeff480ae0f9",
+        "owners": [
+          "@exact:delivery"
+        ]
+      },
+      {
+        "path": "documentation/zh-CN/usage-slice.md",
+        "kind": "file",
+        "mode": 33188,
+        "payload_digest": "29c7406cce3f21332b2042a275d92e21d713e7a25725b475629d50338acdcc4b",
+        "entry_digest": "f8d8766710142498f3c7c39628231677349c71d53935688516639a81957ac0e5",
+        "owners": [
+          "@exact:delivery"
+        ]
+      },
+      {
+        "path": "documentation/zh-CN/usage-state-dependency.md",
+        "kind": "file",
+        "mode": 33188,
+        "payload_digest": "050d1baf6975b8a2abeb8fbc275f0349e7bccb3f54ec75ec1aea5792aff50609",
+        "entry_digest": "834e2f842f920b8e6287c92957908083ad52d2d28a890852ce3973f6cbadb58c",
+        "owners": [
+          "@exact:delivery"
+        ]
+      },
+      {
+        "path": "documentation/zh-CN/usage-storedstate.md",
+        "kind": "file",
+        "mode": 33188,
+        "payload_digest": "3385eaf3431d0d7fc5ff8851bb8c429496589a8c9db590879afd06e908bae796",
+        "entry_digest": "190d47ce597cc49297964e178e1b2bb588c208ca52d2c927f2504107159c3ef6",
+        "owners": [
+          "@exact:delivery"
+        ]
+      },
+      {
+        "path": "documentation/zh-CN/usage-syncstate.md",
+        "kind": "file",
+        "mode": 33188,
+        "payload_digest": "86b2aaa4e946f9bbe5b32e66cd1520a575abce578a70649ce96fde28a9ad7bc8",
+        "entry_digest": "8e49f5ae715857dd6653d401fcadeeea3dd08d2d1ebf5c8237d0a04c142df516",
+        "owners": [
+          "@exact:delivery"
+        ]
+      },
+      {
+        "path": "knowledge",
+        "kind": "non_file",
+        "mode": 0,
+        "payload_digest": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "entry_digest": "6bf774aa49b6a3dbca39ddea3b7294ff79676df917c98113909dfcffc3e3635f",
+        "owners": [
+          "@exact:delivery"
+        ]
+      },
+      {
+        "path": "knowledge/index.md",
+        "kind": "file",
+        "mode": 33188,
+        "payload_digest": "38ee342b44060d153da76da9740ada509fa8b3f1f58c0b55746a407c9a96295f",
+        "entry_digest": "10f4958135a5eaeb7e82b45b3bad64fe702c2a5537406787ca59624f1e059d45",
+        "owners": [
+          "@exact:delivery"
+        ]
+      },
+      {
+        "path": "knowledge/journal/2026-11-16-add-an-ios-demo-app-with-ui-tests-and-an-ios-ci-job-that-runs.md",
+        "kind": "file",
+        "mode": 33188,
+        "payload_digest": "563b4050fc26f8d11609196092e9792ff6fca3f50a12772d31be4511c7c14a98",
+        "entry_digest": "6bddc00675682dbdad77bbaefccc1688a41ca1e7d4bfa92fe81637398bd5a524",
+        "owners": [
+          "@exact:delivery"
+        ]
+      },
+      {
+        "path": "knowledge/journal/2026-11-16-archive-the-deleteall-and-slice-write-fix.md",
+        "kind": "file",
+        "mode": 33188,
+        "payload_digest": "2fcf642ae56e657ab0ec796641dfabcbfb4a6f133b98524caddb4c1dee3c5899",
+        "entry_digest": "e8049eb4a71b7eb81a26cffec47c3eaacb85362fb81b77fb01579cf81db681e5",
+        "owners": [
+          "@exact:delivery"
+        ]
+      },
+      {
+        "path": "knowledge/journal/feed.xml",
+        "kind": "file",
+        "mode": 33188,
+        "payload_digest": "23504e7f59171307213644ca68903f13fc938ea1e8739b5716a9031079b463fd",
+        "entry_digest": "49243aa7914337506a4bc5e8d1752140b076bf9ce13d37b7e01238905c646581",
+        "owners": [
+          "@exact:delivery"
+        ]
+      },
+      {
+        "path": "specs",
+        "kind": "non_file",
+        "mode": 0,
+        "payload_digest": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "entry_digest": "d654cba9ce3c5b8a9c72964ac1f99b8ae3d9a6de6b54d1baa36d7558aac4bb42",
+        "owners": [
+          "@exact:delivery"
+        ]
+      },
+      {
+        "path": "specs/application/application.spec.md",
+        "kind": "file",
+        "mode": 33188,
+        "payload_digest": "c9e33e6ae91481483957eca95d105dbb35a82ff88a518b24f7e953902284053f",
+        "entry_digest": "8006ac36065a95cddc1b206f50671013d50794814f2f61ea74c54e7ba9175992",
+        "owners": [
+          "application"
+        ]
+      },
+      {
+        "path": "specs/application/context.md",
+        "kind": "file",
+        "mode": 33188,
+        "payload_digest": "684a2049772ee1adc8403255c4e23c1a2cdd2d4dccd68bff70e48ca203d5ea1c",
+        "entry_digest": "d213d708386275489966dd66d010c778c8b4967817d13696b1e86d11b8e2e353",
+        "owners": [
+          "application"
+        ]
+      },
+      {
+        "path": "specs/application/requirements.md",
+        "kind": "file",
+        "mode": 33188,
+        "payload_digest": "4b569b52082f8f319855e9a5c0c2fe6fea8ae8b70112942c1fa4f4b2abb9f49b",
+        "entry_digest": "dda27f4bf9d2c5fe5e8ce22d66417d830bde15668e71d4288bf4ce043200a08c",
+        "owners": [
+          "application"
+        ]
+      },
+      {
+        "path": "specs/application/tasks.md",
+        "kind": "file",
+        "mode": 33188,
+        "payload_digest": "2a2987cc3ec257bdafd7fc01be194d423af475a0bda34ca34b6fa31929fe93df",
+        "entry_digest": "069010f58657ca1eec454ee4910aa0f7f83faae35ae18e2aefead2e474cfa774",
+        "owners": [
+          "application"
+        ]
+      },
+      {
+        "path": "specs/application/testing.md",
+        "kind": "file",
+        "mode": 33188,
+        "payload_digest": "941feeb1fbf7eed808d4e070510841af4130a2fd2e9f3e3f74d807b2104add76",
+        "entry_digest": "21aad20aeccdb24909439704838a46d2f9e8b68560eb689763cf56a9f507926c",
+        "owners": [
+          "application"
+        ]
+      },
+      {
+        "path": "specs/property-wrappers/context.md",
+        "kind": "file",
+        "mode": 33188,
+        "payload_digest": "f470ad9da08c450f59e62c3bb36fbcb14ce964412bc0054dfb157d56ab144df3",
+        "entry_digest": "2265920f9585c0f84159a1884b83c45d1e5d19a50e0c6769f696fbce31b29ca2",
+        "owners": [
+          "property-wrappers"
+        ]
+      },
+      {
+        "path": "specs/property-wrappers/property-wrappers.spec.md",
+        "kind": "file",
+        "mode": 33188,
+        "payload_digest": "a3dff48c8a68e4aec22a821bafb58c7342587d3a2c46e49a7a48213ea1e1c238",
+        "entry_digest": "5792bf3112e6b8c0f2d96f4893e24895ce459ede41128bec1685e0ac4c0ff03c",
+        "owners": [
+          "property-wrappers"
+        ]
+      },
+      {
+        "path": "specs/property-wrappers/requirements.md",
+        "kind": "file",
+        "mode": 33188,
+        "payload_digest": "0e70040960efbd26abd66c67a500bd03eeca66b606559d9fab96c6b7074a143c",
+        "entry_digest": "efae53e51e6e856c3bca1acf4014570d49f930b22d5bf19723a05798bfd19a77",
+        "owners": [
+          "property-wrappers"
+        ]
+      },
+      {
+        "path": "specs/property-wrappers/tasks.md",
+        "kind": "file",
+        "mode": 33188,
+        "payload_digest": "ba8a53b2cd6d42964fe7c2ed5a8a6d53d7f74f8df18f8f7e3572f6121b6bff60",
+        "entry_digest": "812f5ad57c762d0d94ddb03d73658113f17a9cc4f8b00ec435519e432deb4945",
+        "owners": [
+          "property-wrappers"
+        ]
+      },
+      {
+        "path": "specs/property-wrappers/testing.md",
+        "kind": "file",
+        "mode": 33188,
+        "payload_digest": "8c4ce76ce42ebbfc27c9a97f58fa2542af8721091367d72a84f52bf2c473d965",
+        "entry_digest": "c106bf960743e3bf5585c36a386f107c28ec79378bcadb80238d20df005e240b",
+        "owners": [
+          "property-wrappers"
+        ]
+      },
+      {
+        "path": "specs/swiftdata/context.md",
+        "kind": "file",
+        "mode": 33188,
+        "payload_digest": "b7c944da317906bc96abae72b8db00f0596d741a801be8c61c59b11fd4c6c5f8",
+        "entry_digest": "53f6bb8cd81a8c6a40cedd90be34e5f03969049fa246668862a1abef2ef7f7db",
+        "owners": [
+          "@exact:delivery"
+        ]
+      },
+      {
+        "path": "specs/swiftdata/requirements.md",
+        "kind": "file",
+        "mode": 33188,
+        "payload_digest": "7b493a5e277838097c357a1ccd5a9c1c7ea648423b71259c094785d23651d03e",
+        "entry_digest": "3491f26ef9de402e9183cd6c6c13b0070b1ca7e12e018f698a47bfc352999259",
+        "owners": [
+          "@exact:delivery"
+        ]
+      },
+      {
+        "path": "specs/swiftdata/swiftdata.spec.md",
+        "kind": "file",
+        "mode": 33188,
+        "payload_digest": "86449c4f26e0723ae84d8c2d470d6c735d52eaec98feea8aab9290881a4ae84f",
+        "entry_digest": "fe17879fe778273cee20576b96d73d0ee750e78e143a13bb967f21f75470adbc",
+        "owners": [
+          "@exact:delivery"
+        ]
+      },
+      {
+        "path": "specs/swiftdata/tasks.md",
+        "kind": "file",
+        "mode": 33188,
+        "payload_digest": "83f37da75a70000a5a99d0191d53bc2080e4d69996ea7572b98a1565a20cae3e",
+        "entry_digest": "f359c6bbc202ec84f83da4b8fd9d537f2865dd8d33c3309d6e7ecda906816766",
+        "owners": [
+          "@exact:delivery"
+        ]
+      },
+      {
+        "path": "specs/swiftdata/testing.md",
+        "kind": "file",
+        "mode": 33188,
+        "payload_digest": "272d84f6c55692af810604a9bb7cd10ea139e14f447fd357662c265fe236912b",
+        "entry_digest": "7e8c5fd4a0f78c75dbd4c74e7fa1e2499327120069e1795fb58e00823c5d1e8d",
+        "owners": [
+          "@exact:delivery"
+        ]
+      }
+    ]
+  },
+  "passed": true,
+  "commands": [
+    {
+      "command": "specsync check --spec application --spec property-wrappers",
+      "success": true,
+      "exit_code": 0
+    }
+  ],
+  "requirement_ids": [
+    "REQ-application-002",
+    "REQ-application-003",
+    "REQ-application-004",
+    "REQ-application-005",
+    "REQ-application-006",
+    "REQ-property-wrappers-002"
+  ]
+}

@@ -1,0 +1,196 @@
+{
+  "approvals": [
+    {
+      "gate": "definition",
+      "actor": "0xLeif",
+      "timestamp": 1794838116,
+      "digest": "dab58e71b686d7f2bdbe9bf4e8dd63c52a4e2349f6adba6ec7a7d57c7b84f2ee",
+      "note": "Approved by 0xLeif at the Chough gate \"Scope approval of fix-the-10-bugs-the-review-recorded-changing-code-to-match-the-doc-comments\": \"I approve\" (Claude Code chat on 2026-11-16, in reply to the fix report asking for scope approval). Relayed and recorded by claude-code at 2026-11-16T14:08:36Z through chough checkpoint --close-gate; a relayed claim, not authenticated.",
+      "approved_scope": {
+        "schema_version": 1,
+        "change_id": "fix-the-10-bugs-the-review-recorded-changing-code-to-match-the-doc-comments",
+        "title": "Fix the 10 bugs the review recorded, changing code to match the doc comments",
+        "description": "Fix the 10 bugs the review recorded, changing code to match the doc comments",
+        "kind": "bug_fix",
+        "affected_specs": [
+          "application",
+          "property-wrappers"
+        ],
+        "affected_paths": [
+          ".chough",
+          ".specsync/change.lock",
+          "CHANGELOG.md",
+          "README.md",
+          "Sources/AppState",
+          "Tests/AppStateTests",
+          "documentation",
+          "knowledge",
+          "specs"
+        ],
+        "no_spec_change": false,
+        "no_spec_change_rationale": null,
+        "acceptance_criteria": [
+          "ReviewFixTests has a test for each of the 8 library bugs in .chough/bugs and all pass; six of them fail on the sources of 7e4eb92, and the write-after-read bug, which XCTest could not show, is shown fixed by a plain executable; the two corrected documentation examples compile in Swift 6 mode; every test class passes on macOS under the strict build"
+        ],
+        "dependencies": [],
+        "supersedes": [],
+        "answers": {
+          "architecture_risk": "yes",
+          "constraints": "AGENTS.md: Swift 6, explicit access control, no force-unwrap or try! or as! in library code, no @unchecked Sendable; SecureState, SyncState and Keychain stay inside canImport(Security); Linux, Windows and WASI CI must keep building",
+          "public_contract": "yes"
+        }
+      },
+      "approved_delta_digests": {
+        "application": "6c00ce736e61ce18756421a541a9bed0e740bbc0fd1e81f58bc1f63ef00c8e14",
+        "property-wrappers": "98949c19fae87272123af8963ed06f5bb0e75a07d0c93a85b38e43dca7c5d01a"
+      },
+      "approved_delta_bases": {},
+      "relayed_by": {
+        "decided_by": "0xLeif",
+        "words": "I approve",
+        "where": "Claude Code chat on 2026-11-16, in reply to the fix report asking for scope approval",
+        "recorded_by": "claude-code"
+      }
+    },
+    {
+      "gate": "definition",
+      "actor": "0xLeif",
+      "timestamp": 1794871661,
+      "digest": "c60fc055c135a6f7030efc6a31842933a70ff5e99592d29772a05db29d865410",
+      "note": null,
+      "approved_scope": {
+        "schema_version": 1,
+        "change_id": "fix-the-10-bugs-the-review-recorded-changing-code-to-match-the-doc-comments",
+        "title": "Fix the 10 bugs the review recorded, changing code to match the doc comments",
+        "description": "Fix the 10 bugs the review recorded, changing code to match the doc comments",
+        "kind": "bug_fix",
+        "affected_specs": [
+          "application",
+          "property-wrappers"
+        ],
+        "affected_paths": [
+          ".chough",
+          ".github/workflows/iOS.yml",
+          ".specsync",
+          "CHANGELOG.md",
+          "Examples/DemoApp",
+          "README.md",
+          "Sources/AppState/Application/Application+public.swift",
+          "Sources/AppState/Application/Application.swift",
+          "Sources/AppState/Application/Types/Dependency/Application+Dependency.swift",
+          "Sources/AppState/Application/Types/Helper/Application+ApplicationPreview.swift",
+          "Sources/AppState/Application/Types/Helper/Application+PersistenceFailure.swift",
+          "Sources/AppState/Application/Types/Helper/FileManager+AppState.swift",
+          "Sources/AppState/Application/Types/State/Application+FileState.swift",
+          "Sources/AppState/Application/Types/State/Application+State.swift",
+          "Sources/AppState/Application/Types/State/Application+StoredState.swift",
+          "Sources/AppState/Application/Types/State/Application+SyncState.swift",
+          "Sources/AppState/PropertyWrappers/State/AppState.swift",
+          "Sources/AppState/PropertyWrappers/State/FileState.swift",
+          "Sources/AppState/PropertyWrappers/State/SecureState.swift",
+          "Sources/AppState/PropertyWrappers/State/Slice/OptionalSlice.swift",
+          "Sources/AppState/PropertyWrappers/State/Slice/Slice.swift",
+          "Sources/AppState/PropertyWrappers/State/StoredState.swift",
+          "Sources/AppState/PropertyWrappers/State/SyncState.swift",
+          "Tests/AppStateTests",
+          "documentation",
+          "knowledge",
+          "specs"
+        ],
+        "no_spec_change": false,
+        "no_spec_change_rationale": null,
+        "acceptance_criteria": [
+          "ReviewFixTests has a test for each of the 8 library bugs in .chough/bugs and all pass; six of them fail on the sources of 7e4eb92, and the write-after-read bug, which XCTest could not show, is shown fixed by a plain executable; the two corrected documentation examples compile in Swift 6 mode; every test class passes on macOS under the strict build"
+        ],
+        "dependencies": [],
+        "supersedes": [],
+        "answers": {
+          "architecture_risk": "yes",
+          "constraints": "AGENTS.md: Swift 6, explicit access control, no force-unwrap or try! or as! in library code, no @unchecked Sendable; SecureState, SyncState and Keychain stay inside canImport(Security); Linux, Windows and WASI CI must keep building",
+          "public_contract": "yes"
+        }
+      },
+      "approved_delta_digests": {
+        "application": "6c00ce736e61ce18756421a541a9bed0e740bbc0fd1e81f58bc1f63ef00c8e14",
+        "property-wrappers": "98949c19fae87272123af8963ed06f5bb0e75a07d0c93a85b38e43dca7c5d01a"
+      },
+      "approved_delta_bases": {},
+      "relayed_by": {
+        "decided_by": "0xLeif",
+        "words": "yes",
+        "where": "Claude Code chat on 2026-11-16, in reply to: Do you approve the re-scoped change? (after his send-back to declare the owning modules; the application spec gains 20 files and the declared paths name the changed files)",
+        "recorded_by": "claude-code"
+      }
+    },
+    {
+      "gate": "finalization",
+      "actor": "specsync:finalization",
+      "timestamp": 1794871683,
+      "digest": "daa82c08208120eb7f1c73365f0e0d0c2701af01a6ffc771fc2104ed735b2341",
+      "note": "Same-PR finalization closing digest"
+    }
+  ],
+  "reopenings": [],
+  "send_backs": [
+    {
+      "schema_version": 1,
+      "change_id": "fix-the-10-bugs-the-review-recorded-changing-code-to-match-the-doc-comments",
+      "actor": "0xLeif",
+      "reason": "declare the owning modules",
+      "timestamp": 1794871540,
+      "from_state": "verifying",
+      "to_state": "draft",
+      "cancelled_approvals": 1,
+      "cancelled_review_attempts": 0,
+      "canonical_applied": true,
+      "applied_items": [
+        {
+          "module": "application",
+          "operation": "added",
+          "target": "requirement",
+          "key": "REQ-application-002",
+          "content": "A State or FileState read SHALL fill the cache before it returns, so a value written afterwards in the same main-actor turn SHALL remain the value read later. Application.state(initial:) SHALL evaluate its initial value once per scope while that state is cached, and reset() SHALL restore that first value after any number of writes.\n\nAcceptance Criteria\n\n- A State read and then written, with no suspension in between, reads the written value after the main actor has run its queued jobs.\n- Five reads of a State evaluate its initial expression once.\n- reset() after two writes restores the value the initial expression first produced."
+        },
+        {
+          "module": "application",
+          "operation": "added",
+          "target": "requirement",
+          "key": "REQ-application-003",
+          "content": "The StoredState setter SHALL NOT pass UserDefaults a value that is not a property list. A value that can be neither JSON-encoded nor stored as a property list SHALL be rejected: the previous value SHALL stay and no change SHALL be notified.\n\nAcceptance Criteria\n\n- Writing a struct that holds Double.nan to a StoredState stores nothing in UserDefaults and leaves the previous value readable.\n- Writing Double.infinity to a StoredState of Double still stores and reads back infinity."
+        },
+        {
+          "module": "application",
+          "operation": "added",
+          "target": "requirement",
+          "key": "REQ-application-004",
+          "content": "A value written to a FileState with isBase64Encoded false SHALL read back equal after the cache entry is gone, for every JSON text including text that is valid Base64. FileManager.defaultFileStatePath SHALL be a plain file path without percent-encoding.\n\nAcceptance Criteria\n\n- true and 1234 written without Base64 read back as true and 1234 from the file.\n- A Base64-encoded file still reads back its value.\n- defaultFileStatePath contains no percent sign when the documents path has none."
+        },
+        {
+          "module": "application",
+          "operation": "added",
+          "target": "requirement",
+          "key": "REQ-application-005",
+          "content": "Application.promote(to:) SHALL register the promoted instance for the iCloud key-value store's external-change notification when the previous instance was registered.\n\nAcceptance Criteria\n\n- After icloudStore is loaded and the application is promoted, posting the external-change notification calls the promoted instance's didChangeExternally exactly once."
+        },
+        {
+          "module": "application",
+          "operation": "added",
+          "target": "requirement",
+          "key": "REQ-application-006",
+          "content": "A DependencyOverride SHALL restore the dependency it replaced when cancel() is called or when the token is released, whichever comes first, and SHALL restore it only once. A token released on the main thread SHALL have restored the dependency before the release returns.\n\nAcceptance Criteria\n\n- An override whose token goes out of scope on the main actor is no longer in effect on the next line.\n- After cancel(), releasing the token does not undo an override installed in between."
+        },
+        {
+          "module": "property-wrappers",
+          "operation": "added",
+          "target": "requirement",
+          "key": "REQ-property-wrappers-002",
+          "content": "A write through the enclosing-instance subscript of @AppState, @StoredState, @FileState, @SecureState, @SyncState, @Slice or @OptionalSlice SHALL be stored whatever the type of the host's objectWillChange. The host's publisher SHALL be sent before the write when it is an ObservableObjectPublisher.\n\nAcceptance Criteria\n\n- A host that declares objectWillChange as a PassthroughSubject reads back the value it wrote through @AppState.\n- A host with the synthesized publisher still receives objectWillChange once per write."
+        }
+      ],
+      "applied_modules": [
+        "application",
+        "property-wrappers"
+      ]
+    }
+  ]
+}
