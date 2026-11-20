@@ -1,7 +1,7 @@
 ---
 module: property-wrappers
 version: 4
-status: draft
+status: active
 files:
   - Sources/AppState/PropertyWrappers/State/AppState.swift
   - Sources/AppState/PropertyWrappers/State/StoredState.swift
@@ -19,7 +19,7 @@ files:
   - Sources/AppState/PropertyWrappers/Dependency/Slice/DependencyConstant.swift
 
 db_tables: []
-depends_on: ["application"]
+depends_on: ["specs/application/application.spec.md"]
 ---
 
 # Property-wrappers
@@ -73,14 +73,15 @@ This module exports property wrapper types rather than free functions. The wrapp
 | `@DependencySlice<Value, SliceValue>` | `SliceValue` | `Binding<SliceValue>` | Yes | Slices a dependency; `Value, SliceValue: Sendable`; setter calls `notifyChange()` (Apple) |
 | `@DependencyConstant<Value, SliceValue, SliceKeyPath>` | `SliceValue` | none | No (read-only) | Read-only slice of a dependency |
 
-### Traits
+### Exported Traits
 
 | Trait | Description |
 |-------|-------------|
 | `DynamicProperty` (SwiftUI) | On Apple platforms every state and slice wrapper, plus `@SyncState`, `@SecureState`, `@ModelState`, `@ObservedDependency`, and `@DependencySlice`, conforms to `DynamicProperty` so SwiftUI installs them as view storage. `@AppDependency`, `@Constant`, `@OptionalConstant`, and `@DependencyConstant` do not. |
-| `MutableApplicationState` | Generic bound for `@AppState`, `@Slice`, `@OptionalSlice`, `@Constant`, and `@OptionalConstant`; the backing state exposes a mutable `value`. Defined in the `application` module. |
 
-### Functions
+> Cross-module bound: `MutableApplicationState` — the generic bound for `@AppState`, `@Slice`, `@OptionalSlice`, `@Constant`, and `@OptionalConstant`, whose backing state exposes a mutable `value` — is owned by the `application` module; see `application.spec.md`. It is intentionally **not** listed as a property-wrappers export (doing so would duplicate ownership, the bug #162 fixed for `ModelState`).
+
+### Exported Functions
 
 | Function | Signature | Description |
 |----------|-----------|-------------|
@@ -88,6 +89,22 @@ This module exports property wrapper types rather than free functions. The wrapp
 | `wrappedValue` set | `nonmutating set` | Logs the change, then mutates via `app.value(keyPath:)`, writing the new value back through `Application` (which triggers `notifyChange()`) |
 | `projectedValue` | `var projectedValue: Binding<Value>` (Apple) | A `Binding` whose get/set forward to `wrappedValue`; `@ModelState` instead projects `Application.ModelState<Model>`, `@ObservedDependency` projects `ObservedObject<Value>.Wrapper` |
 | enclosing-instance subscript | `static subscript<OuterSelf: ObservableObject>(_enclosingInstance:wrapped:storage:)` | Supports use inside an `ObservableObject` host (view model): reads forward to `wrappedValue`; writes send the host's `objectWillChange` then write through (Apple platforms; not on `@Constant`/`@DependencyConstant`/`@AppDependency`) |
+| `wrappedValue` | TODO | Document caller-visible behavior and constraints. |
+| `init` | TODO | Document caller-visible behavior and constraints. |
+| `AppState` | TODO | Document caller-visible behavior and constraints. |
+| `StoredState` | TODO | Document caller-visible behavior and constraints. |
+| `FileState` | TODO | Document caller-visible behavior and constraints. |
+| `SyncState` | TODO | Document caller-visible behavior and constraints. |
+| `SecureState` | TODO | Document caller-visible behavior and constraints. |
+| `ModelState` | TODO | Document caller-visible behavior and constraints. |
+| `Slice` | TODO | Document caller-visible behavior and constraints. |
+| `OptionalSlice` | TODO | Document caller-visible behavior and constraints. |
+| `Constant` | TODO | Document caller-visible behavior and constraints. |
+| `OptionalConstant` | TODO | Document caller-visible behavior and constraints. |
+| `AppDependency` | TODO | Document caller-visible behavior and constraints. |
+| `ObservedDependency` | TODO | Document caller-visible behavior and constraints. |
+| `DependencySlice` | TODO | Document caller-visible behavior and constraints. |
+| `DependencyConstant` | TODO | Document caller-visible behavior and constraints. |
 
 ## Invariants
 

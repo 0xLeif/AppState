@@ -1,7 +1,7 @@
 ---
 module: application
 version: 5
-status: draft
+status: active
 files:
   - Sources/AppState/Application/Application.swift
   - Sources/AppState/Application/Application+public.swift
@@ -69,19 +69,97 @@ As of AppState 3.0 the singleton adopts Apple's Observation framework (`@Observa
 | Application.DependencyOverride | Token that reverts a dependency override when released |
 | ApplicationLogger | Logging utility used on Linux/Windows |
 
-### Traits
+### Exported Traits
 
 | Trait | Description |
 |-------|-------------|
 | MutableApplicationState | Protocol for state types that expose a mutable `value` and a `reset()` |
 
-### Functions
+### Exported Functions
 
 | Function | Signature | Description |
 |----------|-----------|-------------|
 | state | `static func state<Value>(_: KeyPath<Application, State<Value>>) -> State<Value>` | Access a state value by key path |
 | dependency | `static func dependency<Value>(_: KeyPath<Application, Dependency<Value>>) -> Value` | Resolve a dependency by key path |
 | notifyChange | `func notifyChange()` | Ask observers (SwiftUI views) to update; called by AppState's setters and available for manual use (e.g. in `didChangeExternally` overrides) |
+| `logger` | TODO | Document caller-visible behavior and constraints. |
+| `notifyChange` | TODO | Document caller-visible behavior and constraints. |
+| `didFailToPersist` | TODO | Document caller-visible behavior and constraints. |
+| `didChangeExternally` | TODO | Document caller-visible behavior and constraints. |
+| `init` | TODO | Document caller-visible behavior and constraints. |
+| `slice` | TODO | Document caller-visible behavior and constraints. |
+| `dependencySlice` | TODO | Document caller-visible behavior and constraints. |
+| `description` | TODO | Document caller-visible behavior and constraints. |
+| `promote` | TODO | Document caller-visible behavior and constraints. |
+| `logging` | TODO | Document caller-visible behavior and constraints. |
+| `load` | TODO | Document caller-visible behavior and constraints. |
+| `dependency` | TODO | Document caller-visible behavior and constraints. |
+| `preview` | TODO | Document caller-visible behavior and constraints. |
+| `reset` | TODO | Document caller-visible behavior and constraints. |
+| `state` | TODO | Document caller-visible behavior and constraints. |
+| `storedState` | TODO | Document caller-visible behavior and constraints. |
+| `syncState` | TODO | Document caller-visible behavior and constraints. |
+| `secureState` | TODO | Document caller-visible behavior and constraints. |
+| `fileState` | TODO | Document caller-visible behavior and constraints. |
+| `value` | TODO | Document caller-visible behavior and constraints. |
+| `logValue` | TODO | Document caller-visible behavior and constraints. |
+| `cancel` | TODO | Document caller-visible behavior and constraints. |
+| `store` | TODO | Document caller-visible behavior and constraints. |
+| `operation` | TODO | Document caller-visible behavior and constraints. |
+| `key` | TODO | Document caller-visible behavior and constraints. |
+| `error` | TODO | Document caller-visible behavior and constraints. |
+| `read` | TODO | Document caller-visible behavior and constraints. |
+| `write` | TODO | Document caller-visible behavior and constraints. |
+| `delete` | TODO | Document caller-visible behavior and constraints. |
+| `name` | TODO | Document caller-visible behavior and constraints. |
+| `id` | TODO | Document caller-visible behavior and constraints. |
+| `debug` | TODO | Document caller-visible behavior and constraints. |
+| `generalError` | TODO | Document caller-visible behavior and constraints. |
+| `defaultFileStatePath` | TODO | Document caller-visible behavior and constraints. |
+| `removeItem` | TODO | Document caller-visible behavior and constraints. |
+| `Value` | TODO | Document caller-visible behavior and constraints. |
+| `emoji` | TODO | Document caller-visible behavior and constraints. |
+| `data` | TODO | Document caller-visible behavior and constraints. |
+| `set` | TODO | Document caller-visible behavior and constraints. |
+| `removeObject` | TODO | Document caller-visible behavior and constraints. |
+| `object` | TODO | Document caller-visible behavior and constraints. |
+| `fileManager` | TODO | Document caller-visible behavior and constraints. |
+| `keychain` | TODO | Document caller-visible behavior and constraints. |
+| `userDefaults` | TODO | Document caller-visible behavior and constraints. |
+| `icloudStore` | TODO | Document caller-visible behavior and constraints. |
+| `Key` | TODO | Document caller-visible behavior and constraints. |
+| `get` | TODO | Document caller-visible behavior and constraints. |
+| `resolve` | TODO | Document caller-visible behavior and constraints. |
+| `remove` | TODO | Document caller-visible behavior and constraints. |
+| `contains` | TODO | Document caller-visible behavior and constraints. |
+| `require` | TODO | Document caller-visible behavior and constraints. |
+| `values` | TODO | Document caller-visible behavior and constraints. |
+| `Application` | TODO | Document caller-visible behavior and constraints. |
+| `DependencySlice` | TODO | Document caller-visible behavior and constraints. |
+| `Dependency` | TODO | Document caller-visible behavior and constraints. |
+| `DependencyOverride` | TODO | Document caller-visible behavior and constraints. |
+| `PersistenceFailure` | TODO | Document caller-visible behavior and constraints. |
+| `Store` | TODO | Document caller-visible behavior and constraints. |
+| `Operation` | TODO | Document caller-visible behavior and constraints. |
+| `Scope` | TODO | Document caller-visible behavior and constraints. |
+| `ApplicationLogger` | TODO | Document caller-visible behavior and constraints. |
+| `LoggerError` | TODO | Document caller-visible behavior and constraints. |
+| `FileManaging` | TODO | Document caller-visible behavior and constraints. |
+| `MutableApplicationState` | TODO | Document caller-visible behavior and constraints. |
+| `UbiquitousKeyValueStoreManaging` | TODO | Document caller-visible behavior and constraints. |
+| `UserDefaultsManaging` | TODO | Document caller-visible behavior and constraints. |
+| `SendableFileManager` | TODO | Document caller-visible behavior and constraints. |
+| `FileState` | TODO | Document caller-visible behavior and constraints. |
+| `SecureState` | TODO | Document caller-visible behavior and constraints. |
+| `State` | TODO | Document caller-visible behavior and constraints. |
+| `SendableUserDefaults` | TODO | Document caller-visible behavior and constraints. |
+| `StoredState` | TODO | Document caller-visible behavior and constraints. |
+| `SendableNSUbiquitousKeyValueStore` | TODO | Document caller-visible behavior and constraints. |
+| `SyncState` | TODO | Document caller-visible behavior and constraints. |
+| `OptionalSlice` | TODO | Document caller-visible behavior and constraints. |
+| `OptionalSliceOptionalValue` | TODO | Document caller-visible behavior and constraints. |
+| `Slice` | TODO | Document caller-visible behavior and constraints. |
+| `Keychain` | TODO | Document caller-visible behavior and constraints. |
 
 ## Invariants
 

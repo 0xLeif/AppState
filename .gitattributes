@@ -1,3 +1,9 @@
 .chough/bugs/*.md merge=chough-bug
 knowledge/index.md merge=chough-generated
 knowledge/journal/feed.xml merge=chough-generated
+
+# .3md is Markdown with a Z axis. GitHub Linguist treats a leading dot as a
+# troff macro and .3* names as man pages, so these files show up as Roff.
+# The Markdown preview also joins a single newline into a space and glues the
+# planes into one paragraph. Plain text keeps each plane on its own line.
+*.3md linguist-language=Text

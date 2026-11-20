@@ -10,3 +10,9 @@ Package.resolved
 # xcodegen-generated demo project + derived data
 Examples/DemoApp/*.xcodeproj/
 Examples/DemoApp/.build-dd/
+
+# spec-sync hash cache (regenerated locally)
+.specsync/hashes.json
+
+# spec-sync change lock (transient)
+.specsync/change.lock

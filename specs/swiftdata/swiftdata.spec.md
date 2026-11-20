@@ -1,12 +1,12 @@
 ---
 module: swiftdata
 version: 4
-status: draft
+status: active
 files:
   - Sources/AppState/Application/Types/Dependency/Application+ModelContainer.swift
   - Sources/AppState/Application/Types/State/Application+ModelState.swift
 db_tables: []
-depends_on: ["application", "property-wrappers"]
+depends_on: ["specs/application/application.spec.md", "specs/property-wrappers/property-wrappers.spec.md"]
 ---
 
 # SwiftData
@@ -20,6 +20,29 @@ This module integrates Apple's SwiftData persistence framework with AppState's d
 The entire module is gated behind `#if canImport(SwiftData)` and requires iOS 17 / macOS 14 / tvOS 17 / watchOS 10 / visionOS 1. On platforms without SwiftData (Linux, Windows) it is compiled out entirely.
 
 ## Public API
+
+### Exported Functions
+
+| Export | Description |
+|--------|-------------|
+| `modelContext` | Document caller-visible behavior and constraints. |
+| `modelContainer` | Document caller-visible behavior and constraints. |
+| `emoji` | Document caller-visible behavior and constraints. |
+| `context` | Document caller-visible behavior and constraints. |
+| `models` | Document caller-visible behavior and constraints. |
+| `insert` | Document caller-visible behavior and constraints. |
+| `delete` | Document caller-visible behavior and constraints. |
+| `save` | Document caller-visible behavior and constraints. |
+| `deleteAll` | Document caller-visible behavior and constraints. |
+| `strict` | Document caller-visible behavior and constraints. |
+| `modelState` | Document caller-visible behavior and constraints. |
+
+### Exported Types
+
+| Type | Description |
+|------|-------------|
+| `ModelState` | Document caller-visible behavior and constraints. |
+| `Strict` | Document caller-visible behavior and constraints. |
 
 ### Application — SwiftData functions
 
