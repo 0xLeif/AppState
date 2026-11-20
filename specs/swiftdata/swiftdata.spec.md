@@ -5,7 +5,6 @@ status: draft
 files:
   - Sources/AppState/Application/Types/Dependency/Application+ModelContainer.swift
   - Sources/AppState/Application/Types/State/Application+ModelState.swift
-  - Sources/AppState/PropertyWrappers/State/ModelState.swift
 db_tables: []
 depends_on: ["application", "property-wrappers"]
 ---
