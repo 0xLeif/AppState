@@ -1,6 +1,6 @@
 ---
 module: property-wrappers
-version: 4
+version: 5
 status: active
 files:
   - Sources/AppState/PropertyWrappers/State/AppState.swift
@@ -52,7 +52,7 @@ This module exports property wrapper types rather than free functions. The wrapp
 | `@StoredState<Value>` | `Value` | `Binding<Value>` | All | `UserDefaults`-backed; `Value: Codable & Sendable` |
 | `@FileState<Value>` | `Value` | `Binding<Value>` | All | `FileManager`-backed; `Value: Codable & Sendable` |
 | `@SyncState<Value>` | `Value` | `Binding<Value>` | Apple only | iCloud `NSUbiquitousKeyValueStore`-backed; `Value: Codable & Sendable`; `@available(watchOS 9.0, *)` |
-| `@SecureState` | `String?` | `Binding<String?>` | Apple only | Keychain-backed |
+| `@SecureState` | `String?` | `Binding<String?>` | Apple only (`canImport(Security)`) | Keychain generic-password `String?`. Read calls `Application.secureState(_:).value`: the item, or the initial value when `get` returns nil (fail-open; a keychain or entitlement failure is the same nil and is not logged). Write of a string calls `Keychain.set`; write of nil calls `Keychain.remove`. Neither write reports status. The initial value is a read fallback, not a value stored at init. `reset()` writes that fallback back. |
 | `@ModelState<Model>` | `[Model]` (read-only) | `Application.ModelState<Model>` | SwiftData (`canImport(SwiftData)`) | `Model: PersistentModel`; wrapped value is read-only (live fetch); mutate via the projected value's `insert`/`delete`/`save`/`deleteAll` |
 
 #### Dependency wrappers
@@ -95,7 +95,7 @@ This module exports property wrapper types rather than free functions. The wrapp
 | `StoredState` | TODO | Document caller-visible behavior and constraints. |
 | `FileState` | TODO | Document caller-visible behavior and constraints. |
 | `SyncState` | TODO | Document caller-visible behavior and constraints. |
-| `SecureState` | TODO | Document caller-visible behavior and constraints. |
+| `SecureState` | `@propertyWrapper public struct SecureState: DynamicProperty` | `canImport(Security)`. Holds the key path, not the secret. `wrappedValue`, `projectedValue`, `init`, and the enclosing-instance subscript are `@MainActor`. Get calls `registerObservation()`, then `Application.secureState(keyPath, fileID, function, line, column).value`, so every read uses the `Keychain` generic-password item for that scope. When `get` returns nil the result is the initial `String?` from that read's factory call. Fail-open: missing item, bad UTF-8, and any failed Security status share that fallback. No error is logged and `didFailToPersist` is not called. When logging is enabled, that key-path read debug-logs the returned string in a DEBUG build. Set, when logging is enabled, debug-logs too, and a DEBUG build interpolates the new string into the message. It then copies `Application.SecureState` and assigns `value`, which calls `notifyChange()` and then `Keychain.set` or, for nil, `Keychain.remove`. Those calls ignore Security status (silent drop). The next read after a nil write returns the initial value again, not a stored nil. `projectedValue` forwards to `wrappedValue`. The subscript sends `objectWillChange` when it is an `ObservableObjectPublisher`, then always assigns `wrappedValue`. No rotation, key derivation, or protection class is chosen in this wrapper. |
 | `ModelState` | TODO | Document caller-visible behavior and constraints. |
 | `Slice` | TODO | Document caller-visible behavior and constraints. |
 | `OptionalSlice` | TODO | Document caller-visible behavior and constraints. |
@@ -168,7 +168,7 @@ And the value is written through to Application
 
 | Error | When | Behavior |
 |-------|------|----------|
-| Keychain unavailable / missing entitlement | `@SecureState` accessed without Keychain access | `Application` returns the initial value; error logged (handled in the `application` module) |
+| Keychain read failed, missing entitlement, or item missing | `@SecureState` read whose `Keychain.get` returns nil | Fail-open: returns the initial value. No error is logged and `didFailToPersist` is not called. A DEBUG build with logging enabled debug-logs the secret on that read and on a write; logging is off by default. Writes call `Keychain.set` or `remove` and ignore the Security status. Storage rules are the `application` module's `Keychain` and `Application.SecureState` rows. |
 | iCloud unavailable | `@SyncState` accessed without iCloud capability | Falls back to the local value |
 | Decode failure | `@StoredState` / `@FileState` data cannot be decoded | Returns the initial value; error logged |
 | SwiftData fetch/save failure | `@ModelState` read or `insert`/`delete`/`save`/`deleteAll` fails | Surfaced by `Application.ModelState`; see the `swiftdata` spec |
@@ -192,3 +192,4 @@ And the value is written through to Application
 | 2 | 2026-06-09 | `@ModelState` wrapped value is read-only `[Model]` (live fetch); mutate via the projected value's `insert`/`delete`/`save`/`deleteAll` (no wrapped-value assignment) |
 | 3 | 2026-11-16 | make-modelstate-deleteall-remove-related-models-and-make-struct-dependency-slice-writes-stick: Make ModelState.deleteAll remove related models, and make struct dependency slice writes stick |
 | 4 | 2026-11-16 | fix-the-10-bugs-the-review-recorded-changing-code-to-match-the-doc-comments: Fix the 10 bugs the review recorded, changing code to match the doc comments |
+| 5 | 2026-11-20 | Document `@SecureState` from source: each read hits Keychain and falls open to the initial value; writes call `set` or `remove` and ignore status. The old error row said an error is logged; the source does not log the Security status. |
